@@ -6,6 +6,15 @@
     <title>MeshCore NL Channels</title>
     <script>
       (function () {
+        var path = window.location.pathname
+        var last = path.split('/').pop() || ''
+        if (last && !last.includes('.') && !path.endsWith('/')) {
+          window.location.replace(path + '/' + window.location.search + window.location.hash)
+        }
+      })()
+    </script>
+    <script>
+      (function () {
         var theme = localStorage.getItem('meshcore-theme')
         if (theme === 'light' || theme === 'win95') {
           document.documentElement.setAttribute('data-theme', theme)
