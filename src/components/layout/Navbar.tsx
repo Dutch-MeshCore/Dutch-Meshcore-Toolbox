@@ -40,6 +40,7 @@ export default function Navbar() {
           </div>
           <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''}>{t('nav_mqtt')}</Link>
           <Link to="/firmware" className={pathname === '/firmware' ? 'active' : ''}>{t('nav_firmware')}</Link>
+          <Link to="/keygen" className={pathname === '/keygen' ? 'active' : ''}>{t('nav_keygen')}</Link>
         </div>
         <div className="nav-actions">
           <a

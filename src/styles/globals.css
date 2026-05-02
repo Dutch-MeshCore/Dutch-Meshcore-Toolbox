@@ -3525,6 +3525,380 @@ select option {
   transform: translateY(0) scale(.97);
 }
 
+/* ── Keygen page ───────────────────────────────────────────────────────────── */
+.keygen-page .info-box.keygen-info-box {
+  max-width: 700px;
+  margin: 0 auto 24px;
+}
+
+.keygen-panel {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 700px;
+  margin: 0 auto 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.keygen-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.keygen-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.keygen-field > label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.keygen-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.keygen-input {
+  font-family: var(--font-mono, monospace);
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  width: 160px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.keygen-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.keygen-difficulty {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.keygen-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.keygen-warn {
+  font-size: 12px;
+  color: #f87171;
+  margin: 0;
+}
+
+.keygen-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.keygen-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.keygen-progress-bar {
+  height: 6px;
+  background: var(--surf2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.keygen-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.25s ease;
+  min-width: 4px;
+}
+
+.keygen-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.keygen-stats strong {
+  color: var(--text);
+}
+
+.keygen-result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.keygen-result h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #4ade80;
+}
+
+.keygen-result-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.keygen-key-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.keygen-key-block > label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.keygen-key-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.keygen-key {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  word-break: break-all;
+  flex: 1;
+  color: var(--accent);
+}
+
+.keygen-key-private {
+  color: var(--muted);
+}
+
+.keygen-copy-btn {
+  flex-shrink: 0;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.keygen-result-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.keygen-validation {
+  font-size: 12px;
+  color: #4ade80;
+  margin: 0;
+}
+
+.keygen-gpu-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.keygen-gpu-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+/* FAQ */
+.keygen-faq {
+  max-width: 700px;
+  margin: 0 auto 32px;
+}
+
+.keygen-faq h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.keygen-faq-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.keygen-faq-q {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--surf);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+  gap: 12px;
+}
+
+.keygen-faq-q:hover {
+  background: var(--surf2);
+}
+
+.keygen-faq-arrow {
+  font-size: 10px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.keygen-faq-body {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.keygen-faq-body p { margin: 0 0 8px; }
+.keygen-faq-body p:last-child { margin-bottom: 0; }
+.keygen-faq-body ul { padding-left: 18px; margin: 0; }
+.keygen-faq-body li { margin-bottom: 6px; }
+.keygen-faq-body strong { color: var(--text); }
+
+.keygen-perf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.keygen-perf-table th,
+.keygen-perf-table td {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.keygen-perf-table th {
+  background: var(--surf2);
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Import modal */
+.keygen-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.keygen-modal {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+
+.keygen-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--surf);
+}
+
+.keygen-modal-head h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.keygen-modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--muted);
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.keygen-modal-close:hover { color: var(--text); }
+
+.keygen-modal-body {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.keygen-import-section h4 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.keygen-import-section ol {
+  padding-left: 18px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.keygen-import-section li {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.keygen-import-section strong { color: var(--text); }
+.keygen-import-section a { color: var(--accent); }
+.keygen-import-section code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 12px;
+}
+
 /* ── Site footer ───────────────────────────────────────────────────────────── */
 .site-footer {
   margin-top: 2rem;
