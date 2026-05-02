@@ -134,8 +134,8 @@ export default function HowToPage() {
             </div>
             <div className="info-box">
               <h4 style={{ color: '#93c5fd' }}>{t('howto_clone_title')}</h4>
-              <pre>{`git clone https://github.com/Elektr0Vodka/meshcore-nl-discovered-channels.git
-cd meshcore-nl-discovered-channels
+              <pre>{`git clone https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox.git
+cd Dutch-Meshcore-Toolbox
 npm install`}</pre>
             </div>
             <div className="info-box">
@@ -176,7 +176,7 @@ npm install`}</pre>
               <p>
                 {t('howto_contrib_body1')}{' '}
                 <a
-                  href="https://github.com/Elektr0Vodka/meshcore-nl-discovered-channels/issues"
+                  href="https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -234,11 +234,11 @@ npm install`}</pre>
 
         <footer className="site-footer">
           <a
-            href="https://github.com/Elektr0Vodka/meshcore-nl-discovered-channels"
+            href="https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox"
             target="_blank"
             rel="noopener noreferrer"
           >
-            ElektroVodka
+            DutchMeshCore Toolbox
           </a>
           {' '}&mdash; {t('footer')}
         </footer>

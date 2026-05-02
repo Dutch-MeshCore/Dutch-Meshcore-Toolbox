@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect } from 'react'
 
-export type Theme = 'dark' | 'light' | 'win95'
+export type Theme = 'dark' | 'light' | 'win95' | 'minimalistic'
 const LS_THEME = 'meshcore-theme'
 
 export function useTheme() {

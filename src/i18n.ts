@@ -3,10 +3,12 @@ export type Lang = 'nl' | 'en'
 export const STRINGS = {
   nl: {
     // Navbar
+    nav_home: 'Home',
     nav_browser: 'Kanaalverkenner',
     nav_editor: 'Lokale Editor',
     nav_howto: 'Uitleg',
     nav_mqtt: 'MQTT CLI Setup',
+    nav_firmware: 'Firmware',
 
     // Loading
     loading: 'Kanalen laden…',
@@ -32,7 +34,7 @@ export const STRINGS = {
     info_scope_guidelines: 'Scope-richtlijnen, GitHub Pages & projectinfo',
     info_panel_title: 'Handige links, projectinfo & scope-richtlijnen',
     info_useful_links: 'Handige links',
-    info_useful_links_sub: 'Snelle referenties voor MeshCore NL, regiobenamingen en gerelateerde GitHub-repos',
+    info_useful_links_sub: 'Snelle referenties voor MeshCore NL, regiobenamingen en actuele GitHub-repos',
     info_switch_link: 'SF8 → SF7 Switch E.T.A. 9 mei',
     info_scope_guide: 'Scope / Regiogids',
     info_channel_repo: 'Kanaal-repo',
@@ -51,7 +53,7 @@ export const STRINGS = {
     info_mqtt_user: 'Gebruikersnaam',
     info_mqtt_pass: 'Wachtwoord',
     info_project_title: 'Project / databron',
-    info_project_body: 'Deze pagina combineert een Remote Terminal for MeshCore-export met handmatig samengestelde community-metadata. Als je kanalen, scopes of notities wil verbeteren, pas dan de repo aan of dien een pull request in.',
+    info_project_body: 'Deze pagina combineert een Remote Terminal for MeshCore-export met handmatig samengestelde DutchMeshCore community-metadata. Als je kanalen, scopes of notities wil verbeteren, doe dat via de DutchMeshCore Toolbox-repo.',
 
     // Empty / error
     no_channels: 'Geen kanalen gevonden',
@@ -239,10 +241,12 @@ export const STRINGS = {
   },
   en: {
     // Navbar
+    nav_home: 'Home',
     nav_browser: 'Channel Browser',
     nav_editor: 'Local Editor',
     nav_howto: 'How To',
     nav_mqtt: 'MQTT CLI Setup',
+    nav_firmware: 'Firmware',
 
     // Loading
     loading: 'Loading channels…',
@@ -268,7 +272,7 @@ export const STRINGS = {
     info_scope_guidelines: 'Scope guidelines, GitHub Pages & project info',
     info_panel_title: 'Handy links, project info & scope guidelines',
     info_useful_links: 'Useful links',
-    info_useful_links_sub: 'Quick references for MeshCore NL, region naming and related github repo\'s',
+    info_useful_links_sub: 'Quick references for MeshCore NL, region naming, and current GitHub repos',
     info_switch_link: 'SF8 → SF7 Switch E.T.A. 9th of May',
     info_scope_guide: 'Scope / Region Guide',
     info_channel_repo: 'Channel Repo',
@@ -287,7 +291,7 @@ export const STRINGS = {
     info_mqtt_user: 'Username',
     info_mqtt_pass: 'Password',
     info_project_title: 'Project / data source',
-    info_project_body: 'This page combines a Remote Terminal for MeshCore export with manually curated community metadata. If you want to improve channels, scopes or notes, update the repo or submit a pull request.',
+    info_project_body: 'This page combines a Remote Terminal for MeshCore export with manually curated DutchMeshCore community metadata. If you want to improve channels, scopes, or notes, use the DutchMeshCore Toolbox repo.',
 
     // Empty / error
     no_channels: 'No channels found',

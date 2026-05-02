@@ -228,8 +228,8 @@ export default function EditorPage() {
         )}
 
         <footer className="site-footer">
-          <a href="https://github.com/Elektr0Vodka/meshcore-nl-discovered-channels" target="_blank" rel="noopener noreferrer">
-            ElektroVodka
+          <a href="https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox" target="_blank" rel="noopener noreferrer">
+            DutchMeshCore Toolbox
           </a>
           {' '}&mdash; {t('footer')}
         </footer>
