@@ -87,6 +87,9 @@ const copy = {
     stepExtract: 'Open flasher.meshcore.io en selecteer het gedownloade bestand.',
     stepFlash: 'Bij twijfel: open de release-pagina en controleer de assets voor je apparaat.',
     env: 'Build environment',
+    warn_title: '⚠ Niet getest op hardware',
+    warn_body: 'De meeste firmware-builds op deze pagina zijn niet persoonlijk getest op hardware. Werkt iets niet, of loop je ergens tegenaan?',
+    warn_discord: 'Kom langs op onze Discord',
     footer: 'Community tools voor MeshCore NL - 2026',
   },
   en: {
@@ -110,6 +113,9 @@ const copy = {
     stepExtract: 'Open flasher.meshcore.io and select the downloaded file.',
     stepFlash: 'When unsure: open the release page and verify the assets for your device.',
     env: 'Build environment',
+    warn_title: '⚠ Not tested on hardware',
+    warn_body: 'Most firmware builds on this page have not been personally tested on hardware. Something not working, or running into an issue?',
+    warn_discord: 'Join us on Discord',
     footer: 'Community tools for MeshCore NL - 2026',
   },
 }
@@ -157,6 +163,16 @@ export default function FirmwarePage() {
           <h1>DutchMeshCore <em>{c.title}</em></h1>
           <p>{c.subtitle}</p>
         </section>
+
+        <div className="info-box warn firmware-warn">
+          <h4>{c.warn_title}</h4>
+          <p>
+            {c.warn_body}{' '}
+            <a href="http://discord.dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">
+              {c.warn_discord}
+            </a>.
+          </p>
+        </div>
 
         <section className="firmware-panel">
           <div className="firmware-panel-head">

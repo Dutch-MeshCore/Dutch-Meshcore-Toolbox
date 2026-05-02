@@ -28,13 +28,16 @@ export default function Navbar() {
         </Link>
         <div className="nav-links">
           <Link to="/" className={pathname === '/' ? 'active' : ''}>{t('nav_home')}</Link>
-          <Link to="/channel-browser" className={pathname === '/channel-browser' ? 'active' : ''}>{t('nav_browser')}</Link>
-          {inChannelBrowser && (
-            <>
+          <div className="nav-dropdown">
+            <Link to="/channel-browser" className={`nav-dropdown-trigger${inChannelBrowser ? ' active' : ''}`}>
+              {t('nav_browser')} <span className="nav-caret" aria-hidden="true">▾</span>
+            </Link>
+            <div className="nav-dropdown-menu">
+              <Link to="/channel-browser" className={pathname === '/channel-browser' ? 'active' : ''}>{t('nav_browser')}</Link>
               <Link to="/channel-browser/editor" className={pathname === '/channel-browser/editor' ? 'active' : ''}>{t('nav_editor')}</Link>
               <Link to="/channel-browser/how-to" className={pathname === '/channel-browser/how-to' ? 'active' : ''}>{t('nav_howto')}</Link>
-            </>
-          )}
+            </div>
+          </div>
           <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''}>{t('nav_mqtt')}</Link>
           <Link to="/firmware" className={pathname === '/firmware' ? 'active' : ''}>{t('nav_firmware')}</Link>
         </div>

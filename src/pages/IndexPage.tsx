@@ -83,33 +83,6 @@ export default function IndexPage() {
           <p>{t('index_sub')}</p>
         </div>
 
-        <div className="rtfm-warning">
-          <h3>{t('rtfm_title')}</h3>
-          <p>
-            This channel list was generated using our fork of{" "}
-            <a
-              href="https://github.com/Elektr0Vodka/Remote-Terminal-for-MeshCore"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Remote Terminal for MeshCore
-            </a>
-            , currently the only fork supporting{" "}
-            <strong>channel importing and exporting</strong>.
-          </p>
-          <p>{t('rtfm_p2')}</p>
-          <p>{t('rtfm_p3')}</p>
-          <p>{t('rtfm_p4')}</p>
-          <div className="danger-notice">
-            <p>{t('rtfm_warn_title')}</p>
-            <p>
-              {t('rtfm_warn_p_a')} <strong>{t('rtfm_warn_p_b')}</strong> {t('rtfm_warn_p_c')}{" "}
-              <strong>{t('rtfm_warn_p_d')}</strong> {t('rtfm_warn_p_e')}
-              <strong> {t('rtfm_warn_p_f')}</strong>
-            </p>
-          </div>
-        </div>
-
         <details className="info-panel" open>
           <summary>
             <span>{t('info_scope_guidelines')}</span>
