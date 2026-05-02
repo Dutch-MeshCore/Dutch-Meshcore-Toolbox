@@ -264,11 +264,11 @@ export default function IndexPage() {
 
         <footer className="site-footer">
           <a
-            href="https://github.com/Elektr0Vodka/meshcore-nl-discovered-channels"
+            href="https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox"
             target="_blank"
             rel="noopener noreferrer"
           >
-            ElektroVodka
+            DutchMeshCore Toolbox
           </a>{" "}
           &mdash; {t('footer')}
         </footer>

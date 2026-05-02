@@ -12,7 +12,6 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use(async (req, res, next) => {
           const url = req.url?.split('?')[0] ?? '/'
-          const hasFileExtension = path.extname(url) !== ''
 
           if (url.startsWith('/data/') || url.startsWith('/channel-browser/data/')) {
             const dataUrl = url.replace(/^\/channel-browser/, '')
@@ -26,21 +25,21 @@ export default defineConfig({
             }
           }
 
-          if (url === '/channel-browser' || (url.startsWith('/channel-browser/') && !hasFileExtension)) {
-            const filePath = path.join(process.cwd(), 'channel-browser.html')
-            const html = await server.transformIndexHtml(
-              url,
-              fs.readFileSync(filePath, 'utf8')
-            )
-            res.setHeader('Content-Type', 'text/html')
-            res.end(html)
+          if (url === '/channel-browser' || url === '/channel-browser/') {
+            res.statusCode = 302
+            res.setHeader('Location', '/#/channel-browser')
             return
           }
 
           if (url === '/mqtt-cli' || url === '/mqtt-cli/') {
-            const filePath = path.join(process.cwd(), 'docs', 'mqtt-cli', 'index.html')
-            res.setHeader('Content-Type', 'text/html')
-            res.end(fs.readFileSync(filePath))
+            res.statusCode = 302
+            res.setHeader('Location', '/#/mqtt-cli')
+            return
+          }
+
+          if (url === '/firmware' || url === '/firmware/') {
+            res.statusCode = 302
+            res.setHeader('Location', '/#/firmware')
             return
           }
 
@@ -49,25 +48,32 @@ export default defineConfig({
       },
     },
     {
-      name: 'channel-browser-html-output',
+      name: 'legacy-route-shims',
       closeBundle() {
-        const outDir = path.join(process.cwd(), 'docs', 'channel-browser')
-        const from = path.join(outDir, 'channel-browser.html')
-        const to = path.join(outDir, 'index.html')
-        if (fs.existsSync(from)) {
-          if (fs.existsSync(to)) fs.unlinkSync(to)
-          fs.renameSync(from, to)
+        const outDir = path.join(process.cwd(), 'docs')
+        const shims = [
+          ['channel-browser', '#/channel-browser'],
+          ['mqtt-cli', '#/mqtt-cli'],
+          ['firmware', '#/firmware'],
+        ]
+        for (const [dir, hash] of shims) {
+          const routeDir = path.join(outDir, dir)
+          fs.mkdirSync(routeDir, { recursive: true })
+          fs.writeFileSync(
+            path.join(routeDir, 'index.html'),
+            `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../${hash}"><script>location.replace('../${hash}'+location.search)</script></head><body><a href="../${hash}">Continue</a></body></html>`
+          )
         }
       },
     },
   ],
   base: './',
   build: {
-    outDir: 'docs/channel-browser',
+    outDir: 'docs',
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        index: path.resolve(__dirname, 'channel-browser.html'),
+        index: path.resolve(__dirname, 'index.html'),
       },
       output: {
         entryFileNames: 'assets/[name]-[hash].js',
