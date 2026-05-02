@@ -146,7 +146,7 @@ export function useKeygen() {
             document.head.appendChild(s)
           })
         }
-        const { WebGpuEd25519Scanner } = (globalThis as { MeshCoreGpuModule: { WebGpuEd25519Scanner: new () => GpuScanner } }).MeshCoreGpuModule
+        const { WebGpuEd25519Scanner } = (globalThis as unknown as { MeshCoreGpuModule: { WebGpuEd25519Scanner: new () => GpuScanner } }).MeshCoreGpuModule
         const scanner = new WebGpuEd25519Scanner()
         if (await scanner.initialize()) {
           gpuScannerRef.current = scanner
