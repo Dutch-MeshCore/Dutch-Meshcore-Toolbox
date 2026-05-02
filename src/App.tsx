@@ -6,6 +6,7 @@ import EditorPage from './pages/EditorPage'
 import HowToPage from './pages/HowToPage'
 import MqttCliPage from './pages/MqttCliPage'
 import FirmwarePage from './pages/FirmwarePage'
+import KeygenPage from './pages/KeygenPage'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/channel-browser/how-to" element={<HowToPage />} />
         <Route path="/mqtt-cli" element={<MqttCliPage />} />
         <Route path="/firmware" element={<FirmwarePage />} />
+        <Route path="/keygen" element={<KeygenPage />} />
         <Route path="/editor" element={<Navigate to="/channel-browser/editor" replace />} />
         <Route path="/how-to" element={<Navigate to="/channel-browser/how-to" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />

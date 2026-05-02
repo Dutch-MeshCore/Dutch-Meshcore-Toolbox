@@ -43,6 +43,12 @@ export default defineConfig({
             return
           }
 
+          if (url === '/keygen' || url === '/keygen/') {
+            res.statusCode = 302
+            res.setHeader('Location', '/#/keygen')
+            return
+          }
+
           next()
         })
       },
@@ -55,6 +61,7 @@ export default defineConfig({
           ['channel-browser', '#/channel-browser'],
           ['mqtt-cli', '#/mqtt-cli'],
           ['firmware', '#/firmware'],
+          ['keygen', '#/keygen'],
         ]
         for (const [dir, hash] of shims) {
           const routeDir = path.join(outDir, dir)
