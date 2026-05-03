@@ -150,15 +150,12 @@ export default function KeygenPage() {
 
             {/* Buttons */}
             <div className="keygen-buttons">
-              {!isRunning ? (
-                <button type="submit" className="btn btn-accent" disabled={!isValid}>
-                  {t('keygen_generate')}
-                </button>
-              ) : (
-                <button type="button" className="btn" onClick={stop}>
-                  {t('keygen_stop')}
-                </button>
-              )}
+              <button type="submit" className="btn btn-accent" disabled={!isValid || isRunning}>
+                {t('keygen_generate')}
+              </button>
+              <button type="button" className="btn" onClick={stop} disabled={!isRunning}>
+                {t('keygen_stop')}
+              </button>
             </div>
           </form>
 

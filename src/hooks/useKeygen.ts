@@ -171,6 +171,11 @@ export function useKeygen() {
     wasmWorkersRef.current = []
   }, [])
 
+  const stopWasmWorkers = useCallback(() => {
+    // Graceful stop: send 'stop' message, let workers exit cleanly (no terminate)
+    wasmWorkersRef.current.forEach(w => { try { w.postMessage({ type: 'stop' }) } catch { /* ok */ } })
+  }, [])
+
   const terminateHashWorkers = useCallback(() => {
     hashWorkersRef.current.forEach(w => w.terminate())
     hashWorkersRef.current = []
@@ -185,11 +190,11 @@ export function useKeygen() {
 
   const stop = useCallback(() => {
     jobIdRef.current++           // kills GPU loop via stale job ID
-    terminateWasmWorkers()
+    stopWasmWorkers()            // graceful stop: workers exit cleanly, no terminate()
     terminateHashWorkers()
     clearTimer()
     setState(s => s.status === 'running' ? { ...s, status: 'stopped', statusText: '' } : s)
-  }, [terminateWasmWorkers, terminateHashWorkers])
+  }, [stopWasmWorkers, terminateHashWorkers])
 
   // ── Hash workers (GPU pipeline) ────────────────────────────────────────────
 
