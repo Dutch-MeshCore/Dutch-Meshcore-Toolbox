@@ -340,6 +340,7 @@ export function useKeygen() {
     }
 
     const handleError = (e: ErrorEvent) => {
+      if (jobIdRef.current !== localJobId) return
       errorCount++
       if (errorCount >= numWorkers) {
         clearTimer()
