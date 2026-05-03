@@ -140,7 +140,7 @@ export function useKeygen() {
         if (!(globalThis as { MeshCoreGpuModule?: unknown }).MeshCoreGpuModule) {
           await new Promise<void>((resolve, reject) => {
             const s = document.createElement('script')
-            s.src = '/vendor/webgpu-ed25519.js'
+            s.src = import.meta.env.BASE_URL + 'vendor/webgpu-ed25519.js'
             s.onload = () => resolve()
             s.onerror = reject
             document.head.appendChild(s)
@@ -349,7 +349,7 @@ export function useKeygen() {
     }
 
     for (let i = 0; i < numWorkers; i++) {
-      const worker = new Worker('/wasm/worker.js', { type: 'module' })
+      const worker = new Worker(import.meta.env.BASE_URL + 'wasm/worker.js', { type: 'module' })
       worker.onmessage = handleMessage
       worker.onerror   = handleError
       workers.push(worker)
