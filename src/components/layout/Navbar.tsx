@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme, type Theme } from '../../hooks/useTheme'
 import { useLang } from '../../hooks/useLang'
+
+type OpenDropdown = 'browser' | 'config' | null
 
 const THEMES: { id: Theme; icon: string; label: string }[] = [
   { id: 'dark',  icon: '🌙', label: 'Dark'       },
@@ -17,11 +19,36 @@ export default function Navbar() {
   const inChannelBrowser = pathname.startsWith('/channel-browser')
   const inConfig = pathname === '/mqtt-cli' || pathname === '/mcmqtt-toml'
   const [menuOpen, setMenuOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null)
+  const navRef = useRef<HTMLElement>(null)
 
-  const close = () => setMenuOpen(false)
+  // Close dropdown when clicking outside the navbar
+  useEffect(() => {
+    function onMouseDown(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null)
+      }
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [])
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setOpenDropdown(null)
+  }, [pathname])
+
+  function toggleDropdown(name: OpenDropdown) {
+    setOpenDropdown(prev => (prev === name ? null : name))
+  }
+
+  function close() {
+    setMenuOpen(false)
+    setOpenDropdown(null)
+  }
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" ref={navRef}>
       <div className="nav-inner">
         <Link className="nav-brand" to="/" onClick={close}>
           <img
@@ -44,25 +71,36 @@ export default function Navbar() {
         <div className={`nav-menu${menuOpen ? ' open' : ''}`}>
           <div className="nav-links">
             <Link to="/" className={pathname === '/' ? 'active' : ''} onClick={close}>{t('nav_home')}</Link>
-            <div className="nav-dropdown">
-              <Link to="/channel-browser" className={`nav-dropdown-trigger${inChannelBrowser ? ' active' : ''}`} onClick={close}>
+
+            <div className={`nav-dropdown${openDropdown === 'browser' ? ' open' : ''}`}>
+              <button
+                className={`nav-dropdown-trigger${inChannelBrowser ? ' active' : ''}`}
+                onClick={() => toggleDropdown('browser')}
+                aria-expanded={openDropdown === 'browser'}
+              >
                 {t('nav_browser')} <span className="nav-caret" aria-hidden="true">▾</span>
-              </Link>
+              </button>
               <div className="nav-dropdown-menu">
                 <Link to="/channel-browser" className={pathname === '/channel-browser' ? 'active' : ''} onClick={close}>{t('nav_browser')}</Link>
                 <Link to="/channel-browser/editor" className={pathname === '/channel-browser/editor' ? 'active' : ''} onClick={close}>{t('nav_editor')}</Link>
                 <Link to="/channel-browser/how-to" className={pathname === '/channel-browser/how-to' ? 'active' : ''} onClick={close}>{t('nav_howto')}</Link>
               </div>
             </div>
-            <div className="nav-dropdown">
-              <span className={`nav-dropdown-trigger${inConfig ? ' active' : ''}`}>
+
+            <div className={`nav-dropdown${openDropdown === 'config' ? ' open' : ''}`}>
+              <button
+                className={`nav-dropdown-trigger${inConfig ? ' active' : ''}`}
+                onClick={() => toggleDropdown('config')}
+                aria-expanded={openDropdown === 'config'}
+              >
                 {t('nav_config')} <span className="nav-caret" aria-hidden="true">▾</span>
-              </span>
+              </button>
               <div className="nav-dropdown-menu">
                 <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''} onClick={close}>{t('nav_mqtt')}</Link>
                 <Link to="/mcmqtt-toml" className={pathname === '/mcmqtt-toml' ? 'active' : ''} onClick={close}>{t('nav_toml')}</Link>
               </div>
             </div>
+
             <Link to="/firmware" className={pathname === '/firmware' ? 'active' : ''} onClick={close}>{t('nav_firmware')}</Link>
             <Link to="/keygen" className={pathname === '/keygen' ? 'active' : ''} onClick={close}>{t('nav_keygen')}</Link>
           </div>

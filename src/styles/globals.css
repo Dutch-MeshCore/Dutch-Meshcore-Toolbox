@@ -2719,6 +2719,12 @@ select option {
   display: flex;
   align-items: center;
   gap: 3px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
 }
 
 .nav-caret {
@@ -2728,8 +2734,7 @@ select option {
   line-height: 1;
 }
 
-.nav-dropdown:hover .nav-caret,
-.nav-dropdown:focus-within .nav-caret {
+.nav-dropdown.open .nav-caret {
   transform: rotate(180deg);
 }
 
@@ -2750,8 +2755,7 @@ select option {
   box-shadow: 0 4px 12px rgba(0,0,0,.25);
 }
 
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown:focus-within .nav-dropdown-menu {
+.nav-dropdown.open .nav-dropdown-menu {
   display: flex;
 }
 
@@ -2811,8 +2815,7 @@ select option {
     padding: 0 0 0 16px;
   }
 
-  .nav-dropdown:hover .nav-dropdown-menu,
-  .nav-dropdown:focus-within .nav-dropdown-menu {
+  .nav-dropdown.open .nav-dropdown-menu {
     display: flex;
   }
 
