@@ -3615,6 +3615,234 @@ select option {
   transform: translateY(0) scale(.97);
 }
 
+/* ── Beta banner ───────────────────────────────────────────────────────────── */
+.beta-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(234, 179, 8, .35);
+  background: rgba(234, 179, 8, .08);
+  margin-bottom: 20px;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+.beta-banner-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.beta-banner-text {
+  color: var(--text-muted);
+}
+
+.beta-banner-text strong {
+  color: #a07800;
+  display: inline;
+  margin-right: 4px;
+}
+
+/* ── MCtoMQTT.toml page ────────────────────────────────────────────────────── */
+.mcmqtt-mode-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  width: fit-content;
+  margin-bottom: 20px;
+}
+
+.mcmqtt-mode-btn {
+  padding: 6px 18px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: .88rem;
+  font-weight: 500;
+  transition: background .15s, color .15s;
+}
+
+.mcmqtt-mode-btn:hover {
+  color: var(--text);
+}
+
+.mcmqtt-mode-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.mcmqtt-brokers {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.mcmqtt-broker-card .slot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mcmqtt-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: .85rem;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.mcmqtt-toggle input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.mcmqtt-server {
+  font-family: var(--font-mono, monospace);
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+
+.mcmqtt-badge {
+  font-size: .75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--tag-bg, rgba(128,128,128,.12));
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+.mcmqtt-badge-fixed {
+  background: rgba(255, 160, 0, .13);
+  color: #c98a00;
+}
+
+.mcmqtt-import-card {
+  margin-bottom: 0;
+}
+
+.mcmqtt-upload-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: .9rem;
+  text-align: left;
+  transition: border-color .15s, background .15s;
+}
+
+.mcmqtt-upload-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-subtle, rgba(99,102,241,.06));
+}
+
+.mcmqtt-upload-icon {
+  font-size: 1.2rem;
+  margin-right: 6px;
+}
+
+.mcmqtt-uploaded-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--tag-bg, rgba(128,128,128,.08));
+}
+
+.mcmqtt-filename {
+  flex: 1;
+  font-family: var(--font-mono, monospace);
+  font-size: .85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mcmqtt-import-warn {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-left: 3px solid #e07000;
+  background: rgba(224, 112, 0, .08);
+  font-size: .875rem;
+}
+
+.mcmqtt-import-warn strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #c96000;
+}
+
+.mcmqtt-import-warn p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.mcmqtt-privacy-note {
+  margin-top: 8px;
+  font-size: .82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mcmqtt-privacy-note::before {
+  content: '🔒';
+  font-size: .9rem;
+}
+
+.mcmqtt-merged-pill {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+.toml-output {
+  font-size: .82rem;
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.input-error {
+  border-color: var(--error, #e05) !important;
+  outline-color: var(--error, #e05) !important;
+}
+
+.field-error {
+  font-size: .8rem;
+  color: var(--error, #e05);
+  margin-top: 4px;
+  display: block;
+}
+
 /* ── Keygen page ───────────────────────────────────────────────────────────── */
 .keygen-page .info-box.keygen-info-box {
   max-width: 700px;

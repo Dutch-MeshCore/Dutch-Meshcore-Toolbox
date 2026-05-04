@@ -7,7 +7,9 @@ export const STRINGS = {
     nav_browser: 'Kanaalverkenner',
     nav_editor: 'Lokale Editor',
     nav_howto: 'Uitleg',
+    nav_config: 'Config Generatoren',
     nav_mqtt: 'MQTT CLI Setup',
+    nav_toml: 'MCtoMQTT.toml',
     nav_firmware: 'Firmware',
     nav_keygen: 'MC-Keygen',
 
@@ -340,7 +342,9 @@ export const STRINGS = {
     nav_browser: 'Channel Browser',
     nav_editor: 'Local Editor',
     nav_howto: 'How To',
+    nav_config: 'Config Generators',
     nav_mqtt: 'MQTT CLI Setup',
+    nav_toml: 'MCtoMQTT.toml',
     nav_firmware: 'Firmware',
     nav_keygen: 'MC-Keygen',
 

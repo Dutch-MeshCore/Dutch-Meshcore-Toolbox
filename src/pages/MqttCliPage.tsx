@@ -59,6 +59,7 @@ const copy = {
     steps: 'Kies een IATA-luchthavencode, kies de MQTT-presets die je wil inschakelen, vul tokens in waar nodig en kopieer de gegenereerde opdrachten naar de MeshCore CLI.',
     defaultsTitle: 'Standaard slots',
     defaults: 'DutchMeshCore firmware gebruikt standaard slot 1 voor dutchmeshcore-1 en slot 2 voor dutchmeshcore-2. Meestal hoef je alleen je IATA-code te zetten.',
+    beta: 'Gegenereerde opdrachten kunnen onvolledig of onjuist zijn. Controleer altijd de uitvoer voordat je deze toepast op je node.',
     privacy: 'Deze pagina slaat niets op en verstuurt niets. Alles wordt alleen lokaal gebruikt om opdrachten te genereren.',
     global: 'Algemene instellingen',
     airport: 'IATA Luchthavencode',
@@ -91,6 +92,7 @@ const copy = {
     steps: 'Choose an IATA airport code, pick the MQTT presets you want to enable, fill tokens where needed, and copy the generated commands into the MeshCore CLI.',
     defaultsTitle: 'Default slots',
     defaults: 'DutchMeshCore firmware uses slot 1 for dutchmeshcore-1 and slot 2 for dutchmeshcore-2 by default. Usually you only need to set your IATA code.',
+    beta: 'Generated commands may be incomplete or incorrect. Always review the output before applying it to your node.',
     privacy: 'This page does not store or send anything. Everything is only used locally to generate commands.',
     global: 'Global settings',
     airport: 'IATA Airport Code',
@@ -204,6 +206,11 @@ export default function MqttCliPage() {
             <p>{c.bannerSub}</p>
           </div>
           <a href="https://dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">dutchmeshcore.nl</a>
+        </div>
+
+        <div className="beta-banner">
+          <span className="beta-banner-icon">⚠</span>
+          <span className="beta-banner-text"><strong>Beta — </strong>{c.beta}</span>
         </div>
 
         <div className="header">

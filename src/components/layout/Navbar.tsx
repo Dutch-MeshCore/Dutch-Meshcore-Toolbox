@@ -15,6 +15,7 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme()
   const { lang, setLang, t } = useLang()
   const inChannelBrowser = pathname.startsWith('/channel-browser')
+  const inConfig = pathname === '/mqtt-cli' || pathname === '/mcmqtt-toml'
   const [menuOpen, setMenuOpen] = useState(false)
 
   const close = () => setMenuOpen(false)
@@ -53,7 +54,15 @@ export default function Navbar() {
                 <Link to="/channel-browser/how-to" className={pathname === '/channel-browser/how-to' ? 'active' : ''} onClick={close}>{t('nav_howto')}</Link>
               </div>
             </div>
-            <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''} onClick={close}>{t('nav_mqtt')}</Link>
+            <div className="nav-dropdown">
+              <span className={`nav-dropdown-trigger${inConfig ? ' active' : ''}`}>
+                {t('nav_config')} <span className="nav-caret" aria-hidden="true">▾</span>
+              </span>
+              <div className="nav-dropdown-menu">
+                <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''} onClick={close}>{t('nav_mqtt')}</Link>
+                <Link to="/mcmqtt-toml" className={pathname === '/mcmqtt-toml' ? 'active' : ''} onClick={close}>{t('nav_toml')}</Link>
+              </div>
+            </div>
             <Link to="/firmware" className={pathname === '/firmware' ? 'active' : ''} onClick={close}>{t('nav_firmware')}</Link>
             <Link to="/keygen" className={pathname === '/keygen' ? 'active' : ''} onClick={close}>{t('nav_keygen')}</Link>
           </div>
