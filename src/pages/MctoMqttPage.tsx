@@ -278,6 +278,8 @@ function buildToml(owner: string, email: string, iata: string, serialPorts: stri
 
   const blocks: string[] = []
   ALL_BROKERS.forEach((broker, i) => {
+    if (!states[i].enabled) return
+
     const authLines =
       broker.auth === 'token'
         ? [
@@ -300,7 +302,7 @@ function buildToml(owner: string, email: string, iata: string, serialPorts: stri
       [
         `[[broker]]`,
         `name = "${broker.id}"`,
-        `enabled = ${states[i].enabled}`,
+        `enabled = true`,
         `server = "${broker.server}"`,
         `port = ${broker.port}`,
         `transport = "${broker.transport}"`,
@@ -342,11 +344,13 @@ function buildLegacy(
     `MCTOMQTT_IATA=${iata}`,
   ]
 
+  let num = 0
   ALL_BROKERS.forEach((broker, i) => {
-    const num = i + 1
+    if (!states[i].enabled) return
+    num++
     lines.push(``)
     lines.push(`# MQTT Broker ${num} - ${broker.label}`)
-    lines.push(`MCTOMQTT_MQTT${num}_ENABLED=${states[i].enabled}`)
+    lines.push(`MCTOMQTT_MQTT${num}_ENABLED=true`)
     lines.push(`MCTOMQTT_MQTT${num}_SERVER=${broker.server}`)
     lines.push(`MCTOMQTT_MQTT${num}_PORT=${broker.port}`)
     lines.push(`MCTOMQTT_MQTT${num}_TRANSPORT=${broker.transport}`)
