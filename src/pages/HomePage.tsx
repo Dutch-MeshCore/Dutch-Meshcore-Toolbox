@@ -8,7 +8,7 @@ const copy = {
     tools: 'Beschikbare tools',
     browserDesc: 'Bekijk, filter en exporteer ontdekte MeshCore-kanalen met community-metadata zoals regio, scope en activiteit.',
     mqttDesc: 'Stel MQTT-slots in en genereer kant-en-klare CLI-opdrachten voor DutchMeshCore-firmware.',
-    tomlDesc: 'Genereer een MCtoMQTT.toml-configuratiebestand voor de DutchMeshCore MQTT collectors.',
+    tomlDesc: 'Genereer een MCtoMQTT-configuratiebestand voor de DutchMeshCore MQTT collectors.',
     firmwareDesc: 'Kies je apparaat en download direct succesvolle DutchMeshCore MQTT release-builds.',
     live: 'Live',
     linksTitle: 'Handige links',
@@ -29,7 +29,7 @@ const copy = {
     tools: 'Available tools',
     browserDesc: 'Browse, filter, and export discovered MeshCore channels with community metadata such as region, scope, and activity.',
     mqttDesc: 'Configure MQTT slots and generate ready-to-paste CLI commands for DutchMeshCore firmware.',
-    tomlDesc: 'Generate a MCtoMQTT.toml configuration file for the DutchMeshCore MQTT collectors.',
+    tomlDesc: 'Generate a MCtoMQTT configuration file for the DutchMeshCore MQTT collectors.',
     firmwareDesc: 'Choose your device and directly download successful DutchMeshCore MQTT release builds.',
     live: 'Live',
     linksTitle: 'Useful links',
@@ -94,7 +94,7 @@ export default function HomePage() {
           <Link className="tool-card" to="/mcmqtt-toml">
             <span className="tool-icon tool-icon-text">📄</span>
             <span className="tool-name">
-              MCtoMQTT.toml
+              MCtoMQTT
               <span className="tool-badge">{c.live}</span>
             </span>
             <p className="tool-desc">{c.tomlDesc}</p>
