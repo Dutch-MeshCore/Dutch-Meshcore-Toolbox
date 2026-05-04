@@ -170,14 +170,15 @@ const copy = {
   nl: {
     title: 'MCtoMQTT Configuratie Generator',
     sub: 'Genereer een MCtoMQTT-configuratiebestand voor de DutchMeshCore collectors.',
-    modeToml: 'TOML (nieuw)',
-    modeLegacy: 'Legacy .env',
+    modeLabel: 'Welke versie gebruik je?',
+    modeToml: 'Nieuw (TOML)',
+    modeLegacy: 'Oud (.env.local)',
     infoTitle: 'Wat is MCtoMQTT?',
     infoBody: 'MCtoMQTT is een brug-applicatie die MeshCore-apparaten verbindt met MQTT-brokers. Het configuratiebestand bepaalt met welke brokers verbinding wordt gemaakt en hoe authenticatie verloopt.',
     beta: 'Gegenereerde configuratie kan onvolledig of onjuist zijn. Controleer altijd de uitvoer voordat je deze toepast op je systeem.',
     privacyNote: 'Niets verlaat je apparaat — ook geüploade bestanden worden volledig lokaal in je browser verwerkt en nooit verstuurd.',
     importTitle: 'Bestaande configuratie importeren (optioneel)',
-    importHint: '.toml of .env bestand — wordt alleen lokaal gelezen, verlaat je apparaat niet.',
+    importHint: '.toml of .env.local bestand — wordt alleen lokaal gelezen, verlaat je apparaat niet.',
     importBtn: 'Bestand kiezen',
     importClear: 'Verwijderen',
     importWarnTitle: 'Controleer voor gebruik',
@@ -203,9 +204,9 @@ const copy = {
     pendingBadge: 'DMC-koppeling binnenkort',
     pendingHint: 'Dit platform wordt mogelijk binnenkort verbonden met DutchMeshCore. Controleer de Connected Brokers-pagina voor updates.',
     outputTitleToml: 'Gegenereerde configuratie (MCtoMQTT.toml)',
-    outputTitleLegacy: 'Gegenereerde configuratie (override.env)',
+    outputTitleLegacy: 'Gegenereerde configuratie (.env.local)',
     outputTitleMergedToml: 'Gecombineerde configuratie (MCtoMQTT.toml)',
-    outputTitleMergedLegacy: 'Gecombineerde configuratie (override.env)',
+    outputTitleMergedLegacy: 'Gecombineerde configuratie (.env.local)',
     copyAll: 'Kopieer alles',
     copiedAll: 'Configuratie gekopieerd!',
     download: 'Downloaden',
@@ -214,14 +215,15 @@ const copy = {
   en: {
     title: 'MCtoMQTT Configuration Generator',
     sub: 'Generate a MCtoMQTT configuration file for the DutchMeshCore collectors.',
-    modeToml: 'TOML (new)',
-    modeLegacy: 'Legacy .env',
+    modeLabel: 'Which version are you using?',
+    modeToml: 'New (TOML)',
+    modeLegacy: 'Old (.env.local)',
     infoTitle: 'What is MCtoMQTT?',
     infoBody: 'MCtoMQTT is a bridge application that connects MeshCore devices to MQTT brokers. The configuration file defines which brokers to connect to and how authentication is handled.',
     beta: 'Generated configuration may be incomplete or incorrect. Always review the output before applying it to your system.',
     privacyNote: 'Nothing leaves your device — uploaded files are processed entirely in your browser and are never sent anywhere.',
     importTitle: 'Import existing config (optional)',
-    importHint: '.toml or .env file — read locally only, never leaves your device.',
+    importHint: '.toml or .env.local file — read locally only, never leaves your device.',
     importBtn: 'Choose file',
     importClear: 'Remove',
     importWarnTitle: 'Review before applying',
@@ -247,9 +249,9 @@ const copy = {
     pendingBadge: 'DMC connection pending',
     pendingHint: 'This platform may be connected to DutchMeshCore soon. Check the Connected Brokers page for updates.',
     outputTitleToml: 'Generated configuration (MCtoMQTT.toml)',
-    outputTitleLegacy: 'Generated configuration (override.env)',
+    outputTitleLegacy: 'Generated configuration (.env.local)',
     outputTitleMergedToml: 'Combined configuration (MCtoMQTT.toml)',
-    outputTitleMergedLegacy: 'Combined configuration (override.env)',
+    outputTitleMergedLegacy: 'Combined configuration (.env.local)',
     copyAll: 'Copy all',
     copiedAll: 'Configuration copied!',
     download: 'Download',
@@ -447,7 +449,7 @@ export default function MctoMqttPage() {
   }
 
   function downloadConfig() {
-    const filename = mode === 'toml' ? 'MCtoMQTT.toml' : 'override.env'
+    const filename = mode === 'toml' ? 'MCtoMQTT.toml' : '.env.local'
     const blob = new Blob([output], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -475,19 +477,22 @@ export default function MctoMqttPage() {
         <h1 className="page-title">{c.title}</h1>
         <p className="page-sub">{c.sub}</p>
 
-        <div className="mcmqtt-mode-toggle">
-          <button
-            className={`mcmqtt-mode-btn${mode === 'toml' ? ' active' : ''}`}
-            onClick={() => { setMode('toml'); clearUpload() }}
-          >
-            {c.modeToml}
-          </button>
-          <button
-            className={`mcmqtt-mode-btn${mode === 'legacy' ? ' active' : ''}`}
-            onClick={() => { setMode('legacy'); clearUpload() }}
-          >
-            {c.modeLegacy}
-          </button>
+        <div className="mcmqtt-version-select">
+          <span className="mcmqtt-version-label">{c.modeLabel}</span>
+          <div className="mcmqtt-mode-toggle">
+            <button
+              className={`mcmqtt-mode-btn${mode === 'toml' ? ' active' : ''}`}
+              onClick={() => { setMode('toml'); clearUpload() }}
+            >
+              {c.modeToml}
+            </button>
+            <button
+              className={`mcmqtt-mode-btn${mode === 'legacy' ? ' active' : ''}`}
+              onClick={() => { setMode('legacy'); clearUpload() }}
+            >
+              {c.modeLegacy}
+            </button>
+          </div>
         </div>
 
         <div className="beta-banner">
@@ -515,7 +520,7 @@ export default function MctoMqttPage() {
           <input
             ref={fileInputRef}
             type="file"
-            accept={mode === 'toml' ? '.toml' : '.env,.txt,text/plain'}
+            accept={mode === 'toml' ? '.toml' : '.env,.env.local,.txt,text/plain'}
             style={{ display: 'none' }}
             onChange={handleFileUpload}
           />

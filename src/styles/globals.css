@@ -3664,6 +3664,19 @@ select option {
 }
 
 /* ── MCtoMQTT.toml page ────────────────────────────────────────────────────── */
+.mcmqtt-version-select {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.mcmqtt-version-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
 .mcmqtt-mode-toggle {
   display: flex;
   gap: 4px;
