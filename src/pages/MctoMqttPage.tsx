@@ -42,6 +42,67 @@ const ALL_BROKERS = [
     badge: ':443 WSS · TLS · token',
   },
   {
+    id: 'letsmesh-us',
+    label: 'LetsMesh.net (US)',
+    server: 'mqtt-us-v1.letsmesh.net',
+    port: 443,
+    transport: 'websockets',
+    auth: 'token' as const,
+    audience: 'mqtt-us-v1.letsmesh.net',
+    badge: ':443 WSS · TLS · token',
+  },
+  {
+    id: 'meshmapper',
+    label: 'MeshMapper',
+    server: 'mqtt.meshmapper.cc',
+    port: 443,
+    transport: 'websockets',
+    auth: 'token' as const,
+    audience: 'mqtt.meshmapper.cc',
+    badge: ':443 WSS · TLS · token',
+  },
+  {
+    id: 'waev',
+    label: 'WAEV',
+    server: 'mqtt.waev.app',
+    port: 443,
+    transport: 'websockets',
+    auth: 'token' as const,
+    audience: 'mqtt.waev.app',
+    badge: ':443 WSS · TLS · token',
+  },
+  {
+    id: 'meshrank',
+    label: 'MeshRank',
+    server: 'meshrank.net',
+    port: 8883,
+    transport: 'tcp',
+    auth: 'none' as const,
+    badge: ':8883 TCP · TLS · no auth',
+  },
+  {
+    id: 'meshat-se',
+    label: 'MeshAt.se',
+    server: 'mqtt.meshat.se',
+    port: 8883,
+    transport: 'tcp',
+    auth: 'password' as const,
+    username: 'msh',
+    password: 'msh',
+    badge: ':8883 TCP · TLS · password',
+  },
+  {
+    id: 'meshwiki',
+    label: 'MeshWiki.nl',
+    server: 'mqtt.mwiki.nl',
+    port: 8883,
+    transport: 'tcp',
+    auth: 'password' as const,
+    username: 'observer',
+    password: '86w7bW9NJxuPcErp2Y5NCQ==',
+    badge: ':8883 TCP · TLS · password',
+  },
+  {
     id: 'cornmeister',
     label: 'cornmeister.nl',
     server: 'mqtt.cornmeister.nl',
@@ -53,6 +114,17 @@ const ALL_BROKERS = [
     badge: ':8883 TCP · TLS · password',
   },
 ] as const
+
+// Brokers that publish to DutchMeshCore — used to determine whether receiver brokers should be locked.
+const DMC_SOURCE_IDS = new Set<string>(['dutch-meshcore-1', 'dutch-meshcore-2'])
+
+// Brokers that already receive a full copy of DutchMeshCore data via the subscriber feed.
+// Publishing to these directly would duplicate every packet — lock them while any DMC source is active.
+const DMC_RECEIVER_IDS = new Set<string>(['cornmeister', 'meshwiki'])
+
+// Brokers that may be connected to the DutchMeshCore subscriber in the future.
+// Still configurable, but shown with a warning.
+const DMC_PENDING_IDS = new Set<string>(['meshrank'])
 
 type BrokerDef = (typeof ALL_BROKERS)[number]
 
@@ -126,6 +198,10 @@ const copy = {
     brokersTitle: 'Brokers',
     brokerEnabled: 'Ingeschakeld',
     authPassword: 'wachtwoord (vast)',
+    blockedBadge: 'Ontvangt DMC-data',
+    blockedHint: 'Dit platform ontvangt al data via de DutchMeshCore subscriber. Het direct toevoegen zou dubbele pakketten veroorzaken.',
+    pendingBadge: 'DMC-koppeling binnenkort',
+    pendingHint: 'Dit platform wordt mogelijk binnenkort verbonden met DutchMeshCore. Controleer de Connected Brokers-pagina voor updates.',
     outputTitleToml: 'Gegenereerde configuratie (MCtoMQTT.toml)',
     outputTitleLegacy: 'Gegenereerde configuratie (override.env)',
     outputTitleMergedToml: 'Gecombineerde configuratie (MCtoMQTT.toml)',
@@ -166,6 +242,10 @@ const copy = {
     brokersTitle: 'Brokers',
     brokerEnabled: 'Enabled',
     authPassword: 'password (fixed)',
+    blockedBadge: 'Receives DMC data',
+    blockedHint: 'This platform already receives data via the DutchMeshCore subscriber. Adding it directly would duplicate every packet.',
+    pendingBadge: 'DMC connection pending',
+    pendingHint: 'This platform may be connected to DutchMeshCore soon. Check the Connected Brokers page for updates.',
     outputTitleToml: 'Generated configuration (MCtoMQTT.toml)',
     outputTitleLegacy: 'Generated configuration (override.env)',
     outputTitleMergedToml: 'Combined configuration (MCtoMQTT.toml)',
@@ -208,11 +288,13 @@ function buildToml(owner: string, email: string, iata: string, serialPorts: stri
             `# email: e-mail of the node owner (optional)`,
             `email = "${email}"`,
           ]
-        : [
+        : broker.auth === 'password'
+        ? [
             `method = "password"`,
             `username = "${(broker as Extract<BrokerDef, { auth: 'password' }>).username}"`,
             `password = "${(broker as Extract<BrokerDef, { auth: 'password' }>).password}"`,
           ]
+        : [`method = "none"`]
 
     blocks.push(
       [
@@ -275,11 +357,13 @@ function buildLegacy(
       lines.push(`MCTOMQTT_MQTT${num}_TOKEN_AUDIENCE=${broker.audience}`)
       lines.push(`MCTOMQTT_MQTT${num}_TOKEN_OWNER=${owner}`)
       lines.push(`MCTOMQTT_MQTT${num}_TOKEN_EMAIL=${email}`)
-    } else {
+    } else if (broker.auth === 'password') {
       const pb = broker as Extract<BrokerDef, { auth: 'password' }>
       lines.push(`MCTOMQTT_MQTT${num}_USE_AUTH_TOKEN=false`)
       lines.push(`MCTOMQTT_MQTT${num}_USERNAME=${pb.username}`)
       lines.push(`MCTOMQTT_MQTT${num}_PASSWORD=${pb.password}`)
+    } else {
+      lines.push(`MCTOMQTT_MQTT${num}_USE_AUTH_TOKEN=false`)
     }
   })
 
@@ -301,7 +385,7 @@ export default function MctoMqttPage() {
 
   const iata = iataSelect === 'other' ? normalizeIata(iataCustom) : iataSelect
   const [brokerStates, setBrokerStates] = useState<BrokerState[]>(
-    ALL_BROKERS.map(() => ({ enabled: true })),
+    ALL_BROKERS.map(b => ({ enabled: b.id === 'dutch-meshcore-1' || b.id === 'dutch-meshcore-2' })),
   )
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null)
   const [uploadedContent, setUploadedContent] = useState<string | null>(null)
@@ -309,11 +393,21 @@ export default function MctoMqttPage() {
 
   const ownerError = owner !== '' && !isValidHex64(owner)
 
+  const dmcActive = ALL_BROKERS.some((b, i) => DMC_SOURCE_IDS.has(b.id) && brokerStates[i].enabled)
+
+  // Receivers are forced to disabled while any DMC source broker is active.
+  const effectiveBrokerStates = ALL_BROKERS.map((b, i) => ({
+    enabled: DMC_RECEIVER_IDS.has(b.id) && dmcActive ? false : brokerStates[i].enabled,
+  }))
+
   const output = useMemo(() => {
+    const effective = ALL_BROKERS.map((b, i) => ({
+      enabled: DMC_RECEIVER_IDS.has(b.id) && ALL_BROKERS.some((sb, si) => DMC_SOURCE_IDS.has(sb.id) && brokerStates[si].enabled) ? false : brokerStates[i].enabled,
+    }))
     const generated =
       mode === 'toml'
-        ? buildToml(owner, email, iata, serialPorts, brokerStates)
-        : buildLegacy(owner, email, iata, serialPorts, brokerStates)
+        ? buildToml(owner, email, iata, serialPorts, effective)
+        : buildLegacy(owner, email, iata, serialPorts, effective)
 
     if (!uploadedContent) return generated
     return uploadedContent.trimEnd() + SEPARATOR + generated
@@ -529,35 +623,54 @@ export default function MctoMqttPage() {
         <div className="slots-section">
           <h3 className="section-label">{c.brokersTitle}</h3>
           <div className="slots-grid mcmqtt-brokers">
-            {ALL_BROKERS.map((broker, i) => (
-              <div
-                key={broker.id}
-                className={`slot-card mcmqtt-broker-card${brokerStates[i].enabled ? '' : ' slot-disabled'}`}
-              >
-                <div className="slot-header">
-                  <span className="slot-name">
-                    {broker.id}
-                    {broker.auth === 'password' && (
-                      <span className="mcmqtt-badge mcmqtt-badge-fixed">
-                        {c.authPassword}
+            {ALL_BROKERS.map((broker, i) => {
+              const isBlocked = DMC_RECEIVER_IDS.has(broker.id) && dmcActive
+              const isPending = DMC_PENDING_IDS.has(broker.id)
+              const effectiveEnabled = effectiveBrokerStates[i].enabled
+              return (
+                <div
+                  key={broker.id}
+                  className={`slot-card mcmqtt-broker-card${isBlocked ? ' slot-blocked' : !effectiveEnabled ? ' slot-disabled' : ''}`}
+                >
+                  <div className="slot-header">
+                    <span className="slot-name">
+                      {broker.id}
+                      {broker.auth === 'password' && (
+                        <span className="mcmqtt-badge mcmqtt-badge-fixed">
+                          {c.authPassword}
+                        </span>
+                      )}
+                    </span>
+                    {isBlocked ? (
+                      <span className="mcmqtt-badge mcmqtt-badge-blocked" title={c.blockedHint}>
+                        🔒 {c.blockedBadge}
+                      </span>
+                    ) : (
+                      <label className="mcmqtt-toggle">
+                        <input
+                          type="checkbox"
+                          checked={effectiveEnabled}
+                          onChange={() => toggleBroker(i)}
+                        />
+                        <span>{c.brokerEnabled}</span>
+                      </label>
+                    )}
+                  </div>
+                  <div className="slot-meta">
+                    <span className="mcmqtt-server">{broker.server}</span>
+                    <span className="mcmqtt-badge">{broker.badge}</span>
+                    {isPending && (
+                      <span className="mcmqtt-badge mcmqtt-badge-pending" title={c.pendingHint}>
+                        ⏳ {c.pendingBadge}
                       </span>
                     )}
-                  </span>
-                  <label className="mcmqtt-toggle">
-                    <input
-                      type="checkbox"
-                      checked={brokerStates[i].enabled}
-                      onChange={() => toggleBroker(i)}
-                    />
-                    <span>{c.brokerEnabled}</span>
-                  </label>
+                  </div>
+                  {isBlocked && (
+                    <p className="mcmqtt-blocked-note">{c.blockedHint}</p>
+                  )}
                 </div>
-                <div className="slot-meta">
-                  <span className="mcmqtt-server">{broker.server}</span>
-                  <span className="mcmqtt-badge">{broker.badge}</span>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 

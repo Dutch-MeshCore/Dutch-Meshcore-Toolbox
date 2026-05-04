@@ -1323,6 +1323,21 @@ body::after {
   margin-bottom: 18px;
 }
 
+.global-wifi-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.global-wifi-row .field-group {
+  flex: 1;
+  min-width: 180px;
+}
+.global-card-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 14px;
+}
 .global-card-inner {
   display: flex;
   flex-wrap: wrap;
@@ -4434,4 +4449,161 @@ select option {
   gap: 6px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+/* ── MCtoMQTT blocked / pending broker states ───────────────────────────────── */
+.slot-blocked {
+  opacity: .6;
+  pointer-events: none;
+}
+.slot-blocked .mcmqtt-badge-blocked {
+  pointer-events: auto;
+}
+.mcmqtt-badge-blocked {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(var(--accent2-rgb), .12);
+  color: #f08080;
+  border: 1px solid rgba(var(--accent2-rgb), .28);
+  white-space: nowrap;
+  cursor: default;
+}
+.mcmqtt-badge-pending {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(234,179,8,.10);
+  color: #c5a500;
+  border: 1px solid rgba(234,179,8,.28);
+  white-space: nowrap;
+  cursor: default;
+}
+.mcmqtt-blocked-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 8px 0 0;
+  font-style: italic;
+  line-height: 1.45;
+  pointer-events: auto;
+}
+
+/* ── Connected Brokers page ─────────────────────────────────────────────────── */
+.connected-brokers-page {
+  max-width: 860px;
+}
+.brokers-section {
+  margin-bottom: 40px;
+}
+.brokers-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+.broker-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.broker-card {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.broker-card-private {
+  opacity: .65;
+}
+.broker-card-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.broker-card-body {
+  flex: 1;
+  min-width: 0;
+}
+.broker-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.broker-card-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+}
+.broker-type-badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(var(--accent-rgb), .18);
+  color: #74adff;
+  border: 1px solid rgba(var(--accent-rgb), .25);
+}
+.broker-type-private {
+  background: rgba(255,255,255,.06);
+  color: var(--muted);
+  border-color: rgba(255,255,255,.12);
+}
+.broker-card-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0 0 12px;
+}
+.broker-card-desc-muted {
+  font-style: italic;
+}
+.broker-visit-btn {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--accent-rgb), .35);
+  background: rgba(var(--accent-rgb), .10);
+  transition: background .15s, border-color .15s;
+}
+.broker-visit-btn:hover {
+  background: rgba(var(--accent-rgb), .18);
+  border-color: rgba(var(--accent-rgb), .55);
+  color: #fff;
+}
+.brokers-private-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+.brokers-data-note {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surf2);
+  line-height: 1.55;
+}
+.brokers-data-note a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.brokers-data-note a:hover {
+  text-decoration: underline;
 }

@@ -66,6 +66,11 @@ const copy = {
     pick: 'Kies een luchthaven',
     other: 'Anders',
     custom: 'Aangepaste IATA-code',
+    wifiSsid: 'WiFi-netwerknaam (SSID)',
+    wifiSsidHint: 'Naam van het WiFi-netwerk waarmee je node verbinding maakt.',
+    wifiPassword: 'WiFi-wachtwoord',
+    wifiPasswordHint: 'Wachtwoord van het WiFi-netwerk.',
+    wifiSection: 'WiFi-instellingen',
     email: 'E-mailadres eigenaar',
     emailHint: 'Optioneel, voor eigendomsverificatie of observermeldingen.',
     slots: 'MQTT-slots (1-6)',
@@ -99,6 +104,11 @@ const copy = {
     pick: 'Pick an airport',
     other: 'Other',
     custom: 'Custom IATA code',
+    wifiSsid: 'WiFi network name (SSID)',
+    wifiSsidHint: 'Name of the WiFi network your node connects to.',
+    wifiPassword: 'WiFi password',
+    wifiPasswordHint: 'Password for the WiFi network.',
+    wifiSection: 'WiFi settings',
     email: 'Owner email address',
     emailHint: 'Optional, for ownership verification or observer notifications.',
     slots: 'MQTT slots (1-6)',
@@ -135,6 +145,8 @@ export default function MqttCliPage() {
   const { toasts, toast } = useToast()
   const [iataSelect, setIataSelect] = useState('')
   const [iataCustom, setIataCustom] = useState('')
+  const [wifiSsid, setWifiSsid] = useState('')
+  const [wifiPassword, setWifiPassword] = useState('')
   const [email, setEmail] = useState('')
   const [slots, setSlots] = useState(['dutchmeshcore-1', 'dutchmeshcore-2', 'none', 'none', 'none', 'none'])
   const [tokens, setTokens] = useState(['', '', '', '', '', ''])
@@ -147,7 +159,14 @@ export default function MqttCliPage() {
   const commands = useMemo(() => {
     const lines: Array<{ type: 'comment' | 'cmd'; text: string }> = []
     const active = slots.map((id, idx) => ({ preset: presetMap[id], idx })).filter(s => s.preset.id !== 'none')
-    if (active.length === 0) return lines
+    const hasWifi = wifiSsid.trim() !== '' || wifiPassword.trim() !== ''
+    if (active.length === 0 && !hasWifi && !email.trim()) return lines
+
+    if (hasWifi) {
+      lines.push({ type: 'comment', text: c.wifiSection })
+      if (wifiSsid.trim()) lines.push({ type: 'cmd', text: `set wifi.ssid ${wifiSsid.trim()}` })
+      if (wifiPassword.trim()) lines.push({ type: 'cmd', text: `set wifi.pwd ${wifiPassword.trim()}` })
+    }
 
     if (active.some(s => s.preset.needsIata)) {
       lines.push({ type: 'comment', text: lang === 'nl' ? 'Stel je IATA-code in' : 'Set your IATA code' })
@@ -169,7 +188,7 @@ export default function MqttCliPage() {
     lines.push({ type: 'comment', text: lang === 'nl' ? 'Herstart om instellingen toe te passen' : 'Reboot to apply settings' })
     lines.push({ type: 'cmd', text: 'reboot' })
     return lines
-  }, [email, iata, lang, presetMap, slots, tokens])
+  }, [c.wifiSection, email, iata, lang, presetMap, slots, tokens, wifiSsid, wifiPassword])
 
   function updateSlot(index: number, value: string) {
     setSlots(current => current.map((slot, i) => i === index ? value : slot))
@@ -248,7 +267,20 @@ export default function MqttCliPage() {
 
         <p className="section-title">{c.global}</p>
         <div className="global-card">
-          <div className="global-card-inner">
+          <div className="global-wifi-row">
+            <div className="field-group">
+              <label htmlFor="wifissid">{c.wifiSsid}</label>
+              <input id="wifissid" type="text" value={wifiSsid} onChange={e => setWifiSsid(e.target.value)} placeholder="MyNetwork" autoComplete="off" spellCheck={false} />
+              <span className="field-hint">{c.wifiSsidHint}</span>
+            </div>
+            <div className="field-group">
+              <label htmlFor="wifipassword">{c.wifiPassword}</label>
+              <input id="wifipassword" type="text" value={wifiPassword} onChange={e => setWifiPassword(e.target.value)} placeholder="••••••••" autoComplete="off" spellCheck={false} />
+              <span className="field-hint">{c.wifiPasswordHint}</span>
+            </div>
+          </div>
+          <hr className="global-card-divider" />
+          <div className="global-wifi-row">
             <div className="field-group">
               <label htmlFor="iataselect">{c.airport}</label>
               <select id="iataselect" value={iataSelect} onChange={event => setIataSelect(event.target.value)}>
@@ -256,19 +288,15 @@ export default function MqttCliPage() {
                 {AIRPORTS.map(([code, name]) => <option key={code} value={code}>{code} - {name}</option>)}
                 <option value="other">{c.other}</option>
               </select>
-            </div>
-            {iataSelect === 'other' && (
-              <div className="field-group">
-                <label htmlFor="iatainput">{c.custom}</label>
+              {iataSelect === 'other' && (
                 <input id="iatainput" className="iata-input" value={iataCustom} onChange={event => setIataCustom(normalizeIata(event.target.value))} placeholder="AMS" />
-              </div>
-            )}
+              )}
+            </div>
             <div className="field-group">
               <label htmlFor="emailinput">{c.email}</label>
               <input id="emailinput" type="text" value={email} onChange={event => setEmail(event.target.value)} placeholder="name@example.nl" />
               <span className="field-hint">{c.emailHint}</span>
             </div>
-            <div className="field-group iata-display">{iata || '---'}</div>
           </div>
         </div>
 
@@ -349,6 +377,8 @@ export default function MqttCliPage() {
             <div className="help-body">
               <table className="help-cmd-table">
                 <tbody>
+                  <tr><td><code>set wifi.ssid &lt;ssid&gt;</code></td><td>{lang === 'nl' ? 'Stelt de WiFi-netwerknaam in.' : 'Sets the WiFi network name.'}</td></tr>
+                  <tr><td><code>set wifi.pwd &lt;password&gt;</code></td><td>{lang === 'nl' ? 'Stelt het WiFi-wachtwoord in.' : 'Sets the WiFi password.'}</td></tr>
                   <tr><td><code>set mqtt.iata &lt;code&gt;</code></td><td>{lang === 'nl' ? 'Stelt de IATA-code in.' : 'Sets the IATA code.'}</td></tr>
                   <tr><td><code>set mqtt.email &lt;email&gt;</code></td><td>{lang === 'nl' ? 'Stelt het eigenaaradres in.' : 'Sets the owner email address.'}</td></tr>
                   <tr><td><code>set mqtt&lt;N&gt;.preset &lt;name&gt;</code></td><td>{lang === 'nl' ? 'Kiest de preset voor slot N.' : 'Selects the preset for slot N.'}</td></tr>
