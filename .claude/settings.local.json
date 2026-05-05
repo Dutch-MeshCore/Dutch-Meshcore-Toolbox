@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/)",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "Bash(cp \"G:/Github/repositories/Cornmeister/CoreScope/public/wasm/worker.js\" \"G:/Github/repositories/Dutch-MeshCore/Dutch-Meshcore-Toolbox/public/wasm/worker.js\")",
+      "Bash(cp \"G:/Github/repositories/Cornmeister/CoreScope/public/wasm/pkg/meshcore_keygen.js\" \"G:/Github/repositories/Dutch-MeshCore/Dutch-Meshcore-Toolbox/public/wasm/pkg/meshcore_keygen.js\")",
+      "Bash(cp \"G:/Github/repositories/Cornmeister/CoreScope/public/wasm/pkg/meshcore_keygen_bg.wasm\" \"G:/Github/repositories/Dutch-MeshCore/Dutch-Meshcore-Toolbox/public/wasm/pkg/meshcore_keygen_bg.wasm\")",
+      "Bash(npm install *)",
+      "Bash(node -e \"const p = require\\('./node_modules/@noble/curves/package.json'\\); console.log\\(p.version\\); console.log\\(Object.keys\\(p.exports || {}\\).slice\\(0, 10\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./node_modules/@noble/curves/package.json'\\); const k = Object.keys\\(p.exports || {}\\); console.log\\(k.filter\\(x => x.includes\\('25519'\\)\\)\\)\")",
+      "Bash(node -e ' *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const ed = require\\('./node_modules/@noble/ed25519/index.js'\\); console.log\\(Object.keys\\(ed\\).filter\\(k => k.includes\\('Point'\\) || k.includes\\('Extended'\\)\\)\\)\")",
+      "Bash(node -e \"const { Point } = require\\('./node_modules/@noble/ed25519/index.js'\\); console.log\\(typeof Point.BASE, typeof Point.BASE.multiply\\)\")",
+      "Bash(node -e \"const { Point } = require\\('./node_modules/@noble/ed25519/index.js'\\); const p = Point.BASE.multiply\\(3n\\); console.log\\(typeof p.toRawBytes\\)\")",
+      "Bash(node -e \"const { Point } = require\\('./node_modules/@noble/ed25519/index.js'\\); const p = Point.BASE.multiply\\(3n\\); console.log\\(Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(p\\)\\)\\)\")",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npm run *)",
+      "Bash(git fetch *)",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(taskkill /F /IM node.exe)"
+    ]
+  }
+}

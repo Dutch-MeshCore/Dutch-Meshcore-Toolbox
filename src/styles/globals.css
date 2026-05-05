@@ -4541,6 +4541,18 @@ select option {
   flex-shrink: 0;
   margin-top: 2px;
 }
+.broker-card-icon-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #fff;
+  padding: 3px;
+}
+.broker-card-icon-img--transparent {
+  background: none;
+  padding: 0;
+}
 .broker-card-body {
   flex: 1;
   min-width: 0;
@@ -4582,6 +4594,11 @@ select option {
 .broker-card-desc-muted {
   font-style: italic;
 }
+.broker-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 .broker-visit-btn {
   display: inline-block;
   font-size: 13px;
@@ -4619,4 +4636,71 @@ select option {
 }
 .brokers-data-note a:hover {
   text-decoration: underline;
+}
+
+/* ── Connected Brokers — win95 overrides ─────────────────────────────────── */
+[data-theme="win95"] .broker-card {
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #555555;
+  border-color: #808080;
+  border-radius: 0;
+}
+[data-theme="win95"] .broker-type-badge {
+  background: #c0c0c0;
+  color: #000000;
+  border: 1px solid #808080;
+  border-radius: 0;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #555555;
+}
+[data-theme="win95"] .broker-type-private {
+  background: #c0c0c0;
+  color: #444444;
+}
+[data-theme="win95"] .broker-visit-btn {
+  background: #c0c0c0;
+  color: #000000;
+  border: 1px solid #808080;
+  border-radius: 0;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #555555;
+}
+[data-theme="win95"] .broker-visit-btn:hover {
+  background: #d4d0c8;
+  color: #000000;
+  border-color: #808080;
+}
+[data-theme="win95"] .broker-visit-btn:active {
+  box-shadow: inset 1px 1px 0 #555555, inset -1px -1px 0 #ffffff;
+}
+[data-theme="win95"] .brokers-data-note {
+  border-radius: 0;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #555555;
+  border-color: #808080;
+}
+
+/* ── Connected Brokers — minimalistic overrides ──────────────────────────── */
+[data-theme="minimalistic"] .broker-card {
+  border-radius: 0;
+  border-color: var(--border);
+  background: transparent;
+  box-shadow: none;
+}
+[data-theme="minimalistic"] .broker-type-badge {
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+[data-theme="minimalistic"] .broker-visit-btn {
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+[data-theme="minimalistic"] .broker-visit-btn:hover {
+  background: var(--surf2);
+  color: var(--text);
+  border-color: var(--text);
+}
+[data-theme="minimalistic"] .brokers-data-note {
+  border-radius: 0;
+  background: transparent;
 }

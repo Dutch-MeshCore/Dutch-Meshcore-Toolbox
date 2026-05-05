@@ -87,6 +87,9 @@ const copy = {
     stepExtract: 'Open flasher.meshcore.io en selecteer het gedownloade bestand.',
     stepFlash: 'Bij twijfel: open de release-pagina en controleer de assets voor je apparaat.',
     env: 'Build environment',
+    pr_title: 'ℹ Over deze firmware-fork',
+    pr_body: 'Het enige verschil tussen onze firmware en de upstream MeshCore-firmware is dat we DutchMeshCore-serverpresets hebben toegevoegd bovenop de bestaande presets. We hebben een PR ingediend om dit samen te voegen. Zodra die is goedgekeurd, schakelen we over op de officiële upstream-firmware in plaats van onze eigen fork te onderhouden.',
+    pr_link: 'Bekijk de PR op GitHub',
     warn_title: '⚠ Niet getest op hardware',
     warn_body: 'De meeste firmware-builds op deze pagina zijn niet persoonlijk getest op hardware. Werkt iets niet, of loop je ergens tegenaan?',
     warn_discord: 'Kom langs op onze Discord',
@@ -113,6 +116,9 @@ const copy = {
     stepExtract: 'Open flasher.meshcore.io and select the downloaded file.',
     stepFlash: 'When unsure: open the release page and verify the assets for your device.',
     env: 'Build environment',
+    pr_title: 'ℹ About this firmware fork',
+    pr_body: 'The only difference between our firmware and upstream MeshCore is that we have added DutchMeshCore server presets on top of the existing presets. We have submitted a PR to get this merged. Once it is accepted, we will switch to the official upstream firmware rather than maintaining our own fork.',
+    pr_link: 'View the PR on GitHub',
     warn_title: '⚠ Not tested on hardware',
     warn_body: 'Most firmware builds on this page have not been personally tested on hardware. Something not working, or running into an issue?',
     warn_discord: 'Join us on Discord',
@@ -163,6 +169,16 @@ export default function FirmwarePage() {
           <h1>DutchMeshCore <em>{c.title}</em></h1>
           <p>{c.subtitle}</p>
         </section>
+
+        <div className="info-box firmware-warn">
+          <h4>{c.pr_title}</h4>
+          <p>
+            {c.pr_body}{' '}
+            <a href="https://github.com/agessaman/MeshCore/pull/10" target="_blank" rel="noopener noreferrer">
+              {c.pr_link}
+            </a>.
+          </p>
+        </div>
 
         <div className="info-box warn firmware-warn">
           <h4>{c.warn_title}</h4>

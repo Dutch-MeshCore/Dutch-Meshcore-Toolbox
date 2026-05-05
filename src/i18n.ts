@@ -12,7 +12,7 @@ export const STRINGS = {
     nav_toml: 'MCtoMQTT',
     nav_firmware: 'Firmware',
     nav_keygen: 'MC-Keygen',
-    nav_connected: 'Verbonden Analyzers',
+    nav_connected: 'Verbonden Projecten',
 
     // KeygenPage
     keygen_title: 'MC-Keygen',
@@ -348,7 +348,7 @@ export const STRINGS = {
     nav_toml: 'MCtoMQTT',
     nav_firmware: 'Firmware',
     nav_keygen: 'MC-Keygen',
-    nav_connected: 'Connected Analyzers',
+    nav_connected: 'Connected Projects',
 
     // KeygenPage
     keygen_title: 'MC-Keygen',

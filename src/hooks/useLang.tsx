@@ -17,9 +17,11 @@ export const LangContext = createContext<LangContextValue>({
 })
 
 export function LangProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(
-    () => (localStorage.getItem(LS_KEY) as Lang) || 'nl'
-  )
+  const [lang, setLangState] = useState<Lang>(() => {
+    const stored = localStorage.getItem(LS_KEY) as Lang | null
+    if (stored) return stored
+    return navigator.language.toLowerCase().startsWith('nl') ? 'nl' : 'en'
+  })
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l)

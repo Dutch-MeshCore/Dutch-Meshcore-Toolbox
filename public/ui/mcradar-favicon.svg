@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Connection Lines -->
+  <path d="M50 20 L80 70 L20 70 Z" fill="none" stroke="url(#blueGrad)" stroke-width="6" stroke-linejoin="round" />
+  <!-- Nodes -->
+  <circle cx="50" cy="20" r="12" fill="url(#blueGrad)" />
+  <circle cx="80" cy="70" r="12" fill="url(#blueGrad)" />
+  <circle cx="20" cy="70" r="12" fill="url(#blueGrad)" />
+  <!-- Pulse effect on center node -->
+  <circle cx="50" cy="20" r="18" fill="url(#blueGrad)" fill-opacity="0.2">
+    <animate attributeName="r" values="12;22;12" dur="3s" repeatCount="indefinite" />
+    <animate attributeName="fill-opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
+  </circle>
+</svg>
