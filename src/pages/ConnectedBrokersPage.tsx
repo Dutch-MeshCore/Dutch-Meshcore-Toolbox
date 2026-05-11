@@ -21,6 +21,7 @@ const copy = {
     mcradarDesc: 'Kaartgebaseerde visualizer die MeshCore-nodes en pakketroutes weergeeft op basis van DutchMeshCore subscriber-data.',
     meshwikiDesc: 'De MeshWiki MQTT-broker ontvangt DutchMeshCore observer-data en stelt deze beschikbaar voor de MeshWiki.nl community.',
     techspeeltainDesc: 'Techspeeltuin.nl ontvangt DutchMeshCore-data en visualiseert MeshCore-netwerkactiviteit voor de community.',
+    overrideDesc: 'Live MQTT-analyzer van mesh.override.nl. Toont MeshCore-netwerkactiviteit op basis van DutchMeshCore subscriber-data.',
     dataNote: 'Al deze projecten ontvangen data via de DutchMeshCore MQTT subscriber. Wil je je eigen analyzer aansluiten? Bekijk de',
     dataNoteLinkText: 'Config Generatoren',
     dataNote2: 'voor de juiste brokerinstellingen.',
@@ -45,6 +46,7 @@ const copy = {
     mcradarDesc: 'Map-based visualizer displaying MeshCore nodes and packet routes based on DutchMeshCore subscriber data.',
     meshwikiDesc: 'The MeshWiki MQTT broker receives DutchMeshCore observer data and makes it available to the MeshWiki.nl community.',
     techspeeltainDesc: 'Techspeeltuin.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
+    overrideDesc: 'Live MQTT analyzer by mesh.override.nl. Displays MeshCore network activity based on DutchMeshCore subscriber data.',
     dataNote: 'All these projects receive data via the DutchMeshCore MQTT subscriber. Want to connect your own analyzer? Check the',
     dataNoteLinkText: 'Config Generators',
     dataNote2: 'for the correct broker settings.',
@@ -65,7 +67,7 @@ interface BrokerEntry {
   url: string
   typeKey: 'type_analyzer' | 'type_map'
   extraTags?: CopyKey[]
-  descKey: 'cornmeisterDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltainDesc'
+  descKey: 'cornmeisterDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltainDesc' | 'overrideDesc'
   icon: string
   iconImg?: string
   iconImgTransparent?: boolean
@@ -254,6 +256,42 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
       { labelKey: 'openWiki', url: 'https://meshwiki.nl' },
       { labelKey: 'openAnalyzer', url: 'https://analyser.meshwiki.nl' },
     ],
+  },
+  {
+    name: 'mesh.override.nl',
+    url: 'https://mesh.override.nl/',
+    typeKey: 'type_analyzer',
+    descKey: 'overrideDesc',
+    icon: '📡',
+    iconNode: (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="40" height="40">
+        <defs>
+          <linearGradient id="overrideGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#a855f7', stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="6" fill="url(#overrideGrad)" />
+        <path d="M 57.5 37 A 15 15 0 0 1 57.5 63" fill="none" stroke="url(#overrideGrad)" strokeWidth="5" strokeLinecap="round">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0s" repeatCount="indefinite" />
+        </path>
+        <path d="M 42.5 37 A 15 15 0 0 0 42.5 63" fill="none" stroke="url(#overrideGrad)" strokeWidth="5" strokeLinecap="round">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0s" repeatCount="indefinite" />
+        </path>
+        <path d="M 63.5 26.6 A 27 27 0 0 1 63.5 73.4" fill="none" stroke="url(#overrideGrad)" strokeWidth="5" strokeLinecap="round">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.6s" repeatCount="indefinite" />
+        </path>
+        <path d="M 36.5 26.6 A 27 27 0 0 0 36.5 73.4" fill="none" stroke="url(#overrideGrad)" strokeWidth="5" strokeLinecap="round">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.6s" repeatCount="indefinite" />
+        </path>
+        <path d="M 69.5 16.2 A 39 39 0 0 1 69.5 83.8" fill="none" stroke="url(#overrideGrad)" strokeWidth="5" strokeLinecap="round">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="1.2s" repeatCount="indefinite" />
+        </path>
+        <path d="M 30.5 16.2 A 39 39 0 0 0 30.5 83.8" fill="none" stroke="url(#overrideGrad)" strokeWidth="5" strokeLinecap="round">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="1.2s" repeatCount="indefinite" />
+        </path>
+      </svg>
+    ),
   },
   {
     name: 'Techspeeltuin.nl',
