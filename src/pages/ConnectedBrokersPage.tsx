@@ -20,6 +20,7 @@ const copy = {
     cornmeisterDesc: 'Live MQTT-analyzer voor DutchMeshCore-observer data. Toont ruwe pakketuitvoer en netwerkactiviteit in realtime.',
     mcradarDesc: 'Kaartgebaseerde visualizer die MeshCore-nodes en pakketroutes weergeeft op basis van DutchMeshCore subscriber-data.',
     meshwikiDesc: 'De MeshWiki MQTT-broker ontvangt DutchMeshCore observer-data en stelt deze beschikbaar voor de MeshWiki.nl community.',
+    techspeeltainDesc: 'Techspeeltuin.nl ontvangt DutchMeshCore-data en visualiseert MeshCore-netwerkactiviteit voor de community.',
     dataNote: 'Al deze projecten ontvangen data via de DutchMeshCore MQTT subscriber. Wil je je eigen analyzer aansluiten? Bekijk de',
     dataNoteLinkText: 'Config Generatoren',
     dataNote2: 'voor de juiste brokerinstellingen.',
@@ -43,6 +44,7 @@ const copy = {
     cornmeisterDesc: 'Live MQTT analyzer for DutchMeshCore observer data. Displays raw packet output and network activity in real time.',
     mcradarDesc: 'Map-based visualizer displaying MeshCore nodes and packet routes based on DutchMeshCore subscriber data.',
     meshwikiDesc: 'The MeshWiki MQTT broker receives DutchMeshCore observer data and makes it available to the MeshWiki.nl community.',
+    techspeeltainDesc: 'Techspeeltuin.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
     dataNote: 'All these projects receive data via the DutchMeshCore MQTT subscriber. Want to connect your own analyzer? Check the',
     dataNoteLinkText: 'Config Generators',
     dataNote2: 'for the correct broker settings.',
@@ -63,7 +65,7 @@ interface BrokerEntry {
   url: string
   typeKey: 'type_analyzer' | 'type_map'
   extraTags?: CopyKey[]
-  descKey: 'cornmeisterDesc' | 'mcradarDesc' | 'meshwikiDesc'
+  descKey: 'cornmeisterDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltainDesc'
   icon: string
   iconImg?: string
   iconImgTransparent?: boolean
@@ -252,6 +254,14 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
       { labelKey: 'openWiki', url: 'https://meshwiki.nl' },
       { labelKey: 'openAnalyzer', url: 'https://analyser.meshwiki.nl' },
     ],
+  },
+  {
+    name: 'Techspeeltuin.nl',
+    url: 'https://techspeeltuin.nl/meshcore',
+    typeKey: 'type_analyzer',
+    descKey: 'techspeeltainDesc',
+    icon: '🔧',
+    iconImg: 'https://techspeeltuin.nl/assets/images/logo.png',
   },
 ]
 
