@@ -10,7 +10,7 @@ import { useFlasher } from '../hooks/useFlasher'
 import { useSerialConsole } from '../hooks/useSerialConsole'
 import { useLang } from '../hooks/useLang'
 import type { FlasherConfig, FlasherDevice, DeviceFirmware, FlasherStep } from '../types'
-import { CONFIG_JSON_URL } from '../utils/flasherUtils'
+import { fetchDmcConfig } from '../utils/dutchFlasherConfig'
 
 interface State {
   step: FlasherStep
@@ -63,13 +63,16 @@ export default function FlasherPage() {
   const console_ = useSerialConsole()
 
   useEffect(() => {
+    loadConfig()
+  }, [])
+
+  function loadConfig() {
     setConfigLoading(true)
     setConfigError(false)
-    fetch(CONFIG_JSON_URL)
-      .then(r => r.json())
-      .then((data: FlasherConfig) => { setConfig(data); setConfigLoading(false) })
+    fetchDmcConfig()
+      .then(data => { setConfig(data); setConfigLoading(false) })
       .catch(() => { setConfigError(true); setConfigLoading(false) })
-  }, [])
+  }
 
   async function handleFlash(opts: { version: string; wipe: boolean }) {
     if (!config || !sel.device || !sel.firmware) return
@@ -85,12 +88,7 @@ export default function FlasherPage() {
   }
 
   function retryConfig() {
-    setConfigError(false)
-    setConfigLoading(true)
-    fetch(CONFIG_JSON_URL)
-      .then(r => r.json())
-      .then((d: FlasherConfig) => { setConfig(d); setConfigLoading(false) })
-      .catch(() => { setConfigError(true); setConfigLoading(false) })
+    loadConfig()
   }
 
   return (

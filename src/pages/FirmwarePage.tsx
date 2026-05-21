@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
 
@@ -78,13 +79,13 @@ const copy = {
     allReleases: 'Alle releases',
     downloadBin: 'Download .bin',
     downloadMerged: 'Download merged .bin',
-    flash: 'Open flasher',
+    flash: '⚡ Direct flashen',
     note: 'Deze knoppen gebruiken de stabiele per-device releases uit de firmware-repo. Ze wijzen altijd naar de nieuwste gepubliceerde build voor deze combinatie.',
     unavailable: 'Voor deze apparaat/variant-combinatie is nog geen directe release-build gekoppeld. Gebruik de releases-pagina of kies een andere variant.',
     downloadTitle: 'Directe release-links',
     stepRelease: 'Kies apparaat en variant.',
     stepBuild: 'Gebruik de normale .bin voor upgrades waarbij instellingen behouden blijven, zoals pubkey en configuratie. Gebruik merged .bin alleen voor een helemaal schone ESP32-flash of een nieuw/leeg apparaat.',
-    stepExtract: 'Open flasher.meshcore.io en selecteer het gedownloade bestand.',
+    stepExtract: 'Of gebruik de ingebouwde Flasher hierboven om direct via USB te flashen.',
     stepFlash: 'Bij twijfel: open de release-pagina en controleer de assets voor je apparaat.',
     env: 'Build environment',
     pr_title: 'ℹ Over deze firmware-fork',
@@ -107,13 +108,13 @@ const copy = {
     allReleases: 'All releases',
     downloadBin: 'Download .bin',
     downloadMerged: 'Download merged .bin',
-    flash: 'Open flasher',
+    flash: '⚡ Flash directly',
     note: 'These buttons use the stable per-device releases from the firmware repo. They always point at the latest published build for this combination.',
     unavailable: 'No direct release build is mapped for this device/variant combination yet. Use the releases page or choose another variant.',
     downloadTitle: 'Direct release links',
     stepRelease: 'Choose your device and variant.',
     stepBuild: 'Use the normal .bin for upgrades that keep settings such as pubkey and configuration. Use merged .bin only for a fully clean ESP32 flash or a new/empty device.',
-    stepExtract: 'Open flasher.meshcore.io and select the downloaded file.',
+    stepExtract: 'Or use the built-in Flasher above to flash directly via USB.',
     stepFlash: 'When unsure: open the release page and verify the assets for your device.',
     env: 'Build environment',
     pr_title: 'ℹ About this firmware fork',
@@ -234,7 +235,7 @@ export default function FirmwarePage() {
                 </>
               )}
               <a className="btn" href={`${FIRMWARE_REPO}/releases`} target="_blank" rel="noopener noreferrer">{c.allReleases}</a>
-              <a className="btn" href="https://flasher.meshcore.io" target="_blank" rel="noopener noreferrer">{c.flash}</a>
+              <Link to="/flasher" className="btn btn-accent">{c.flash}</Link>
             </div>
           </div>
 
