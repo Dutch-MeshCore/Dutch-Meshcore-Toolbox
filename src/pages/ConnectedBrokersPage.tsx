@@ -20,8 +20,9 @@ const copy = {
     cornmeisterDesc: 'Live MQTT-analyzer voor DutchMeshCore-observer data. Toont ruwe pakketuitvoer en netwerkactiviteit in realtime.',
     mcradarDesc: 'Kaartgebaseerde visualizer die MeshCore-nodes en pakketroutes weergeeft op basis van DutchMeshCore subscriber-data.',
     meshwikiDesc: 'De MeshWiki MQTT-broker ontvangt DutchMeshCore observer-data en stelt deze beschikbaar voor de MeshWiki.nl community.',
-    techspeeltainDesc: 'Techspeeltuin.nl ontvangt DutchMeshCore-data en visualiseert MeshCore-netwerkactiviteit voor de community.',
+    techspeeltuinDesc: 'Techspeeltuin.nl ontvangt DutchMeshCore-data en visualiseert MeshCore-netwerkactiviteit voor de community.',
     overrideDesc: 'Live MQTT-analyzer van mesh.override.nl. Toont MeshCore-netwerkactiviteit op basis van DutchMeshCore subscriber-data.',
+    valleirugDesc: 'Analyzer van valleirug.nl ontvangt en toont MeshCore-netwerkactiviteit op basis van DutchMeshCore subscriber-data.',
     dataNote: 'Al deze projecten ontvangen data via de DutchMeshCore MQTT subscriber. Wil je je eigen analyzer aansluiten? Bekijk de',
     dataNoteLinkText: 'Config Generatoren',
     dataNote2: 'voor de juiste brokerinstellingen.',
@@ -45,8 +46,9 @@ const copy = {
     cornmeisterDesc: 'Live MQTT analyzer for DutchMeshCore observer data. Displays raw packet output and network activity in real time.',
     mcradarDesc: 'Map-based visualizer displaying MeshCore nodes and packet routes based on DutchMeshCore subscriber data.',
     meshwikiDesc: 'The MeshWiki MQTT broker receives DutchMeshCore observer data and makes it available to the MeshWiki.nl community.',
-    techspeeltainDesc: 'Techspeeltuin.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
+    techspeeltuinDesc: 'Techspeeltuin.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
     overrideDesc: 'Live MQTT analyzer by mesh.override.nl. Displays MeshCore network activity based on DutchMeshCore subscriber data.',
+    valleirugDesc: 'Analyzer by valleirug.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
     dataNote: 'All these projects receive data via the DutchMeshCore MQTT subscriber. Want to connect your own analyzer? Check the',
     dataNoteLinkText: 'Config Generators',
     dataNote2: 'for the correct broker settings.',
@@ -67,7 +69,7 @@ interface BrokerEntry {
   url: string
   typeKey: 'type_analyzer' | 'type_map'
   extraTags?: CopyKey[]
-  descKey: 'cornmeisterDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltainDesc' | 'overrideDesc'
+  descKey: 'cornmeisterDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltuinDesc' | 'valleirugDesc' | 'overrideDesc'
   icon: string
   iconImg?: string
   iconImgTransparent?: boolean
@@ -297,9 +299,18 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
     name: 'Techspeeltuin.nl',
     url: 'https://techspeeltuin.nl/meshcore',
     typeKey: 'type_analyzer',
-    descKey: 'techspeeltainDesc',
+    descKey: 'techspeeltuinDesc',
     icon: '🔧',
     iconImg: 'https://techspeeltuin.nl/assets/images/logo.png',
+  },
+  {
+    name: 'Valleirug.nl',
+    url: 'https://techspeeltuin.nl/meshcore',
+    typeKey: 'type_analyzer',
+    extraTags: ['type_map'],
+    descKey: 'valleirugDesc',
+    icon: '🔧',
+    iconImg: '',
   },
 ]
 
