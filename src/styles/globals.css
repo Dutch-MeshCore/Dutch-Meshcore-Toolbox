@@ -1191,6 +1191,14 @@ body::after {
   justify-content: flex-end;
 }
 
+.firmware-bin-notes {
+  margin-top: 12px;
+  font-size: .8rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.firmware-bin-notes p { margin: .2rem 0; }
+
 .firmware-download {
   margin-top: 16px;
   padding: 16px;
