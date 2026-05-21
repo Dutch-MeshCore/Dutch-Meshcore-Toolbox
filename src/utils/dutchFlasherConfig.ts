@@ -93,23 +93,30 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
       type: 'esp32' as const,
       firmware: [{
         role: 'dutchmeshcore_mqtt',
-        tooltip: 'Merged bin: full flash for new or factory-reset devices. ' +
-                 'App bin: app-only update that keeps bootloader & settings.',
+        tooltip: 'App update keeps bootloader & settings. Full flash is for new or factory-reset devices.',
         version: {
-          [versionKey]: {
-            files: [
-              ...(mergedUrl ? [{
-                type: 'flash-wipe'   as const,
-                name: mergedUrl,
-                title: 'Merged bin — full flash (new device / factory reset)',
-              }] : []),
-              ...(appUrl ? [{
+          // App update first — the common case for existing devices
+          ...(appUrl ? {
+            [`${versionKey} — App update`]: {
+              files: [{
                 type: 'flash-update' as const,
                 name: appUrl,
-                title: 'App bin — update only (keeps bootloader & config)',
-              }] : []),
-            ],
-          },
+                title: 'App update — keeps bootloader, partition table & config',
+              }],
+              notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
+            },
+          } : {}),
+          // Full flash second — for new or factory-reset devices
+          ...(mergedUrl ? {
+            [`${versionKey} — Full flash`]: {
+              files: [{
+                type: 'flash-wipe' as const,
+                name: mergedUrl,
+                title: 'Full flash — merged bin (bootloader + partition + app)',
+              }],
+              notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
+            },
+          } : {}),
         },
       }],
     }))
