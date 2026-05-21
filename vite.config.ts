@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -49,6 +49,18 @@ export default defineConfig({
             return
           }
 
+          if (url === '/flasher' || url === '/flasher/') {
+            res.statusCode = 302
+            res.setHeader('Location', '/#/flasher')
+            return
+          }
+
+          if (url === '/usb-config' || url === '/usb-config/') {
+            res.statusCode = 302
+            res.setHeader('Location', '/#/usb-config')
+            return
+          }
+
           next()
         })
       },
@@ -62,6 +74,8 @@ export default defineConfig({
           ['mqtt-cli', '#/mqtt-cli'],
           ['firmware', '#/firmware'],
           ['keygen', '#/keygen'],
+          ['flasher', '#/flasher'],
+          ['usb-config', '#/usb-config'],
         ]
         for (const [dir, hash] of shims) {
           const routeDir = path.join(outDir, dir)
@@ -100,5 +114,12 @@ export default defineConfig({
         },
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
+    exclude: ['node_modules', 'docs'],
   },
 })

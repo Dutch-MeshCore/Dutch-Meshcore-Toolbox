@@ -9,6 +9,8 @@ import FirmwarePage from './pages/FirmwarePage'
 import KeygenPage from './pages/KeygenPage'
 import MctoMqttPage from './pages/MctoMqttPage'
 import ConnectedBrokersPage from './pages/ConnectedBrokersPage'
+import FlasherPage from './pages/FlasherPage'
+import UsbConfigPage from './pages/UsbConfigPage'
 
 export default function App() {
   return (
@@ -24,6 +26,8 @@ export default function App() {
         <Route path="/connected-brokers" element={<ConnectedBrokersPage />} />
         <Route path="/firmware" element={<FirmwarePage />} />
         <Route path="/keygen" element={<KeygenPage />} />
+        <Route path="/flasher" element={<FlasherPage />} />
+        <Route path="/usb-config" element={<UsbConfigPage />} />
         <Route path="/editor" element={<Navigate to="/channel-browser/editor" replace />} />
         <Route path="/how-to" element={<Navigate to="/channel-browser/how-to" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />

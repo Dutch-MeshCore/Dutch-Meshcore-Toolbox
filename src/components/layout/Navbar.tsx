@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useTheme, type Theme } from '../../hooks/useTheme'
 import { useLang } from '../../hooks/useLang'
 
-type OpenDropdown = 'browser' | 'config' | null
+type OpenDropdown = 'browser' | 'config' | 'devices' | null
 
 const THEMES: { id: Theme; icon: string; label: string }[] = [
   { id: 'dark',  icon: '🌙', label: 'Dark'       },
@@ -18,6 +18,7 @@ export default function Navbar() {
   const { lang, setLang, t } = useLang()
   const inChannelBrowser = pathname.startsWith('/channel-browser')
   const inConfig = pathname === '/mqtt-cli' || pathname === '/mcmqtt-toml'
+  const inDevices = pathname === '/flasher' || pathname === '/usb-config'
   const [menuOpen, setMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null)
   const navRef = useRef<HTMLElement>(null)
@@ -98,6 +99,20 @@ export default function Navbar() {
               <div className="nav-dropdown-menu">
                 <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''} onClick={close}>{t('nav_mqtt')}</Link>
                 <Link to="/mcmqtt-toml" className={pathname === '/mcmqtt-toml' ? 'active' : ''} onClick={close}>{t('nav_toml')}</Link>
+              </div>
+            </div>
+
+            <div className={`nav-dropdown${openDropdown === 'devices' ? ' open' : ''}`}>
+              <button
+                className={`nav-dropdown-trigger${inDevices ? ' active' : ''}`}
+                onClick={() => toggleDropdown('devices')}
+                aria-expanded={openDropdown === 'devices'}
+              >
+                {t('nav_devices')} <span className="nav-caret" aria-hidden="true">▾</span>
+              </button>
+              <div className="nav-dropdown-menu">
+                <Link to="/flasher" className={pathname === '/flasher' ? 'active' : ''} onClick={close}>{t('nav_flasher')}</Link>
+                <Link to="/usb-config" className={pathname === '/usb-config' ? 'active' : ''} onClick={close}>{t('nav_usbconfig')}</Link>
               </div>
             </div>
 
