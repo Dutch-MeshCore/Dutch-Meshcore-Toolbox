@@ -305,7 +305,7 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
   },
   {
     name: 'Valleirug.nl',
-    url: 'https://techspeeltuin.nl/meshcore',
+    url: 'https://valleirug.nl',
     typeKey: 'type_analyzer',
     extraTags: ['type_map'],
     descKey: 'valleirugDesc',
