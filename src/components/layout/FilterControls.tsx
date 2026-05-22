@@ -8,11 +8,6 @@ interface Props {
   setFilter: <K extends keyof FilterState>(key: K, val: FilterState[K]) => void
   viewMode: ViewMode
   setViewMode: (m: ViewMode) => void
-  onExportJson: () => void
-  onExportTxt: () => void
-  onExportRtfm: () => void
-  onExportCoreScope?: () => void
-  isEditor?: boolean
   categoryMap: Record<string, CategoryEntry>
 }
 
@@ -22,11 +17,6 @@ export default function FilterControls({
   setFilter,
   viewMode,
   setViewMode,
-  onExportJson,
-  onExportTxt,
-  onExportRtfm,
-  onExportCoreScope,
-  isEditor = false,
   categoryMap,
 }: Props) {
   const { t } = useLang()
@@ -168,16 +158,6 @@ export default function FilterControls({
           </svg>
         </button>
       </div>
-
-      {isEditor && (
-        <>
-          <div className="vr" />
-          <button className="btn" onClick={onExportJson} title="Export filtered channels as JSON">⬇ JSON</button>
-          <button className="btn" onClick={onExportTxt}  title="Export filtered channel names">⬇ TXT</button>
-          <button className="btn" onClick={onExportRtfm} title="Export filtered as RTfM format">⬇ RTfM</button>
-          {onExportCoreScope && <button className="btn" onClick={onExportCoreScope} title="Export filtered as CoreScope format">⬇ CoreScope</button>}
-        </>
-      )}
     </div>
   )
 }

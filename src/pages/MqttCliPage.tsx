@@ -1,10 +1,23 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
 import { useToast } from '../hooks/useToast'
 import Toast from '../components/ui/Toast'
+import { parseServerUrl } from '../utils/mqttUtils'
 
 type AuthMode = 'none' | 'jwt' | 'token' | 'pass'
+
+interface CustomConfig {
+  server: string
+  port: string
+  /** 'token' is intentionally excluded — token auth is only for named presets (e.g. MeshRank), not custom brokers */
+  authMode: 'none' | 'jwt' | 'pass'
+  audience: string
+  username: string
+  password: string
+  topic: string
+}
 
 interface Preset {
   id: string
@@ -29,6 +42,7 @@ const PRESETS: Preset[] = [
   { id: 'nashmesh', label: 'NashMe.sh', auth: 'pass', needsIata: true, region: 'US' },
   { id: 'chimesh', label: 'ChiMesh', auth: 'jwt', needsIata: true, region: 'US' },
   { id: 'meshat.se', label: 'Meshat.se', auth: 'pass', needsIata: true, region: 'SE' },
+  { id: 'custom', label: 'Custom', auth: 'none', needsIata: false, region: '' },
 ]
 
 const AIRPORTS = [
@@ -87,6 +101,21 @@ const copy = {
     nothing: 'Nog niets om te kopiëren.',
     help: 'Commandoreferentie',
     footer: 'MeshCore MQTT Insteltool - 2026',
+    customServer: 'Server-URL',
+    customServerHint: 'Volledige broker-URL inclusief pad, bijv. wss://my-broker.example.com:443/mqtt',
+    customPort: 'Poort',
+    customAuth: 'Authenticatie',
+    authNone: 'Geen',
+    authJwt: 'JWT',
+    authPass: 'Gebruiker / Wachtwoord',
+    customAudience: 'Audience',
+    customAudienceHint: 'JWT-audience, meestal de hostnaam van de broker',
+    customUsername: 'Gebruikersnaam',
+    customPassword: 'Wachtwoord',
+    customTopic: 'Aangepast topic (optioneel)',
+    customTopicHint: 'Placeholders: {iata} {device} {token} {type}',
+    noFreeSlot: 'Geen vrij slot — kies er handmatig een',
+    brokerApplied: 'Toegepast op slot {n}',
   },
   en: {
     title: 'MeshCore MQTT Setup',
@@ -125,6 +154,21 @@ const copy = {
     nothing: 'Nothing to copy yet.',
     help: 'Command reference',
     footer: 'MeshCore MQTT Setup Tool - 2026',
+    customServer: 'Server URL',
+    customServerHint: 'Full broker URL including path, e.g. wss://my-broker.example.com:443/mqtt',
+    customPort: 'Port',
+    customAuth: 'Authentication',
+    authNone: 'None',
+    authJwt: 'JWT',
+    authPass: 'Username / Password',
+    customAudience: 'Audience',
+    customAudienceHint: 'JWT audience, usually the broker hostname',
+    customUsername: 'Username',
+    customPassword: 'Password',
+    customTopic: 'Custom topic (optional)',
+    customTopicHint: 'Placeholders: {iata} {device} {token} {type}',
+    noFreeSlot: 'No free slot — select one manually',
+    brokerApplied: 'Applied to slot {n}',
   },
 }
 
@@ -150,8 +194,31 @@ export default function MqttCliPage() {
   const [email, setEmail] = useState('')
   const [slots, setSlots] = useState(['dutchmeshcore-1', 'dutchmeshcore-2', 'none', 'none', 'none', 'none'])
   const [tokens, setTokens] = useState(['', '', '', '', '', ''])
+  const emptyCustomConfig = (): CustomConfig => ({
+    server: '', port: '', authMode: 'none',
+    audience: '', username: '', password: '', topic: '',
+  })
+  const [customConfigs, setCustomConfigs] = useState<CustomConfig[]>(
+    Array.from({ length: 6 }, emptyCustomConfig)
+  )
   const [copiedLine, setCopiedLine] = useState<number | null>(null)
   const [helpOpen, setHelpOpen] = useState(false)
+
+  const location = useLocation()
+
+  useEffect(() => {
+    const prefill = (location.state as { prefill?: Partial<CustomConfig> })?.prefill
+    if (!prefill) return
+    const firstFree = slots.findIndex(s => s === 'none')
+    if (firstFree === -1) {
+      toast(c.noFreeSlot, 'err')
+      return
+    }
+    updateSlot(firstFree, 'custom')
+    updateCustomConfig(firstFree, prefill)
+    toast(c.brokerApplied.replace('{n}', String(firstFree + 1)), 'ok')
+    window.history.replaceState({}, '')
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps — intentionally runs once on mount
 
   const presetMap = useMemo(() => Object.fromEntries(PRESETS.map(p => [p.id, p])) as Record<string, Preset>, [])
   const iata = iataSelect === 'other' ? normalizeIata(iataCustom) : iataSelect
@@ -181,14 +248,27 @@ export default function MqttCliPage() {
     for (const { preset, idx } of active) {
       lines.push({ type: 'comment', text: `Slot ${idx + 1} - ${preset.label}` })
       lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.preset ${preset.id}` })
-      if (preset.auth === 'token') {
+
+      if (preset.id === 'custom') {
+        const cfg = customConfigs[idx]
+        if (cfg.server) lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.server ${cfg.server}` })
+        if (cfg.port) lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.port ${cfg.port}` })
+        if (cfg.authMode === 'jwt' && cfg.audience) {
+          lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.audience ${cfg.audience}` })
+        } else if (cfg.authMode === 'pass') {
+          if (cfg.username) lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.username ${cfg.username}` })
+          if (cfg.password) lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.password ${cfg.password}` })
+        }
+        if (cfg.topic) lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.topic ${cfg.topic}` })
+      } else if (preset.auth === 'token') {
         lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.token ${tokens[idx] || '<your-meshrank-token>'}` })
       }
     }
+
     lines.push({ type: 'comment', text: lang === 'nl' ? 'Herstart om instellingen toe te passen' : 'Reboot to apply settings' })
     lines.push({ type: 'cmd', text: 'reboot' })
     return lines
-  }, [c.wifiSection, email, iata, lang, presetMap, slots, tokens, wifiSsid, wifiPassword])
+  }, [c.wifiSection, customConfigs, email, iata, lang, presetMap, slots, tokens, wifiSsid, wifiPassword])
 
   function updateSlot(index: number, value: string) {
     setSlots(current => current.map((slot, i) => i === index ? value : slot))
@@ -196,6 +276,21 @@ export default function MqttCliPage() {
 
   function updateToken(index: number, value: string) {
     setTokens(current => current.map((token, i) => i === index ? value.trim() : token))
+  }
+
+  function updateCustomConfig(index: number, patch: Partial<CustomConfig>) {
+    setCustomConfigs(current =>
+      current.map((cfg, i) => {
+        if (i !== index) return cfg
+        const next = { ...cfg, ...patch }
+        if ('server' in patch) {
+          const { port, audience } = parseServerUrl(patch.server ?? '')
+          if (port && !cfg.port) next.port = port
+          if (audience && !cfg.audience) next.audience = audience
+        }
+        return next
+      })
+    )
   }
 
   async function copyCommand(text: string, index: number) {
@@ -308,7 +403,10 @@ export default function MqttCliPage() {
         <div className="slots-grid">
           {slots.map((slot, index) => {
             const preset = presetMap[slot]
-            const [badgeClass, badgeLabel] = authBadge(preset.auth)
+            const effectiveAuth = slot === 'custom'
+              ? customConfigs[index].authMode
+              : preset.auth
+            const [badgeClass, badgeLabel] = authBadge(effectiveAuth)
             return (
               <div key={index} className={`slot-card${slot !== 'none' ? ' has-preset' : ''}`}>
                 <div className="slot-head">
@@ -322,7 +420,107 @@ export default function MqttCliPage() {
                     </option>
                   ))}
                 </select>
-                {preset.auth === 'token' && (
+
+                {slot === 'custom' && (
+                  <div className="slot-extra">
+                    <div className="field-group">
+                      <label htmlFor={`slot-server-${index}`}>{c.customServer}</label>
+                      <input
+                        id={`slot-server-${index}`}
+                        value={customConfigs[index].server}
+                        onChange={e => updateCustomConfig(index, { server: e.target.value })}
+                        placeholder="wss://my-broker.example.com:443/mqtt"
+                        autoComplete="off"
+                        spellCheck={false}
+                      />
+                      <span className="field-hint">{c.customServerHint}</span>
+                    </div>
+                    <div className="field-group">
+                      <label htmlFor={`slot-port-${index}`}>{c.customPort}</label>
+                      <input
+                        id={`slot-port-${index}`}
+                        value={customConfigs[index].port}
+                        onChange={e => updateCustomConfig(index, { port: e.target.value })}
+                        placeholder="443"
+                        autoComplete="off"
+                      />
+                    </div>
+                    <div className="field-group">
+                      <label>{c.customAuth}</label>
+                      <div className="auth-mode-group">
+                        {(['none', 'jwt', 'pass'] as const).map(mode => (
+                          <label key={mode} className="radio-label" htmlFor={`slot-auth-${mode}-${index}`}>
+                            <input
+                              id={`slot-auth-${mode}-${index}`}
+                              type="radio"
+                              name={`slot-auth-${index}`}
+                              value={mode}
+                              checked={customConfigs[index].authMode === mode}
+                              onChange={() => updateCustomConfig(index, { authMode: mode })}
+                            />
+                            {mode === 'none' ? c.authNone : mode === 'jwt' ? c.authJwt : c.authPass}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    {customConfigs[index].authMode === 'jwt' && (
+                      <div className="field-group">
+                        <label htmlFor={`slot-audience-${index}`}>{c.customAudience}</label>
+                        <input
+                          id={`slot-audience-${index}`}
+                          value={customConfigs[index].audience}
+                          onChange={e => updateCustomConfig(index, { audience: e.target.value })}
+                          placeholder="my-broker.example.com"
+                          autoComplete="off"
+                          spellCheck={false}
+                        />
+                        <span className="field-hint">{c.customAudienceHint}</span>
+                      </div>
+                    )}
+                    {customConfigs[index].authMode === 'pass' && (
+                      <>
+                        <div className="field-group">
+                          <label htmlFor={`slot-username-${index}`}>{c.customUsername}</label>
+                          <input
+                            id={`slot-username-${index}`}
+                            value={customConfigs[index].username}
+                            onChange={e => updateCustomConfig(index, { username: e.target.value })}
+                            placeholder="username"
+                            autoComplete="off"
+                          />
+                        </div>
+                        <div className="field-group">
+                          <label htmlFor={`slot-password-${index}`}>{c.customPassword}</label>
+                          <input
+                            id={`slot-password-${index}`}
+                            type="password"
+                            value={customConfigs[index].password}
+                            onChange={e => updateCustomConfig(index, { password: e.target.value })}
+                            placeholder="••••••••"
+                            autoComplete="new-password"
+                          />
+                        </div>
+                      </>
+                    )}
+                    <details className="custom-topic-details">
+                      <summary className="custom-topic-summary">{c.customTopic}</summary>
+                      <div className="field-group">
+                        <label htmlFor={`slot-topic-${index}`}>{c.customTopic}</label>
+                        <input
+                          id={`slot-topic-${index}`}
+                          value={customConfigs[index].topic}
+                          onChange={e => updateCustomConfig(index, { topic: e.target.value })}
+                          placeholder="meshcore/{iata}/{device}/{type}"
+                          autoComplete="off"
+                          spellCheck={false}
+                        />
+                        <span className="field-hint">{c.customTopicHint}</span>
+                      </div>
+                    </details>
+                  </div>
+                )}
+
+                {slot !== 'custom' && preset.auth === 'token' && (
                   <div className="slot-extra">
                     <div className="field-group">
                       <label htmlFor={`slot-token-${index}`}>{c.token}</label>
@@ -375,15 +573,55 @@ export default function MqttCliPage() {
               <button className="help-close-btn" onClick={() => setHelpOpen(false)} aria-label="Close">×</button>
             </div>
             <div className="help-body">
+              <p className="help-section-title">{lang === 'nl' ? 'Algemeen MQTT' : 'Global MQTT'}</p>
               <table className="help-cmd-table">
                 <tbody>
-                  <tr><td><code>set wifi.ssid &lt;ssid&gt;</code></td><td>{lang === 'nl' ? 'Stelt de WiFi-netwerknaam in.' : 'Sets the WiFi network name.'}</td></tr>
-                  <tr><td><code>set wifi.pwd &lt;password&gt;</code></td><td>{lang === 'nl' ? 'Stelt het WiFi-wachtwoord in.' : 'Sets the WiFi password.'}</td></tr>
-                  <tr><td><code>set mqtt.iata &lt;code&gt;</code></td><td>{lang === 'nl' ? 'Stelt de IATA-code in.' : 'Sets the IATA code.'}</td></tr>
-                  <tr><td><code>set mqtt.email &lt;email&gt;</code></td><td>{lang === 'nl' ? 'Stelt het eigenaaradres in.' : 'Sets the owner email address.'}</td></tr>
+                  <tr><td><code>set mqtt.iata &lt;code&gt;</code></td><td>{lang === 'nl' ? 'IATA-luchthavencode (automatisch hoofdletters).' : 'IATA airport code (auto-uppercased).'}</td></tr>
+                  <tr><td><code>set mqtt.email &lt;email&gt;</code></td><td>{lang === 'nl' ? 'E-mailadres eigenaar.' : 'Owner email address.'}</td></tr>
+                  <tr><td><code>set mqtt.origin &lt;name&gt;</code></td><td>{lang === 'nl' ? 'Overschrijft de origin-naam.' : 'Overrides the origin name.'}</td></tr>
+                  <tr><td><code>set mqtt.status &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Schakel statuspublicatie in/uit.' : 'Enable/disable status publishing.'}</td></tr>
+                  <tr><td><code>set mqtt.packets &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Schakel pakket-uplinking in/uit.' : 'Enable/disable packet uplinking.'}</td></tr>
+                  <tr><td><code>set mqtt.raw &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Schakel raw frame-uplinking in/uit.' : 'Enable/disable raw frame uplinking.'}</td></tr>
+                  <tr><td><code>set mqtt.rx &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Uplink ontvangen (RX) pakketten.' : 'Uplink received (RX) packets.'}</td></tr>
+                  <tr><td><code>set mqtt.tx &lt;on|off|advert&gt;</code></td><td>{lang === 'nl' ? 'Uplink verzonden (TX) pakketten.' : 'Uplink transmitted (TX) packets.'}</td></tr>
+                  <tr><td><code>set mqtt.interval &lt;minutes&gt;</code></td><td>{lang === 'nl' ? 'Status publicatie-interval (1–60 min).' : 'Status publish interval (1–60 min).'}</td></tr>
+                </tbody>
+              </table>
+
+              <p className="help-section-title">{lang === 'nl' ? 'Per slot' : 'Per slot'}</p>
+              <table className="help-cmd-table">
+                <tbody>
                   <tr><td><code>set mqtt&lt;N&gt;.preset &lt;name&gt;</code></td><td>{lang === 'nl' ? 'Kiest de preset voor slot N.' : 'Selects the preset for slot N.'}</td></tr>
-                  <tr><td><code>set mqtt&lt;N&gt;.token &lt;token&gt;</code></td><td>{lang === 'nl' ? 'Stelt een token in voor token-presets.' : 'Sets a token for token presets.'}</td></tr>
-                  <tr><td><code>reboot</code></td><td>{lang === 'nl' ? 'Herstart de node.' : 'Reboots the node.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.token &lt;token&gt;</code></td><td>{lang === 'nl' ? 'Per-slot token (bijv. MeshRank).' : 'Per-slot token (e.g. MeshRank).'}</td></tr>
+                  <tr><td><code>get mqtt.presets</code></td><td>{lang === 'nl' ? 'Toont alle beschikbare presets.' : 'Lists all available presets.'}</td></tr>
+                </tbody>
+              </table>
+
+              <p className="help-section-title">{lang === 'nl' ? 'Aangepast slot (preset: custom)' : 'Custom slot (preset: custom)'}</p>
+              <table className="help-cmd-table">
+                <tbody>
+                  <tr><td><code>set mqtt&lt;N&gt;.server &lt;url&gt;</code></td><td>{lang === 'nl' ? 'Broker-URL.' : 'Broker URL.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.port &lt;port&gt;</code></td><td>{lang === 'nl' ? 'Broker-poort (1–65535).' : 'Broker port (1–65535).'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.audience &lt;host&gt;</code></td><td>{lang === 'nl' ? 'JWT-audience (Ed25519-authenticatie). Leegmaken → gebruiker/wachtwoord.' : 'JWT audience (Ed25519 auth). Clear to revert to user/pass.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.username &lt;user&gt;</code></td><td>{lang === 'nl' ? 'Gebruikersnaam (gebruiker/wachtwoord).' : 'Username (user/pass auth).'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.password &lt;pass&gt;</code></td><td>{lang === 'nl' ? 'Wachtwoord (gebruiker/wachtwoord).' : 'Password (user/pass auth).'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.topic &lt;template&gt;</code></td><td>{lang === 'nl' ? 'Aangepast topic-template. Placeholders: {iata} {device} {token} {type}.' : 'Custom topic template. Placeholders: {iata} {device} {token} {type}.'}</td></tr>
+                </tbody>
+              </table>
+
+              <p className="help-section-title">WiFi</p>
+              <table className="help-cmd-table">
+                <tbody>
+                  <tr><td><code>set wifi.ssid &lt;ssid&gt;</code></td><td>{lang === 'nl' ? 'WiFi-netwerknaam.' : 'WiFi network name.'}</td></tr>
+                  <tr><td><code>set wifi.pwd &lt;password&gt;</code></td><td>{lang === 'nl' ? 'WiFi-wachtwoord.' : 'WiFi password.'}</td></tr>
+                  <tr><td><code>set wifi.powersave &lt;none|min|max&gt;</code></td><td>{lang === 'nl' ? 'WiFi energiebesparing.' : 'WiFi power saving mode.'}</td></tr>
+                </tbody>
+              </table>
+
+              <p className="help-section-title">{lang === 'nl' ? 'Operationeel' : 'Operational'}</p>
+              <table className="help-cmd-table">
+                <tbody>
+                  <tr><td><code>reboot</code></td><td>{lang === 'nl' ? 'Herstart de node om instellingen toe te passen.' : 'Reboot the node to apply settings.'}</td></tr>
                 </tbody>
               </table>
             </div>

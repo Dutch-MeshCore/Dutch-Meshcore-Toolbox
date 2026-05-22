@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useTheme, type Theme } from '../../hooks/useTheme'
 import { useLang } from '../../hooks/useLang'
 
-type OpenDropdown = 'browser' | 'config' | 'devices' | null
+type OpenDropdown = 'config' | 'devices' | null
 
 const THEMES: { id: Theme; icon: string; label: string }[] = [
   { id: 'dark',  icon: '🌙', label: 'Dark'       },
@@ -73,20 +73,7 @@ export default function Navbar() {
           <div className="nav-links">
             <Link to="/" className={pathname === '/' ? 'active' : ''} onClick={close}>{t('nav_home')}</Link>
 
-            <div className={`nav-dropdown${openDropdown === 'browser' ? ' open' : ''}`}>
-              <button
-                className={`nav-dropdown-trigger${inChannelBrowser ? ' active' : ''}`}
-                onClick={() => toggleDropdown('browser')}
-                aria-expanded={openDropdown === 'browser'}
-              >
-                {t('nav_browser')} <span className="nav-caret" aria-hidden="true">▾</span>
-              </button>
-              <div className="nav-dropdown-menu">
-                <Link to="/channel-browser" className={pathname === '/channel-browser' ? 'active' : ''} onClick={close}>{t('nav_browser')}</Link>
-                <Link to="/channel-browser/editor" className={pathname === '/channel-browser/editor' ? 'active' : ''} onClick={close}>{t('nav_editor')}</Link>
-                <Link to="/channel-browser/how-to" className={pathname === '/channel-browser/how-to' ? 'active' : ''} onClick={close}>{t('nav_howto')}</Link>
-              </div>
-            </div>
+            <Link to="/channel-browser" className={inChannelBrowser ? 'active' : ''} onClick={close}>{t('nav_browser')}</Link>
 
             <div className={`nav-dropdown${openDropdown === 'config' ? ' open' : ''}`}>
               <button

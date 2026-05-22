@@ -78,7 +78,6 @@ export default function ChannelCard({ channel: c, selected, onToggleSelect, onCo
           {c.country     && <><span className="mk">{t('card_country')}</span><span className="mv">{c.country}</span></>}
           {c.region      && <><span className="mk">{t('card_region')}</span><span className="mv">{c.region}</span></>}
           {c.language?.length ? <><span className="mk">{t('card_language')}</span><span className="mv">{c.language.join(', ')}</span></> : null}
-          {c.source          && <><span className="mk">{t('card_source')}</span><span className="mv">{c.source}</span></>}
         </div>
       )}
 

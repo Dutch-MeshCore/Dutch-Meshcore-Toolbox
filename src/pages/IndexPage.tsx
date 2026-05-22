@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import type { Channel, ViewMode } from "../types";
-import { useLocalEdits } from "../hooks/useLocalEdits";
 import { useChannelData } from "../hooks/useChannelData";
 import { useChannelView } from "../hooks/useChannelView";
 import { useSelection } from "../hooks/useSelection";
@@ -24,8 +23,7 @@ const LS_VIEW = "meshcore-view";
 
 export default function IndexPage() {
   const { t } = useLang();
-  const { localEdits } = useLocalEdits();
-  const { allChannels, loading, error } = useChannelData(false, localEdits);
+  const { allChannels, loading, error } = useChannelData(false, {});
   const {
     filtered,
     filters,
@@ -112,10 +110,6 @@ export default function IndexPage() {
           setFilter={setFilter}
           viewMode={viewMode}
           setViewMode={setViewMode}
-          onExportJson={() => exportJson(filtered)}
-          onExportTxt={() => exportTxt(filtered)}
-          onExportRtfm={() => exportRtfm(filtered)}
-          onExportCoreScope={() => exportCoreScope(filtered)}
           categoryMap={categoryMap}
         />
 
@@ -126,7 +120,6 @@ export default function IndexPage() {
           onClearFilters={clearFilters}
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
-          serverMode={false}
         />
 
         {filtered.length === 0 ? (
@@ -211,7 +204,6 @@ export default function IndexPage() {
                     >
                       {t('th_messages')}
                     </th>
-                    <th>{t('th_source')}</th>
                     <th>{t('th_actions')}</th>
                   </tr>
                 </thead>

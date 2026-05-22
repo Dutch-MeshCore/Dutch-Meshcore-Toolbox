@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
+import { copyText } from '../utils/clipboard'
 
 const copy = {
   nl: {
@@ -17,11 +19,18 @@ const copy = {
     communitiesSub: 'Handige MeshCore NL-communities om te volgen of aan deel te nemen.',
     analyzers: 'MeshCore Analyzers',
     analyzersSub: 'Dashboards voor live netwerkuitvoer en kanaalactiviteit op DutchMeshCore-data.',
-    mqttTitle: 'DutchMeshCore MQTT',
+    mqttTitle: 'DutchMeshCore MQTT verbindingsinformatie',
     mqttSub: 'Collectorservers voor observer-data en community-analyzers.',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
+    audience: 'Audience',
+    auth: 'Authenticatie',
+    topicFormat: 'Topic-formaat',
+    collector: 'Collector',
+    copied: 'Gekopieerd!',
+    copy: 'Kopieer',
+    useAsBroker: 'Gebruik als aangepaste broker',
     footer: 'Community tools voor MeshCore NL - 2026',
   },
   en: {
@@ -38,11 +47,18 @@ const copy = {
     communitiesSub: 'Useful MeshCore NL communities to follow or join.',
     analyzers: 'MeshCore Analyzers',
     analyzersSub: 'Dashboards for live network output and channel activity based on DutchMeshCore data.',
-    mqttTitle: 'DutchMeshCore MQTT',
+    mqttTitle: 'DutchMeshCore MQTT connection info',
     mqttSub: 'Collector servers for observer data and community analyzers.',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
+    audience: 'Audience',
+    auth: 'Auth',
+    topicFormat: 'Topic format',
+    collector: 'Collector',
+    copied: 'Copied!',
+    copy: 'Copy',
+    useAsBroker: 'Use as custom broker',
     footer: 'Community tools for MeshCore NL - 2026',
   },
 }
@@ -50,6 +66,17 @@ const copy = {
 export default function HomePage() {
   const { lang } = useLang()
   const c = copy[lang]
+
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
+  const navigate = useNavigate()
+
+  async function copyValue(value: string, key: string) {
+    const ok = await copyText(value)
+    if (ok) {
+      setCopiedKey(key)
+      window.setTimeout(() => setCopiedKey(null), 1500)
+    }
+  }
 
   return (
     <>
@@ -114,6 +141,151 @@ export default function HomePage() {
 
         <details className="info-panel" open>
           <summary>
+            <span>{c.mqttTitle}</span>
+            <span className="arrow">▼</span>
+          </summary>
+          <div className="info-panel-body">
+            <div className="mqtt-collectors-grid">
+
+              <div className="info-box">
+                <h4>{c.collector} 1</h4>
+                <table className="mqtt-table">
+                  <tbody>
+                    <tr>
+                      <td>URL</td>
+                      <td>
+                        <code>wss://collector1.dutchmeshcore.nl:443/mqtt</code>
+                        <button
+                          className={`btn btn-sm btn-copy${copiedKey === 'c1-url' ? ' copied' : ''}`}
+                          onClick={() => copyValue('wss://collector1.dutchmeshcore.nl:443/mqtt', 'c1-url')}
+                        >
+                          {copiedKey === 'c1-url' ? c.copied : c.copy}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Port</td>
+                      <td>
+                        <code>443</code>
+                        <button
+                          className={`btn btn-sm btn-copy${copiedKey === 'c1-port' ? ' copied' : ''}`}
+                          onClick={() => copyValue('443', 'c1-port')}
+                        >
+                          {copiedKey === 'c1-port' ? c.copied : c.copy}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>{c.audience}</td>
+                      <td>
+                        <code>collector1.dutchmeshcore.nl</code>
+                        <button
+                          className={`btn btn-sm btn-copy${copiedKey === 'c1-audience' ? ' copied' : ''}`}
+                          onClick={() => copyValue('collector1.dutchmeshcore.nl', 'c1-audience')}
+                        >
+                          {copiedKey === 'c1-audience' ? c.copied : c.copy}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr><td>{c.auth}</td><td><code>JWT (Ed25519)</code></td></tr>
+                    <tr><td>{c.tls}</td><td><code>enabled</code></td></tr>
+                  </tbody>
+                </table>
+                <button
+                  className="btn btn-use-broker"
+                  onClick={() => navigate('/mqtt-cli', {
+                    state: {
+                      prefill: {
+                        server: 'wss://collector1.dutchmeshcore.nl:443/mqtt',
+                        port: '443',
+                        audience: 'collector1.dutchmeshcore.nl',
+                        authMode: 'jwt' as const,
+                      }
+                    }
+                  })}
+                >
+                  {c.useAsBroker}
+                </button>
+              </div>
+
+              <div className="info-box">
+                <h4>{c.collector} 2</h4>
+                <table className="mqtt-table">
+                  <tbody>
+                    <tr>
+                      <td>URL</td>
+                      <td>
+                        <code>wss://collector2.dutchmeshcore.nl:443/mqtt</code>
+                        <button
+                          className={`btn btn-sm btn-copy${copiedKey === 'c2-url' ? ' copied' : ''}`}
+                          onClick={() => copyValue('wss://collector2.dutchmeshcore.nl:443/mqtt', 'c2-url')}
+                        >
+                          {copiedKey === 'c2-url' ? c.copied : c.copy}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Port</td>
+                      <td>
+                        <code>443</code>
+                        <button
+                          className={`btn btn-sm btn-copy${copiedKey === 'c2-port' ? ' copied' : ''}`}
+                          onClick={() => copyValue('443', 'c2-port')}
+                        >
+                          {copiedKey === 'c2-port' ? c.copied : c.copy}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>{c.audience}</td>
+                      <td>
+                        <code>collector2.dutchmeshcore.nl</code>
+                        <button
+                          className={`btn btn-sm btn-copy${copiedKey === 'c2-audience' ? ' copied' : ''}`}
+                          onClick={() => copyValue('collector2.dutchmeshcore.nl', 'c2-audience')}
+                        >
+                          {copiedKey === 'c2-audience' ? c.copied : c.copy}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr><td>{c.auth}</td><td><code>JWT (Ed25519)</code></td></tr>
+                    <tr><td>{c.tls}</td><td><code>enabled</code></td></tr>
+                  </tbody>
+                </table>
+                <button
+                  className="btn btn-use-broker"
+                  onClick={() => navigate('/mqtt-cli', {
+                    state: {
+                      prefill: {
+                        server: 'wss://collector2.dutchmeshcore.nl:443/mqtt',
+                        port: '443',
+                        audience: 'collector2.dutchmeshcore.nl',
+                        authMode: 'jwt' as const,
+                      }
+                    }
+                  })}
+                >
+                  {c.useAsBroker}
+                </button>
+              </div>
+
+            </div>
+
+            <div className="mqtt-topic-row">
+              <span className="mqtt-topic-label">{c.topicFormat}</span>
+              <code>{'meshcore/{iata}/{device}/{type}'}</code>
+              <button
+                className={`btn btn-sm btn-copy${copiedKey === 'topic' ? ' copied' : ''}`}
+                onClick={() => copyValue('meshcore/{iata}/{device}/{type}', 'topic')}
+              >
+                {copiedKey === 'topic' ? c.copied : c.copy}
+              </button>
+            </div>
+          </div>
+        </details>
+
+        <details className="info-panel" open>
+          <summary>
             <span>{c.linksTitle}</span>
             <span className="arrow">▼</span>
           </summary>
@@ -149,28 +321,6 @@ export default function HomePage() {
                 <a className="quick-link" href="https://meshrank.net" target="_blank" rel="noopener noreferrer">MeshRank</a>
                 <a className="quick-link" href="https://analyzer.letsmesh.net/" target="_blank" rel="noopener noreferrer">LetsMesh Analyzer</a>
               </div>
-            </div>
-          </div>
-        </details>
-
-        <details className="info-panel">
-          <summary>
-            <span>{c.mqttTitle}</span>
-            <span className="arrow">▼</span>
-          </summary>
-          <div className="info-panel-body">
-            <div className="info-box">
-              <h4>{c.mqttTitle}</h4>
-              <p>{c.mqttSub}</p>
-              <table className="mqtt-table">
-                <tbody>
-                  <tr><td>{c.server}</td><td><code>wss://collector1.dutchmeshcore.nl</code></td></tr>
-                  <tr><td>{c.server}</td><td><code>wss://collector2.dutchmeshcore.nl</code></td></tr>
-                  <tr><td>{c.protocol}</td><td><code>secure websocket</code></td></tr>
-                  <tr><td>Port</td><td><code>443</code></td></tr>
-                  <tr><td>{c.tls}</td><td><code>enabled</code></td></tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </details>

@@ -1075,6 +1075,62 @@ body::after {
   color: var(--accent);
 }
 
+/* home page — two-collector grid */
+.mqtt-collectors-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.mqtt-collectors-grid .info-box {
+  flex: 1 1 240px;
+}
+.mqtt-table td {
+  vertical-align: middle;
+}
+.btn-copy {
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+.btn-use-broker {
+  width: 100%;
+  margin-top: 0.75rem;
+}
+.mqtt-topic-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+.mqtt-topic-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* custom slot card */
+.auth-mode-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 13px;
+  cursor: pointer;
+}
+.custom-topic-details {
+  margin-top: 8px;
+}
+.custom-topic-summary {
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+
 .info-strip {
   background: var(--panel-bg);
   border: 1px solid var(--border);
@@ -1606,6 +1662,19 @@ body::after {
   font-family: Consolas, "Fira Mono", monospace;
 }
 
+/* help dialog — section titles and scroll cap */
+.help-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 1rem 0 0.15rem;
+  padding: 0;
+}
+.help-section-title:first-child {
+  margin-top: 0;
+}
 /* ── Stats ─────────────────────────────────────────────────────────────────── */
 .stats {
   display: flex;
@@ -2051,12 +2120,6 @@ select option {
 .lt-country {
   color: var(--muted);
   font-size: 12px;
-}
-
-.lt-source {
-  font-size: 11px;
-  color: var(--muted);
-  white-space: nowrap;
 }
 
 .lt-date {

@@ -8,9 +8,6 @@ interface Props {
   onClearFilters: () => void
   pageSize: number
   onPageSizeChange: (n: number) => void
-  localEditsCount?: number
-  serverMode?: boolean
-  onExportLocalEdits?: () => void
 }
 
 export default function ResultsBar({
@@ -20,9 +17,6 @@ export default function ResultsBar({
   onClearFilters,
   pageSize,
   onPageSizeChange,
-  localEditsCount = 0,
-  serverMode = false,
-  onExportLocalEdits,
 }: Props) {
   const { t } = useLang()
 
@@ -35,14 +29,6 @@ export default function ResultsBar({
         )}
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        {!serverMode && localEditsCount > 0 && (
-          <span className="local-edits-note">
-            ✏ {localEditsCount} {localEditsCount !== 1 ? t('local_edits_p') : t('local_edit_s')}
-            {onExportLocalEdits && (
-              <> · <button className="btn-link" onClick={onExportLocalEdits}>{t('export_link')}</button></>
-            )}
-          </span>
-        )}
         <label style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--muted)' }}>
           {t('per_page')}
           <select
