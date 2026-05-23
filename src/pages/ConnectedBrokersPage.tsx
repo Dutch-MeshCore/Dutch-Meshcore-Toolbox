@@ -14,10 +14,13 @@ const copy = {
     visitSite: 'Bezoek website',
     openWiki: 'Open wiki',
     openAnalyzer: 'Open analyzer',
+    openWebsite: 'Open website',
     type_analyzer: 'Analyzer',
+    type_app: 'App',
     type_map: 'Kaartvisualisatie',
     type_wiki: 'Wiki',
     cornmeisterDesc: 'Live MQTT-analyzer voor DutchMeshCore-observer data. Toont ruwe pakketuitvoer en netwerkactiviteit in realtime.',
+    kiekrDesc: 'Community toolbox voor MeshCore. De iOS- en Android-app koppelt via Bluetooth met MeshCore-compatible LoRa-radio\'s voor berichten en mesh-verkenning.',
     mcradarDesc: 'Kaartgebaseerde visualizer die MeshCore-nodes en pakketroutes weergeeft op basis van DutchMeshCore subscriber-data.',
     meshwikiDesc: 'De MeshWiki MQTT-broker ontvangt DutchMeshCore observer-data en stelt deze beschikbaar voor de MeshWiki.nl community.',
     techspeeltuinDesc: 'Techspeeltuin.nl ontvangt DutchMeshCore-data en visualiseert MeshCore-netwerkactiviteit voor de community.',
@@ -40,10 +43,13 @@ const copy = {
     visitSite: 'Visit website',
     openWiki: 'Open wiki',
     openAnalyzer: 'Open analyzer',
+    openWebsite: 'Open website',
     type_analyzer: 'Analyzer',
+    type_app: 'App',
     type_map: 'Map visualizer',
     type_wiki: 'Wiki',
     cornmeisterDesc: 'Live MQTT analyzer for DutchMeshCore observer data. Displays raw packet output and network activity in real time.',
+    kiekrDesc: 'Community toolbox for MeshCore. The iOS and Android app pairs over Bluetooth with MeshCore-compatible LoRa radios for messaging and mesh exploration.',
     mcradarDesc: 'Map-based visualizer displaying MeshCore nodes and packet routes based on DutchMeshCore subscriber data.',
     meshwikiDesc: 'The MeshWiki MQTT broker receives DutchMeshCore observer data and makes it available to the MeshWiki.nl community.',
     techspeeltuinDesc: 'Techspeeltuin.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
@@ -67,13 +73,14 @@ interface BrokerLink {
 interface BrokerEntry {
   name: string
   url: string
-  typeKey: 'type_analyzer' | 'type_map'
+  typeKey: 'type_analyzer' | 'type_app' | 'type_map'
   extraTags?: CopyKey[]
-  descKey: 'cornmeisterDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltuinDesc' | 'valleirugDesc' | 'overrideDesc'
+  descKey: 'cornmeisterDesc' | 'kiekrDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltuinDesc' | 'valleirugDesc' | 'overrideDesc'
   icon: string
   iconImg?: string
   iconImgTransparent?: boolean
   iconNode?: React.ReactNode
+  primaryLabelKey?: CopyKey
   links?: BrokerLink[]
 }
 
@@ -118,6 +125,15 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
         </path>
       </svg>
     ),
+  },
+  {
+    name: 'KiekR',
+    url: 'https://kiekr.app/',
+    typeKey: 'type_app',
+    descKey: 'kiekrDesc',
+    icon: '📱',
+    iconImg: 'https://kiekr.app/landing/logo.jpg',
+    primaryLabelKey: 'openWebsite',
   },
   {
     name: 'MC-Radar by woodwar.com',
@@ -375,7 +391,7 @@ export default function ConnectedBrokersPage() {
                         rel="noopener noreferrer"
                         className="broker-visit-btn"
                       >
-                        {c.openAnalyzer} ↗
+                        {c[b.primaryLabelKey ?? 'openAnalyzer']} ↗
                       </a>
                     )}
                   </div>

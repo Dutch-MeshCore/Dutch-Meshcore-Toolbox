@@ -3,14 +3,14 @@ export type Lang = 'nl' | 'en'
 export const STRINGS = {
   nl: {
     // Navbar
-    nav_home: 'Home',
-    nav_browser: 'Kanaalverkenner',
-    nav_config: 'Config Generatoren',
+    nav_home: 'Start',
+    nav_browser: 'Kanalen',
+    nav_config: 'Configureren',
     nav_mqtt: 'MQTT CLI Setup',
     nav_toml: 'MCtoMQTT',
     nav_firmware: 'Firmware',
-    nav_keygen: 'MC-Keygen',
-    nav_connected: 'Verbonden Projecten',
+    nav_keygen: 'Sleutels',
+    nav_connected: 'Community Projecten',
 
     // KeygenPage
     keygen_title: 'MC-Keygen',
@@ -111,45 +111,12 @@ export const STRINGS = {
 
     // IndexPage header
     index_title: '📡 MeshCore NL Kanalen',
-    index_sub: 'Alle kanalen uit de Remote Terminal export, aangevuld met community-metadata.',
-
-    // RTfM block
-    rtfm_title: 'Remote Terminal for MeshCore — (RTfM)',
-    rtfm_p2: 'De fork heeft een volledig kanaalbeheermodule, een sleutelbeheer systeem, een vernieuwd kaartoverzicht en veel meer toevoegingen/aanpassingen.',
-    rtfm_p3: 'Het grootste deel van de kanalen en informatie op deze pagina komt rechtstreeks uit de RTfM-app. Deze pagina is gemaakt om "mijn lokale" informatie met vrienden te delen. En toen had ik te veel koffie gedronken.',
-    rtfm_p4: 'Als je overschakelt vanuit de hoofdbranch van Remote-Term, zorg dan voor een back-up van je database. Het zal waarschijnlijk prima werken, maar ik wil niet dat je historische informatie verliest.',
-    rtfm_warn_title: '⚠ Belangrijke waarschuwing over RTfM',
-    rtfm_warn_p_a: 'Gebruik dit hulpmiddel alleen met een',
-    rtfm_warn_p_b: 'toegewijde companion',
-    rtfm_warn_p_c: 'voor de machine waarop het draait. Om de kanaal-/contactlimieten van MeshCore te omzeilen, kan het tijdens import/export en synchronisatiebewerkingen',
-    rtfm_warn_p_d: 'contacten/kanalen ophalen, overschrijven en verwijderen',
-    rtfm_warn_p_e: 'tijdens import/export en synchronisatiebewerkingen.',
-    rtfm_warn_p_f: 'Gebruik het niet op je dagelijkse companion tenzij je de risico\'s volledig begrijpt.',
+    index_sub: 'Community supplied DutchMeshCore channel data.',
 
     // Info panel
-    info_scope_guidelines: 'Scope-richtlijnen, GitHub Pages & projectinfo',
-    info_panel_title: 'Handige links, projectinfo & scope-richtlijnen',
-    info_useful_links: 'Handige links',
-    info_useful_links_sub: 'Snelle referenties voor MeshCore NL, regiobenamingen en actuele GitHub-repos',
-    info_switch_link: 'SF8 → SF7 Switch E.T.A. 9 mei',
-    info_scope_guide: 'Scope / Regiogids',
-    info_channel_repo: 'Kanaal-repo',
-    info_communities: 'MeshCore Nederland Communities',
-    info_communities_sub: 'Snelle referenties voor handige MeshCore NL-communities',
-    info_scope_title: 'Scope / regio-richtlijn',
-    info_scope_body: 'Volg bij het toevoegen of bewerken van scopes de officiële MeshWiki-regiogids. Dit houdt de naamgeving duidelijk en voorkomt dubbele, willekeurige of incompatibele scopestructuren.',
-    info_ghpages_title: '⚠ GitHub Pages waarschuwing',
-    info_ghpages_body: 'Wijzigingen op deze GitHub Pages-versie worden alleen in je browser opgeslagen. Als je hier metadata bewerkt, exporteer ze dan voordat je de pagina verlaat of vernieuwt als je je werk veilig wilt bewaren.',
-    info_mqtt_title: 'Cornmeister MQTT',
-    info_mqtt_body: 'Verbind je node met de Cornmeister MQTT-broker om ruwe pakketjes te delen. Bekijk live uitvoer op',
-    info_mqtt_server: 'Server',
-    info_mqtt_port_tls: 'Poort (TLS)',
-    info_mqtt_port_plain: 'Poort (onversleuteld)',
-    info_mqtt_transport: 'Transport',
-    info_mqtt_user: 'Gebruikersnaam',
-    info_mqtt_pass: 'Wachtwoord',
-    info_project_title: 'Project / databron',
-    info_project_body: 'Deze pagina combineert een Remote Terminal for MeshCore-export met handmatig samengestelde DutchMeshCore community-metadata. Als je kanalen, scopes of notities wil verbeteren, doe dat via de DutchMeshCore Toolbox-repo.',
+    info_scope_guidelines: 'DutchMeshCore.nl Channel browser',
+    info_project_title: 'Source',
+    info_project_body: 'Community supplied.',
 
     // Empty / error
     no_channels: 'Geen kanalen gevonden',
@@ -229,7 +196,7 @@ export const STRINGS = {
     card_title_key: 'Klik om hex-sleutel te kopiëren',
 
     // Navbar — Devices
-    nav_devices: 'Apparaten',
+    nav_devices: 'Apparaat-tools',
     nav_flasher: 'Flasher',
     nav_usbconfig: 'USB Configuratie',
 
@@ -328,14 +295,14 @@ export const STRINGS = {
   },
   en: {
     // Navbar
-    nav_home: 'Home',
-    nav_browser: 'Channel Browser',
-    nav_config: 'Config Generators',
+    nav_home: 'Start',
+    nav_browser: 'Channels',
+    nav_config: 'Configure',
     nav_mqtt: 'MQTT CLI Setup',
     nav_toml: 'MCtoMQTT',
     nav_firmware: 'Firmware',
-    nav_keygen: 'MC-Keygen',
-    nav_connected: 'Connected Projects',
+    nav_keygen: 'Keys',
+    nav_connected: 'Community Projects',
 
     // KeygenPage
     keygen_title: 'MC-Keygen',
@@ -436,45 +403,12 @@ export const STRINGS = {
 
     // IndexPage header
     index_title: '📡 MeshCore NL Channels',
-    index_sub: 'All channels from the Remote Terminal export, enriched with community metadata.',
-
-    // RTfM block
-    rtfm_title: 'Remote Terminal for MeshCore — (RTfM)',
-    rtfm_p2: 'The fork has a complete channel managament module, a key management system, overhauled map and tons more additions/tweaks.',
-    rtfm_p3: 'Most of the channels and information on this page comes directly from the RTfM app. This page was made just to show "my local" information to friends. And then i had too much coffee.',
-    rtfm_p4: 'When coming from the parent branch of Remote-Term, make sure you back-up your database, it will run fine (probably), but i\'d hate for your to lose historical information.',
-    rtfm_warn_title: '⚠ Important warning about RTfM',
-    rtfm_warn_p_a: 'Use this tool only with a',
-    rtfm_warn_p_b: 'dedicated companion',
-    rtfm_warn_p_c: 'for the machine it runs on. To work around MeshCore channel/contact limits, it may',
-    rtfm_warn_p_d: 'pull, overwrite, and delete contacts/channels',
-    rtfm_warn_p_e: 'during import/export and sync operations.',
-    rtfm_warn_p_f: 'Do not use it on your main everyday companion unless you fully understand the risks.',
+    index_sub: 'Community supplied DutchMeshCore channel data.',
 
     // Info panel
-    info_scope_guidelines: 'Scope guidelines, GitHub Pages & project info',
-    info_panel_title: 'Handy links, project info & scope guidelines',
-    info_useful_links: 'Useful links',
-    info_useful_links_sub: 'Quick references for MeshCore NL, region naming, and current GitHub repos',
-    info_switch_link: 'SF8 → SF7 Switch E.T.A. 9th of May',
-    info_scope_guide: 'Scope / Region Guide',
-    info_channel_repo: 'Channel Repo',
-    info_communities: 'MeshCore Nederland Communities',
-    info_communities_sub: 'Quick references for useful MeshCore NL Communities',
-    info_scope_title: 'Scope / region guideline',
-    info_scope_body: 'When adding or editing scopes, please follow the official MeshWiki region guideline. This keeps naming clear and prevents duplicate, random or incompatible scope structures.',
-    info_ghpages_title: '⚠ Github pages warning',
-    info_ghpages_body: 'Changes made on this GitHub Pages version are stored only in your browser. If you edit metadata here, export it before leaving or refreshing if you want to keep your work safely backed up.',
-    info_mqtt_title: 'Cornmeister MQTT',
-    info_mqtt_body: 'Connect your node to the Cornmeister MQTT broker to share raw packets. View live output at',
-    info_mqtt_server: 'Server',
-    info_mqtt_port_tls: 'Port (TLS)',
-    info_mqtt_port_plain: 'Port (plain)',
-    info_mqtt_transport: 'Transport',
-    info_mqtt_user: 'Username',
-    info_mqtt_pass: 'Password',
-    info_project_title: 'Project / data source',
-    info_project_body: 'This page combines a Remote Terminal for MeshCore export with manually curated DutchMeshCore community metadata. If you want to improve channels, scopes, or notes, use the DutchMeshCore Toolbox repo.',
+    info_scope_guidelines: 'DutchMeshCore.nl Channel browser',
+    info_project_title: 'Source',
+    info_project_body: 'Community supplied.',
 
     // Empty / error
     no_channels: 'No channels found',
@@ -554,7 +488,7 @@ export const STRINGS = {
     card_title_key: 'Click to copy hex key',
 
     // Navbar — Devices
-    nav_devices: 'Devices',
+    nav_devices: 'Device tools',
     nav_flasher: 'Flasher',
     nav_usbconfig: 'USB Config',
 

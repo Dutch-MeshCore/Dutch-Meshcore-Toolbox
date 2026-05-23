@@ -6,12 +6,38 @@ import { copyText } from '../utils/clipboard'
 
 const copy = {
   nl: {
-    hero: 'Een verzameling tools voor het Nederlandse MeshCore-netwerk.',
-    tools: 'Beschikbare tools',
-    browserDesc: 'Bekijk, filter en exporteer ontdekte MeshCore-kanalen met community-metadata zoals regio, scope en activiteit.',
-    mqttDesc: 'Stel MQTT-slots in en genereer kant-en-klare CLI-opdrachten voor DutchMeshCore-firmware.',
-    tomlDesc: 'Genereer een MCtoMQTT-configuratiebestand voor de DutchMeshCore MQTT collectors.',
-    firmwareDesc: 'Kies je apparaat en download direct succesvolle DutchMeshCore MQTT release-builds.',
+    hero: 'Tools voor het Nederlandse MeshCore-netwerk.',
+    heroSub: 'Kies wat je wilt doen. De technische pagina\'s blijven beschikbaar, maar de startpagina wijst je sneller naar de juiste tool.',
+    startTitle: 'Nieuw hier?',
+    startBody: 'DutchMeshCore helpt je kanalen vinden, nodes configureren, firmware flashen en community-projecten ontdekken.',
+    primaryChannels: 'Kanalen bekijken',
+    primaryMqtt: 'MQTT instellen',
+    primaryFlash: 'Firmware flashen',
+    tools: 'Kies je taak',
+    toolBrowser: 'Kanalen vinden',
+    toolBrowserMeta: 'Channel Browser',
+    browserDesc: 'Zoek kanalen, kopieer sleutels en exporteer lijsten voor MeshCore NL.',
+    toolMqtt: 'MQTT commando\'s maken',
+    toolMqttMeta: 'MQTT CLI Setup',
+    mqttDesc: 'Vul brokergegevens in en krijg kant-en-klare CLI-opdrachten voor je node.',
+    toolToml: 'Bridge-config maken',
+    toolTomlMeta: 'MCtoMQTT',
+    tomlDesc: 'Genereer een TOML- of legacy-config voor een MCtoMQTT bridge, Home Assistant en andere MQTT-koppelingen.',
+    toolFirmware: 'Firmware downloaden',
+    toolFirmwareMeta: 'Firmware',
+    firmwareDesc: 'Kies je apparaat en download DutchMeshCore MQTT release-builds.',
+    toolFlasher: 'Device flashen',
+    toolFlasherMeta: 'Flasher',
+    flasherDesc: 'Flash firmware direct vanuit de browser naar ondersteunde MeshCore-apparaten.',
+    toolUsb: 'Repeater instellen',
+    toolUsbMeta: 'USB Config',
+    usbDesc: 'Configureer een repeater of room server via USB-serieel.',
+    toolKeygen: 'Sleutel genereren',
+    toolKeygenMeta: 'MC-Keygen',
+    keygenDesc: 'Maak een vanity Ed25519-sleutelpaar voor een herkenbare node-prefix.',
+    toolProjects: 'Community-projecten bekijken',
+    toolProjectsMeta: 'Community Projects',
+    projectsDesc: 'Bekijk apps, analyzers en projecten rond DutchMeshCore-data.',
     live: 'Live',
     linksTitle: 'Handige links',
     linksSub: 'Actuele referenties voor MeshCore NL, regio-indeling, firmware en community-tools.',
@@ -21,6 +47,24 @@ const copy = {
     analyzersSub: 'Dashboards voor live netwerkuitvoer en kanaalactiviteit op DutchMeshCore-data.',
     mqttTitle: 'DutchMeshCore MQTT verbindingsinformatie',
     mqttSub: 'Collectorservers voor observer-data en community-analyzers.',
+    radioTitle: 'NL Radio Settings',
+    radioSub: 'Aanbevolen radio-instellingen voor MeshCore NL.',
+    radioParam: 'Parameter',
+    radioValue: 'Waarde',
+    radioPreset: 'Radio preset',
+    radioPresetValue: 'Custom',
+    radioSf: 'Spreading factor',
+    radioSfValue: 'SF7',
+    radioCr: 'Coding rate',
+    radioCrValue: 'CR5 (Deze kun je op 8 zetten als je op 5 niks binnen krijgt)',
+    radioFrequency: 'Frequentie',
+    radioFrequencyValue: '869.618 MHz',
+    radioBandwidth: 'Bandbreedte',
+    radioBandwidthValue: '62.5 kHz',
+    radioAdvert: 'Advert interval',
+    radioAdvertValue: '50 uur minimum (flood adverts)',
+    radioFirmware: 'Firmware',
+    radioFirmwareValue: '1.15 of nieuwer',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
@@ -34,12 +78,38 @@ const copy = {
     footer: 'Community tools voor MeshCore NL - 2026',
   },
   en: {
-    hero: 'A collection of tools for the Dutch MeshCore network.',
-    tools: 'Available tools',
-    browserDesc: 'Browse, filter, and export discovered MeshCore channels with community metadata such as region, scope, and activity.',
-    mqttDesc: 'Configure MQTT slots and generate ready-to-paste CLI commands for DutchMeshCore firmware.',
-    tomlDesc: 'Generate a MCtoMQTT configuration file for the DutchMeshCore MQTT collectors.',
-    firmwareDesc: 'Choose your device and directly download successful DutchMeshCore MQTT release builds.',
+    hero: 'Tools for the Dutch MeshCore network.',
+    heroSub: 'Choose what you want to do. The technical pages are still here, but the start page gets you to the right tool faster.',
+    startTitle: 'New here?',
+    startBody: 'DutchMeshCore helps you find channels, configure nodes, flash firmware, and discover community projects.',
+    primaryChannels: 'Browse channels',
+    primaryMqtt: 'Set up MQTT',
+    primaryFlash: 'Flash firmware',
+    tools: 'Choose your task',
+    toolBrowser: 'Find channels',
+    toolBrowserMeta: 'Channel Browser',
+    browserDesc: 'Search channels, copy keys, and export lists for MeshCore NL.',
+    toolMqtt: 'Create MQTT commands',
+    toolMqttMeta: 'MQTT CLI Setup',
+    mqttDesc: 'Fill in broker details and get ready-to-paste CLI commands for your node.',
+    toolToml: 'Build bridge config',
+    toolTomlMeta: 'MCtoMQTT',
+    tomlDesc: 'Generate TOML or legacy config for an MCtoMQTT bridge, Home Assistant, and other MQTT integrations.',
+    toolFirmware: 'Download firmware',
+    toolFirmwareMeta: 'Firmware',
+    firmwareDesc: 'Choose your device and download DutchMeshCore MQTT release builds.',
+    toolFlasher: 'Flash a device',
+    toolFlasherMeta: 'Flasher',
+    flasherDesc: 'Flash firmware from the browser to supported MeshCore devices.',
+    toolUsb: 'Set up a repeater',
+    toolUsbMeta: 'USB Config',
+    usbDesc: 'Configure a repeater or room server over USB serial.',
+    toolKeygen: 'Generate a key',
+    toolKeygenMeta: 'MC-Keygen',
+    keygenDesc: 'Create a vanity Ed25519 key pair for a recognizable node prefix.',
+    toolProjects: 'Explore community projects',
+    toolProjectsMeta: 'Community Projects',
+    projectsDesc: 'See apps, analyzers, and projects around DutchMeshCore data.',
     live: 'Live',
     linksTitle: 'Useful links',
     linksSub: 'Current references for MeshCore NL, region naming, firmware, and community tools.',
@@ -49,6 +119,24 @@ const copy = {
     analyzersSub: 'Dashboards for live network output and channel activity based on DutchMeshCore data.',
     mqttTitle: 'DutchMeshCore MQTT connection info',
     mqttSub: 'Collector servers for observer data and community analyzers.',
+    radioTitle: 'NL Radio Settings',
+    radioSub: 'Recommended radio settings for MeshCore NL.',
+    radioParam: 'Parameter',
+    radioValue: 'Value',
+    radioPreset: 'Radio preset',
+    radioPresetValue: 'Custom',
+    radioSf: 'Spreading factor',
+    radioSfValue: 'SF7',
+    radioCr: 'Coding rate',
+    radioCrValue: 'CR5 (set this to 8 if you receive nothing on 5)',
+    radioFrequency: 'Frequency',
+    radioFrequencyValue: '869.618 MHz',
+    radioBandwidth: 'Bandwidth',
+    radioBandwidthValue: '62.5 kHz',
+    radioAdvert: 'Advert interval',
+    radioAdvertValue: '50 hours minimum (flood adverts)',
+    radioFirmware: 'Firmware',
+    radioFirmwareValue: '1.15 or newer',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
@@ -70,6 +158,68 @@ export default function HomePage() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const navigate = useNavigate()
 
+  const taskCards = [
+    {
+      to: '/channel-browser',
+      icon: 'https://avatars.githubusercontent.com/u/279831159?s=400&u=f8b17fbf4860043026f3b7bb5233968cfd98aec9&v=4',
+      title: c.toolBrowser,
+      meta: c.toolBrowserMeta,
+      desc: c.browserDesc,
+      primary: true,
+    },
+    {
+      to: '/mqtt-cli',
+      iconText: '⚙',
+      title: c.toolMqtt,
+      meta: c.toolMqttMeta,
+      desc: c.mqttDesc,
+      primary: true,
+    },
+    {
+      to: '/flasher',
+      iconText: '↯',
+      title: c.toolFlasher,
+      meta: c.toolFlasherMeta,
+      desc: c.flasherDesc,
+      primary: true,
+    },
+    {
+      to: '/mcmqtt-toml',
+      iconText: '▣',
+      title: c.toolToml,
+      meta: c.toolTomlMeta,
+      desc: c.tomlDesc,
+    },
+    {
+      to: '/firmware',
+      iconText: '↓',
+      title: c.toolFirmware,
+      meta: c.toolFirmwareMeta,
+      desc: c.firmwareDesc,
+    },
+    {
+      to: '/usb-config',
+      iconText: '⌁',
+      title: c.toolUsb,
+      meta: c.toolUsbMeta,
+      desc: c.usbDesc,
+    },
+    {
+      to: '/keygen',
+      iconText: '◇',
+      title: c.toolKeygen,
+      meta: c.toolKeygenMeta,
+      desc: c.keygenDesc,
+    },
+    {
+      to: '/connected-brokers',
+      iconText: '◎',
+      title: c.toolProjects,
+      meta: c.toolProjectsMeta,
+      desc: c.projectsDesc,
+    },
+  ]
+
   async function copyValue(value: string, key: string) {
     const ok = await copyText(value)
     if (ok) {
@@ -90,54 +240,72 @@ export default function HomePage() {
           />
           <h1>DutchMeshCore <em>Toolbox</em></h1>
           <p>{c.hero}</p>
+          <p className="hero-sub">{c.heroSub}</p>
+        </section>
+
+        <section className="start-panel">
+          <div className="start-panel-copy">
+            <span className="start-kicker">{c.startTitle}</span>
+            <p>{c.startBody}</p>
+          </div>
+          <div className="start-actions">
+            <Link className="btn btn-accent" to="/channel-browser">{c.primaryChannels}</Link>
+            <Link className="btn" to="/mqtt-cli">{c.primaryMqtt}</Link>
+            <Link className="btn" to="/flasher">{c.primaryFlash}</Link>
+          </div>
         </section>
 
         <p className="section-label">{c.tools}</p>
         <div className="tools-grid">
-          <Link className="tool-card" to="/channel-browser">
-            <img
-              className="tool-icon"
-              src="https://avatars.githubusercontent.com/u/279831159?s=400&u=f8b17fbf4860043026f3b7bb5233968cfd98aec9&v=4"
-              alt="DutchMeshCore logo"
-            />
-            <span className="tool-name">
-              Channel Browser
-              <span className="tool-badge">{c.live}</span>
-            </span>
-            <p className="tool-desc">{c.browserDesc}</p>
-            <span className="tool-arrow">→</span>
-          </Link>
-
-          <Link className="tool-card" to="/mqtt-cli">
-            <span className="tool-icon tool-icon-text">⚙</span>
-            <span className="tool-name">
-              MQTT CLI Setup
-              <span className="tool-badge">{c.live}</span>
-            </span>
-            <p className="tool-desc">{c.mqttDesc}</p>
-            <span className="tool-arrow">→</span>
-          </Link>
-
-          <Link className="tool-card" to="/mcmqtt-toml">
-            <span className="tool-icon tool-icon-text">📄</span>
-            <span className="tool-name">
-              MCtoMQTT
-              <span className="tool-badge">{c.live}</span>
-            </span>
-            <p className="tool-desc">{c.tomlDesc}</p>
-            <span className="tool-arrow">→</span>
-          </Link>
-
-          <Link className="tool-card" to="/firmware">
-            <span className="tool-icon tool-icon-text">⬇</span>
-            <span className="tool-name">
-              Firmware
-              <span className="tool-badge">{c.live}</span>
-            </span>
-            <p className="tool-desc">{c.firmwareDesc}</p>
-            <span className="tool-arrow">→</span>
-          </Link>
+          {taskCards.map((card) => (
+            <Link
+              key={card.to}
+              className={`tool-card${card.primary ? ' tool-card-primary' : ''}`}
+              to={card.to}
+            >
+              {card.icon ? (
+                <img className="tool-icon" src={card.icon} alt="DutchMeshCore logo" />
+              ) : (
+                <span className="tool-icon tool-icon-text">{card.iconText}</span>
+              )}
+              <span className="tool-name">
+                {card.title}
+                <span className="tool-badge">{card.meta}</span>
+              </span>
+              <p className="tool-desc">{card.desc}</p>
+              <span className="tool-arrow">→</span>
+            </Link>
+          ))}
         </div>
+
+        <details className="info-panel" open>
+          <summary>
+            <span>{c.radioTitle}</span>
+            <span className="arrow">▼</span>
+          </summary>
+          <div className="info-panel-body">
+            <div className="info-box">
+              <h4>{c.radioSub}</h4>
+              <table className="mqtt-table radio-settings-table">
+                <thead>
+                  <tr>
+                    <th>{c.radioParam}</th>
+                    <th>{c.radioValue}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>{c.radioPreset}</td><td><code>{c.radioPresetValue}</code></td></tr>
+                  <tr><td>{c.radioSf}</td><td><code>{c.radioSfValue}</code></td></tr>
+                  <tr><td>{c.radioCr}</td><td><code>{c.radioCrValue}</code></td></tr>
+                  <tr><td>{c.radioFrequency}</td><td><code>{c.radioFrequencyValue}</code></td></tr>
+                  <tr><td>{c.radioBandwidth}</td><td><code>{c.radioBandwidthValue}</code></td></tr>
+                  <tr><td>{c.radioAdvert}</td><td><code>{c.radioAdvertValue}</code></td></tr>
+                  <tr><td>{c.radioFirmware}</td><td><code>{c.radioFirmwareValue}</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
 
         <details className="info-panel" open>
           <summary>

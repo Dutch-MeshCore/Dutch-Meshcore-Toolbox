@@ -443,3 +443,161 @@
   font-size: 1.2rem;
   color: var(--heading-color);
 }
+
+/* ── Windows 95 device pages ─────────────────────────────────────────────── */
+[data-theme="win95"] .device-page {
+  padding-top: 12px;
+  font-family: 'Tahoma', 'MS Sans Serif', Arial, sans-serif;
+}
+
+[data-theme="win95"] .device-page-header h1,
+[data-theme="win95"] .connect-screen h2,
+[data-theme="win95"] .panel-legend,
+[data-theme="win95"] .field-group label {
+  color: #000000;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+[data-theme="win95"] .panel,
+[data-theme="win95"] .device-group-header,
+[data-theme="win95"] .device-list,
+[data-theme="win95"] .role-list,
+[data-theme="win95"] .modal,
+[data-theme="win95"] .serial-overlay-header {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #555555 #555555 #ffffff;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+[data-theme="win95"] .field-group input,
+[data-theme="win95"] .field-group select,
+[data-theme="win95"] .field-group textarea,
+[data-theme="win95"] .device-search input {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #555555 #ffffff #ffffff #555555;
+  border-radius: 0;
+  box-shadow: none;
+  color: #000000;
+  font-family: 'Tahoma', 'MS Sans Serif', Arial, sans-serif;
+  font-size: 11px;
+  min-height: 22px;
+}
+
+[data-theme="win95"] .field-group input:focus,
+[data-theme="win95"] .field-group select:focus,
+[data-theme="win95"] .field-group textarea:focus,
+[data-theme="win95"] .device-search input:focus {
+  outline: 1px dotted #000000;
+  outline-offset: -4px;
+  border-color: #555555 #ffffff #ffffff #555555;
+}
+
+[data-theme="win95"] .device-list,
+[data-theme="win95"] .role-list {
+  background: #ffffff;
+  border-color: #555555 #ffffff #ffffff #555555;
+}
+
+[data-theme="win95"] .device-list li + li,
+[data-theme="win95"] .role-list li + li {
+  border-top-color: #dfdfdf;
+}
+
+[data-theme="win95"] .device-list-btn,
+[data-theme="win95"] .role-btn {
+  background: #ffffff;
+  color: #000000;
+  font-family: 'Tahoma', 'MS Sans Serif', Arial, sans-serif;
+  font-size: 11px;
+}
+
+[data-theme="win95"] .device-list-btn:hover,
+[data-theme="win95"] .role-btn:hover {
+  background: #000080;
+  color: #ffffff;
+}
+
+[data-theme="win95"] .role-btn:hover .role-desc {
+  color: #ffffff;
+}
+
+[data-theme="win95"] .role-btn .role-desc,
+[data-theme="win95"] .byte-counter,
+[data-theme="win95"] .device-page-footer,
+[data-theme="win95"] .device-page-footer a {
+  color: #444444;
+}
+
+[data-theme="win95"] .flash-log,
+[data-theme="win95"] .serial-console {
+  background: #000000;
+  border: 2px solid;
+  border-color: #555555 #ffffff #ffffff #555555;
+  border-radius: 0;
+  color: #c0c0c0;
+}
+
+[data-theme="win95"] .flash-progress-bar {
+  height: 18px;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #555555 #ffffff #ffffff #555555;
+  border-radius: 0;
+  padding: 2px;
+}
+
+[data-theme="win95"] .flash-progress-bar-fill {
+  background: #000080;
+  border-radius: 0;
+}
+
+[data-theme="win95"] .serial-input-row {
+  background: #c0c0c0;
+  border-top: 2px solid #808080;
+}
+
+[data-theme="win95"] .serial-prompt,
+[data-theme="win95"] .serial-input {
+  color: #000080;
+}
+
+[data-theme="win95"] .modal-overlay,
+[data-theme="win95"] .busy-overlay {
+  background: rgba(0, 0, 128, .25);
+  backdrop-filter: none;
+}
+
+[data-theme="win95"] .modal-head {
+  background: linear-gradient(to right, #000080 0%, #1084d0 100%);
+  border: 0;
+  margin: 2px;
+  padding: 3px 4px 3px 6px;
+  min-height: 20px;
+}
+
+[data-theme="win95"] .modal-head h2 {
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+[data-theme="win95"] .modal-body,
+[data-theme="win95"] .modal-foot {
+  background: #c0c0c0;
+}
+
+[data-theme="win95"] #usb-config-map {
+  border: 2px solid;
+  border-color: #555555 #ffffff #ffffff #555555;
+  border-radius: 0;
+}
+
+[data-theme="win95"] .check-row input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  accent-color: #000080;
+}

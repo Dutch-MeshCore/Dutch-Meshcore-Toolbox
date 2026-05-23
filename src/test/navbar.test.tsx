@@ -20,9 +20,9 @@ describe('Navbar', () => {
     expect(screen.getByText(/DutchMeshCore/i)).toBeInTheDocument()
   })
 
-  it('renders Devices nav trigger', () => {
+  it('renders device tools nav trigger', () => {
     renderNavbar()
-    expect(screen.getByText(/Devices|Apparaten/i)).toBeInTheDocument()
+    expect(screen.getByText(/Device tools|Apparaat-tools/i)).toBeInTheDocument()
   })
 
   it('does not render a link to the Local Editor', () => {

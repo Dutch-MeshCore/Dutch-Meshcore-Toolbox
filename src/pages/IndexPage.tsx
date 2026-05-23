@@ -87,14 +87,6 @@ export default function IndexPage() {
             <span className="arrow">▼</span>
           </summary>
           <div className="info-panel-body">
-            <div className="info-box warn">
-              <h4 style={{ color: "#facc15" }}>{t('info_scope_title')}</h4>
-              <p>{t('info_scope_body')}</p>
-            </div>
-            <div className="info-box danger">
-              <h4 style={{ color: "#fbbf24" }}>{t('info_ghpages_title')}</h4>
-              <p>{t('info_ghpages_body')}</p>
-            </div>
             <div className="info-box">
               <h4 style={{ color: "#93c5fd" }}>{t('info_project_title')}</h4>
               <p>{t('info_project_body')}</p>
