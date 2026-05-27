@@ -2,7 +2,11 @@
  * Builds a FlasherConfig from the Dutch MeshCore .prebuilt firmware directory.
  *
  * Files follow the naming pattern:
- *   {DeviceKey}_repeater_observer_mqtt-{version}[-merged].bin
+ *   {DeviceKey}_{firmwareRole}-{version}[-merged].bin
+ *
+ * Supported firmware roles:
+ *   repeater_observer_mqtt
+ *   room_server_observer_mqtt
  *
  * The GitHub API is queried at runtime so the flasher automatically picks up
  * new firmware releases whenever the branch is updated.
@@ -25,6 +29,7 @@ const DEVICE_LABELS: Record<string, string> = {
   Heltec_WSL3:                'Heltec WSL3',
   Heltec_v3:                  'Heltec V3',
   Heltec_v4:                  'Heltec V4',
+  heltec_v4:                  'Heltec V4',
   heltec_v4_expansionkit:     'Heltec V4 Expansion Kit',
   LilyGo_T3S3_sx1262:         'LilyGo T3S3 SX1262',
   LilyGo_TLora_V2_1_1_6:     'LilyGo T-LoRa V2.1.1.6',
@@ -36,25 +41,85 @@ const DEVICE_LABELS: Record<string, string> = {
   Xiao_S3_WIO:                'Xiao S3 WIO',
 }
 
-/** The fixed role segment that separates the device key from the version. */
-const ROLE_SEP = '_repeater_observer_mqtt-'
+const ROLE_DEFS = [
+  {
+    separator: '_repeater_observer_mqtt-',
+    role: 'dutchmeshcore_mqtt',
+    icon: '📡',
+    title: 'DutchMeshCore MQTT',
+    subTitle: 'Repeater + Observer + MQTT',
+  },
+  {
+    separator: '_room_server_observer_mqtt-',
+    role: 'dutchmeshcore_roomserver_mqtt',
+    icon: '🏠',
+    title: 'DutchMeshCore Roomserver MQTT',
+    subTitle: 'Room Server + Observer + MQTT',
+  },
+  {
+    separator: '_room_server_mqtt-',
+    role: 'dutchmeshcore_roomserver_mqtt',
+    icon: '🏠',
+    title: 'DutchMeshCore Roomserver MQTT',
+    subTitle: 'Room Server + MQTT',
+  },
+  {
+    separator: '_roomserver_mqtt-',
+    role: 'dutchmeshcore_roomserver_mqtt',
+    icon: '🏠',
+    title: 'DutchMeshCore Roomserver MQTT',
+    subTitle: 'Room Server + MQTT',
+  },
+] as const
+
+const ROLE_ORDER = ROLE_DEFS.filter(
+  (roleDef, index, all) => all.findIndex(def => def.role === roleDef.role) === index
+)
 
 interface GHFile {
   name: string
   download_url: string | null
 }
 
-interface DeviceEntry {
-  deviceKey: string
+interface FirmwareVariant {
   versionKey: string     // e.g. "v1.15.0"
   mergedUrl:  string     // full flash — address 0x0
   appUrl:     string     // app-only — address 0x10000
 }
 
+interface RoleEntry {
+  role: string
+  versions: Map<string, FirmwareVariant>
+}
+
+interface DeviceEntry {
+  deviceKey: string
+  roles: Map<string, RoleEntry>
+}
+
+function parseFirmwareName(name: string) {
+  for (const roleDef of ROLE_DEFS) {
+    const sepIdx = name.indexOf(roleDef.separator)
+    if (sepIdx < 0) continue
+
+    const deviceKey = name.slice(0, sepIdx)
+    const rest = name.slice(sepIdx + roleDef.separator.length)
+    const isMerged = rest.endsWith('-merged.bin')
+    const versionFull = isMerged
+      ? rest.slice(0, -'-merged.bin'.length)
+      : rest.slice(0, -'.bin'.length)
+    const versionKey = versionFull.match(/^(v?\d+\.\d+\.\d+)/)?.[1] ?? versionFull
+
+    return { deviceKey, role: roleDef.role, versionKey, isMerged }
+  }
+
+  return null
+}
+
 /**
  * Parse a list of GitHub API file objects into a FlasherConfig.
- * Each pair of `{Device}...bin` / `{Device}...-merged.bin` becomes one
- * FlasherDevice entry with both file variants in the same version.
+ * Each pair of `{Device}_{Role}...bin` / `{Device}_{Role}...-merged.bin`
+ * becomes one firmware role with both file variants in the same version.
  */
 export function buildDmcConfig(files: GHFile[]): FlasherConfig {
   const map = new Map<string, DeviceEntry>()
@@ -62,75 +127,79 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
   for (const f of files) {
     if (!f.name.endsWith('.bin')) continue
 
-    const sepIdx = f.name.indexOf(ROLE_SEP)
-    if (sepIdx < 0) continue
-
-    const deviceKey  = f.name.slice(0, sepIdx)
-    // rest = "v1.15.0-dutchmeshcore.nl-ebb7801d[-merged].bin"
-    const rest       = f.name.slice(sepIdx + ROLE_SEP.length)
-    const isMerged   = rest.endsWith('-merged.bin')
-    const versionFull = isMerged
-      ? rest.slice(0, -'-merged.bin'.length)
-      : rest.slice(0, -'.bin'.length)
-
-    // Use only the semver part (v1.15.0) as the visible dropdown key
-    const versionKey = versionFull.match(/^(v\d+\.\d+\.\d+)/)?.[1] ?? versionFull
+    const parsed = parseFirmwareName(f.name)
+    if (!parsed) continue
 
     // Prefer the download_url from the API; construct a fallback if null
     const url = f.download_url ?? `${PREBUILT_RAW_BASE}/${f.name}`
 
-    const entry = map.get(deviceKey) ?? { deviceKey, versionKey, mergedUrl: '', appUrl: '' }
-    if (isMerged) entry.mergedUrl = url
-    else          entry.appUrl   = url
-    map.set(deviceKey, entry)
+    const device = map.get(parsed.deviceKey) ?? { deviceKey: parsed.deviceKey, roles: new Map() }
+    const role = device.roles.get(parsed.role) ?? { role: parsed.role, versions: new Map() }
+    const variant = role.versions.get(parsed.versionKey) ?? {
+      versionKey: parsed.versionKey,
+      mergedUrl: '',
+      appUrl: '',
+    }
+
+    if (parsed.isMerged) variant.mergedUrl = url
+    else                 variant.appUrl = url
+
+    role.versions.set(parsed.versionKey, variant)
+    device.roles.set(parsed.role, role)
+    map.set(parsed.deviceKey, device)
   }
 
   const devices = [...map.values()]
-    .map(({ deviceKey, versionKey, mergedUrl, appUrl }) => ({
-      maker: 'dutchmeshcore',
-      class: 'community' as const,
-      name: DEVICE_LABELS[deviceKey] ?? deviceKey.replace(/_/g, ' '),
-      type: 'esp32' as const,
-      firmware: [{
-        role: 'dutchmeshcore_mqtt',
-        tooltip: 'App update keeps bootloader & settings. Full flash is for new or factory-reset devices.',
-        version: {
-          // App update first — the common case for existing devices
-          ...(appUrl ? {
-            [`${versionKey} — App update`]: {
-              files: [{
-                type: 'flash-update' as const,
-                name: appUrl,
-                title: 'App update — keeps bootloader, partition table & config',
-              }],
-              notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
-            },
-          } : {}),
-          // Full flash second — for new or factory-reset devices
-          ...(mergedUrl ? {
-            [`${versionKey} — Full flash`]: {
-              files: [{
-                type: 'flash-wipe' as const,
-                name: mergedUrl,
-                title: 'Full flash — merged bin (bootloader + partition + app)',
-              }],
-              notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
-            },
-          } : {}),
-        },
-      }],
-    }))
+    .map(({ deviceKey, roles }) => {
+      const firmware = ROLE_ORDER
+        .map(roleDef => roles.get(roleDef.role))
+        .filter((role): role is RoleEntry => Boolean(role))
+        .map(role => ({
+          role: role.role,
+          tooltip: 'App update keeps bootloader & settings. Full flash is for new or factory-reset devices.',
+          version: Object.fromEntries(
+            [...role.versions.values()].flatMap(({ versionKey, mergedUrl, appUrl }) => [
+              ...(appUrl ? [[
+                `${versionKey} — App update`,
+                {
+                  files: [{
+                    type: 'flash-update' as const,
+                    name: appUrl,
+                    title: 'App update — keeps bootloader, partition table & config',
+                  }],
+                  notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
+                },
+              ]] : []),
+              ...(mergedUrl ? [[
+                `${versionKey} — Full flash`,
+                {
+                  files: [{
+                    type: 'flash-wipe' as const,
+                    name: mergedUrl,
+                    title: 'Full flash — merged bin (bootloader + partition + app)',
+                  }],
+                  notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
+                },
+              ]] : []),
+            ])
+          ),
+        }))
+
+      return {
+        maker: 'dutchmeshcore',
+        class: 'community' as const,
+        name: DEVICE_LABELS[deviceKey] ?? deviceKey.replace(/_/g, ' '),
+        type: 'esp32' as const,
+        firmware,
+      }
+    })
     .sort((a, b) => a.name.localeCompare(b.name))
 
   return {
     staticPath: '',
-    role: {
-      dutchmeshcore_mqtt: {
-        icon:     '📡',
-        title:    'DutchMeshCore MQTT',
-        subTitle: 'Repeater + Observer + MQTT',
-      },
-    },
+    role: Object.fromEntries(
+      ROLE_ORDER.map(({ role, icon, title, subTitle }) => [role, { icon, title, subTitle }])
+    ),
     notice:  {},
     maker:   { dutchmeshcore: { name: 'DutchMeshCore' } },
     device:  devices,

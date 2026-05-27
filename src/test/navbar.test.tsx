@@ -25,6 +25,12 @@ describe('Navbar', () => {
     expect(screen.getByText(/Device tools|Apparaat-tools/i)).toBeInTheDocument()
   })
 
+  it('renders console and repeater setup in device tools menu', () => {
+    renderNavbar()
+    expect(screen.getByRole('link', { name: /console/i })).toHaveAttribute('href', '/flasher?console=1')
+    expect(screen.getByRole('link', { name: /repeater setup/i })).toHaveAttribute('href', '/usb-config')
+  })
+
   it('does not render a link to the Local Editor', () => {
     renderNavbar()
     // In English (default in jsdom), nav_editor = 'Local Editor'

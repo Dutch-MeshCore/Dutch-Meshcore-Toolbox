@@ -35,6 +35,27 @@ export function useFlasher() {
     setState(s => ({ ...s, log: s.log + text }))
   }
 
+  async function firmwareBlob(
+    file: { name: string; file?: File },
+    config: FlasherConfig
+  ): Promise<Blob> {
+    if (file.file) return file.file
+
+    const url = getFirmwarePath(file, config.staticPath, FLASHER_BASE_URL)
+    const resp = await fetch(url)
+    if (!resp.ok) throw new Error(`Firmware download ${resp.status}: ${resp.statusText}`)
+    return resp.blob()
+  }
+
+  async function blobToBinaryString(blob: Blob): Promise<string> {
+    return new Promise<string>((res, rej) => {
+      const fr = new FileReader()
+      fr.onload = () => res(fr.result as string)
+      fr.onerror = rej
+      fr.readAsBinaryString(blob)
+    })
+  }
+
   async function flash(
     device: FlasherDevice,
     firmware: DeviceFirmware,
@@ -75,15 +96,8 @@ export function useFlasher() {
 
         const fileArray: { data: string; address: number }[] = []
         for (const f of versionData.files) {
-          const url = getFirmwarePath(f, config.staticPath, FLASHER_BASE_URL)
-          const resp = await fetch(url)
-          const blob = await resp.blob()
-          const data = await new Promise<string>((res, rej) => {
-            const fr = new FileReader()
-            fr.onload = () => res(fr.result as string)
-            fr.onerror = rej
-            fr.readAsBinaryString(blob)
-          })
+          const blob = await firmwareBlob(f, config)
+          const data = await blobToBinaryString(blob)
           fileArray.push({ data, address: f.type === 'flash-wipe' ? 0x0 : 0x10000 })
         }
 
@@ -114,9 +128,7 @@ export function useFlasher() {
         const dfu = new Dfu(port)
         instanceRef.current = dfu
 
-        const zipUrl = getFirmwarePath(versionData.files[0], config.staticPath, FLASHER_BASE_URL)
-        const resp = await fetch(zipUrl)
-        const blob = await resp.blob()
+        const blob = await firmwareBlob(versionData.files[0], config)
 
         await dfu.dfuUpdate(blob, (done: number, total: number) => {
           setState(s => ({ ...s, percent: Math.round((done / total) * 100) }))

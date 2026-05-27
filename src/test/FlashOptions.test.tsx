@@ -61,4 +61,29 @@ describe('FlashOptions', () => {
     fireEvent.click(screen.getByText(/flash!/i))
     expect(onFlash).toHaveBeenCalled()
   })
+
+  it('renders custom firmware metadata above the version selector', () => {
+    const customFirmware: DeviceFirmware = {
+      role: 'custom',
+      title: 'Custom Firmware',
+      subTitle: 'Heltec_Wireless_Tracker_repeater_observer_mqtt-1.15.0.bin',
+      version: {
+        custom: { files: [{ type: 'flash-update', name: 'local.bin', title: 'local.bin' }] },
+      },
+      customFile: true,
+    }
+
+    render(
+      <LangProvider>
+        <FlashOptions
+          device={device} firmware={customFirmware} config={config as FlasherConfig}
+          supported={false} onFlash={vi.fn()} onBack={vi.fn()}
+        />
+      </LangProvider>
+    )
+
+    expect(screen.getByText(/Custom Firmware/)).toBeInTheDocument()
+    expect(screen.getByText(/Heltec_Wireless_Tracker/)).toBeInTheDocument()
+    expect(screen.getByText('custom')).toBeInTheDocument()
+  })
 })

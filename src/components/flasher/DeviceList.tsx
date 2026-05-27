@@ -80,6 +80,7 @@ export default function DeviceList({ devices, onSelect }: Props) {
                 onChange={e => {
                   const file = e.target.files?.[0]
                   if (!file) return
+                  const isMergedBin = file.name.toLowerCase().endsWith('-merged.bin')
                   onSelect({
                     maker: 'custom',
                     class: 'community',
@@ -87,9 +88,18 @@ export default function DeviceList({ devices, onSelect }: Props) {
                     type: file.name.endsWith('.zip') ? 'nrf52' : 'esp32',
                     firmware: [{
                       role: 'custom',
+                      icon: '📄',
+                      title: t('flasher_group_custom'),
+                      subTitle: file.name,
+                      tooltip: t('flasher_custom_tooltip'),
                       version: {
                         custom: {
-                          files: [{ type: 'custom', name: '', title: file.name }],
+                          files: [{
+                            type: isMergedBin ? 'flash-wipe' : 'flash-update',
+                            name: file.name,
+                            title: file.name,
+                            file,
+                          }],
                         },
                       },
                       customFile: true,

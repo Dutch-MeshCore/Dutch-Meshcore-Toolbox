@@ -40,4 +40,35 @@ describe('DeviceList', () => {
     fireEvent.click(screen.getByText('Heltec V3'))
     expect(onSelect).toHaveBeenCalledWith(devices[0])
   })
+
+  it('keeps the selected custom app bin file for direct flashing', () => {
+    const onSelect = vi.fn()
+    const { container } = renderList(onSelect)
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement
+    const file = new File(['firmware'], 'Heltec_Wireless_Tracker_repeater_observer_mqtt-1.15.0.bin')
+
+    fireEvent.change(input, { target: { files: [file] } })
+
+    const selected = onSelect.mock.calls[0][0] as FlasherDevice
+    const firmware = selected.firmware[0]
+    const firmwareFile = selected.firmware[0].version.custom.files[0]
+    expect(selected.type).toBe('esp32')
+    expect(firmware.title).toBe('Custom Firmware')
+    expect(firmware.subTitle).toBe(file.name)
+    expect(firmwareFile.type).toBe('flash-update')
+    expect(firmwareFile.name).toBe(file.name)
+    expect(firmwareFile.file).toBe(file)
+  })
+
+  it('marks selected custom merged bins as full flash files', () => {
+    const onSelect = vi.fn()
+    const { container } = renderList(onSelect)
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement
+    const file = new File(['firmware'], 'Heltec_Wireless_Tracker_repeater_observer_mqtt-1.15.0-merged.bin')
+
+    fireEvent.change(input, { target: { files: [file] } })
+
+    const selected = onSelect.mock.calls[0][0] as FlasherDevice
+    expect(selected.firmware[0].version.custom.files[0].type).toBe('flash-wipe')
+  })
 })

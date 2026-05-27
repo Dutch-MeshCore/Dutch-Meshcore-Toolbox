@@ -1,5 +1,5 @@
-import { useEffect, useReducer, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useReducer, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import DeviceList from '../components/flasher/DeviceList'
 import RoleSelector from '../components/flasher/RoleSelector'
@@ -53,6 +53,8 @@ function reducer(state: State, action: Action): State {
 export default function FlasherPage() {
   const { t } = useLang()
   const navigate = useNavigate()
+  const location = useLocation()
+  const openedConsoleFromQuery = useRef(false)
   const [sel, dispatch] = useReducer(reducer, { step: 'idle', device: null, firmware: null })
 
   const [config, setConfig] = useState<FlasherConfig | null>(null)
@@ -65,6 +67,17 @@ export default function FlasherPage() {
   useEffect(() => {
     loadConfig()
   }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    if (params.get('console') !== '1') {
+      openedConsoleFromQuery.current = false
+      return
+    }
+    if (openedConsoleFromQuery.current) return
+    openedConsoleFromQuery.current = true
+    console_.open()
+  }, [location.search])
 
   function loadConfig() {
     setConfigLoading(true)

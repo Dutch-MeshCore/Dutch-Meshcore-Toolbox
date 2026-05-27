@@ -99,7 +99,8 @@ export default function Navbar() {
               </button>
               <div className="nav-dropdown-menu">
                 <Link to="/flasher" className={pathname === '/flasher' ? 'active' : ''} onClick={close}>{t('nav_flasher')}</Link>
-                <Link to="/usb-config" className={pathname === '/usb-config' ? 'active' : ''} onClick={close}>{t('nav_usbconfig')}</Link>
+                <Link to="/flasher?console=1" onClick={close}>{t('flasher_console')}</Link>
+                <Link to="/usb-config" className={pathname === '/usb-config' ? 'active' : ''} onClick={close}>{t('flasher_repeater_setup')}</Link>
               </div>
             </div>
 

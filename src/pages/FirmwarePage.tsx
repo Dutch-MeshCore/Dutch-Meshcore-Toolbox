@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
 import { fetchDmcConfig } from '../utils/dutchFlasherConfig'
-import type { FlasherConfig } from '../types'
+import { getRoleFwValue } from '../utils/flasherUtils'
+import type { DeviceFirmware, FlasherConfig } from '../types'
 
 const FIRMWARE_REPO = 'https://github.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT'
 
@@ -12,6 +13,7 @@ const copy = {
     title: 'Firmware',
     subtitle: 'Download of flash DutchMeshCore MQTT-firmware rechtstreeks vanuit de GitHub-repo.',
     device: 'Apparaat',
+    firmwareType: 'Firmwaretype',
     version: 'Versie',
     downloadBin: '⬇ Download app .bin',
     downloadMerged: '⬇ Download merged .bin',
@@ -35,6 +37,7 @@ const copy = {
     title: 'Firmware',
     subtitle: 'Download or flash DutchMeshCore MQTT firmware directly from the GitHub repo.',
     device: 'Device',
+    firmwareType: 'Firmware type',
     version: 'Version',
     downloadBin: '⬇ Download app .bin',
     downloadMerged: '⬇ Download merged .bin',
@@ -64,6 +67,7 @@ export default function FirmwarePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [selectedName, setSelectedName] = useState('')
+  const [selectedRole, setSelectedRole] = useState('')
 
   function load() {
     setLoading(true)
@@ -71,7 +75,10 @@ export default function FirmwarePage() {
     fetchDmcConfig()
       .then(cfg => {
         setConfig(cfg)
-        if (cfg.device.length > 0) setSelectedName(cfg.device[0].name)
+        if (cfg.device.length > 0) {
+          setSelectedName(cfg.device[0].name)
+          setSelectedRole(cfg.device[0].firmware[0]?.role ?? '')
+        }
         setLoading(false)
       })
       .catch(() => { setError(true); setLoading(false) })
@@ -80,8 +87,14 @@ export default function FirmwarePage() {
   useEffect(() => { load() }, [])
 
   const device   = useMemo(() => config?.device.find(d => d.name === selectedName), [config, selectedName])
-  const firmware = device?.firmware[0]
+  const firmware = useMemo(
+    () => device?.firmware.find(fw => fw.role === selectedRole) ?? device?.firmware[0],
+    [device, selectedRole]
+  )
   const versions = Object.entries(firmware?.version ?? {})
+  const firmwareTitle = firmware && config
+    ? getFirmwareLabel(firmware, config)
+    : ''
 
   // Pull apart the two version entries (App update / Full flash)
   const appEntry    = versions.find(([k]) => k.includes('App update'))
@@ -160,13 +173,23 @@ export default function FirmwarePage() {
                     ))}
                   </select>
                 </label>
+                {device && device.firmware.length > 1 && (
+                  <label>
+                    <span>{c.firmwareType}</span>
+                    <select value={firmware?.role ?? ''} onChange={e => setSelectedRole(e.target.value)}>
+                      {device.firmware.map(fw => (
+                        <option key={fw.role} value={fw.role}>{getFirmwareLabel(fw, config)}</option>
+                      ))}
+                    </select>
+                  </label>
+                )}
               </div>
 
               {semver && (
                 <div className="firmware-result">
                   <div>
                     <span>{c.version}</span>
-                    <strong>{selectedName} — {semver}</strong>
+                    <strong>{selectedName} — {firmwareTitle} — {semver}</strong>
                   </div>
                   <div className="firmware-actions">
                     {appFile && (
@@ -206,4 +229,10 @@ export default function FirmwarePage() {
       </main>
     </>
   )
+}
+
+function getFirmwareLabel(firmware: DeviceFirmware, config: FlasherConfig): string {
+  const title = getRoleFwValue(firmware, config.role, 'title')
+  const subTitle = getRoleFwValue(firmware, config.role, 'subTitle')
+  return title && subTitle ? `${title} — ${subTitle}` : title || firmware.role
 }

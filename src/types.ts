@@ -55,6 +55,7 @@ export interface FirmwareFile {
   type: string   // e.g. "flash-wipe" | "flash-update" | "uf2"
   name: string   // filename or absolute URL
   title: string  // display label
+  file?: File     // local custom firmware selected from the browser
 }
 
 export interface FirmwareVersion {
