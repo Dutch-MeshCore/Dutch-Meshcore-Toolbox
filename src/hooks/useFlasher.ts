@@ -78,7 +78,7 @@ export function useFlasher() {
         transportRef.current = transport
         const loader = new ESPLoader({
           transport,
-          baudrate: 921600,
+          baudrate: 115200,
           romBaudrate: 115200,
           terminal: {
             clean: () => setState(s => ({ ...s, log: '' })),
@@ -130,9 +130,9 @@ export function useFlasher() {
 
         const blob = await firmwareBlob(versionData.files[0], config)
 
-        await dfu.dfuUpdate(blob, (done: number, total: number) => {
-          setState(s => ({ ...s, percent: Math.round((done / total) * 100) }))
-          appendLog(`Progress: ${done}/${total}\n`)
+        await dfu.dfuUpdate(blob, (progress: number) => {
+          setState(s => ({ ...s, percent: progress }))
+          appendLog(`Progress: ${progress}%\n`)
         })
         setState(s => ({ ...s, percent: 100 }))
       }
@@ -171,8 +171,8 @@ export function useFlasher() {
       const url = `${FLASHER_BASE_URL}/${device.erase.replace('.zip', '.uf2')}`
       const resp = await fetch(url)
       const blob = await resp.blob()
-      await dfu.dfuUpdate(blob, (done: number, total: number) => {
-        setState(s => ({ ...s, nrfEraserPercent: Math.round((done / total) * 100) }))
+      await dfu.dfuUpdate(blob, (progress: number) => {
+        setState(s => ({ ...s, nrfEraserPercent: progress }))
       })
       setState(s => ({ ...s, nrfEraserPercent: 100, nrfEraserFlashing: false }))
     } catch {
