@@ -106,7 +106,7 @@ export function useSerialDevice() {
     setBusy('Saving configuration…')
     const { vars, varsDevice } = device
     const fwVer = parseFirmwareVersion(device.version)
-    const rebootKeys = new Set(['radio', 'prv.key'])
+    const rebootKeys = new Set(['radio'])
     let needsReboot = false
 
     try {
@@ -125,6 +125,11 @@ export function useSerialDevice() {
           value = `${r.freq},${r.bw}.0,${r.sf},${r.cr}`
         }
         await cli.setVariable(key, value)
+      }
+
+      if (device.importPrvKey) {
+        await cli.setVariable('prv.key', device.importPrvKey)
+        needsReboot = true
       }
 
       if (device.password) {
@@ -150,5 +155,65 @@ export function useSerialDevice() {
     setDevice(d => d ? { ...d, ...patch } : d)
   }, [])
 
-  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice }
+  const exportConfig = useCallback(async () => {
+    if (!device) return
+    const cli = cliRef.current as {
+      getVariable: (k: string) => Promise<string>
+      parseVariableResponse: (r: string) => unknown
+    } | null
+    if (!cli) return
+
+    const { vars, varsDevice } = device
+    const fwVer = parseFirmwareVersion(device.version)
+    const plainVars: Record<string, unknown> = {}
+
+    for (const key of Object.keys(vars) as Array<keyof DeviceVars>) {
+      if (!(key in varsDevice)) continue
+      const req = VAR_MIN_VERSION[key]
+      if (req && !versionAtLeast(fwVer, req)) continue
+      const val = vars[key]
+      plainVars[key] = typeof val === 'object' && val !== null ? { ...(val as object) } : val
+    }
+
+    try {
+      const r = await cli.getVariable('prv.key')
+      const prvKey = cli.parseVariableResponse(r)
+      if (prvKey) plainVars['prv.key'] = prvKey
+    } catch { /* optional */ }
+
+    const safeName = (s: string) => (s || '').replace(/[^a-zA-Z0-9_-]/g, '_')
+    const blob = new Blob([JSON.stringify({ vars: plainVars }, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `config-${safeName(device.role) || 'unknown'}-${safeName(device.vars.name) || 'noname'}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }, [device])
+
+  const importFromJson = useCallback((json: string): boolean => {
+    if (!device) return false
+    const data = JSON.parse(json) // let caller catch
+    if (!data.vars || typeof data.vars !== 'object') throw new Error('Invalid config file: missing vars.')
+
+    const { vars } = device
+    const fwVer = parseFirmwareVersion(device.version)
+    const newVars = { ...vars }
+
+    for (const key of Object.keys(vars) as Array<keyof DeviceVars>) {
+      if (!(key in data.vars)) continue
+      const req = VAR_MIN_VERSION[key]
+      if (req && !versionAtLeast(fwVer, req)) continue
+      const val = data.vars[key]
+      ;(newVars as unknown as Record<string, unknown>)[key] =
+        typeof val === 'object' && val !== null ? { ...(val as object) } : val
+    }
+
+    const patch: Partial<SerialDeviceInfo> = { vars: newVars }
+    if (data.vars['prv.key']) patch.importPrvKey = data.vars['prv.key']
+    setDevice(d => d ? { ...d, ...patch } : d)
+    return true
+  }, [device])
+
+  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson }
 }

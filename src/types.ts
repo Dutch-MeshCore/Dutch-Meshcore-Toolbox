@@ -161,6 +161,7 @@ export interface SerialDeviceInfo {
   password: string
   vars: DeviceVars
   varsDevice: Partial<DeviceVars>
+  importPrvKey?: string
 }
 
 export interface RadioPreset {

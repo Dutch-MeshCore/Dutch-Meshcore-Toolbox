@@ -7,7 +7,7 @@ import { PRESETS_URL } from '../utils/configUtils'
 
 export default function UsbConfigPage() {
   const { t } = useLang()
-  const { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice } =
+  const { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson } =
     useSerialDevice()
   const [presets, setPresets] = useState<RadioPreset[]>([])
   const [showAdvanced, setShowAdvanced] = useState(false)
@@ -57,25 +57,18 @@ export default function UsbConfigPage() {
     await sendCommand('reset')
   }
 
-  function handleExport() {
-    if (!device) return
-    const json = JSON.stringify(device.vars, null, 2)
-    const blob = new Blob([json], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `meshcore-config-${Date.now()}.json`
-    a.click()
-    URL.revokeObjectURL(url)
+  async function handleExport() {
+    await exportConfig()
+    showToast(t('config_exported_toast'))
   }
 
   function handleImport(json: string) {
     try {
-      const parsed = JSON.parse(json)
-      if (device && typeof parsed === 'object' && parsed !== null) {
-        updateDevice({ vars: { ...device.vars, ...parsed } })
-      }
-    } catch { /* ignore invalid JSON */ }
+      const ok = importFromJson(json)
+      if (ok) showToast(t('config_imported_toast'))
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : t('config_import_error'))
+    }
   }
 
   // ── Unsupported browser ───────────────────────────────────────────────────────
