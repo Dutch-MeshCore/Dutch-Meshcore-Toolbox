@@ -197,12 +197,6 @@ function parseDirAsset(name: string, url: string, roleDefs: RoleDef[]): ParsedFi
 
 // ─── Config builder ───────────────────────────────────────────────────────────
 
-interface DeviceRoleVersionKey {
-  deviceKey: string
-  role: string
-  versionKey: string
-}
-
 /**
  * Converts a flat list of parsed firmware files into a FlasherConfig.
  *
@@ -247,13 +241,6 @@ function buildConfig(
   type DeviceMap = Map<string, Map<string, Map<string, { type: 'esp32' | 'nrf52'; appUrl: string; mergedUrl: string }>>>
   const deviceMap: DeviceMap = new Map()
 
-  function ensureDevice(deviceKey: string, role: string, versionKey: string) {
-    if (!deviceMap.has(deviceKey)) deviceMap.set(deviceKey, new Map())
-    const roleMap = deviceMap.get(deviceKey)!
-    if (!roleMap.has(role)) roleMap.set(role, new Map())
-    return roleMap.get(role)!.get(versionKey) ?? { type: 'esp32' as const, appUrl: '', mergedUrl: '' }
-  }
-
   for (const [k, { appUrl, mergedUrl }] of esp32Map) {
     const [deviceKey, role, versionKey] = k.split('/')
     if (!deviceMap.has(deviceKey)) deviceMap.set(deviceKey, new Map())
@@ -262,7 +249,7 @@ function buildConfig(
     roleMap.get(role)!.set(versionKey, { type: 'esp32', appUrl, mergedUrl })
   }
 
-  for (const [k, { url, ext }] of nrf52Map) {
+  for (const [k, { url }] of nrf52Map) {
     const [deviceKey, role, versionKey] = k.split('/')
     if (!deviceMap.has(deviceKey)) deviceMap.set(deviceKey, new Map())
     const roleMap = deviceMap.get(deviceKey)!

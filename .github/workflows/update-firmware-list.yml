@@ -1,4 +1,4 @@
-name: Update Community Firmware List
+name: Update Firmware Lists
 
 on:
   schedule:
@@ -27,8 +27,8 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/community-firmware.json
+          git add public/community-firmware.json public/dmc-firmware.json
           git diff --staged --quiet && echo "No changes." || (
-            git commit -m "chore: update community firmware list [skip ci]"
+            git commit -m "chore: update firmware lists [skip ci]"
             git push
           )
