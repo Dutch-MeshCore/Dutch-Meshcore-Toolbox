@@ -341,7 +341,7 @@ async function buildMeshcoreDevConfig() {
     return p ? [p] : []
   })
   return buildConfig(files, 'meshcore_dev', {
-    name: 'MeshCore Dev Firmware',
+    name: 'MeshCore.io Firmware (Official)',
     repo: 'https://github.com/meshcore-dev/MeshCore',
     website: 'https://meshcore.io',
   })
