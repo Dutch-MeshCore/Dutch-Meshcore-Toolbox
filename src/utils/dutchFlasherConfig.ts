@@ -201,17 +201,53 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
       ROLE_ORDER.map(({ role, icon, title, subTitle }) => [role, { icon, title, subTitle }])
     ),
     notice:  {},
-    maker:   { dutchmeshcore: { name: 'DutchMeshCore' } },
+    maker:   { dutchmeshcore: { name: 'DutchMeshCore MQTT Firmware', repo: 'https://github.com/Dutch-MeshCore', website: 'https://dutchmeshcore.nl' } },
     device:  devices,
   }
 }
 
-/** Fetch the .prebuilt directory listing from GitHub and build a FlasherConfig. */
+const DMC_CACHE_KEY = 'dmt_dmc_fw_v1'
+const CACHE_TTL_MS  = 10 * 60 * 1000 // 10 minutes
+
+function readCache<T>(key: string): T | null {
+  try {
+    const raw = sessionStorage.getItem(key)
+    if (!raw) return null
+    const { data, ts } = JSON.parse(raw) as { data: T; ts: number }
+    return Date.now() - ts < CACHE_TTL_MS ? data : null
+  } catch { return null }
+}
+
+function writeCache<T>(key: string, data: T): void {
+  try { sessionStorage.setItem(key, JSON.stringify({ data, ts: Date.now() })) } catch {}
+}
+
+/** Fetch the .prebuilt directory listing from GitHub and build a FlasherConfig.
+ *  Prefers the pre-built static JSON (public/dmc-firmware.json) to avoid
+ *  GitHub API rate limiting. Falls back to live GitHub API if the file is missing. */
 export async function fetchDmcConfig(): Promise<FlasherConfig> {
+  const cached = readCache<FlasherConfig>(DMC_CACHE_KEY)
+  if (cached) return cached
+
+  // Try the pre-built static list first
+  try {
+    const resp = await fetch('/dmc-firmware.json')
+    if (resp.ok) {
+      const data = await resp.json() as FlasherConfig
+      if (data.device?.length) {
+        writeCache(DMC_CACHE_KEY, data)
+        return data
+      }
+    }
+  } catch {}
+
+  // Fall back to live GitHub API (may hit rate limits on unauthenticated requests)
   const resp = await fetch(PREBUILT_API_URL, {
     headers: { Accept: 'application/vnd.github.v3+json' },
   })
   if (!resp.ok) throw new Error(`GitHub API ${resp.status}: ${resp.statusText}`)
   const files: GHFile[] = await resp.json()
-  return buildDmcConfig(files)
+  const config = buildDmcConfig(files)
+  writeCache(DMC_CACHE_KEY, config)
+  return config
 }

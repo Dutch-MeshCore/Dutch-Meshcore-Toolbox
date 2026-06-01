@@ -11,6 +11,7 @@ import { useSerialConsole } from '../hooks/useSerialConsole'
 import { useLang } from '../hooks/useLang'
 import type { FlasherConfig, FlasherDevice, DeviceFirmware, FlasherStep } from '../types'
 import { fetchDmcConfig } from '../utils/dutchFlasherConfig'
+import { fetchAllCommunityConfigs, mergeFlasherConfigs } from '../utils/communityFirmwareConfigs'
 
 interface State {
   step: FlasherStep
@@ -82,9 +83,17 @@ export default function FlasherPage() {
   function loadConfig() {
     setConfigLoading(true)
     setConfigError(false)
-    fetchDmcConfig()
-      .then(data => { setConfig(data); setConfigLoading(false) })
-      .catch(() => { setConfigError(true); setConfigLoading(false) })
+    Promise.allSettled([fetchDmcConfig(), fetchAllCommunityConfigs()])
+      .then(([dmcResult, communityResult]) => {
+        if (dmcResult.status === 'rejected') {
+          setConfigError(true)
+        } else {
+          const configs: FlasherConfig[] = [dmcResult.value]
+          if (communityResult.status === 'fulfilled') configs.push(communityResult.value)
+          setConfig(mergeFlasherConfigs(configs))
+        }
+        setConfigLoading(false)
+      })
   }
 
   async function handleFlash(opts: { version: string; wipe: boolean }) {
@@ -138,7 +147,11 @@ export default function FlasherPage() {
         )}
 
         {config && sel.step === 'idle' && (
-          <DeviceList devices={config.device} onSelect={d => dispatch({ type: 'SELECT_DEVICE', device: d })} />
+          <DeviceList
+            devices={config.device}
+            makerNames={config.maker}
+            onSelect={d => dispatch({ type: 'SELECT_DEVICE', device: d })}
+          />
         )}
 
         {config && sel.step === 'device_selected' && sel.device && (

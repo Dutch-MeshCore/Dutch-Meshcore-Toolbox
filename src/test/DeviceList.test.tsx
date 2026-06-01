@@ -5,15 +5,19 @@ import type { FlasherDevice } from '../types'
 import { LangProvider } from '../hooks/useLang'
 
 const devices: FlasherDevice[] = [
-  { maker: 'heltec', class: 'ripple', name: 'Heltec V3', type: 'esp32', firmware: [] },
-  { maker: 'heltec', class: 'ripple', name: 'Heltec V4', type: 'esp32', firmware: [] },
-  { maker: 'rak',    class: 'community', name: 'RAK 4631', type: 'nrf52', firmware: [] },
+  { maker: 'dutchmeshcore', class: 'community', name: 'Heltec V3', type: 'esp32', firmware: [] },
+  { maker: 'dutchmeshcore', class: 'community', name: 'Heltec V4', type: 'esp32', firmware: [] },
+  { maker: 'dutchmeshcore', class: 'community', name: 'RAK 4631', type: 'nrf52', firmware: [] },
 ]
+
+const makerNames = {
+  dutchmeshcore: { name: 'DutchMeshCore MQTT Firmware' },
+}
 
 function renderList(onSelect = vi.fn()) {
   return render(
     <LangProvider>
-      <DeviceList devices={devices} onSelect={onSelect} />
+      <DeviceList devices={devices} makerNames={makerNames} onSelect={onSelect} />
     </LangProvider>
   )
 }

@@ -24,13 +24,11 @@ const copy = {
     loading: 'Firmware laden…',
     error: 'Kon firmware-lijst niet laden.',
     retry: 'Opnieuw proberen',
-    pr_title: 'ℹ Over deze firmware-fork',
-    pr_body: 'Het enige verschil ten opzichte van upstream MeshCore is dat we DutchMeshCore-serverpresets hebben toegevoegd. We hebben een PR ingediend om dit samen te voegen. Zodra die is goedgekeurd, schakelen we over op de officiële upstream.',
-    pr_link: 'Bekijk de PR op GitHub',
     warn_title: '⚠ Niet getest op alle hardware',
     warn_body: 'De meeste firmware-builds op deze pagina zijn niet persoonlijk getest op hardware. Iets werkt niet of loop je ergens tegenaan?',
     warn_discord: 'Kom langs op onze Discord',
     vanilla: 'Vanilla (niet-MQTT) firmware flashen? Gebruik',
+    vanillaLink: 'onze flasher',
     footer: 'Community tools voor MeshCore NL - 2026',
   },
   en: {
@@ -48,13 +46,11 @@ const copy = {
     loading: 'Loading firmware…',
     error: 'Could not load firmware list.',
     retry: 'Retry',
-    pr_title: 'ℹ About this firmware fork',
-    pr_body: 'The only difference from upstream MeshCore is that we added DutchMeshCore server presets. We have submitted a PR to get this merged. Once accepted, we will switch to official upstream firmware.',
-    pr_link: 'View the PR on GitHub',
     warn_title: '⚠ Not tested on all hardware',
     warn_body: 'Most firmware builds on this page have not been personally tested on hardware. Something not working or running into an issue?',
     warn_discord: 'Join us on Discord',
     vanilla: 'Want to flash vanilla (non-MQTT) firmware? Use',
+    vanillaLink: 'our flasher',
     footer: 'Community tools for MeshCore NL - 2026',
   },
 }
@@ -68,6 +64,7 @@ export default function FirmwarePage() {
   const [error, setError] = useState(false)
   const [selectedName, setSelectedName] = useState('')
   const [selectedRole, setSelectedRole] = useState('')
+  const [selectedVersion, setSelectedVersion] = useState('')
 
   function load() {
     setLoading(true)
@@ -96,12 +93,25 @@ export default function FirmwarePage() {
     ? getFirmwareLabel(firmware, config)
     : ''
 
-  // Pull apart the two version entries (App update / Full flash)
-  const appEntry    = versions.find(([k]) => k.includes('App update'))
-  const mergedEntry = versions.find(([k]) => k.includes('Full flash'))
+  const semverVersions = useMemo(() => {
+    const seen = new Set<string>()
+    const result: string[] = []
+    for (const k of Object.keys(firmware?.version ?? {})) {
+      const v = k.split(' — ')[0]
+      if (!seen.has(v)) { seen.add(v); result.push(v) }
+    }
+    return result
+  }, [firmware])
+
+  useEffect(() => {
+    setSelectedVersion(semverVersions[0] ?? '')
+  }, [semverVersions])
+
+  // Pull apart the two version entries for the selected semver
+  const appEntry    = versions.find(([k]) => k.startsWith(selectedVersion) && k.includes('App update'))
+  const mergedEntry = versions.find(([k]) => k.startsWith(selectedVersion) && k.includes('Full flash'))
   const appFile     = appEntry?.[1].files[0]
   const mergedFile  = mergedEntry?.[1].files[0]
-  const semver      = (appEntry ?? mergedEntry)?.[0].split(' — ')[0] ?? ''
 
   return (
     <>
@@ -117,16 +127,6 @@ export default function FirmwarePage() {
           <p>{c.subtitle}</p>
         </section>
 
-        <div className="info-box firmware-warn">
-          <h4>{c.pr_title}</h4>
-          <p>
-            {c.pr_body}{' '}
-            <a href="https://github.com/agessaman/MeshCore/pull/10" target="_blank" rel="noopener noreferrer">
-              {c.pr_link}
-            </a>.
-          </p>
-        </div>
-
         <div className="info-box warn firmware-warn">
           <h4>{c.warn_title}</h4>
           <p>
@@ -140,14 +140,21 @@ export default function FirmwarePage() {
         <section className="firmware-panel">
           <div className="firmware-panel-head">
             <div>
-              <h2>DutchMeshCore MQTT</h2>
+              <h2>DutchMeshCore MQTT Firmware</h2>
               <p style={{ fontSize: '.85rem', color: 'var(--muted)' }}>
                 {c.vanilla}{' '}
-                <a href="https://flasher.meshcore.io" target="_blank" rel="noopener noreferrer">
-                  flasher.meshcore.io
-                </a>.
+                <Link to="/flasher">{c.vanillaLink}</Link>.
               </p>
             </div>
+            {semverVersions.length > 0 && (
+              <select
+                value={selectedVersion}
+                onChange={e => setSelectedVersion(e.target.value)}
+                style={{ alignSelf: 'center' }}
+              >
+                {semverVersions.map(v => <option key={v} value={v}>{v}</option>)}
+              </select>
+            )}
             <span className="tool-badge">GitHub .prebuilt</span>
           </div>
 
@@ -185,11 +192,11 @@ export default function FirmwarePage() {
                 )}
               </div>
 
-              {semver && (
+              {selectedVersion && (
                 <div className="firmware-result">
                   <div>
                     <span>{c.version}</span>
-                    <strong>{selectedName} — {firmwareTitle} — {semver}</strong>
+                    <strong>{selectedName} — {firmwareTitle} — {selectedVersion}</strong>
                   </div>
                   <div className="firmware-actions">
                     {appFile && (

@@ -9,6 +9,15 @@ export function groupDevicesByClass(devices: FlasherDevice[]): DeviceGroups {
   }, {})
 }
 
+export function groupDevicesByMaker(devices: FlasherDevice[]): Record<string, FlasherDevice[]> {
+  return devices.reduce<Record<string, FlasherDevice[]>>((acc, device) => {
+    const key = device.maker
+    if (!acc[key]) acc[key] = []
+    acc[key]!.push(device)
+    return acc
+  }, {})
+}
+
 export function filterDevices(devices: FlasherDevice[], query: string): FlasherDevice[] {
   if (!query.trim()) return devices
   const q = query.toLowerCase()

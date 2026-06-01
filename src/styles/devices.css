@@ -172,6 +172,62 @@
   user-select: none;
 }
 
+.device-group-toggle {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.device-group-title {
+  flex: 1;
+}
+
+.device-group-links {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+
+.device-group-link {
+  font-size: .7rem;
+  font-weight: 500;
+  color: var(--accent);
+  padding: .1rem .35rem;
+  border: 1px solid var(--accent);
+  border-radius: calc(var(--r) / 2);
+  line-height: 1.4;
+  text-decoration: none;
+  opacity: .75;
+  transition: opacity .15s;
+}
+
+.device-group-link:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.device-group-version {
+  font-size: .7rem;
+  padding: .1rem .25rem;
+  border: 1px solid var(--accent);
+  border-radius: calc(var(--r) / 2);
+  background: transparent;
+  color: var(--accent);
+  opacity: .75;
+  cursor: pointer;
+  margin-left: .35rem;
+}
+
+.device-group-version:hover {
+  opacity: 1;
+}
+
+.device-group-chevron {
+  font-size: .75rem;
+  opacity: .6;
+  margin-left: .2rem;
+}
+
 .device-list {
   list-style: none;
   margin: 0;

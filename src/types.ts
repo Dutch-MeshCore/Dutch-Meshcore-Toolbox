@@ -99,11 +99,17 @@ export interface FlasherRoleDef {
   class?: string
 }
 
+export interface FlasherMakerDef {
+  name: string
+  repo?: string
+  website?: string
+}
+
 export interface FlasherConfig {
   staticPath: string
   role: Record<string, FlasherRoleDef>
   notice: Record<string, string>
-  maker: Record<string, { name: string }>
+  maker: Record<string, FlasherMakerDef>
   device: FlasherDevice[]
 }
 

@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "update-firmware": "node scripts/update-firmware-list.js"
   },
   "dependencies": {
     "@noble/curves": "^2.2.0",
