@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-02T08:27:08.616Z",
+  "generated": "2026-06-03T08:53:09.891Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -22805,6 +22805,55 @@
       "type": "esp32",
       "firmware": [
         {
+          "role": "bridge_rs232",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
+          "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.3-3724575.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.3-3724575-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "v1.0.2 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.2 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
           "role": "room_server",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "🏠",
@@ -22826,35 +22875,6 @@
                 {
                   "type": "flash-wipe",
                   "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/Ebyte_EoRa-S3_room_server-nl-v1.0.2-bff9ec9-merged.bin",
-                  "title": "Full flash — merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "bridge_rs232",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
-          "version": {
-            "v1.0.2 — App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.bin",
-                  "title": "App update — keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "v1.0.2 — Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9-merged.bin",
                   "title": "Full flash — merged binary (bootloader + partition + app)"
                 }
               ],
@@ -24459,6 +24479,32 @@
       "type": "nrf52",
       "firmware": [
         {
+          "role": "bridge_rs232",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
+          "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M1_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.0.2": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M1_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
           "role": "room_server",
           "icon": "🏠",
           "title": "Room Server",
@@ -24469,23 +24515,6 @@
                 {
                   "type": "nrf-dfu-zip",
                   "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M1_room_server-nl-v1.0.2-bff9ec9.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "role": "bridge_rs232",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
-          "version": {
-            "v1.0.2": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M1_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -24538,6 +24567,32 @@
       "type": "nrf52",
       "firmware": [
         {
+          "role": "bridge_rs232",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
+          "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M3_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.0.2": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
           "role": "room_server",
           "icon": "🏠",
           "title": "Room Server",
@@ -24548,23 +24603,6 @@
                 {
                   "type": "nrf-dfu-zip",
                   "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M3_room_server-nl-v1.0.2-bff9ec9.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "role": "bridge_rs232",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
-          "version": {
-            "v1.0.2": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -24617,6 +24655,32 @@
       "type": "nrf52",
       "firmware": [
         {
+          "role": "bridge_rs232",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
+          "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M6_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.0.2": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M6_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
           "role": "room_server",
           "icon": "🏠",
           "title": "Room Server",
@@ -24627,23 +24691,6 @@
                 {
                   "type": "nrf-dfu-zip",
                   "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M6_room_server-nl-v1.0.2-bff9ec9.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "role": "bridge_rs232",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
-          "version": {
-            "v1.0.2": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M6_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
                   "title": "Firmware update"
                 }
               ]
