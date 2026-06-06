@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-06T06:50:38.092Z",
+  "generated": "2026-06-06T22:03:02.240Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -85,6 +85,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_T190_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_T190_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -100,6 +120,35 @@
                 {
                   "type": "flash-wipe",
                   "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_T190_repeater_observer_mqtt-1.15.0-dutchmeshcore.nl-0a493182-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_T190_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_T190_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
                   "title": "Full flash — merged binary (bootloader + partition + app)"
                 }
               ],
@@ -122,6 +171,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v3_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v3_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -151,6 +220,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v3_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v3_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -188,6 +277,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -217,6 +326,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -254,6 +383,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_expansionkit_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_expansionkit_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -283,6 +432,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_expansionkit_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_v4_expansionkit_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -320,6 +489,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_Wireless_Tracker_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_Wireless_Tracker_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -349,6 +538,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_Wireless_Tracker_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_Wireless_Tracker_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -386,6 +595,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_WSL3_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_WSL3_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -401,6 +630,101 @@
                 {
                   "type": "flash-wipe",
                   "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_WSL3_repeater_observer_mqtt-1.15.0-dutchmeshcore.nl-0a493182-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_WSL3_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Heltec_WSL3_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "dutchmeshcore",
+      "class": "community",
+      "name": "LilyGo T-Beam 1W",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "dutchmeshcore_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "📡",
+          "title": "DutchMeshCore MQTT",
+          "subTitle": "Repeater + Observer + MQTT",
+          "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TBeam_1W_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TBeam_1W_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TBeam_1W_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TBeam_1W_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
                   "title": "Full flash — merged binary (bootloader + partition + app)"
                 }
               ],
@@ -423,6 +747,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TLora_V2_1_1_6_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TLora_V2_1_1_6_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -452,6 +796,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TLora_V2_1_1_6_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_TLora_V2_1_1_6_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -489,6 +853,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_T3S3_sx1262_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_T3S3_sx1262_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -518,6 +902,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_T3S3_sx1262_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/LilyGo_T3S3_sx1262_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -555,6 +959,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/RAK_3112_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/RAK_3112_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -584,6 +1008,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/RAK_3112_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/RAK_3112_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -621,6 +1065,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Station_G2_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Station_G2_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -650,6 +1114,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Station_G2_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Station_G2_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -687,6 +1171,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_S3_Supreme_SX1262_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_S3_Supreme_SX1262_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -716,6 +1220,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_S3_Supreme_SX1262_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_S3_Supreme_SX1262_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -753,6 +1277,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1262_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1262_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -782,6 +1326,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1262_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1262_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -819,6 +1383,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1276_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1276_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -848,6 +1432,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1276_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/T-Beam_SX1276_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -885,6 +1489,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Xiao_S3_WIO_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Xiao_S3_WIO_repeater_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
@@ -914,6 +1538,26 @@
           "title": "DutchMeshCore Roomserver MQTT",
           "subTitle": "Room Server + MQTT",
           "version": {
+            "1.16.0 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Xiao_S3_WIO_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/mqtt-bridge-implementation-flex-dmc/.prebuilt/Xiao_S3_WIO_room_server_observer_mqtt-1.16.0-dutchmeshcore.nl-MQTT-265ce394-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.15.0 — App update": {
               "files": [
                 {
