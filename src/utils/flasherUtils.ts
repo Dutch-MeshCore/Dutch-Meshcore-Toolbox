@@ -41,6 +41,35 @@ export function getRoleFwValue(
     ?? ''
 }
 
+/**
+ * Compare two version strings (e.g. "1.16.0" vs "1.9.0") so the newest sorts
+ * first. Numeric segments are compared numerically (so 16 > 9), falling back to
+ * a string compare for any non-numeric remainder.
+ */
+export function compareVersionsDesc(a: string, b: string): number {
+  const pa = a.split(/[.\-+]/)
+  const pb = b.split(/[.\-+]/)
+  const len = Math.max(pa.length, pb.length)
+  for (let i = 0; i < len; i++) {
+    const sa = pa[i] ?? ''
+    const sb = pb[i] ?? ''
+    const na = Number(sa)
+    const nb = Number(sb)
+    const bothNumeric = sa !== '' && sb !== '' && !Number.isNaN(na) && !Number.isNaN(nb)
+    if (bothNumeric) {
+      if (na !== nb) return nb - na
+    } else if (sa !== sb) {
+      return sb.localeCompare(sa)
+    }
+  }
+  return 0
+}
+
+/** Sort version strings newest-first (latest version at the top). */
+export function sortVersionsDesc(versions: string[]): string[] {
+  return [...versions].sort(compareVersionsDesc)
+}
+
 export function getFirmwarePath(file: { name: string }, staticPath: string, base: string): string {
   if (file.name.startsWith('http://') || file.name.startsWith('https://')) return file.name
   if (file.name.startsWith('/')) return base + file.name

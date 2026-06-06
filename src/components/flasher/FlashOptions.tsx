@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FlasherDevice, DeviceFirmware, FlasherConfig } from '../../types'
-import { getFirmwarePath, getRoleFwValue, FLASHER_BASE_URL } from '../../utils/flasherUtils'
+import { getFirmwarePath, getRoleFwValue, sortVersionsDesc, FLASHER_BASE_URL } from '../../utils/flasherUtils'
 import { useLang } from '../../hooks/useLang'
 
 interface Props {
@@ -24,7 +24,7 @@ export default function FlashOptions({
   onDfuMode, onNrfErase,
 }: Props) {
   const { t } = useLang()
-  const versions = Object.keys(firmware.version ?? {})
+  const versions = sortVersionsDesc(Object.keys(firmware.version ?? {}))
   const [version, setVersion] = useState(versions[0] ?? '')
   const [wipe, setWipe] = useState(false)
 

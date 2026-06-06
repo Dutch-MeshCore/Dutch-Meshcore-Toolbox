@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
 import { fetchDmcConfig } from '../utils/dutchFlasherConfig'
-import { getRoleFwValue } from '../utils/flasherUtils'
+import { getRoleFwValue, compareVersionsDesc } from '../utils/flasherUtils'
 import type { DeviceFirmware, FlasherConfig } from '../types'
 
 const FIRMWARE_REPO = 'https://github.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT'
@@ -100,7 +100,7 @@ export default function FirmwarePage() {
       const v = k.split(' — ')[0]
       if (!seen.has(v)) { seen.add(v); result.push(v) }
     }
-    return result
+    return result.sort(compareVersionsDesc)
   }, [firmware])
 
   useEffect(() => {
