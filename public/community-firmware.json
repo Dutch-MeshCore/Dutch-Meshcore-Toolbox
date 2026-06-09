@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-08T08:52:19.088Z",
+  "generated": "2026-06-09T07:44:12.071Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -24697,17 +24697,17 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "bridge_rs232",
+          "role": "room_server",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
           "version": {
             "v1.0.3 — App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.3-3724575.bin",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Ebyte_EoRa-S3_room_server-nl-v1.0.3-d61609a.bin",
                   "title": "App update — keeps bootloader, partition table & config"
                 }
               ],
@@ -24717,41 +24717,12 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.3-3724575-merged.bin",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Ebyte_EoRa-S3_room_server-nl-v1.0.3-d61609a-merged.bin",
                   "title": "Full flash — merged binary (bootloader + partition + app)"
                 }
               ],
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             },
-            "v1.0.2 — App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.bin",
-                  "title": "App update — keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "v1.0.2 — Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9-merged.bin",
-                  "title": "Full flash — merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "room_server",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "",
-          "version": {
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -24773,6 +24744,55 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "bridge_rs232",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
+          "version": {
+            "v1.0.4 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.4/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.4-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.4 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.4/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.4-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.3-3724575.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/Ebyte_EoRa-S3_Repeater_bridge_rs232-nl-v1.0.3-3724575-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -24788,6 +24808,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/GAT562_30S_Mesh_Kit_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -24813,6 +24842,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/GAT562_Mesh_EVB_Pro_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -24838,6 +24876,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/GAT562_Mesh_Tracker_Pro_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -24864,6 +24911,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_E213_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_E213_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -24901,6 +24968,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_E290_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_E290_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -24937,6 +25024,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_mesh_solar_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -24962,11 +25058,45 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_t096_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
                   "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/Heltec_t096_room_server-nl-v1.0.2-bff9ec9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcoreng",
+      "class": "community",
+      "name": "Heltec T1",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "room_server",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
+          "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_t1_room_server-nl-v1.0.3-3a0fa8d.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -24987,6 +25117,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_t114_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25012,6 +25151,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_t114_without_display_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25038,6 +25186,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_tracker_v2_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_tracker_v2_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25075,6 +25243,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_v2_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_v2_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25112,6 +25300,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_v3_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_v3_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25139,6 +25347,43 @@
     {
       "maker": "meshcoreng",
       "class": "community",
+      "name": "heltec v3 433",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "room_server",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
+          "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_v3_433_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_v3_433_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcoreng",
+      "class": "community",
       "name": "Heltec V4",
       "type": "esp32",
       "firmware": [
@@ -25149,6 +25394,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_v4_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_v4_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25186,6 +25451,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_v4_tft_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/heltec_v4_tft_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25223,6 +25508,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_Wireless_Paper_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_Wireless_Paper_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25260,6 +25565,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_Wireless_Tracker_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_Wireless_Tracker_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25297,6 +25622,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_WSL3_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Heltec_WSL3_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25333,6 +25678,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ikoka_handheld_nrf_e22_30dbm_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25358,6 +25712,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ikoka_nano_nrf_22dbm_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25383,6 +25746,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ikoka_nano_nrf_30dbm_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25408,6 +25780,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ikoka_nano_nrf_33dbm_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25433,6 +25814,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ikoka_stick_nrf_22dbm_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25458,6 +25848,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ikoka_stick_nrf_30dbm_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25483,6 +25882,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ikoka_stick_nrf_33dbm_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25508,6 +25916,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/KeepteenLT1_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25534,6 +25951,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_TBeam_1W_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_TBeam_1W_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25570,11 +26007,45 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_T-Echo_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
                   "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/LilyGo_T-Echo_room_server-nl-v1.0.2-bff9ec9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcoreng",
+      "class": "community",
+      "name": "LilyGo T-Echo Card",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "room_server",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
+          "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_T-Echo_Card_room_server-nl-v1.0.3-3a0fa8d.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -25595,6 +26066,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_T-Echo-Lite_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25621,6 +26101,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_TETH_Elite_sx1262_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_TETH_Elite_sx1262_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25658,6 +26158,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_TLora_V2_1_1_6_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_TLora_V2_1_1_6_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25695,6 +26215,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_T3S3_sx1262_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_T3S3_sx1262_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25732,6 +26272,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_T3S3_sx1276_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/LilyGo_T3S3_sx1276_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25769,6 +26329,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/M5Stack_Unit_C6L_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/M5Stack_Unit_C6L_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25805,6 +26385,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Mesh_pocket_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25831,6 +26420,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Meshadventurer_sx1262_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Meshadventurer_sx1262_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25868,6 +26477,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Meshadventurer_sx1268_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Meshadventurer_sx1268_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25904,11 +26533,45 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Minewsemi_me25ls01_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
                   "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/Minewsemi_me25ls01_room_server-nl-v1.0.2-bff9ec9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcoreng",
+      "class": "community",
+      "name": "Nano G2 Ultra",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "room_server",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
+          "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Nano_G2_Ultra_room_server-nl-v1.0.3-3a0fa8d.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -25930,6 +26593,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/nibble_screen_connect_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/nibble_screen_connect_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -25966,6 +26649,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "uf2",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/PicoW_room_server-nl-v1.0.3-3a0fa8d.uf2",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -25991,6 +26683,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ProMicro_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26016,6 +26717,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/R1Neo_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26041,6 +26751,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "uf2",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/RAK_11310_room_server-nl-v1.0.3-3a0fa8d.uf2",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26066,6 +26785,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/RAK_3401_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26091,6 +26819,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/RAK_4631_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26116,6 +26853,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/RAK_WisMesh_Tag_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26142,6 +26888,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/RAK_3112_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/RAK_3112_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26178,6 +26944,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/SenseCap_Solar_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26204,6 +26979,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Station_G2_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Station_G2_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26231,6 +27026,43 @@
     {
       "maker": "meshcoreng",
       "class": "community",
+      "name": "Station G3 ESP32",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "room_server",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
+          "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Station_G3_ESP32_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Station_G3_ESP32_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcoreng",
+      "class": "community",
       "name": "T-Beam S3 Supreme SX1262",
       "type": "esp32",
       "firmware": [
@@ -26241,6 +27073,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/T_Beam_S3_Supreme_SX1262_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/T_Beam_S3_Supreme_SX1262_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26278,6 +27130,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Tbeam_SX1262_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Tbeam_SX1262_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26315,6 +27187,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Tbeam_SX1276_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Tbeam_SX1276_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26351,6 +27243,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/t1000e_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26371,16 +27272,16 @@
       "type": "nrf52",
       "firmware": [
         {
-          "role": "bridge_rs232",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
+          "role": "room_server",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
           "version": {
             "v1.0.3": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M1_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ThinkNode_M1_room_server-nl-v1.0.3-3a0fa8d.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26389,7 +27290,7 @@
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M1_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M1_room_server-nl-v1.0.2-bff9ec9.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26397,16 +27298,25 @@
           }
         },
         {
-          "role": "room_server",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "",
+          "role": "bridge_rs232",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
           "version": {
-            "v1.0.2": {
+            "v1.0.4": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M1_room_server-nl-v1.0.2-bff9ec9.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.4/ThinkNode_M1_Repeater_bridge_rs232-nl-v1.0.4-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M1_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26428,6 +27338,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ThinkNode_M2_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ThinkNode_M2_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26459,16 +27389,16 @@
       "type": "nrf52",
       "firmware": [
         {
-          "role": "bridge_rs232",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
+          "role": "room_server",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
           "version": {
             "v1.0.3": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M3_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ThinkNode_M3_room_server-nl-v1.0.3-3a0fa8d.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26477,7 +27407,7 @@
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M3_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M3_room_server-nl-v1.0.2-bff9ec9.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26485,16 +27415,25 @@
           }
         },
         {
-          "role": "room_server",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "",
+          "role": "bridge_rs232",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
           "version": {
-            "v1.0.2": {
+            "v1.0.4": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M3_room_server-nl-v1.0.2-bff9ec9.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.4/ThinkNode_M3_Repeater_bridge_rs232-nl-v1.0.4-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M3_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26516,6 +27455,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ThinkNode_M5_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ThinkNode_M5_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26547,16 +27506,16 @@
       "type": "nrf52",
       "firmware": [
         {
-          "role": "bridge_rs232",
-          "icon": "🔗",
-          "title": "RS232 Bridge",
-          "subTitle": "Repeater + RS232 serial bridge",
+          "role": "room_server",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
           "version": {
             "v1.0.3": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M6_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/ThinkNode_M6_room_server-nl-v1.0.3-3a0fa8d.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26565,7 +27524,7 @@
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.2/ThinkNode_M6_Repeater_bridge_rs232-nl-v1.0.2-bff9ec9.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M6_room_server-nl-v1.0.2-bff9ec9.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26573,16 +27532,25 @@
           }
         },
         {
-          "role": "room_server",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "",
+          "role": "bridge_rs232",
+          "icon": "🔗",
+          "title": "RS232 Bridge",
+          "subTitle": "Repeater + RS232 serial bridge",
           "version": {
-            "v1.0.2": {
+            "v1.0.4": {
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.2/ThinkNode_M6_room_server-nl-v1.0.2-bff9ec9.zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.4/ThinkNode_M6_Repeater_bridge_rs232-nl-v1.0.4-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/bridge-rs232-v1.0.3/ThinkNode_M6_Repeater_bridge_rs232-nl-v1.0.3-3724575.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -26603,6 +27571,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "uf2",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/waveshare_rp2040_lora_room_server-nl-v1.0.3-3a0fa8d.uf2",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26628,6 +27605,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "uf2",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/wio_wm1110_room_server-nl-v1.0.3-3a0fa8d.uf2",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26653,6 +27639,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/WioTrackerL1_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26679,6 +27674,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_C3_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_C3_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
@@ -26715,6 +27730,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_nrf52_room_server-nl-v1.0.3-3a0fa8d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26740,6 +27764,15 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3": {
+              "files": [
+                {
+                  "type": "uf2",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_rp2040_room_server-nl-v1.0.3-3a0fa8d.uf2",
+                  "title": "Firmware update"
+                }
+              ]
+            },
             "v1.0.2": {
               "files": [
                 {
@@ -26748,6 +27781,43 @@
                   "title": "Firmware update"
                 }
               ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcoreng",
+      "class": "community",
+      "name": "Xiao S3",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "room_server",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
+          "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_S3_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_S3_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
         }
@@ -26766,6 +27836,26 @@
           "title": "Room Server",
           "subTitle": "",
           "version": {
+            "v1.0.3 — App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_S3_WIO_room_server-nl-v1.0.3-d61609a.bin",
+                  "title": "App update — keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.0.3 — Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/MichTronics/MeshCoreNG/releases/download/room-server-v1.0.3/Xiao_S3_WIO_room_server-nl-v1.0.3-d61609a-merged.bin",
+                  "title": "Full flash — merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "v1.0.2 — App update": {
               "files": [
                 {
