@@ -10,6 +10,7 @@ export const STRINGS = {
     nav_toml: 'MCtoMQTT',
     nav_firmware: 'Firmware',
     nav_keygen: 'Sleutels',
+    nav_filter: 'Filter CLI',
     nav_connected: 'Community Projecten',
 
     // KeygenPage
@@ -253,6 +254,7 @@ export const STRINGS = {
     config_section_advert: 'Adverteren',
     config_section_owner: 'Eigenaarsinformatie',
     config_section_advanced: 'Geavanceerde instellingen',
+    config_section_filter: 'Pakketfilter — (alleen aangepaste DMC-firmware)',
     config_show_advanced: 'Geavanceerde instellingen tonen',
     config_save: 'Instellingen opslaan',
     config_unsaved: 'U heeft niet-opgeslagen wijzigingen',
@@ -305,6 +307,7 @@ export const STRINGS = {
     nav_toml: 'MCtoMQTT',
     nav_firmware: 'Firmware',
     nav_keygen: 'Keys',
+    nav_filter: 'Filter CLI',
     nav_connected: 'Community Projects',
 
     // KeygenPage
@@ -548,6 +551,7 @@ export const STRINGS = {
     config_section_advert: 'Advertising',
     config_section_owner: 'Owner info',
     config_section_advanced: 'Advanced settings',
+    config_section_filter: 'Packet Filter — (Custom DMC firmware only)',
     config_show_advanced: 'Show advanced settings',
     config_save: 'Save settings',
     config_unsaved: 'You have unsaved changes',
