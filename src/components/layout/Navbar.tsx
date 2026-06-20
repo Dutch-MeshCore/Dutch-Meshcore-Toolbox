@@ -17,7 +17,7 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme()
   const { lang, setLang, t } = useLang()
   const inChannelBrowser = pathname.startsWith('/channel-browser')
-  const inConfig = pathname === '/mqtt-cli' || pathname === '/mcmqtt-toml'
+  const inConfig = pathname === '/mqtt-cli' || pathname === '/filter-cli' || pathname === '/mcmqtt-toml'
   const inDevices = pathname === '/flasher' || pathname === '/usb-config'
   const [menuOpen, setMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null)
@@ -85,6 +85,7 @@ export default function Navbar() {
               </button>
               <div className="nav-dropdown-menu">
                 <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''} onClick={close}>{t('nav_mqtt')}</Link>
+                <Link to="/filter-cli" className={pathname === '/filter-cli' ? 'active' : ''} onClick={close}>{t('nav_filter')}</Link>
                 <Link to="/mcmqtt-toml" className={pathname === '/mcmqtt-toml' ? 'active' : ''} onClick={close}>{t('nav_toml')}</Link>
               </div>
             </div>
