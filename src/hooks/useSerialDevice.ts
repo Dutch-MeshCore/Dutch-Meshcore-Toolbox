@@ -1,10 +1,11 @@
 import { useRef, useState, useCallback } from 'react'
 import type { SerialDeviceInfo, DeviceVars, ConnectionState } from '../types'
 import { DEFAULT_DEVICE_VARS, VAR_MIN_VERSION } from '../types'
-import { parseFirmwareVersion, versionAtLeast, isDmcFirmware } from '../utils/configUtils'
+import { parseFirmwareVersion, versionAtLeast } from '../utils/configUtils'
 import {
   assembleFilterSettings,
   buildFilterCommands,
+  isFilterStatusReply,
   cloneFilterSettings,
   type FilterSettings,
 } from '../lib/config/filterCommands'
@@ -97,13 +98,17 @@ export function useSerialDevice() {
       ;(varsDevice as unknown as Record<string, unknown>)[key] = typeof value === 'object' ? { ...(value as object) } : value
     }
 
+    // Detect packet-filter support by capability, not firmware name: probe the
+    // `filter` command and only read the rest if it answers with a status line.
+    // Stock firmware replies "> Unknown command"; custom-named DMC builds still match.
     let filter: FilterSettings | undefined
     let filterDevice: FilterSettings | undefined
-    if (isDmcFirmware(vers)) {
-      setBusy('Reading packet filter…')
-      try {
+    try {
+      const status = await cli.sendCommand('filter')
+      if (isFilterStatusReply(status)) {
+        setBusy('Reading packet filter…')
         filter = assembleFilterSettings({
-          status: await cli.sendCommand('filter'),
+          status,
           hops: await cli.sendCommand('filter hops'),
           rate: await cli.sendCommand('filter rate'),
           channels: await cli.sendCommand('filter channel list'),
@@ -111,8 +116,8 @@ export function useSerialDevice() {
           malformed: await cli.sendCommand('filter malformed'),
         })
         filterDevice = cloneFilterSettings(filter)
-      } catch { /* filter is optional; ignore on stock or unresponsive fw */ }
-    }
+      }
+    } catch { /* filter is optional; ignore if unsupported or unresponsive */ }
 
     setDevice({ version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice, filter, filterDevice })
     setBusy('')

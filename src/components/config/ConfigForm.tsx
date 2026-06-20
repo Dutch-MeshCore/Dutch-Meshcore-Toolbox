@@ -7,7 +7,6 @@ import ConsoleDialog from './ConsoleDialog'
 import MapDialog from './MapDialog'
 import { useVanityKey } from '../../hooks/useVanityKey'
 import FilterSettingsForm from './FilterSettingsForm'
-import { isDmcFirmware } from '../../utils/configUtils'
 import { defaultFilterSettings } from '../../lib/config/filterCommands'
 
 interface Props {
@@ -283,7 +282,7 @@ export default function ConfigForm({
 
       <div className="field-row">
         <div className="field-group">
-          <label>Advert interval (s)</label>
+          <label>Advert interval (min)</label>
           <input
             type="number" min={0}
             value={vars['advert.interval']}
@@ -291,7 +290,7 @@ export default function ConfigForm({
           />
         </div>
         <div className="field-group">
-          <label>Flood advert interval (s)</label>
+          <label>Flood advert interval (H)</label>
           <input
             type="number" min={0}
             value={vars['flood.advert.interval']}
@@ -401,7 +400,9 @@ export default function ConfigForm({
   ) : null
 
   // ── Section: Packet Filter (Custom DMC firmware only) ────────────────────────
-  const FilterPanel = isDmcFirmware(device.version) && device.filter ? (
+  // Shown when the device responds to the `filter` probe (device.filter is set
+  // by useSerialDevice only for filter-capable firmware), independent of its name.
+  const FilterPanel = device.filter ? (
     <div className="panel">
       <div className="panel-legend">{t('config_section_filter')}</div>
       <FilterSettingsForm

@@ -5,6 +5,7 @@ import {
   defaultFilterSettings,
   cloneFilterSettings,
   buildFilterCommands,
+  isFilterStatusReply,
   parseFilterEnabled,
   parseFilterHops,
   parseFilterRate,
@@ -164,5 +165,17 @@ describe('filter reply parsers', () => {
     expect(s.channels).toEqual(['Public'])
     expect(s.minHashBytes).toBe(3)
     expect(s.malformed).toBe(true)
+  })
+})
+
+describe('isFilterStatusReply', () => {
+  it('matches the DMC filter status line (on or off), regardless of firmware name', () => {
+    expect(isFilterStatusReply('> Filter on: Blocked [ Hops: 0 | Rate: 0 ]')).toBe(true)
+    expect(isFilterStatusReply('> Filter off: Blocked [ Hops: 0 ]')).toBe(true)
+  })
+  it('rejects stock-firmware "Unknown command" and non-status replies', () => {
+    expect(isFilterStatusReply('> Unknown command')).toBe(false)
+    expect(isFilterStatusReply('')).toBe(false)
+    expect(isFilterStatusReply('> Filter: on')).toBe(false) // set-reply, not the status probe
   })
 })
