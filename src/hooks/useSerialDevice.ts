@@ -2,6 +2,13 @@ import { useRef, useState, useCallback } from 'react'
 import type { SerialDeviceInfo, DeviceVars, ConnectionState } from '../types'
 import { DEFAULT_DEVICE_VARS, VAR_MIN_VERSION } from '../types'
 import { parseFirmwareVersion, versionAtLeast } from '../utils/configUtils'
+import { isDmcFirmware } from '../utils/configUtils'
+import {
+  assembleFilterSettings,
+  buildFilterCommands,
+  cloneFilterSettings,
+  type FilterSettings,
+} from '../lib/config/filterCommands'
 
 export function useSerialDevice() {
   const supported = typeof navigator !== 'undefined' && 'serial' in navigator
@@ -44,6 +51,7 @@ export function useSerialDevice() {
     getPubKey: () => Promise<string>
     getVariable: (k: string) => Promise<string>
     parseVariableResponse: (r: string) => unknown
+    sendCommand: (cmd: string) => Promise<string>
   }) {
     setBusy('Reading configuration…')
     const vers = await cli.getVersion()
@@ -90,7 +98,24 @@ export function useSerialDevice() {
       ;(varsDevice as unknown as Record<string, unknown>)[key] = typeof value === 'object' ? { ...(value as object) } : value
     }
 
-    setDevice({ version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice })
+    let filter: FilterSettings | undefined
+    let filterDevice: FilterSettings | undefined
+    if (isDmcFirmware(vers)) {
+      setBusy('Reading packet filter…')
+      try {
+        filter = assembleFilterSettings({
+          status: await cli.sendCommand('filter'),
+          hops: await cli.sendCommand('filter hops'),
+          rate: await cli.sendCommand('filter rate'),
+          channels: await cli.sendCommand('filter channel list'),
+          hash: await cli.sendCommand('filter hash'),
+          malformed: await cli.sendCommand('filter malformed'),
+        })
+        filterDevice = cloneFilterSettings(filter)
+      } catch { /* filter is optional; ignore on stock or unresponsive fw */ }
+    }
+
+    setDevice({ version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice, filter, filterDevice })
     setBusy('')
   }
 
@@ -135,6 +160,13 @@ export function useSerialDevice() {
       if (device.password) {
         await cli.sendCommand(`password ${device.password}`)
         setDevice(d => d ? { ...d, password: '' } : d)
+      }
+
+      if (device.filter && device.filterDevice) {
+        const filterCmds = buildFilterCommands(device.filter, device.filterDevice)
+        for (const cmd of filterCmds) {
+          await cli.sendCommand(cmd)
+        }
       }
 
       await _getData(cliRef.current as unknown as Parameters<typeof _getData>[0])
