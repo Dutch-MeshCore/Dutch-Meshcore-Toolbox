@@ -35,6 +35,7 @@ export default function ConfigForm({
   const [consoleOpen, setConsoleOpen] = useState(false)
   const [mapOpen, setMapOpen] = useState(false)
   const [vanityOpen, setVanityOpen] = useState(false)
+  const [showDmc, setShowDmc] = useState(false)
   const vanity = useVanityKey()
 
   const vars = device.vars
@@ -436,7 +437,13 @@ export default function ConfigForm({
       {RadioSection}
       {AdvertSection}
       {OwnerSection}
-      {FilterPanel}
+
+      {device.filter && (
+        <button className="btn" onClick={() => setShowDmc(v => !v)} style={{ marginBottom: '.75rem' }}>
+          {showDmc ? '▲' : '▼'} {t('config_show_dmc')}
+        </button>
+      )}
+      {showDmc && FilterPanel}
 
       <button className="btn" onClick={onToggleAdvanced} style={{ marginBottom: '.75rem' }}>
         {showAdvanced ? '▲' : '▼'} {t('config_show_advanced')}
