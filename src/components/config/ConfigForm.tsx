@@ -6,6 +6,9 @@ import VanityKeyDialog from './VanityKeyDialog'
 import ConsoleDialog from './ConsoleDialog'
 import MapDialog from './MapDialog'
 import { useVanityKey } from '../../hooks/useVanityKey'
+import FilterSettingsForm from './FilterSettingsForm'
+import { isDmcFirmware } from '../../utils/configUtils'
+import { defaultFilterSettings } from '../../lib/config/filterCommands'
 
 interface Props {
   device: SerialDeviceInfo
@@ -397,6 +400,26 @@ export default function ConfigForm({
     </div>
   ) : null
 
+  // ── Section: Packet Filter (Custom DMC firmware only) ────────────────────────
+  const FilterPanel = isDmcFirmware(device.version) && device.filter ? (
+    <div className="panel">
+      <div className="panel-legend">{t('config_section_filter')}</div>
+      <FilterSettingsForm
+        value={device.filter}
+        onChange={f => onUpdate({ filter: f })}
+      />
+      <button
+        className="btn" style={{ marginTop: '.6rem' }}
+        onClick={async () => {
+          await onSendCommand('filter reset')
+          onUpdate({ filter: defaultFilterSettings(), filterDevice: defaultFilterSettings() })
+        }}
+      >
+        ♻ Reset filter to defaults
+      </button>
+    </div>
+  ) : null
+
   return (
     <div>
       {busy && (
@@ -412,6 +435,7 @@ export default function ConfigForm({
       {RadioSection}
       {AdvertSection}
       {OwnerSection}
+      {FilterPanel}
 
       <button className="btn" onClick={onToggleAdvanced} style={{ marginBottom: '.75rem' }}>
         {showAdvanced ? '▲' : '▼'} {t('config_show_advanced')}
