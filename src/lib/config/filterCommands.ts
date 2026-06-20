@@ -112,3 +112,74 @@ export function buildFilterCommands(next: FilterSettings, base: FilterSettings):
   }
   return cmds
 }
+
+export function parseFilterEnabled(reply: string): boolean {
+  const m = reply.match(/Filter:?\s+(on|off)\b/i)
+  return m ? m[1].toLowerCase() === 'on' : false
+}
+
+export function parseFilterHops(reply: string): number[] {
+  const out: number[] = []
+  for (const line of reply.split('\n')) {
+    const m = line.match(/^\s*(\d{1,2})\s*:\s*(\d+)\s*$/)
+    if (m) out[parseInt(m[1], 10)] = parseInt(m[2], 10)
+  }
+  return out
+}
+
+export function parseFilterRate(reply: string): { limit: number; secs: number }[] {
+  const out: { limit: number; secs: number }[] = []
+  for (const line of reply.split('\n')) {
+    const m = line.match(/^\s*(\d{1,2})\s*:\s*(\d+)\s*,\s*(\d+)\s*$/)
+    if (m) out[parseInt(m[1], 10)] = { limit: parseInt(m[2], 10), secs: parseInt(m[3], 10) }
+  }
+  return out
+}
+
+export function parseFilterChannels(reply: string): string[] {
+  const body = reply.replace(/^>\s*/, '').trim()
+  if (!body || /^none$/i.test(body)) return []
+  return body
+    .split(',')
+    .map(s => s.trim().replace(/\s*\([0-9a-fA-F]{1,2}\)\s*$/, '').trim())
+    .filter(Boolean)
+}
+
+export function parseFilterHash(reply: string): number | null {
+  const m = reply.match(/minimal\s+(\d+)\s+bytes/i)
+  return m ? parseInt(m[1], 10) : null
+}
+
+export function parseFilterMalformed(reply: string): boolean {
+  const m = reply.match(/scan\s+(on|off)\b/i)
+  return m ? m[1].toLowerCase() === 'on' : false
+}
+
+export interface FilterReplies {
+  status: string
+  hops: string
+  rate: string
+  channels: string
+  hash: string
+  malformed: string
+}
+
+/** Build a full FilterSettings from raw device replies, overlaying onto defaults. */
+export function assembleFilterSettings(replies: FilterReplies): FilterSettings {
+  const s = defaultFilterSettings()
+  s.enabled = parseFilterEnabled(replies.status)
+  const hops = parseFilterHops(replies.hops)
+  const rate = parseFilterRate(replies.rate)
+  for (let i = 0; i < PAYLOAD_TYPE_COUNT; i++) {
+    if (typeof hops[i] === 'number') s.perType[i].hops = hops[i]
+    if (rate[i]) {
+      s.perType[i].rateLimit = rate[i].limit
+      s.perType[i].rateSecs = rate[i].secs
+    }
+  }
+  s.channels = parseFilterChannels(replies.channels)
+  const hash = parseFilterHash(replies.hash)
+  if (hash !== null) s.minHashBytes = hash
+  s.malformed = parseFilterMalformed(replies.malformed)
+  return s
+}

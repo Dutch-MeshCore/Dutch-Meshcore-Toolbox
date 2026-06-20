@@ -5,6 +5,13 @@ import {
   defaultFilterSettings,
   cloneFilterSettings,
   buildFilterCommands,
+  parseFilterEnabled,
+  parseFilterHops,
+  parseFilterRate,
+  parseFilterChannels,
+  parseFilterHash,
+  parseFilterMalformed,
+  assembleFilterSettings,
 } from '../lib/config/filterCommands'
 
 describe('filter model', () => {
@@ -101,5 +108,61 @@ describe('buildFilterCommands', () => {
     const cmds = buildFilterCommands(next, base)
     expect(cmds).toContain('filter hops 2 4')
     expect(cmds[cmds.length - 1]).toBe('filter on')
+  })
+})
+
+describe('filter reply parsers', () => {
+  it('parses enabled from the status line', () => {
+    expect(parseFilterEnabled('> Filter on: Blocked [ Hops: 0 | Rate: 0 ]')).toBe(true)
+    expect(parseFilterEnabled('> Filter off: Blocked [ Hops: 0 ]')).toBe(false)
+    expect(parseFilterEnabled('> Filter: on')).toBe(true)
+  })
+
+  it('parses the hops list by index', () => {
+    const hops = parseFilterHops('[TYPE: MAX_HOPS]\n00: 8\n01: 7\n05: 32\n11: 9')
+    expect(hops[0]).toBe(8)
+    expect(hops[1]).toBe(7)
+    expect(hops[5]).toBe(32)
+    expect(hops[11]).toBe(9)
+  })
+
+  it('parses the rate list by index', () => {
+    const rate = parseFilterRate('[TYPE: LIMIT,SECS]\n00: 5,60\n02: 20,120')
+    expect(rate[0]).toEqual({ limit: 5, secs: 60 })
+    expect(rate[2]).toEqual({ limit: 20, secs: 120 })
+  })
+
+  it('parses channel names, stripping the hash suffix', () => {
+    expect(parseFilterChannels('Public (11),#general (a3)')).toEqual(['Public', '#general'])
+    expect(parseFilterChannels('None')).toEqual([])
+    expect(parseFilterChannels('> None')).toEqual([])
+    expect(parseFilterChannels('')).toEqual([])
+  })
+
+  it('parses hash and malformed', () => {
+    expect(parseFilterHash('> Filter: minimal 2 bytes path hash size')).toBe(2)
+    expect(parseFilterHash('nonsense')).toBeNull()
+    expect(parseFilterMalformed('> Filter: malformed text scan on')).toBe(true)
+    expect(parseFilterMalformed('> Filter: malformed scan off')).toBe(false)
+  })
+
+  it('assembles a full FilterSettings from all replies', () => {
+    const s = assembleFilterSettings({
+      status: '> Filter on: Blocked [ Hops: 0 ]',
+      hops: '[TYPE: MAX_HOPS]\n00: 4\n05: 16',
+      rate: '[TYPE: LIMIT,SECS]\n02: 9,30',
+      channels: 'Public (11)',
+      hash: '> Filter: minimal 3 bytes path hash size',
+      malformed: '> Filter: malformed text scan on',
+    })
+    expect(s.enabled).toBe(true)
+    expect(s.perType[0].hops).toBe(4)
+    expect(s.perType[5].hops).toBe(16)
+    expect(s.perType[1].hops).toBe(8)        // untouched default
+    expect(s.perType[2].rateLimit).toBe(9)
+    expect(s.perType[2].rateSecs).toBe(30)
+    expect(s.channels).toEqual(['Public'])
+    expect(s.minHashBytes).toBe(3)
+    expect(s.malformed).toBe(true)
   })
 })
