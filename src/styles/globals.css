@@ -5334,3 +5334,19 @@ select option {
   border-radius: 0;
   background: transparent;
 }
+
+/* ── Packet filter form ──────────────────────────────────────────────────── */
+.filter-channel-list { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .3rem; }
+.filter-channel-chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .15rem .5rem; border-radius: 999px;
+  background: var(--surface-2, rgba(127,127,127,.15)); font-size: .85rem;
+}
+.filter-channel-chip .chip-remove {
+  background: none; border: none; cursor: pointer; font-size: 1rem; line-height: 1;
+  color: inherit; padding: 0;
+}
+.filter-channel-add { display: flex; gap: .5rem; margin-top: .4rem; }
+.filter-type-table { width: 100%; border-collapse: collapse; margin-top: .5rem; font-size: .9rem; }
+.filter-type-table th, .filter-type-table td { padding: .25rem .4rem; text-align: left; }
+.filter-type-table input { width: 6rem; }
