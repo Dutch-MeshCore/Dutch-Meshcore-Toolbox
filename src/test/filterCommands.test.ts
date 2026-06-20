@@ -4,6 +4,7 @@ import {
   PAYLOAD_TYPE_COUNT,
   defaultFilterSettings,
   cloneFilterSettings,
+  buildFilterCommands,
 } from '../lib/config/filterCommands'
 
 describe('filter model', () => {
@@ -38,5 +39,67 @@ describe('filter model', () => {
     b.channels.push('Public')
     expect(a.perType[0].hops).toBe(8)
     expect(a.channels).toEqual([])
+  })
+})
+
+describe('buildFilterCommands', () => {
+  it('returns [] when nothing changed', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    expect(buildFilterCommands(next, base)).toEqual([])
+  })
+
+  it('emits hash and malformed changes', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    next.minHashBytes = 2
+    next.malformed = true
+    expect(buildFilterCommands(next, base)).toEqual([
+      'filter hash 2',
+      'filter malformed on',
+    ])
+  })
+
+  it('emits per-type hops and rate changes by index', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    next.perType[0].hops = 10
+    next.perType[5].rateLimit = 30
+    expect(buildFilterCommands(next, base)).toEqual([
+      'filter hops 0 10',
+      'filter rate 5 30 60',
+    ])
+  })
+
+  it('emits channel add and remove deltas', () => {
+    const base = defaultFilterSettings()
+    base.channels = ['#old']
+    const next = cloneFilterSettings(base)
+    next.channels = ['Public']
+    expect(buildFilterCommands(next, base)).toEqual([
+      'filter channel add Public',
+      'filter channel remove #old',
+    ])
+  })
+
+  it('emits enable/disable last', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    next.minHashBytes = 3
+    next.enabled = true
+    expect(buildFilterCommands(next, base)).toEqual([
+      'filter hash 3',
+      'filter on',
+    ])
+  })
+
+  it('builds full set from defaults for the generator', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    next.enabled = true
+    next.perType[2].hops = 4
+    const cmds = buildFilterCommands(next, base)
+    expect(cmds).toContain('filter hops 2 4')
+    expect(cmds[cmds.length - 1]).toBe('filter on')
   })
 })

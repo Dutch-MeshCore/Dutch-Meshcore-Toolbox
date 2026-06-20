@@ -73,3 +73,42 @@ export function cloneFilterSettings(s: FilterSettings): FilterSettings {
     malformed: s.malformed,
   }
 }
+
+/**
+ * Minimal ordered list of `filter ...` commands to turn `base` into `next`.
+ * For the generator, pass base = defaultFilterSettings(); for the live block,
+ * pass base = the snapshot read from the device. Enable/disable is emitted last
+ * so the configuration is in place before the filter is switched on.
+ */
+export function buildFilterCommands(next: FilterSettings, base: FilterSettings): string[] {
+  const cmds: string[] = []
+
+  if (next.minHashBytes !== base.minHashBytes) {
+    cmds.push(`filter hash ${next.minHashBytes}`)
+  }
+  if (next.malformed !== base.malformed) {
+    cmds.push(`filter malformed ${next.malformed ? 'on' : 'off'}`)
+  }
+  for (let i = 0; i < PAYLOAD_TYPE_COUNT; i++) {
+    if (next.perType[i].hops !== base.perType[i].hops) {
+      cmds.push(`filter hops ${i} ${next.perType[i].hops}`)
+    }
+  }
+  for (let i = 0; i < PAYLOAD_TYPE_COUNT; i++) {
+    const n = next.perType[i]
+    const b = base.perType[i]
+    if (n.rateLimit !== b.rateLimit || n.rateSecs !== b.rateSecs) {
+      cmds.push(`filter rate ${i} ${n.rateLimit} ${n.rateSecs}`)
+    }
+  }
+  for (const ch of next.channels) {
+    if (!base.channels.includes(ch)) cmds.push(`filter channel add ${ch}`)
+  }
+  for (const ch of base.channels) {
+    if (!next.channels.includes(ch)) cmds.push(`filter channel remove ${ch}`)
+  }
+  if (next.enabled !== base.enabled) {
+    cmds.push(`filter ${next.enabled ? 'on' : 'off'}`)
+  }
+  return cmds
+}
