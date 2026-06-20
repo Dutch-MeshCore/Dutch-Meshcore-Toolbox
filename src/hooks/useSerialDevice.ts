@@ -80,6 +80,11 @@ export function useSerialDevice() {
         else continue
       }
 
+      // Boolean vars (cad, radio.rxgain, repeat, allow.read.only): if the device
+      // didn't answer on/off — e.g. radio.rxgain on non-SX126x boards falls through
+      // to the generic `radio` reply — treat as unsupported and skip.
+      if (typeof DEFAULT_DEVICE_VARS[key] === 'boolean' && typeof value !== 'boolean') continue
+
       if (key === 'radio') {
         const [freq, bw, sf, cr] = String(value).split(',')
         value = { freq: Number(freq).toFixed(3), bw: bw?.replace('.0', '') ?? '125', sf: sf ?? '9', cr: cr ?? '5' }
@@ -147,7 +152,7 @@ export function useSerialDevice() {
         if (rebootKeys.has(key)) needsReboot = true
 
         let value: unknown = vars[key]
-        if (key === 'repeat' || key === 'allow.read.only') value = value ? 'on' : 'off'
+        if (key === 'repeat' || key === 'allow.read.only' || key === 'cad' || key === 'radio.rxgain') value = value ? 'on' : 'off'
         if (key === 'owner.info') value = String(value).replace(/\n/g, '|')
         if (key === 'radio') {
           const r = vars.radio

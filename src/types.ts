@@ -158,6 +158,11 @@ export interface DeviceVars {
   'owner.info': string
   'path.hash.mode': string
   'loop.detect': string
+  cad: boolean
+  'flood.max.unscoped': number
+  'flood.max.advert': number
+  'radio.rxgain': boolean
+  'adc.multiplier': number
 }
 
 export interface SerialDeviceInfo {
@@ -198,4 +203,6 @@ export const DEFAULT_DEVICE_VARS: DeviceVars = {
   'guest.password': '', lat: 0, lon: 0, 'int.thresh': 0,
   'agc.reset.interval': 0, 'multi.acks': '0', 'owner.info': '',
   'path.hash.mode': '0', 'loop.detect': 'off',
+  cad: false, 'flood.max.unscoped': 64, 'flood.max.advert': 8,
+  'radio.rxgain': false, 'adc.multiplier': 0,
 }

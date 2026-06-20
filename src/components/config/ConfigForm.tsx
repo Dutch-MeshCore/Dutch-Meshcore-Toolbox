@@ -397,6 +397,32 @@ export default function ConfigForm({
           </select>
         </div>
       </div>
+
+      <div className="field-row">
+        <div className="field-group">
+          <label>Flood max unscoped (hops)</label>
+          <input type="number" min={0} max={64} value={vars['flood.max.unscoped']} onChange={e => patchVars({ 'flood.max.unscoped': Number(e.target.value) })} />
+        </div>
+        <div className="field-group">
+          <label>Flood max advert (hops)</label>
+          <input type="number" min={0} max={64} value={vars['flood.max.advert']} onChange={e => patchVars({ 'flood.max.advert': Number(e.target.value) })} />
+        </div>
+      </div>
+
+      <label className="check-row">
+        <input type="checkbox" checked={vars.cad} onChange={e => patchVars({ cad: e.target.checked })} />
+        Channel Activity Detection (CAD)
+      </label>
+
+      <label className="check-row">
+        <input type="checkbox" checked={vars['radio.rxgain']} onChange={e => patchVars({ 'radio.rxgain': e.target.checked })} />
+        Boosted RX gain (radio.rxgain)
+      </label>
+
+      <div className="field-group" style={{ marginTop: '.5rem' }}>
+        <label>ADC multiplier (battery calibration; 0 = board default)</label>
+        <input type="number" step="0.001" min={0} value={vars['adc.multiplier']} onChange={e => patchVars({ 'adc.multiplier': parseFloat(e.target.value) || 0 })} />
+      </div>
     </div>
   ) : null
 
