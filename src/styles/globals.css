@@ -5340,7 +5340,7 @@ select option {
 .filter-channel-chip {
   display: inline-flex; align-items: center; gap: .35rem;
   padding: .15rem .5rem; border-radius: 999px;
-  background: var(--surface-2, rgba(127,127,127,.15)); font-size: .85rem;
+  background: var(--surf2); font-size: .85rem;
 }
 .filter-channel-chip .chip-remove {
   background: none; border: none; cursor: pointer; font-size: 1rem; line-height: 1;

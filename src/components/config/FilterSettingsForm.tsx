@@ -42,8 +42,9 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
 
       <div className="field-row" style={{ marginTop: '.5rem' }}>
         <div className="field-group">
-          <label>Min path-hash bytes (1–3)</label>
+          <label htmlFor="filter-min-hash">Min path-hash bytes (1–3)</label>
           <input
+            id="filter-min-hash"
             type="number" min={1} max={3}
             value={value.minHashBytes}
             onChange={e => patch(s => { s.minHashBytes = clampInt(e.target.value, 1, 3) })}
@@ -90,13 +91,14 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
 
       <button
         type="button" className="btn" style={{ marginTop: '.6rem' }}
+        aria-expanded={advancedOpen}
         onClick={() => setAdvancedOpen(o => !o)}
       >
         {advancedOpen ? '▲' : '▼'} Advanced — per payload type
       </button>
 
       {advancedOpen && (
-        <table className="filter-type-table">
+        <table className="filter-type-table" aria-label="Per-payload-type settings">
           <thead>
             <tr><th>Type</th><th>Max hops (0–64)</th><th>Rate limit</th><th>Window (s)</th></tr>
           </thead>
