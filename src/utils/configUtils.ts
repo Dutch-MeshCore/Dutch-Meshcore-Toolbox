@@ -49,4 +49,9 @@ export function matchPreset(presets: RadioPreset[], radio: { freq: string; sf: s
   return presets[0] ?? { title: 'Custom' }
 }
 
+/** True when the connected device reports the custom DutchMeshCore firmware. */
+export function isDmcFirmware(version: string): boolean {
+  return /dutchmeshcore/i.test(version || '')
+}
+
 export const PRESETS_URL = 'https://api.meshcore.nz/api/v1/config'
