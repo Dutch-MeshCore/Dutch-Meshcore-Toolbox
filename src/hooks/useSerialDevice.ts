@@ -1,8 +1,7 @@
 import { useRef, useState, useCallback } from 'react'
 import type { SerialDeviceInfo, DeviceVars, ConnectionState } from '../types'
 import { DEFAULT_DEVICE_VARS, VAR_MIN_VERSION } from '../types'
-import { parseFirmwareVersion, versionAtLeast } from '../utils/configUtils'
-import { isDmcFirmware } from '../utils/configUtils'
+import { parseFirmwareVersion, versionAtLeast, isDmcFirmware } from '../utils/configUtils'
 import {
   assembleFilterSettings,
   buildFilterCommands,
