@@ -1,3 +1,5 @@
+import type { FilterSettings } from './lib/config/filterCommands'
+
 export interface ChannelMeta {
   channel: string
   channel_hash?: string | null
@@ -168,6 +170,8 @@ export interface SerialDeviceInfo {
   vars: DeviceVars
   varsDevice: Partial<DeviceVars>
   importPrvKey?: string
+  filter?: FilterSettings
+  filterDevice?: FilterSettings
 }
 
 export interface RadioPreset {
