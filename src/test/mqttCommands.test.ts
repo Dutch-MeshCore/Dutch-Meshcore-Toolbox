@@ -42,7 +42,48 @@ describe('mqttGetCommands', () => {
     expect(cmds).toContain('snmp.community')
     expect(cmds).toContain('mqtt1.preset')
     expect(cmds).toContain('mqtt6.audience')
+    expect(cmds).toContain('wifi.ssid')
+    expect(cmds).toContain('timezone.offset')
     expect(cmds).not.toContain('mqtt.status') // get returns a report, not the flag
+  })
+})
+
+describe('wifi + timezone', () => {
+  it('assembles wifi and timezone settings', () => {
+    const s = assembleMqttSettings({
+      'wifi.ssid': '> MyNet',
+      'wifi.pwd': '> hunter2',
+      'wifi.powersave': '> none',
+      'timezone': '> Europe/Amsterdam',
+      'timezone.offset': '> 2',
+    })
+    expect(s.wifiSsid).toBe('MyNet')
+    expect(s.wifiPassword).toBe('hunter2')
+    expect(s.wifiPowersave).toBe('none')
+    expect(s.timezone).toBe('Europe/Amsterdam')
+    expect(s.timezoneOffset).toBe(2)
+  })
+
+  it('flags reboot when wifi ssid or password change', () => {
+    const base = defaultMqttSettings()
+    const next = cloneMqttSettings(base)
+    next.wifiSsid = 'Net'
+    next.wifiPassword = 'pw'
+    const { cmds, needsReboot } = buildMqttCommands(next, base)
+    expect(cmds).toContain('set wifi.ssid Net')
+    expect(cmds).toContain('set wifi.pwd pw')
+    expect(needsReboot).toBe(true)
+  })
+
+  it('does not reboot for powersave/timezone changes', () => {
+    const base = defaultMqttSettings()
+    const next = cloneMqttSettings(base)
+    next.wifiPowersave = 'max'
+    next.timezoneOffset = 1
+    const { cmds, needsReboot } = buildMqttCommands(next, base)
+    expect(cmds).toContain('set wifi.powersave max')
+    expect(cmds).toContain('set timezone.offset 1')
+    expect(needsReboot).toBe(false)
   })
 })
 

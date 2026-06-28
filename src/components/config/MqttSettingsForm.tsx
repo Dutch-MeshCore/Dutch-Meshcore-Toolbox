@@ -110,6 +110,45 @@ export default function MqttSettingsForm({ value, onChange, onSendCommand }: Pro
         </div>
       )}
 
+      {/* ── WiFi & time ────────────────────────────────────── */}
+      <button type="button" className="btn" aria-expanded={!!open.wifi} onClick={() => toggle('wifi')}>
+        {open.wifi ? '▲' : '▼'} WiFi &amp; time
+      </button>
+      {open.wifi && (
+        <div className="panel-inner">
+          <div className="field-row">
+            <div className="field-group">
+              <label>WiFi SSID</label>
+              <input value={value.wifiSsid} maxLength={32} onChange={e => patch(s => { s.wifiSsid = e.target.value })} />
+            </div>
+            <div className="field-group">
+              <label>WiFi password</label>
+              <input type="password" value={value.wifiPassword} maxLength={64} onChange={e => patch(s => { s.wifiPassword = e.target.value })} />
+            </div>
+          </div>
+          <div className="field-row">
+            <div className="field-group">
+              <label>WiFi power save</label>
+              <select value={value.wifiPowersave} onChange={e => patch(s => { s.wifiPowersave = e.target.value as MqttSettings['wifiPowersave'] })}>
+                <option value="none">None</option>
+                <option value="min">Min</option>
+                <option value="max">Max</option>
+              </select>
+            </div>
+            <div className="field-group">
+              <label>Timezone offset (−12…14)</label>
+              <input type="number" min={-12} max={14} value={value.timezoneOffset}
+                onChange={e => patch(s => { s.timezoneOffset = clampInt(e.target.value, -12, 14) })} />
+            </div>
+          </div>
+          <div className="field-group">
+            <label>Timezone (IANA, e.g. Europe/Amsterdam)</label>
+            <input value={value.timezone} maxLength={48} onChange={e => patch(s => { s.timezone = e.target.value })} />
+          </div>
+          <span className="field-hint">Changing SSID or password needs a reboot to reconnect.</span>
+        </div>
+      )}
+
       {/* ── Slots ─────────────────────────────────────────── */}
       <button type="button" className="btn" aria-expanded={!!open.slots} onClick={() => toggle('slots')}>
         {open.slots ? '▲' : '▼'} Broker slots

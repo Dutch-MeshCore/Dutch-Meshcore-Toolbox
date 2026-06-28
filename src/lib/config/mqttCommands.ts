@@ -48,6 +48,12 @@ export interface MqttSettings {
   alertInterval: number
   snmp: boolean
   snmpCommunity: string
+  // WiFi + time (esp32 observer firmware — the transport the MQTT bridge runs on)
+  wifiSsid: string
+  wifiPassword: string
+  wifiPowersave: 'none' | 'min' | 'max'
+  timezone: string
+  timezoneOffset: number
 }
 
 export function defaultMqttSlot(): MqttSlot {
@@ -62,6 +68,7 @@ export function defaultMqttSettings(): MqttSettings {
     alert: false, alertPsk: '', alertHashtag: '', alertRegion: '',
     alertWifi: 30, alertMqtt: 240, alertInterval: 60,
     snmp: false, snmpCommunity: 'public',
+    wifiSsid: '', wifiPassword: '', wifiPowersave: 'none', timezone: '', timezoneOffset: 0,
   }
 }
 
@@ -99,6 +106,10 @@ function parseTx(reply: string): 'off' | 'on' | 'advert' {
   const v = stripReply(reply).toLowerCase()
   return v === 'advert' ? 'advert' : v === 'on' ? 'on' : 'off'
 }
+function parsePowersave(reply: string): 'none' | 'min' | 'max' {
+  const v = stripReply(reply).toLowerCase()
+  return v === 'max' ? 'max' : v === 'min' ? 'min' : 'none'
+}
 
 /** Every `get` key needed to populate the editable model (mqtt.status excluded). */
 export function mqttGetCommands(): string[] {
@@ -107,6 +118,7 @@ export function mqttGetCommands(): string[] {
     'mqtt.interval', 'mqtt.ntp', 'mqtt.owner', 'mqtt.email',
     'alert', 'alert.psk', 'alert.hashtag', 'alert.region', 'alert.wifi', 'alert.mqtt', 'alert.interval',
     'snmp', 'snmp.community',
+    'wifi.ssid', 'wifi.pwd', 'wifi.powersave', 'timezone', 'timezone.offset',
   ]
   for (let n = 1; n <= MQTT_SLOT_COUNT; n++) {
     cmds.push(
@@ -141,6 +153,11 @@ export function assembleMqttSettings(r: Record<string, string>): MqttSettings {
   s.alertInterval = parseFirstInt(g('alert.interval')) || s.alertInterval
   s.snmp = parseBool(g('snmp'))
   s.snmpCommunity = parseStr(g('snmp.community')) || s.snmpCommunity
+  s.wifiSsid = parseStr(g('wifi.ssid'))
+  s.wifiPassword = parseStr(g('wifi.pwd'))
+  s.wifiPowersave = parsePowersave(g('wifi.powersave'))
+  s.timezone = parseStr(g('timezone'))
+  s.timezoneOffset = parseFirstInt(g('timezone.offset'))
   for (let i = 0; i < MQTT_SLOT_COUNT; i++) {
     const n = i + 1
     const sl = s.slots[i]
@@ -165,6 +182,7 @@ export function buildMqttCommands(
 ): { cmds: string[]; needsReboot: boolean } {
   const cmds: string[] = []
   const onoff = (b: boolean) => (b ? 'on' : 'off')
+  let needsReboot = false
 
   // Bridge globals
   if (next.origin !== base.origin) cmds.push(next.origin ? `set mqtt.origin ${next.origin}` : 'set mqtt.origin')
@@ -178,6 +196,14 @@ export function buildMqttCommands(
   if (next.ntp !== base.ntp) cmds.push(next.ntp ? `set mqtt.ntp ${next.ntp}` : 'set mqtt.ntp none')
   if (next.owner !== base.owner && next.owner) cmds.push(`set mqtt.owner ${next.owner}`)
   if (next.email !== base.email && next.email) cmds.push(`set mqtt.email ${next.email}`)
+
+  // WiFi + time. SSID/password changes only savePrefs on-device, so a reboot is
+  // needed to reconnect to the new network.
+  if (next.wifiSsid !== base.wifiSsid && next.wifiSsid) { cmds.push(`set wifi.ssid ${next.wifiSsid}`); needsReboot = true }
+  if (next.wifiPassword !== base.wifiPassword && next.wifiPassword) { cmds.push(`set wifi.pwd ${next.wifiPassword}`); needsReboot = true }
+  if (next.wifiPowersave !== base.wifiPowersave) cmds.push(`set wifi.powersave ${next.wifiPowersave}`)
+  if (next.timezone !== base.timezone && next.timezone) cmds.push(`set timezone ${next.timezone}`)
+  if (next.timezoneOffset !== base.timezoneOffset) cmds.push(`set timezone.offset ${next.timezoneOffset}`)
 
   // Slots — preset first so the slot type is in place before custom fields
   for (let i = 0; i < MQTT_SLOT_COUNT; i++) {
@@ -204,7 +230,6 @@ export function buildMqttCommands(
   if (next.alert !== base.alert) cmds.push(`set alert ${onoff(next.alert)}`)
 
   // SNMP — reboot required
-  let needsReboot = false
   if (next.snmp !== base.snmp) { cmds.push(`set snmp ${onoff(next.snmp)}`); needsReboot = true }
   if (next.snmpCommunity !== base.snmpCommunity && next.snmpCommunity) {
     cmds.push(`set snmp.community ${next.snmpCommunity}`); needsReboot = true
