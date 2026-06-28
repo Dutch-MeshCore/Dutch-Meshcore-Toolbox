@@ -16,8 +16,6 @@ const ROOT    = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT     = join(ROOT, 'public', 'community-firmware.json')
 const DMC_OUT = join(ROOT, 'public', 'dmc-firmware.json')
 
-const DMC_BRANCH = 'mqtt-bridge-implementation-flex-dmc'
-
 // Load .env.local if present (keeps GITHUB_TOKEN off disk and out of git)
 try {
   const envPath = join(ROOT, '.env.local')
@@ -45,15 +43,6 @@ const MESHCORE_DEV_ROLES = [
   { separator: '_repeater-',               role: 'repeater',             icon: '📡', title: 'Repeater',         subTitle: ''                               },
 ]
 
-const MESHCORENG_ROLES = [
-  { separator: '_Repeater_bridge_rs232-nl-', role: 'bridge_rs232', icon: '🔗', title: 'RS232 Bridge', subTitle: 'Repeater + RS232 serial bridge' },
-  { separator: '_room_server-nl-',           role: 'room_server',  icon: '🏠', title: 'Room Server',  subTitle: ''                               },
-]
-
-const MESHCORE_EVO_ROLES = [
-  { separator: '_repeater-', role: 'repeater', icon: '📡', title: 'Repeater', subTitle: '' },
-]
-
 const MESHCOMOD_ROLES = [
   { separator: '_companion_radio_usb_tcp',   role: 'companion_radio_usb_tcp',   icon: '🔌', title: 'Companion Radio', subTitle: 'USB + TCP transport' },
   { separator: '_companion_radio_touch',     role: 'companion_radio_touch',     icon: '📱', title: 'Companion Radio', subTitle: 'Touch display'       },
@@ -68,13 +57,28 @@ const DMC_ROLE_DEFS = [
   { separator: '_roomserver_mqtt-',           role: 'dutchmeshcore_roomserver_mqtt', icon: '🏠', title: 'DutchMeshCore Roomserver MQTT', subTitle: 'Room Server + MQTT'            },
 ]
 
+// Non-MQTT repeater firmware (separate GitHub Releases source — see buildDmcRepeaterConfig)
+const DMC_REPEATER_ROLE = { separator: '_repeater-', role: 'dutchmeshcore_repeater', icon: '📡', title: 'DutchMeshCore Repeater', subTitle: 'Repeater (non-MQTT)' }
+
 const ALL_ROLE_DEFS = [
   ...MESHCORE_DEV_ROLES,
-  ...MESHCORENG_ROLES,
-  ...MESHCORE_EVO_ROLES,
   ...MESHCOMOD_ROLES,
   ...DMC_ROLE_DEFS,
+  DMC_REPEATER_ROLE,
 ]
+
+// MQTT and non-MQTT repeater firmware render as two separate maker groups.
+const DMC_MQTT_MAKER_META = {
+  name:    'DutchMeshCore-MQTT-Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases/tag/repeater-mqtt-v1.16.0',
+  website: 'https://dutchmeshcore.nl',
+}
+
+const DMC_REPEATER_MAKER_META = {
+  name:    'DutchMeshCore Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore',
+  website: 'https://dutchmeshcore.nl',
+}
 
 const ROLE_DISPLAY = Object.fromEntries(
   ALL_ROLE_DEFS.map(rd => [rd.role, { icon: rd.icon, title: rd.title, subTitle: rd.subTitle }])
@@ -126,6 +130,8 @@ const DEVICE_LABELS = {
   LilyGo_T3S3_sx1262:           'LilyGo T3S3 SX1262',
   LilyGo_TLora_V2_1_1_6:       'LilyGo T-LoRa V2.1.1.6',
   RAK_3112:                     'RAK3112',
+  RAK_4631:                     'RAK4631',
+  SenseCap_Solar:               'SenseCAP Solar',
   Station_G2:                   'Station G2',
   T_Beam_S3_Supreme_SX1262:    'T-Beam S3 Supreme SX1262',
   Tbeam_SX1262:                 'T-Beam SX1262',
@@ -331,6 +337,19 @@ async function fetchDirFiles(owner, repo, path) {
   return files
 }
 
+async function fetchReleases(owner, repo) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/releases?per_page=100`
+  console.log(`  GET ${url}`)
+  const resp = await fetch(url, { headers: GH_HEADERS })
+  if (!resp.ok) {
+    console.warn(`  ⚠ ${owner}/${repo} releases: HTTP ${resp.status}`)
+    return []
+  }
+  const releases = await resp.json()
+  console.log(`  → ${releases.length} releases`)
+  return releases
+}
+
 // ─── Per-source builders ──────────────────────────────────────────────────────
 
 async function buildMeshcoreDevConfig() {
@@ -344,33 +363,6 @@ async function buildMeshcoreDevConfig() {
     name: 'MeshCore.io Firmware (Official)',
     repo: 'https://github.com/meshcore-dev/MeshCore',
     website: 'https://meshcore.io',
-  })
-}
-
-async function buildMeshcoreNgConfig() {
-  console.log('MichTronics/MeshCoreNG')
-  const assets = await fetchReleaseAssets('MichTronics', 'MeshCoreNG')
-  const files = assets.flatMap(a => {
-    const p = parseReleaseAsset(a.name, a.browser_download_url, MESHCORENG_ROLES)
-    return p ? [p] : []
-  })
-  return buildConfig(files, 'meshcoreng', {
-    name: 'MeshCoreNG Firmware',
-    repo: 'https://github.com/MichTronics/MeshCoreNG',
-    website: 'https://michtronics.github.io/MeshCoreNG/',
-  })
-}
-
-async function buildMeshcoreEvoConfig() {
-  console.log('mattzzw/MeshCore-Evo')
-  const assets = await fetchReleaseAssets('mattzzw', 'MeshCore-Evo')
-  const files = assets.flatMap(a => {
-    const p = parseReleaseAsset(a.name, a.browser_download_url, MESHCORE_EVO_ROLES)
-    return p ? [p] : []
-  })
-  return buildConfig(files, 'meshcore_evo', {
-    name: 'MeshCore-Evo Firmware',
-    repo: 'https://github.com/mattzzw/MeshCore-Evo',
   })
 }
 
@@ -389,23 +381,49 @@ async function buildMeshcomodConfig() {
   })
 }
 
+// MQTT observer firmware — GitHub Releases on the fork whose tag contains `mqtt`
+// (e.g. `repeater-mqtt-*`, `dmc-room-server-mqtt-*`). The `dmc-repeater-*` (non-MQTT)
+// releases are excluded by the tag filter. Asset filenames carry the version, so the
+// existing `_repeater_observer_mqtt-` / `_room_server_observer_mqtt-` parser is reused.
 async function buildDmcFirmwareConfig() {
-  console.log('Dutch-MeshCore/DutchMeshCore.nl-MQTT (.prebuilt)')
-  const ghFiles = await fetchDirFiles(
-    'Dutch-MeshCore', 'DutchMeshCore.nl-MQTT',
-    `.prebuilt?ref=${DMC_BRANCH}`
-  )
-  const files = ghFiles.flatMap(f => {
-    const url = f.download_url ??
-      `https://raw.githubusercontent.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT/${DMC_BRANCH}/.prebuilt/${f.name}`
-    const p = parseDmcAsset(f.name, url)
-    return p ? [p] : []
+  console.log('Dutch-MeshCore/MeshCore (mqtt releases)')
+  const releases = (await fetchReleases('Dutch-MeshCore', 'MeshCore'))
+    .filter(r => typeof r.tag_name === 'string' && /mqtt/i.test(r.tag_name))
+  const files = releases.flatMap(rel => {
+    // Some assets (e.g. room-server) carry only `dev-<hash>` in the filename, so take
+    // the canonical version from the release tag (sans `v` to match the repeater list).
+    const tagVer = ((rel.tag_name.match(/v?\d+\.\d+\.\d+(?:-[\w.]+)?/) || [])[0] || '').replace(/^v/, '')
+    return (rel.assets ?? []).flatMap(a => {
+      const p = parseDmcAsset(a.name, a.browser_download_url)
+      return p ? [{ ...p, versionKey: tagVer || p.versionKey }] : []
+    })
   })
-  return buildConfig(files, 'dutchmeshcore', {
-    name:    'DutchMeshCore MQTT Firmware',
-    repo:    'https://github.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT',
-    website: 'https://dutchmeshcore.nl',
+  console.log(`  → ${releases.length} mqtt releases, ${files.length} firmware files`)
+  return buildConfig(files, 'dutchmeshcore', DMC_MQTT_MAKER_META)
+}
+
+// Non-MQTT repeater firmware — GitHub Releases tagged `dmc-repeater-*` on the fork.
+// Filenames carry no semver, so the version comes from the release tag. Rendered as
+// its own maker group (separate from the MQTT firmware).
+async function buildDmcRepeaterConfig() {
+  console.log('Dutch-MeshCore/MeshCore (dmc-repeater releases)')
+  const releases = (await fetchReleases('Dutch-MeshCore', 'MeshCore'))
+    .filter(r => typeof r.tag_name === 'string' && r.tag_name.startsWith('dmc-repeater-'))
+
+  const files = releases.flatMap(rel => {
+    const versionKey = rel.tag_name.replace('dmc-repeater-', '').replace(/^v/, '')
+    return (rel.assets ?? []).flatMap(a => {
+      const ext = extOf(a.name)
+      if (!ext) return []
+      const sepIdx = a.name.indexOf('_repeater-')
+      if (sepIdx < 0) return []
+      const deviceKey = a.name.slice(0, sepIdx)
+      const isMerged = a.name.endsWith('-merged.' + ext)
+      return [{ deviceKey, role: 'dutchmeshcore_repeater', versionKey, isMerged, ext, url: a.browser_download_url }]
+    })
   })
+  console.log(`  → ${releases.length} dmc-repeater releases, ${files.length} firmware files`)
+  return buildConfig(files, 'dutchmeshcore_repeater', DMC_REPEATER_MAKER_META)
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -418,8 +436,6 @@ async function main() {
 
   const results = await Promise.allSettled([
     buildMeshcoreDevConfig(),
-    buildMeshcoreNgConfig(),
-    buildMeshcoreEvoConfig(),
     buildMeshcomodConfig(),
   ])
 
@@ -448,10 +464,21 @@ async function main() {
   console.log(`\n✓ Wrote ${OUT}`)
   console.log(`  ${makerCount} makers, ${deviceCount} devices`)
 
-  // ── DMC firmware ──────────────────────────────────────────────────────────
-  console.log('\nBuilding DutchMeshCore MQTT firmware list…')
+  // ── DMC firmware (MQTT + non-MQTT repeater) ───────────────────────────────
+  console.log('\nBuilding DutchMeshCore firmware list…')
   try {
-    const dmcConfig = await buildDmcFirmwareConfig()
+    const [mqttRes, repeaterRes] = await Promise.allSettled([
+      buildDmcFirmwareConfig(),
+      buildDmcRepeaterConfig(),
+    ])
+    const emptyConfig = { staticPath: '', role: {}, notice: {}, maker: {}, device: [] }
+    const dmcMqtt     = mqttRes.status === 'fulfilled' ? mqttRes.value : emptyConfig
+    const dmcRepeater = repeaterRes.status === 'fulfilled' ? repeaterRes.value : emptyConfig
+    if (mqttRes.status === 'rejected')     console.error('DMC MQTT build failed:', mqttRes.reason)
+    if (repeaterRes.status === 'rejected') console.error('DMC repeater build failed:', repeaterRes.reason)
+
+    // Two maker groups (repeater first, then MQTT) in one config.
+    const dmcConfig = mergeConfigs([dmcRepeater, dmcMqtt])
     if (dmcConfig.device.length) {
       const dmcOutput = { generated: new Date().toISOString(), ...dmcConfig }
       writeFileSync(DMC_OUT, JSON.stringify(dmcOutput, null, 2))

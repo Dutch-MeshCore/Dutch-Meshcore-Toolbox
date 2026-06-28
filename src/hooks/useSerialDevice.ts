@@ -9,6 +9,13 @@ import {
   cloneFilterSettings,
   type FilterSettings,
 } from '../lib/config/filterCommands'
+import {
+  assembleMqttSettings,
+  buildMqttCommands,
+  cloneMqttSettings,
+  isMqttSupportedReply,
+  mqttGetCommands,
+} from '../lib/config/mqttCommands'
 
 export function useSerialDevice() {
   const supported = typeof navigator !== 'undefined' && 'serial' in navigator
@@ -124,9 +131,40 @@ export function useSerialDevice() {
       }
     } catch { /* filter is optional; ignore if unsupported or unresponsive */ }
 
-    setDevice({ version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice, filter, filterDevice })
+    // Detect MQTT-observer support by capability: `get mqtt.config.valid` answers
+    // valid/invalid on observer builds, "Unknown command" otherwise. The ~60
+    // settings are read lazily when the panel opens (readMqtt), not here.
+    let mqttCapable = false
+    try {
+      mqttCapable = isMqttSupportedReply(await cli.sendCommand('get mqtt.config.valid'))
+    } catch { /* optional */ }
+
+    setDevice(prev => ({
+      version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice,
+      filter, filterDevice, mqttCapable,
+      // Preserve already-loaded MQTT settings across re-reads (e.g. after save) and
+      // resync the base snapshot to the current values so the diff stays clean.
+      mqtt: prev?.mqtt,
+      mqttDevice: prev?.mqtt ? cloneMqttSettings(prev.mqtt) : undefined,
+    }))
     setBusy('')
   }
+
+  const readMqtt = useCallback(async () => {
+    const cli = cliRef.current as { sendCommand: (c: string) => Promise<string> } | null
+    if (!cli) return
+    setBusy('Reading MQTT settings…')
+    try {
+      const replies: Record<string, string> = {}
+      for (const cmd of mqttGetCommands()) {
+        replies[cmd] = await cli.sendCommand(`get ${cmd}`)
+      }
+      const mqtt = assembleMqttSettings(replies)
+      setDevice(d => (d ? { ...d, mqtt, mqttDevice: cloneMqttSettings(mqtt) } : d))
+    } finally {
+      setBusy('')
+    }
+  }, [])
 
   const setData = useCallback(async () => {
     if (!device) return
@@ -176,6 +214,12 @@ export function useSerialDevice() {
         for (const cmd of filterCmds) {
           await cli.sendCommand(cmd)
         }
+      }
+
+      if (device.mqtt && device.mqttDevice) {
+        const { cmds, needsReboot: rb } = buildMqttCommands(device.mqtt, device.mqttDevice)
+        for (const cmd of cmds) await cli.sendCommand(cmd)
+        if (rb) needsReboot = true
       }
 
       await _getData(cliRef.current as unknown as Parameters<typeof _getData>[0])
@@ -256,5 +300,5 @@ export function useSerialDevice() {
     return true
   }, [device])
 
-  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson }
+  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson, readMqtt }
 }

@@ -1,4 +1,5 @@
 import type { FilterSettings } from './lib/config/filterCommands'
+import type { MqttSettings } from './lib/config/mqttCommands'
 
 export interface ChannelMeta {
   channel: string
@@ -177,6 +178,11 @@ export interface SerialDeviceInfo {
   importPrvKey?: string
   filter?: FilterSettings
   filterDevice?: FilterSettings
+  // DMC MQTT observer settings (only set when the firmware is MQTT-capable).
+  // mqtt/mqttDevice are loaded lazily when the panel is opened (readMqtt).
+  mqttCapable?: boolean
+  mqtt?: MqttSettings
+  mqttDevice?: MqttSettings
 }
 
 export interface RadioPreset {

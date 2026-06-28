@@ -12,28 +12,55 @@
  * new firmware releases whenever the branch is updated.
  */
 
-import type { FlasherConfig } from '../types'
+import type { FlasherConfig, FlasherDevice } from '../types'
 
 const PREBUILT_REPO   = 'Dutch-MeshCore/DutchMeshCore.nl-MQTT'
 const PREBUILT_BRANCH = 'mqtt-bridge-implementation-flex-dmc'
 
-export const PREBUILT_API_URL =
-  `https://api.github.com/repos/${PREBUILT_REPO}/contents/.prebuilt?ref=${PREBUILT_BRANCH}`
-
+// Retained as the legacy raw-URL fallback inside buildDmcConfig (release assets
+// always carry a download_url, so it is effectively unused for live fetches).
 export const PREBUILT_RAW_BASE =
   `https://raw.githubusercontent.com/${PREBUILT_REPO}/${PREBUILT_BRANCH}/.prebuilt`
+
+// All DMC firmware is published as GitHub Releases on the fork below: tags containing
+// `mqtt` are the MQTT bridge firmware; `dmc-repeater-*` tags are the non-MQTT repeater.
+const MESHCORE_REPO       = 'Dutch-MeshCore/MeshCore'
+const REPEATER_TAG_PREFIX = 'dmc-repeater-'
+
+const DMC_RELEASES_URL =
+  `https://api.github.com/repos/${MESHCORE_REPO}/releases?per_page=100`
+
+// MQTT and non-MQTT repeater firmware are shown as two separate maker groups.
+const DMC_MQTT_MAKER     = 'dutchmeshcore'
+const DMC_REPEATER_MAKER = 'dutchmeshcore_repeater'
+
+const DMC_MQTT_MAKER_META = {
+  name:    'DutchMeshCore-MQTT-Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases/tag/repeater-mqtt-v1.16.0',
+  website: 'https://dutchmeshcore.nl',
+}
+
+const DMC_REPEATER_MAKER_META = {
+  name:    'DutchMeshCore Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore',
+  website: 'https://dutchmeshcore.nl',
+}
 
 /** Human-readable labels for each device key found in the filenames. */
 const DEVICE_LABELS: Record<string, string> = {
   Heltec_T190:                'Heltec T190',
+  Heltec_t114:                'Heltec T114',
   Heltec_WSL3:                'Heltec WSL3',
   Heltec_v3:                  'Heltec V3',
   Heltec_v4:                  'Heltec V4',
   heltec_v4:                  'Heltec V4',
   heltec_v4_expansionkit:     'Heltec V4 Expansion Kit',
+  'LilyGo_T-Echo':            'LilyGo T-Echo',
   LilyGo_T3S3_sx1262:         'LilyGo T3S3 SX1262',
   LilyGo_TLora_V2_1_1_6:     'LilyGo T-LoRa V2.1.1.6',
   RAK_3112:                   'RAK3112',
+  RAK_4631:                   'RAK4631',
+  SenseCap_Solar:             'SenseCAP Solar',
   Station_G2:                 'Station G2',
   T_Beam_S3_Supreme_SX1262:   'T-Beam S3 Supreme SX1262',
   Tbeam_SX1262:               'T-Beam SX1262',
@@ -79,6 +106,9 @@ const ROLE_ORDER = ROLE_DEFS.filter(
 interface GHFile {
   name: string
   download_url: string | null
+  /** Optional version override (e.g. derived from a release tag) used when the
+   *  asset filename carries no semver. Falls back to the parsed filename version. */
+  version?: string
 }
 
 interface FirmwareVariant {
@@ -132,11 +162,14 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
 
     // Prefer the download_url from the API; construct a fallback if null
     const url = f.download_url ?? `${PREBUILT_RAW_BASE}/${f.name}`
+    // Release tags carry the canonical version; some assets (e.g. room-server) have
+    // only `dev-<hash>` in the filename, so prefer the tag-derived override.
+    const versionKey = f.version ?? parsed.versionKey
 
     const device = map.get(parsed.deviceKey) ?? { deviceKey: parsed.deviceKey, roles: new Map() }
     const role = device.roles.get(parsed.role) ?? { role: parsed.role, versions: new Map() }
-    const variant = role.versions.get(parsed.versionKey) ?? {
-      versionKey: parsed.versionKey,
+    const variant = role.versions.get(versionKey) ?? {
+      versionKey,
       mergedUrl: '',
       appUrl: '',
     }
@@ -144,7 +177,7 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
     if (parsed.isMerged) variant.mergedUrl = url
     else                 variant.appUrl = url
 
-    role.versions.set(parsed.versionKey, variant)
+    role.versions.set(versionKey, variant)
     device.roles.set(parsed.role, role)
     map.set(parsed.deviceKey, device)
   }
@@ -201,8 +234,149 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
       ROLE_ORDER.map(({ role, icon, title, subTitle }) => [role, { icon, title, subTitle }])
     ),
     notice:  {},
-    maker:   { dutchmeshcore: { name: 'DutchMeshCore MQTT Firmware', repo: 'https://github.com/Dutch-MeshCore', website: 'https://dutchmeshcore.nl' } },
+    maker:   { [DMC_MQTT_MAKER]: DMC_MQTT_MAKER_META },
     device:  devices,
+  }
+}
+
+// ─── Non-MQTT repeater firmware (GitHub Releases) ───────────────────────────────
+
+const REPEATER_SEPARATOR = '_repeater-'
+const REPEATER_ROLE = {
+  role:     'dutchmeshcore_repeater',
+  icon:     '📡',
+  title:    'DutchMeshCore Repeater',
+  subTitle: 'Repeater (non-MQTT)',
+} as const
+
+interface GHReleaseAsset {
+  name: string
+  browser_download_url: string
+}
+
+interface GHRelease {
+  tag_name: string
+  assets: GHReleaseAsset[]
+}
+
+function extOf(name: string): 'bin' | 'uf2' | 'zip' | null {
+  if (name.endsWith('.bin')) return 'bin'
+  if (name.endsWith('.uf2')) return 'uf2'
+  if (name.endsWith('.zip')) return 'zip'
+  return null
+}
+
+/** Derive the display version from a release tag: dmc-repeater-v1.16.0-dev → 1.16.0-dev */
+function repeaterVersion(tag: string): string {
+  return tag.replace(REPEATER_TAG_PREFIX, '').replace(/^v/, '')
+}
+
+/**
+ * Build a FlasherConfig from `dmc-repeater-*` GitHub Releases. Filenames carry no
+ * semver (`{Device}_repeater-dev-{hash}[-merged].{ext}`) so the version comes from
+ * the release tag. Handles esp32 (.bin app/merged) and nRF52 (.uf2/.zip) devices.
+ */
+export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
+  type Variant = { type: 'esp32' | 'nrf52'; appUrl: string; mergedUrl: string }
+  // deviceKey -> versionKey -> Variant
+  const deviceMap = new Map<string, Map<string, Variant>>()
+
+  const setVariant = (deviceKey: string, versionKey: string, patch: Partial<Variant> & { type: Variant['type'] }) => {
+    if (!deviceMap.has(deviceKey)) deviceMap.set(deviceKey, new Map())
+    const versions = deviceMap.get(deviceKey)!
+    const entry = versions.get(versionKey) ?? { type: patch.type, appUrl: '', mergedUrl: '' }
+    versions.set(versionKey, { ...entry, ...patch })
+  }
+
+  for (const release of releases) {
+    const versionKey = repeaterVersion(release.tag_name)
+    for (const asset of release.assets) {
+      const ext = extOf(asset.name)
+      if (!ext) continue
+      const sepIdx = asset.name.indexOf(REPEATER_SEPARATOR)
+      if (sepIdx < 0) continue
+
+      const deviceKey = asset.name.slice(0, sepIdx)
+      const url = asset.browser_download_url
+
+      if (ext === 'bin') {
+        const isMerged = asset.name.endsWith('-merged.bin')
+        setVariant(deviceKey, versionKey, isMerged
+          ? { type: 'esp32', mergedUrl: url }
+          : { type: 'esp32', appUrl: url })
+      } else {
+        // nRF52: single file per version, prefer .zip (DFU) over .uf2
+        const existing = deviceMap.get(deviceKey)?.get(versionKey)
+        if (!existing || (ext === 'zip' && existing.appUrl.endsWith('.uf2'))) {
+          setVariant(deviceKey, versionKey, { type: 'nrf52', appUrl: url })
+        }
+      }
+    }
+  }
+
+  const devices: FlasherDevice[] = [...deviceMap.entries()]
+    .map(([deviceKey, versionMap]) => {
+      const deviceType = [...versionMap.values()][0]?.type ?? 'esp32'
+      const version: FlasherDevice['firmware'][number]['version'] = {}
+
+      for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
+        if (entry.type === 'esp32') {
+          if (entry.appUrl) {
+            version[`${versionKey} — App update`] = {
+              files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update — keeps bootloader, partition table & config' }],
+              notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
+            }
+          }
+          if (entry.mergedUrl) {
+            version[`${versionKey} — Full flash`] = {
+              files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash — merged bin (bootloader + partition + app)' }],
+              notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
+            }
+          }
+        } else {
+          const fileType = entry.appUrl.endsWith('.zip') ? 'nrf-dfu-zip' : 'uf2'
+          version[versionKey] = {
+            files: [{ type: fileType, name: entry.appUrl, title: 'Firmware update' }],
+          }
+        }
+      }
+
+      return {
+        maker: DMC_REPEATER_MAKER,
+        class: 'community' as const,
+        name:  DEVICE_LABELS[deviceKey] ?? deviceKey.replace(/_/g, ' '),
+        type:  deviceType,
+        firmware: [{
+          role: REPEATER_ROLE.role,
+          tooltip: deviceType === 'esp32'
+            ? 'App update keeps bootloader & settings. Full flash is for new or factory-reset devices.'
+            : undefined,
+          version,
+        }],
+      }
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
+
+  return {
+    staticPath: '',
+    role: { [REPEATER_ROLE.role]: { icon: REPEATER_ROLE.icon, title: REPEATER_ROLE.title, subTitle: REPEATER_ROLE.subTitle } },
+    notice: {},
+    maker: { [DMC_REPEATER_MAKER]: DMC_REPEATER_MAKER_META },
+    device: devices,
+  }
+}
+
+/**
+ * Combine the repeater and MQTT DMC configs into one FlasherConfig that carries
+ * both makers — they render as two separate groups (repeater first) in the flasher.
+ */
+export function mergeDmcConfigs(repeater: FlasherConfig, mqtt: FlasherConfig): FlasherConfig {
+  return {
+    staticPath: '',
+    role:   { ...mqtt.role, ...repeater.role },
+    notice: { ...mqtt.notice, ...repeater.notice },
+    maker:  { ...mqtt.maker, ...repeater.maker },
+    device: [...repeater.device, ...mqtt.device],
   }
 }
 
@@ -241,13 +415,35 @@ export async function fetchDmcConfig(): Promise<FlasherConfig> {
     }
   } catch {}
 
-  // Fall back to live GitHub API (may hit rate limits on unauthenticated requests)
-  const resp = await fetch(PREBUILT_API_URL, {
+  // Fall back to the live GitHub API (may hit rate limits unauthenticated). All DMC
+  // firmware lives in MeshCore releases: `mqtt`-tagged releases feed the MQTT bridge
+  // config; `dmc-repeater-*` releases feed the non-MQTT repeater config.
+  const releases = await fetchMeshcoreReleases()
+
+  const mqttFiles: GHFile[] = releases
+    .filter(r => /mqtt/i.test(r.tag_name))
+    .flatMap(r => {
+      const version = dmcTagVersion(r.tag_name)
+      return r.assets.map(a => ({ name: a.name, download_url: a.browser_download_url, version }))
+    })
+  const repeaterReleases = releases.filter(r => r.tag_name.startsWith(REPEATER_TAG_PREFIX))
+
+  const config = mergeDmcConfigs(buildDmcRepeaterConfig(repeaterReleases), buildDmcConfig(mqttFiles))
+  writeCache(DMC_CACHE_KEY, config)
+  return config
+}
+
+/** Extract a semver-ish version from a release tag, e.g. `repeater-mqtt-v1.16.0`
+ *  -> `1.16.0`, `dmc-room-server-mqtt-v1.16.0-dev` -> `1.16.0-dev`. The `v` is
+ *  stripped to match the repeater list's label style. */
+function dmcTagVersion(tag: string): string | undefined {
+  return tag.match(/v?\d+\.\d+\.\d+(?:-[\w.]+)?/)?.[0]?.replace(/^v/, '')
+}
+
+async function fetchMeshcoreReleases(): Promise<GHRelease[]> {
+  const resp = await fetch(DMC_RELEASES_URL, {
     headers: { Accept: 'application/vnd.github.v3+json' },
   })
   if (!resp.ok) throw new Error(`GitHub API ${resp.status}: ${resp.statusText}`)
-  const files: GHFile[] = await resp.json()
-  const config = buildDmcConfig(files)
-  writeCache(DMC_CACHE_KEY, config)
-  return config
+  return resp.json()
 }

@@ -7,6 +7,7 @@ import ConsoleDialog from './ConsoleDialog'
 import MapDialog from './MapDialog'
 import { useVanityKey } from '../../hooks/useVanityKey'
 import FilterSettingsForm from './FilterSettingsForm'
+import MqttSettingsForm from './MqttSettingsForm'
 import { defaultFilterSettings } from '../../lib/config/filterCommands'
 
 interface Props {
@@ -24,18 +25,21 @@ interface Props {
   onSendCommand: (cmd: string) => Promise<string>
   onExport: () => void
   onImport: (json: string) => void
+  onReadMqtt: () => Promise<void>
 }
 
 export default function ConfigForm({
   device, busy, presets, showAdvanced, onToggleAdvanced,
   onUpdate, onSave, onSendAdvert, onStartOta, onReboot, onFactoryReset,
-  onSendCommand, onExport, onImport,
+  onSendCommand, onExport, onImport, onReadMqtt,
 }: Props) {
   const { t } = useLang()
   const [consoleOpen, setConsoleOpen] = useState(false)
   const [mapOpen, setMapOpen] = useState(false)
   const [vanityOpen, setVanityOpen] = useState(false)
   const [showDmc, setShowDmc] = useState(false)
+  const [showMqtt, setShowMqtt] = useState(false)
+  const [mqttLoaded, setMqttLoaded] = useState(false)
   const vanity = useVanityKey()
 
   const vars = device.vars
@@ -470,6 +474,30 @@ export default function ConfigForm({
         </button>
       )}
       {showDmc && FilterPanel}
+
+      {device.mqttCapable && (
+        <button
+          className="btn"
+          style={{ marginBottom: '.75rem' }}
+          onClick={async () => {
+            const next = !showMqtt
+            setShowMqtt(next)
+            if (next && !mqttLoaded) { await onReadMqtt(); setMqttLoaded(true) }
+          }}
+        >
+          {showMqtt ? '▲' : '▼'} {t('config_show_mqtt')}
+        </button>
+      )}
+      {showMqtt && device.mqtt && (
+        <div className="panel">
+          <div className="panel-legend">{t('config_show_mqtt')}</div>
+          <MqttSettingsForm
+            value={device.mqtt}
+            onChange={mqtt => onUpdate({ mqtt })}
+            onSendCommand={onSendCommand}
+          />
+        </div>
+      )}
 
       <button className="btn" onClick={onToggleAdvanced} style={{ marginBottom: '.75rem' }}>
         {showAdvanced ? '▲' : '▼'} {t('config_show_advanced')}

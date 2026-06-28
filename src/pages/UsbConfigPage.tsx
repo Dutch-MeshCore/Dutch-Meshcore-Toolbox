@@ -7,7 +7,7 @@ import { PRESETS_URL } from '../utils/configUtils'
 
 export default function UsbConfigPage() {
   const { t } = useLang()
-  const { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson } =
+  const { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson, readMqtt } =
     useSerialDevice()
   const [presets, setPresets] = useState<RadioPreset[]>([])
   const [showAdvanced, setShowAdvanced] = useState(false)
@@ -135,6 +135,7 @@ export default function UsbConfigPage() {
         onSendCommand={sendCommand}
         onExport={handleExport}
         onImport={handleImport}
+        onReadMqtt={readMqtt}
       />
 
       {/* Footer */}

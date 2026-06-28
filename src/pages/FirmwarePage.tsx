@@ -6,7 +6,11 @@ import { fetchDmcConfig } from '../utils/dutchFlasherConfig'
 import { getRoleFwValue, compareVersionsDesc } from '../utils/flasherUtils'
 import type { DeviceFirmware, FlasherConfig } from '../types'
 
-const FIRMWARE_REPO = 'https://github.com/Dutch-MeshCore/DutchMeshCore.nl-MQTT'
+const FIRMWARE_RELEASE_URL = 'https://github.com/Dutch-MeshCore/MeshCore/releases/tag/repeater-mqtt-v1.16.0'
+
+// This page covers the MQTT firmware only; the non-MQTT repeater firmware (a
+// separate maker group) is offered on the flasher.
+const MQTT_MAKER = 'dutchmeshcore'
 
 const copy = {
   nl: {
@@ -72,9 +76,10 @@ export default function FirmwarePage() {
     fetchDmcConfig()
       .then(cfg => {
         setConfig(cfg)
-        if (cfg.device.length > 0) {
-          setSelectedName(cfg.device[0].name)
-          setSelectedRole(cfg.device[0].firmware[0]?.role ?? '')
+        const mqttDevices = cfg.device.filter(d => d.maker === MQTT_MAKER)
+        if (mqttDevices.length > 0) {
+          setSelectedName(mqttDevices[0].name)
+          setSelectedRole(mqttDevices[0].firmware[0]?.role ?? '')
         }
         setLoading(false)
       })
@@ -83,7 +88,11 @@ export default function FirmwarePage() {
 
   useEffect(() => { load() }, [])
 
-  const device   = useMemo(() => config?.device.find(d => d.name === selectedName), [config, selectedName])
+  const mqttDevices = useMemo(
+    () => config?.device.filter(d => d.maker === MQTT_MAKER) ?? [],
+    [config]
+  )
+  const device   = useMemo(() => mqttDevices.find(d => d.name === selectedName), [mqttDevices, selectedName])
   const firmware = useMemo(
     () => device?.firmware.find(fw => fw.role === selectedRole) ?? device?.firmware[0],
     [device, selectedRole]
@@ -175,7 +184,7 @@ export default function FirmwarePage() {
                 <label>
                   <span>{c.device}</span>
                   <select value={selectedName} onChange={e => setSelectedName(e.target.value)}>
-                    {config.device.map(d => (
+                    {mqttDevices.map(d => (
                       <option key={d.name} value={d.name}>{d.name}</option>
                     ))}
                   </select>
@@ -211,7 +220,7 @@ export default function FirmwarePage() {
                     )}
                     <a
                       className="btn"
-                      href={`${FIRMWARE_REPO}/releases`}
+                      href={FIRMWARE_RELEASE_URL}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

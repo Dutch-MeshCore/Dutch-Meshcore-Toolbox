@@ -25,7 +25,7 @@ const copy = {
     meshwikiDesc: 'De MeshWiki MQTT-broker ontvangt DutchMeshCore observer-data en stelt deze beschikbaar voor de MeshWiki.nl community.',
     techspeeltuinDesc: 'Techspeeltuin.nl ontvangt DutchMeshCore-data en visualiseert MeshCore-netwerkactiviteit voor de community.',
     overrideDesc: 'Live MQTT-analyzer van mesh.override.nl. Toont MeshCore-netwerkactiviteit op basis van DutchMeshCore subscriber-data.',
-    valleirugDesc: 'Analyzer van valleirug.nl ontvangt en toont MeshCore-netwerkactiviteit op basis van DutchMeshCore subscriber-data.',
+    spamdetectorDesc: 'mc-spamdetector.nl detecteert en markeert spam op het MeshCore-netwerk op basis van DutchMeshCore subscriber-data.',
     dataNote: 'Al deze projecten ontvangen data via de DutchMeshCore MQTT subscriber. Wil je je eigen analyzer aansluiten? Bekijk de',
     dataNoteLinkText: 'Config Generatoren',
     dataNote2: 'voor de juiste brokerinstellingen.',
@@ -54,7 +54,7 @@ const copy = {
     meshwikiDesc: 'The MeshWiki MQTT broker receives DutchMeshCore observer data and makes it available to the MeshWiki.nl community.',
     techspeeltuinDesc: 'Techspeeltuin.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
     overrideDesc: 'Live MQTT analyzer by mesh.override.nl. Displays MeshCore network activity based on DutchMeshCore subscriber data.',
-    valleirugDesc: 'Analyzer by valleirug.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
+    spamdetectorDesc: 'mc-spamdetector.nl detects and flags spam on the MeshCore network based on DutchMeshCore subscriber data.',
     dataNote: 'All these projects receive data via the DutchMeshCore MQTT subscriber. Want to connect your own analyzer? Check the',
     dataNoteLinkText: 'Config Generators',
     dataNote2: 'for the correct broker settings.',
@@ -75,7 +75,7 @@ interface BrokerEntry {
   url: string
   typeKey: 'type_analyzer' | 'type_app' | 'type_map'
   extraTags?: CopyKey[]
-  descKey: 'cornmeisterDesc' | 'kiekrDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltuinDesc' | 'valleirugDesc' | 'overrideDesc'
+  descKey: 'cornmeisterDesc' | 'kiekrDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltuinDesc' | 'spamdetectorDesc' | 'overrideDesc'
   icon: string
   iconImg?: string
   iconImgTransparent?: boolean
@@ -320,12 +320,11 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
     iconImg: 'https://techspeeltuin.nl/assets/images/logo.png',
   },
   {
-    name: 'Valleirug.nl',
-    url: 'https://valleirug.nl',
+    name: 'mc-spamdetector.nl',
+    url: 'https://mc-spamdetector.nl/',
     typeKey: 'type_analyzer',
-    extraTags: ['type_map'],
-    descKey: 'valleirugDesc',
-    icon: '🔧',
+    descKey: 'spamdetectorDesc',
+    icon: '🛡️',
     iconImg: '',
   },
 ]

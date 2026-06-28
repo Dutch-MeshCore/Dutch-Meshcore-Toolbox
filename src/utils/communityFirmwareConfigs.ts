@@ -4,8 +4,6 @@
  *
  * Sources (GitHub Releases):
  *   meshcore-dev/MeshCore  — companion, room-server, repeater
- *   MichTronics/MeshCoreNG — room-server, bridge-rs232
- *   mattzzw/MeshCore-Evo   — repeater
  *
  * Source (prebuilt/ directory, no version in filename):
  *   ALLFATHER-BV/meshcomod — repeater-tcp, companion-radio-*, room-server-multitransport
@@ -116,15 +114,6 @@ const MESHCORE_DEV_ROLES: RoleDef[] = [
   { separator: '_repeater-',               role: 'repeater',             icon: '📡', title: 'Repeater',         subTitle: ''               },
 ]
 
-const MESHCORENG_ROLES: RoleDef[] = [
-  { separator: '_Repeater_bridge_rs232-nl-', role: 'bridge_rs232', icon: '🔗', title: 'RS232 Bridge', subTitle: 'Repeater + RS232 serial bridge' },
-  { separator: '_room_server-nl-',           role: 'room_server',  icon: '🏠', title: 'Room Server',  subTitle: ''                               },
-]
-
-const MESHCORE_EVO_ROLES: RoleDef[] = [
-  { separator: '_repeater-', role: 'repeater', icon: '📡', title: 'Repeater', subTitle: '' },
-]
-
 // meshcomod uses no version in filenames — separator runs to the end (before [-merged].bin)
 const MESHCOMOD_ROLES: RoleDef[] = [
   { separator: '_companion_radio_usb_tcp',      role: 'companion_radio_usb_tcp',      icon: '🔌', title: 'Companion Radio', subTitle: 'USB + TCP transport' },
@@ -136,8 +125,6 @@ const MESHCOMOD_ROLES: RoleDef[] = [
 // Merged role display map used in the FlasherConfig.role record
 const ALL_ROLE_DEFS = [
   ...MESHCORE_DEV_ROLES,
-  ...MESHCORENG_ROLES,
-  ...MESHCORE_EVO_ROLES,
   ...MESHCOMOD_ROLES,
 ]
 const ROLE_DISPLAY = Object.fromEntries(
@@ -379,31 +366,6 @@ async function fetchMeshcoreDevConfig(): Promise<FlasherConfig> {
   })
 }
 
-async function fetchMeshcoreNgConfig(): Promise<FlasherConfig> {
-  const assets = await fetchReleaseAssets('MichTronics', 'MeshCoreNG')
-  const files = assets.flatMap(a => {
-    const p = parseReleaseAsset(a.name, a.browser_download_url, MESHCORENG_ROLES)
-    return p ? [p] : []
-  })
-  return buildConfig(files, 'meshcoreng', {
-    name: 'MeshCoreNG Firmware',
-    repo: 'https://github.com/MichTronics/MeshCoreNG',
-    website: 'https://michtronics.github.io/MeshCoreNG/',
-  })
-}
-
-async function fetchMeshcoreEvoConfig(): Promise<FlasherConfig> {
-  const assets = await fetchReleaseAssets('mattzzw', 'MeshCore-Evo')
-  const files = assets.flatMap(a => {
-    const p = parseReleaseAsset(a.name, a.browser_download_url, MESHCORE_EVO_ROLES)
-    return p ? [p] : []
-  })
-  return buildConfig(files, 'meshcore_evo', {
-    name: 'MeshCore-Evo Firmware',
-    repo: 'https://github.com/mattzzw/MeshCore-Evo',
-  })
-}
-
 async function fetchMeshcomodConfig(): Promise<FlasherConfig> {
   const url = `${GH_API}/repos/ALLFATHER-BV/meshcomod/contents/prebuilt`
   const resp = await fetch(url, { headers: GH_HEADERS })
@@ -447,8 +409,6 @@ export async function fetchAllCommunityConfigs(): Promise<FlasherConfig> {
   // Fall back to live GitHub API (may hit rate limits on unauthenticated requests)
   const results = await Promise.allSettled([
     fetchMeshcoreDevConfig(),
-    fetchMeshcoreNgConfig(),
-    fetchMeshcoreEvoConfig(),
     fetchMeshcomodConfig(),
   ])
 

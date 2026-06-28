@@ -23,7 +23,7 @@ function deviceHasVersion(device: FlasherDevice, version: string): boolean {
   )
 }
 
-const MAKER_ORDER_FIRST = ['dutchmeshcore']
+const MAKER_ORDER_FIRST = ['dutchmeshcore_repeater', 'dutchmeshcore']
 
 interface Props {
   devices: FlasherDevice[]
