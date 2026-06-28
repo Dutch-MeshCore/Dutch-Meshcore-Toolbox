@@ -4,7 +4,6 @@ import HomePage from './pages/HomePage'
 import IndexPage from './pages/IndexPage'
 import MqttCliPage from './pages/MqttCliPage'
 import FilterCliPage from './pages/FilterCliPage'
-import FirmwarePage from './pages/FirmwarePage'
 import KeygenPage from './pages/KeygenPage'
 import MctoMqttPage from './pages/MctoMqttPage'
 import ConnectedBrokersPage from './pages/ConnectedBrokersPage'
@@ -22,7 +21,6 @@ export default function App() {
         <Route path="/filter-cli" element={<FilterCliPage />} />
         <Route path="/mcmqtt-toml" element={<MctoMqttPage />} />
         <Route path="/connected-brokers" element={<ConnectedBrokersPage />} />
-        <Route path="/firmware" element={<FirmwarePage />} />
         <Route path="/keygen" element={<KeygenPage />} />
         <Route path="/flasher" element={<FlasherPage />} />
         <Route path="/usb-config" element={<UsbConfigPage />} />

@@ -96,23 +96,16 @@ export default function FlashOptions({
         >
           ⚡ {t('flasher_flash_btn')}
         </button>
-        {!firmware.customFile && files.length > 0 && (
-          <div style={{ position: 'relative', display: 'inline-block' }}>
-            <button className="btn">⬇ {t('flasher_download')}</button>
-            <div className="download-menu">
-              {files.map((f, i) => (
-                <a
-                  key={i}
-                  href={getFirmwarePath(f, config.staticPath, FLASHER_BASE_URL)}
-                  download
-                  className="download-item"
-                >
-                  {f.title}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
+        {!firmware.customFile && files.map((f, i) => (
+          <a
+            key={i}
+            className="btn"
+            href={getFirmwarePath(f, config.staticPath, FLASHER_BASE_URL)}
+            download
+          >
+            ⬇ {files.length > 1 ? f.title : t('flasher_download')}
+          </a>
+        ))}
       </div>
     </div>
   )

@@ -62,6 +62,21 @@ describe('FlashOptions', () => {
     expect(onFlash).toHaveBeenCalled()
   })
 
+  it('renders a real download link (not a dead button) pointing at the firmware file', () => {
+    render(
+      <LangProvider>
+        <FlashOptions
+          device={device} firmware={firmware} config={config as FlasherConfig}
+          supported={false} onFlash={vi.fn()} onBack={vi.fn()}
+        />
+      </LangProvider>
+    )
+    // Default version is the newest (v1.2 -> a.bin / "Combined bin").
+    const link = screen.getByRole('link', { name: /download/i })
+    expect(link).toHaveAttribute('href', 'https://flasher.dutchmeshcore.nl/firmware/a.bin')
+    expect(link).toHaveAttribute('download')
+  })
+
   it('renders custom firmware metadata above the version selector', () => {
     const customFirmware: DeviceFirmware = {
       role: 'custom',

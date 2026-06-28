@@ -37,12 +37,6 @@ export default defineConfig({
             return
           }
 
-          if (url === '/firmware' || url === '/firmware/') {
-            res.statusCode = 302
-            res.setHeader('Location', '/#/firmware')
-            return
-          }
-
           if (url === '/keygen' || url === '/keygen/') {
             res.statusCode = 302
             res.setHeader('Location', '/#/keygen')
@@ -72,7 +66,6 @@ export default defineConfig({
         const shims = [
           ['channel-browser', '#/channel-browser'],
           ['mqtt-cli', '#/mqtt-cli'],
-          ['firmware', '#/firmware'],
           ['keygen', '#/keygen'],
           ['flasher', '#/flasher'],
           ['usb-config', '#/usb-config'],
