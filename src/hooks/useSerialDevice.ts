@@ -13,8 +13,10 @@ import {
   assembleMqttSettings,
   buildMqttCommands,
   cloneMqttSettings,
+  defaultMqttSettings,
   isMqttSupportedReply,
   mqttGetCommands,
+  type MqttSettings,
 } from '../lib/config/mqttCommands'
 
 export function useSerialDevice() {
@@ -245,6 +247,7 @@ export function useSerialDevice() {
     const cli = cliRef.current as {
       getVariable: (k: string) => Promise<string>
       parseVariableResponse: (r: string) => unknown
+      sendCommand: (cmd: string) => Promise<string>
     } | null
     if (!cli) return
 
@@ -266,8 +269,30 @@ export function useSerialDevice() {
       if (prvKey) plainVars['prv.key'] = prvKey
     } catch { /* optional */ }
 
+    const out: { vars: Record<string, unknown>; filter?: FilterSettings; mqtt?: MqttSettings } = {
+      vars: plainVars,
+    }
+
+    // DMC packet-filter settings — only present on filter-capable firmware.
+    if (device.filterDevice) out.filter = device.filterDevice
+
+    // DMC MQTT observer settings — read fresh so the backup is complete even if the
+    // panel was never opened. Only on MQTT-capable firmware. Secrets (broker
+    // passwords, tokens, alert PSK, owner key) are included — the backup is the
+    // device owner's.
+    if (device.mqttCapable) {
+      setBusy('Reading MQTT settings for backup…')
+      try {
+        const replies: Record<string, string> = {}
+        for (const cmd of mqttGetCommands()) replies[cmd] = await cli.sendCommand(`get ${cmd}`)
+        out.mqtt = assembleMqttSettings(replies)
+      } finally {
+        setBusy('')
+      }
+    }
+
     const safeName = (s: string) => (s || '').replace(/[^a-zA-Z0-9_-]/g, '_')
-    const blob = new Blob([JSON.stringify({ vars: plainVars }, null, 2)], { type: 'application/json' })
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -296,6 +321,20 @@ export function useSerialDevice() {
 
     const patch: Partial<SerialDeviceInfo> = { vars: newVars }
     if (data.vars['prv.key']) patch.importPrvKey = data.vars['prv.key']
+
+    // DMC packet-filter — restore only on filter-capable firmware (regular firmware
+    // has no device.filter, so this is skipped). Applied vs the device's current
+    // filter on save.
+    if (data.filter && device.filter) patch.filter = data.filter as FilterSettings
+
+    // DMC MQTT observer settings — restore only on MQTT-capable firmware. Diff
+    // against the device's loaded state if available, else firmware defaults
+    // (a full re-apply of the backup).
+    if (data.mqtt && device.mqttCapable) {
+      patch.mqtt = data.mqtt as MqttSettings
+      patch.mqttDevice = device.mqttDevice ?? defaultMqttSettings()
+    }
+
     setDevice(d => d ? { ...d, ...patch } : d)
     return true
   }, [device])

@@ -482,7 +482,9 @@ export default function ConfigForm({
           onClick={async () => {
             const next = !showMqtt
             setShowMqtt(next)
-            if (next && !mqttLoaded) { await onReadMqtt(); setMqttLoaded(true) }
+            // Skip the read if settings are already loaded or were restored from a
+            // backup (an import populates device.mqtt — re-reading would clobber it).
+            if (next && !mqttLoaded && !device.mqtt) { await onReadMqtt(); setMqttLoaded(true) }
           }}
         >
           {showMqtt ? '▲' : '▼'} {t('config_show_mqtt')}
