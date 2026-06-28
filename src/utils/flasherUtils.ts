@@ -79,3 +79,26 @@ export function getFirmwarePath(file: { name: string }, staticPath: string, base
 export const FLASHER_BASE_URL = 'https://flasher.dutchmeshcore.nl'
 export const CONFIG_JSON_URL =
   'https://raw.githubusercontent.com/Elektr0Vodka/flasher.dutchmeshcore.nl/main/config.json'
+
+/**
+ * GitHub *release-asset* downloads (github.com/.../releases/download/...) don't send
+ * `Access-Control-Allow-Origin`, so the in-browser flasher can't `fetch()` them to
+ * flash from the list. We proxy them through a Cloudflare Pages Function served
+ * same-origin at `/fw-proxy` (see functions/fw-proxy.js) — same-origin means the
+ * browser applies no CORS at all.
+ *
+ * Set to '' to disable (release-hosted firmware then only flashes via the
+ * "Custom firmware" upload — download + local file, no fetch).
+ */
+export const FIRMWARE_CORS_PROXY = '/fw-proxy'
+
+/**
+ * Route GitHub release-download URLs through `FIRMWARE_CORS_PROXY`. Other URLs
+ * (raw.githubusercontent.com — already CORS-enabled — and same-origin/relative
+ * paths) are returned unchanged. Local files never reach here (no fetch).
+ */
+export function firmwareFetchUrl(url: string, proxy: string = FIRMWARE_CORS_PROXY): string {
+  if (!proxy) return url
+  const isGithubRelease = /^https:\/\/github\.com\/[^/]+\/[^/]+\/releases\/download\//.test(url)
+  return isGithubRelease ? `${proxy.replace(/\/+$/, '')}?url=${encodeURIComponent(url)}` : url
+}

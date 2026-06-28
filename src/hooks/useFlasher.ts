@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import type { FlasherDevice, DeviceFirmware, FlasherConfig } from '../types'
-import { getFirmwarePath, FLASHER_BASE_URL } from '../utils/flasherUtils'
+import { getFirmwarePath, firmwareFetchUrl, FLASHER_BASE_URL } from '../utils/flasherUtils'
 
 export interface FlasherState {
   supported: boolean
@@ -41,7 +41,9 @@ export function useFlasher() {
   ): Promise<Blob> {
     if (file.file) return file.file
 
-    const url = getFirmwarePath(file, config.staticPath, FLASHER_BASE_URL)
+    // GitHub release downloads lack CORS headers; route them through the proxy
+    // (no-op when none is configured or for already-CORS-friendly URLs).
+    const url = firmwareFetchUrl(getFirmwarePath(file, config.staticPath, FLASHER_BASE_URL))
     const resp = await fetch(url)
     if (!resp.ok) throw new Error(`Firmware download ${resp.status}: ${resp.statusText}`)
     return resp.blob()
@@ -148,9 +150,11 @@ export function useFlasher() {
       // @ts-ignore
       const { Dfu } = await import('../lib/flasher/dfu.js')
       const port = await navigator.serial.requestPort()
-      portRef.current = port
-      const dfu = new Dfu(port)
-      await dfu.enterDFU()
+      // 1200-baud touch resets the device into the Adafruit bootloader (matches the
+      // upstream flasher's `Dfu.forceDfuMode`). It then re-enumerates as a new serial
+      // port, so drop this one — flash() re-requests the bootloader port.
+      await Dfu.forceDfuMode(port)
+      portRef.current = null
       setState(s => ({ ...s, dfuComplete: true }))
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
