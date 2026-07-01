@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 import DeviceList from '../components/flasher/DeviceList'
 import type { FlasherDevice } from '../types'
 import { LangProvider } from '../hooks/useLang'
@@ -74,5 +74,38 @@ describe('DeviceList', () => {
 
     const selected = onSelect.mock.calls[0][0] as FlasherDevice
     expect(selected.firmware[0].version.custom.files[0].type).toBe('flash-wipe')
+  })
+
+  it('shows the board preview image when hovering a mapped device', () => {
+    renderList()
+    const btn = screen.getByText('Heltec V3').closest('button') as HTMLButtonElement
+    fireEvent.mouseEnter(btn)
+    const preview = screen.getByTestId('device-preview')
+    expect(within(preview).getByRole('img').getAttribute('src')).toBe('/img/heltec_v3.svg')
+  })
+
+  it('removes the preview on mouse leave', () => {
+    renderList()
+    const btn = screen.getByText('Heltec V4').closest('button') as HTMLButtonElement
+    fireEvent.mouseEnter(btn)
+    expect(screen.getByTestId('device-preview')).toBeInTheDocument()
+    fireEvent.mouseLeave(btn)
+    expect(screen.queryByTestId('device-preview')).not.toBeInTheDocument()
+  })
+
+  it('shows no preview for a device without board art', () => {
+    render(
+      <LangProvider>
+        <DeviceList
+          devices={[
+            { maker: 'dutchmeshcore', class: 'community', name: 'Meshtiny', type: 'nrf52', firmware: [] },
+          ]}
+          makerNames={makerNames}
+          onSelect={vi.fn()}
+        />
+      </LangProvider>,
+    )
+    fireEvent.mouseEnter(screen.getByText('Meshtiny').closest('button') as HTMLButtonElement)
+    expect(screen.queryByTestId('device-preview')).not.toBeInTheDocument()
   })
 })

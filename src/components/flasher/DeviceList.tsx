@@ -1,7 +1,32 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { FlasherDevice, FlasherMakerDef } from '../../types'
 import { groupDevicesByMaker, filterDevices } from '../../utils/flasherUtils'
+import { deviceImageSrc } from '../../utils/deviceImage'
 import { useLang } from '../../hooks/useLang'
+
+interface Preview {
+  src: string
+  name: string
+  x: number
+  y: number
+}
+
+// Position the board preview next to the cursor: to its right when it fits,
+// otherwise to its left — always clamped so it stays within the viewport.
+function previewStyle(x: number, y: number): React.CSSProperties {
+  const gap = 16
+  const width = 320 // keep in sync with .device-preview max-width
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+
+  let left = x + gap
+  if (left + width > vw - 8) left = x - gap - width
+  left = Math.max(8, Math.min(left, vw - width - 8))
+
+  const top = Math.max(8, Math.min(y, vh - 8))
+  return { left, top }
+}
 
 function getGroupVersions(devices: FlasherDevice[]): string[] {
   const seen = new Set<string>()
@@ -36,6 +61,14 @@ export default function DeviceList({ devices, makerNames, onSelect }: Props) {
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Set<string>>(new Set(MAKER_ORDER_FIRST))
   const [versionFilter, setVersionFilter] = useState<Record<string, string>>({})
+  const [preview, setPreview] = useState<Preview | null>(null)
+
+  function showPreview(device: FlasherDevice, x: number, y: number) {
+    const src = deviceImageSrc(device)
+    if (!src) { setPreview(null); return }
+    setPreview({ src, name: device.name, x, y })
+  }
+  function hidePreview() { setPreview(null) }
   const filtered = filterDevices(devices, query)
   const groups = groupDevicesByMaker(filtered)
   const isSearching = query.trim().length > 0
@@ -141,6 +174,14 @@ export default function DeviceList({ devices, makerNames, onSelect }: Props) {
                     <button
                       className="device-list-btn"
                       onClick={() => onSelect(device)}
+                      onMouseEnter={e => showPreview(device, e.clientX, e.clientY)}
+                      onMouseMove={e => showPreview(device, e.clientX, e.clientY)}
+                      onMouseLeave={hidePreview}
+                      onFocus={e => {
+                        const r = e.currentTarget.getBoundingClientRect()
+                        showPreview(device, r.right, r.top + r.height / 2)
+                      }}
+                      onBlur={hidePreview}
                     >
                       {device.type !== 'noflash' && (
                         <img
@@ -208,6 +249,17 @@ export default function DeviceList({ devices, makerNames, onSelect }: Props) {
           </li>
         </ul>
       </div>
+
+      {preview && createPortal(
+        <div
+          className="device-preview"
+          data-testid="device-preview"
+          style={previewStyle(preview.x, preview.y)}
+        >
+          <img src={preview.src} alt={preview.name} />
+        </div>,
+        document.body,
+      )}
     </div>
   )
 }

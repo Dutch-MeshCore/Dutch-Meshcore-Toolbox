@@ -258,6 +258,27 @@
 .device-list-btn img.device-type-icon { height: 18px; opacity: .7; }
 .device-list-btn img.device-brand-icon { height: 18px; margin-left: auto; }
 
+/* Board image shown on device hover (portaled to <body>, positioned in JS). */
+.device-preview {
+  position: fixed;
+  z-index: 1000;
+  transform: translateY(-50%);
+  max-width: 320px;
+  padding: .5rem;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  pointer-events: none;
+}
+.device-preview img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 300px;
+  max-height: 300px;
+}
+
 /* ── Role list ───────────────────────────────────────────────────────────────── */
 .role-list {
   list-style: none;
