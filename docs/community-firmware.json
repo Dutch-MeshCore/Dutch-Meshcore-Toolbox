@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-06T22:02:55.279Z",
+  "generated": "2026-07-01T08:09:24.005Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -56,6 +56,11 @@
       "icon": "🏠",
       "title": "DutchMeshCore Roomserver MQTT",
       "subTitle": "Room Server + MQTT"
+    },
+    "dutchmeshcore_repeater": {
+      "icon": "📡",
+      "title": "DutchMeshCore Repeater",
+      "subTitle": "Repeater (non-MQTT)"
     }
   },
   "notice": {},
@@ -16516,280 +16521,6 @@
     {
       "maker": "meshcore_dev",
       "class": "community",
-      "name": "RAK 4631",
-      "type": "nrf52",
-      "firmware": [
-        {
-          "role": "room_server",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "",
-          "version": {
-            "v1.16.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.16.0/RAK_4631_room_server-v1.16.0-07a3ca9.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.15.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.15.0/RAK_4631_room_server-v1.15.0-dee3e26.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.1": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.14.1/RAK_4631_room_server-v1.14.1-467959c.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.14.0/RAK_4631_room_server-v1.14.0-9f1a3ea.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.13.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.13.0/RAK_4631_room_server-v1.13.0-295f67d.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.12.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.12.0/RAK_4631_room_server-v1.12.0-e738a74.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.11.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.11.0/RAK_4631_room_server-v1.11.0-6d32193.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "role": "repeater",
-          "icon": "📡",
-          "title": "Repeater",
-          "subTitle": "",
-          "version": {
-            "v1.16.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.16.0/RAK_4631_repeater-v1.16.0-07a3ca9.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.15.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.15.0/RAK_4631_repeater-v1.15.0-dee3e26.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.1": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.14.1/RAK_4631_repeater-v1.14.1-467959c.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.14.0/RAK_4631_repeater-v1.14.0-9f1a3ea.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.13.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.13.0/RAK_4631_repeater-v1.13.0-295f67d.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.12.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.12.0/RAK_4631_repeater-v1.12.0-e738a74.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.11.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.11.0/RAK_4631_repeater-v1.11.0-6d32193.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "role": "companion_radio_ble",
-          "icon": "📻",
-          "title": "Companion Radio",
-          "subTitle": "BLE transport",
-          "version": {
-            "v1.16.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.16.0/RAK_4631_companion_radio_ble-v1.16.0-07a3ca9.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.15.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.15.0/RAK_4631_companion_radio_ble-v1.15.0-dee3e26.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.1": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.1/RAK_4631_companion_radio_ble-v1.14.1-467959c.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.0/RAK_4631_companion_radio_ble-v1.14.0-9f1a3ea.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.13.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.13.0/RAK_4631_companion_radio_ble-v1.13.0-295f67d.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.12.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.12.0/RAK_4631_companion_radio_ble-v1.12.0-e738a74.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "role": "companion_radio_usb",
-          "icon": "🔌",
-          "title": "Companion Radio",
-          "subTitle": "USB transport",
-          "version": {
-            "v1.16.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.16.0/RAK_4631_companion_radio_usb-v1.16.0-07a3ca9.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.15.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.15.0/RAK_4631_companion_radio_usb-v1.15.0-dee3e26.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.1": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.1/RAK_4631_companion_radio_usb-v1.14.1-467959c.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.14.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.0/RAK_4631_companion_radio_usb-v1.14.0-9f1a3ea.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.13.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.13.0/RAK_4631_companion_radio_usb-v1.13.0-295f67d.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            },
-            "v1.12.0": {
-              "files": [
-                {
-                  "type": "nrf-dfu-zip",
-                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.12.0/RAK_4631_companion_radio_usb-v1.12.0-e738a74.zip",
-                  "title": "Firmware update"
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "maker": "meshcore_dev",
-      "class": "community",
       "name": "RAK WisMesh Tag",
       "type": "nrf52",
       "firmware": [
@@ -17747,7 +17478,281 @@
     {
       "maker": "meshcore_dev",
       "class": "community",
-      "name": "SenseCap Solar",
+      "name": "RAK4631",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "room_server",
+          "icon": "🏠",
+          "title": "Room Server",
+          "subTitle": "",
+          "version": {
+            "v1.16.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.16.0/RAK_4631_room_server-v1.16.0-07a3ca9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.15.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.15.0/RAK_4631_room_server-v1.15.0-dee3e26.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.1": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.14.1/RAK_4631_room_server-v1.14.1-467959c.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.14.0/RAK_4631_room_server-v1.14.0-9f1a3ea.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.13.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.13.0/RAK_4631_room_server-v1.13.0-295f67d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.12.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.12.0/RAK_4631_room_server-v1.12.0-e738a74.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.11.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/room-server-v1.11.0/RAK_4631_room_server-v1.11.0-6d32193.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "repeater",
+          "icon": "📡",
+          "title": "Repeater",
+          "subTitle": "",
+          "version": {
+            "v1.16.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.16.0/RAK_4631_repeater-v1.16.0-07a3ca9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.15.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.15.0/RAK_4631_repeater-v1.15.0-dee3e26.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.1": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.14.1/RAK_4631_repeater-v1.14.1-467959c.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.14.0/RAK_4631_repeater-v1.14.0-9f1a3ea.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.13.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.13.0/RAK_4631_repeater-v1.13.0-295f67d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.12.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.12.0/RAK_4631_repeater-v1.12.0-e738a74.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.11.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/repeater-v1.11.0/RAK_4631_repeater-v1.11.0-6d32193.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.16.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.16.0/RAK_4631_companion_radio_ble-v1.16.0-07a3ca9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.15.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.15.0/RAK_4631_companion_radio_ble-v1.15.0-dee3e26.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.1": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.1/RAK_4631_companion_radio_ble-v1.14.1-467959c.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.0/RAK_4631_companion_radio_ble-v1.14.0-9f1a3ea.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.13.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.13.0/RAK_4631_companion_radio_ble-v1.13.0-295f67d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.12.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.12.0/RAK_4631_companion_radio_ble-v1.12.0-e738a74.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.16.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.16.0/RAK_4631_companion_radio_usb-v1.16.0-07a3ca9.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.15.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.15.0/RAK_4631_companion_radio_usb-v1.15.0-dee3e26.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.1": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.1/RAK_4631_companion_radio_usb-v1.14.1-467959c.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.14.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.14.0/RAK_4631_companion_radio_usb-v1.14.0-9f1a3ea.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.13.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.13.0/RAK_4631_companion_radio_usb-v1.13.0-295f67d.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            },
+            "v1.12.0": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/meshcore-dev/MeshCore/releases/download/companion-v1.12.0/RAK_4631_companion_radio_usb-v1.12.0-e738a74.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcore_dev",
+      "class": "community",
+      "name": "SenseCAP Solar",
       "type": "nrf52",
       "firmware": [
         {
