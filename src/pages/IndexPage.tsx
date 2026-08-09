@@ -20,9 +20,14 @@ import { exportJson, exportTxt, exportRtfm, exportCoreScope } from "../utils/exp
 
 const LS_VIEW = "meshcore-view";
 
+// Stable reference: passing a fresh `{}` each render would make useChannelData
+// rebuild `allChannels` (and thus `filtered`) with a new identity every render,
+// which retriggers usePagination's reset-to-page-1 effect and breaks paging.
+const NO_LOCAL_EDITS = {};
+
 export default function IndexPage() {
   const { t } = useLang();
-  const { allChannels, loading, error } = useChannelData(false, {});
+  const { allChannels, loading, error } = useChannelData(false, NO_LOCAL_EDITS);
   const {
     filtered,
     filters,
