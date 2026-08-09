@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import type { FlasherDevice, DeviceFirmware, FlasherConfig } from '../../types'
 import { getRoleFwValue } from '../../utils/flasherUtils'
 import { useLang } from '../../hooks/useLang'
@@ -20,6 +21,15 @@ export default function FlashProgress({
   const { t } = useLang()
   const title = getRoleFwValue(firmware, config.role, 'title')
   const isRepeaterRole = firmware.role === 'repeater' || firmware.role === 'roomServer'
+
+  // Keep the log scrolled to the newest line, unless the user has scrolled up
+  // to read earlier output.
+  const logRef = useRef<HTMLPreElement>(null)
+  const stickToBottom = useRef(true)
+  useEffect(() => {
+    const el = logRef.current
+    if (el && stickToBottom.current) el.scrollTop = el.scrollHeight
+  }, [log])
 
   return (
     <div>
@@ -63,7 +73,19 @@ export default function FlashProgress({
             <div className="flash-progress-bar-fill" style={{ width: `${percent}%` }} />
           </div>
 
-          {log && <pre className="flash-log">{log}</pre>}
+          {log && (
+            <pre
+              className="flash-log"
+              ref={logRef}
+              onScroll={() => {
+                const el = logRef.current
+                if (!el) return
+                // "Near bottom" tolerance so the newest line staying pinned
+                // survives sub-pixel rounding.
+                stickToBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight < 24
+              }}
+            >{log}</pre>
+          )}
         </div>
       )}
     </div>
