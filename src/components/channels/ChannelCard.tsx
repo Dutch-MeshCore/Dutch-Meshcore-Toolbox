@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import type { Channel } from '../../types'
-import Badge from '../ui/Badge'
 import { copyText } from '../../utils/clipboard'
 import { fmtDate, relativeTime } from '../../utils/formatDate'
 import { useLang } from '../../hooks/useLang'
@@ -34,9 +33,7 @@ export default function ChannelCard({ channel: c, selected, onToggleSelect, onCo
 
   const cardClass = [
     'card',
-    !c._hasMeta ? 'bare' : '',
     selected ? 'selected' : '',
-    c._localEdit ? 'local-edited' : '',
   ].filter(Boolean).join(' ')
 
   return (
@@ -57,11 +54,7 @@ export default function ChannelCard({ channel: c, selected, onToggleSelect, onCo
             {c.channel}
           </span>
         </div>
-        <div className="badges">
-          {c.verified    && <Badge variant="verified" />}
-          {c.recommended && <Badge variant="recommended" />}
-          {!c._hasMeta   && <Badge variant="no-meta" />}
-        </div>
+        {c.encrypted && <div className="badges"><span className="scope-tag">🔒 {t('card_encrypted')}</span></div>}
       </div>
 
       <div
@@ -72,14 +65,12 @@ export default function ChannelCard({ channel: c, selected, onToggleSelect, onCo
         {c._key}
       </div>
 
-      {c._hasMeta && (
+      {(c.countries?.length || c.regions?.length) ? (
         <div className="card-meta">
-          {c.category    && <><span className="mk">{t('card_category')}</span><span className="mv">{c.category}{c.subcategory ? ` › ${c.subcategory}` : ''}</span></>}
-          {c.country     && <><span className="mk">{t('card_country')}</span><span className="mv">{c.country}</span></>}
-          {c.region      && <><span className="mk">{t('card_region')}</span><span className="mv">{c.region}</span></>}
-          {c.language?.length ? <><span className="mk">{t('card_language')}</span><span className="mv">{c.language.join(', ')}</span></> : null}
+          {c.countries?.length ? <><span className="mk">{t('card_country')}</span><span className="mv">{c.countries.join(', ')}</span></> : null}
+          {c.regions?.length   ? <><span className="mk">{t('card_region')}</span><span className="mv">{c.regions.join(', ')}</span></> : null}
         </div>
-      )}
+      ) : null}
 
       {c.scopes?.length ? (
         <div className="scopes-row">
@@ -87,24 +78,12 @@ export default function ChannelCard({ channel: c, selected, onToggleSelect, onCo
         </div>
       ) : null}
 
-      {c.tags?.length ? (
-        <div className="tags-row">
-          {c.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
-        </div>
-      ) : null}
-
-      {(c.last_seen || c.added || c.message_amount != null) && (
+      {(c.last_seen || c.message_amount != null) && (
         <div className="card-dates">
           {c.last_seen && (
             <span className="cd-item" title={fmtDate(c.last_seen)}>
               <span className="cd-label">{t('card_last_seen')}</span>
               {relativeTime(c.last_seen)}
-            </span>
-          )}
-          {c.added && (
-            <span className="cd-item" title={fmtDate(c.added)}>
-              <span className="cd-label">{t('card_added')}</span>
-              {relativeTime(c.added)}
             </span>
           )}
           {c.message_amount != null && (
@@ -116,7 +95,11 @@ export default function ChannelCard({ channel: c, selected, onToggleSelect, onCo
         </div>
       )}
 
-      {c.notes && <div className="notes-text">{c.notes}</div>}
+      {c.last_message && (
+        <div className="notes-text" title={c.last_sender ? `${t('card_last_sender')}: ${c.last_sender}` : undefined}>
+          {c.last_sender ? <strong>{c.last_sender}: </strong> : null}{c.last_message}
+        </div>
+      )}
 
       <div className="card-actions">
         {!readOnlyActions && (

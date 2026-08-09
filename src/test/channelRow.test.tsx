@@ -13,7 +13,6 @@ const mockChannel: Channel = {
   _key: 'aabbccddeeff0011',
   _hasMeta: true,
   _localEdit: false,
-  source: 'radio',
 }
 
 function renderRow() {

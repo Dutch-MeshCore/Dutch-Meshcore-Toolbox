@@ -110,13 +110,13 @@ export const STRINGS = {
     loading: 'Kanalen laden…',
 
     // IndexPage header
-    index_title: '📡 MeshCore NL Kanalen',
-    index_sub: 'Community supplied DutchMeshCore channel data.',
+    index_title: '📡 MeshCore Kanalen',
+    index_sub: 'Live kanaaldata, Nederland eerst — via meshcore-analyzer.eu.',
 
     // Info panel
     info_scope_guidelines: 'DutchMeshCore.nl Channel browser',
-    info_project_title: 'Source',
-    info_project_body: 'Community supplied.',
+    info_project_title: 'Bron',
+    info_project_body: 'Live data van meshcore-analyzer.eu, elke paar minuten ververst. Nederlandse kanalen staan bovenaan.',
 
     // Empty / error
     no_channels: 'Geen kanalen gevonden',
@@ -140,7 +140,7 @@ export const STRINGS = {
     th_flags: 'Vlaggen',
 
     // FilterControls
-    search_placeholder: 'Zoek op kanaalnaam, tags, regio, notities…',
+    search_placeholder: 'Zoek op kanaalnaam, land, regio, scope, bericht…',
     all_categories: 'Alle categorieën',
     all_subcategories: 'Alle subcategorieën',
     all_regions: 'Alle regio\'s',
@@ -177,6 +177,7 @@ export const STRINGS = {
     insights_no_msg: 'Nog geen berichtdata.',
     insights_recent: '🆕 10 Meest Recent Toegevoegd',
     insights_no_added: 'Nog geen toegevoegde-datum data.',
+    insights_countries: '🌍 Kanalen per Land',
     insights_updated: '🔄 10 Laatst Bijgewerkt',
     insights_no_seen: 'Nog geen laatste-gezien data.',
 
@@ -185,6 +186,8 @@ export const STRINGS = {
     card_country: 'Land',
     card_region: 'Regio',
     card_language: 'Taal',
+    card_encrypted: 'Versleuteld',
+    card_last_sender: 'Laatste afzender',
     card_last_seen: 'Laatste keer gezien',
     card_added: 'Toegevoegd',
     card_messages: 'Berichten',
@@ -266,9 +269,11 @@ export const STRINGS = {
     config_start_ota: 'OTA starten',
     config_reboot: 'Herstarten',
     config_factory_reset: 'Fabrieksinstellingen',
+    config_sync_clock: 'Klok synchroniseren',
     config_source: 'Gebaseerd op',
     config_disconnected_toast: 'Apparaat verbroken',
     config_saved_toast: 'Instellingen opgeslagen',
+    config_clock_synced_toast: 'Klok gesynchroniseerd met deze computer',
     config_exported_toast: 'Configuratie geëxporteerd.',
     config_imported_toast: 'Configuratie geïmporteerd.',
     config_import_error: 'Importeren mislukt.',
@@ -408,13 +413,13 @@ export const STRINGS = {
     loading: 'Loading channels…',
 
     // IndexPage header
-    index_title: '📡 MeshCore NL Channels',
-    index_sub: 'Community supplied DutchMeshCore channel data.',
+    index_title: '📡 MeshCore Channels',
+    index_sub: 'Live channel data, Netherlands first — via meshcore-analyzer.eu.',
 
     // Info panel
     info_scope_guidelines: 'DutchMeshCore.nl Channel browser',
     info_project_title: 'Source',
-    info_project_body: 'Community supplied.',
+    info_project_body: 'Live data from meshcore-analyzer.eu, refreshed every few minutes. Dutch channels are listed first.',
 
     // Empty / error
     no_channels: 'No channels found',
@@ -438,7 +443,7 @@ export const STRINGS = {
     th_flags: 'Flags',
 
     // FilterControls
-    search_placeholder: 'Search channel name, tags, region, notes…',
+    search_placeholder: 'Search channel name, country, region, scope, message…',
     all_categories: 'All categories',
     all_subcategories: 'All subcategories',
     all_regions: 'All regions',
@@ -475,6 +480,7 @@ export const STRINGS = {
     insights_no_msg: 'No message data yet.',
     insights_recent: '🆕 10 Most Recently Added',
     insights_no_added: 'No added-date data yet.',
+    insights_countries: '🌍 Channels by Country',
     insights_updated: '🔄 10 Last Updated',
     insights_no_seen: 'No last-seen data yet.',
 
@@ -483,6 +489,8 @@ export const STRINGS = {
     card_country: 'Country',
     card_region: 'Region',
     card_language: 'Language',
+    card_encrypted: 'Encrypted',
+    card_last_sender: 'Last sender',
     card_last_seen: 'Last seen',
     card_added: 'Added',
     card_messages: 'Messages',
@@ -564,9 +572,11 @@ export const STRINGS = {
     config_start_ota: 'Start OTA',
     config_reboot: 'Reboot',
     config_factory_reset: 'Factory reset',
+    config_sync_clock: 'Sync clock',
     config_source: 'Based on',
     config_disconnected_toast: 'Device disconnected',
     config_saved_toast: 'Settings saved.',
+    config_clock_synced_toast: 'Clock synced with this computer',
     config_exported_toast: 'Configuration exported.',
     config_imported_toast: 'Configuration imported.',
     config_import_error: 'Import failed.',

@@ -1,5 +1,4 @@
 import type { Channel, FilterState, ViewMode } from '../../types'
-import type { CategoryEntry } from '../../hooks/useCategoryMap'
 import { useLang } from '../../hooks/useLang'
 
 interface Props {
@@ -8,7 +7,6 @@ interface Props {
   setFilter: <K extends keyof FilterState>(key: K, val: FilterState[K]) => void
   viewMode: ViewMode
   setViewMode: (m: ViewMode) => void
-  categoryMap: Record<string, CategoryEntry>
 }
 
 export default function FilterControls({
@@ -17,18 +15,12 @@ export default function FilterControls({
   setFilter,
   viewMode,
   setViewMode,
-  categoryMap,
 }: Props) {
   const { t } = useLang()
 
-  const regions = [...new Set(allChannels.map(c => c.region).filter(Boolean))].sort() as string[]
-  const scopes  = [...new Set(allChannels.flatMap(c => c.scopes || []))].sort()
-  const countries = [...new Set(allChannels.map(c => c.country).filter(Boolean))].sort() as string[]
-
-  const selectedCatKey = filters.category.toLowerCase()
-  const subcategories = selectedCatKey && categoryMap[selectedCatKey]
-    ? [...categoryMap[selectedCatKey].subs].sort()
-    : [...new Set(allChannels.map(c => c.subcategory).filter(Boolean))].sort() as string[]
+  const regions   = [...new Set(allChannels.flatMap(c => c.regions   || []))].sort()
+  const scopes    = [...new Set(allChannels.flatMap(c => c.scopes    || []))].sort()
+  const countries = [...new Set(allChannels.flatMap(c => c.countries || []))].sort()
 
   return (
     <div className="controls">
@@ -45,26 +37,6 @@ export default function FilterControls({
           autoComplete="off"
         />
       </div>
-
-      <select
-        value={filters.category}
-        onChange={e => { setFilter('category', e.target.value); setFilter('subcategory', '') }}
-      >
-        <option value="">{t('all_categories')}</option>
-        {Object.values(categoryMap).map(entry => (
-          <option key={entry.display} value={entry.display}>{entry.display}</option>
-        ))}
-      </select>
-
-      <select
-        value={filters.subcategory}
-        onChange={e => setFilter('subcategory', e.target.value)}
-      >
-        <option value="">{t('all_subcategories')}</option>
-        {subcategories.map(s => (
-          <option key={s} value={s}>{s}</option>
-        ))}
-      </select>
 
       <select
         value={filters.region}
@@ -104,16 +76,6 @@ export default function FilterControls({
         />
         <span className="toggle" />
         <span className="toggle-label">{t('scoped_only')}</span>
-      </label>
-
-      <label className="toggle-wrap">
-        <input
-          type="checkbox"
-          checked={filters.onlyBare}
-          onChange={e => setFilter('onlyBare', e.target.checked)}
-        />
-        <span className="toggle" />
-        <span className="toggle-label">{t('no_meta_only')}</span>
       </label>
 
       <div className="input-wrap">

@@ -37,10 +37,12 @@ export default function StatsInsights({ channels }: Props) {
     .sort((a, b) => (b.message_amount ?? 0) - (a.message_amount ?? 0))
     .slice(0, 10)
 
-  const recentlyAdded = [...channels]
-    .filter(c => c.added)
-    .sort((a, b) => (b.added! > a.added! ? 1 : -1))
-    .slice(0, 10)
+  const byCountry = Object.entries(
+    channels.reduce<Record<string, number>>((acc, c) => {
+      for (const country of c.countries ?? []) acc[country] = (acc[country] ?? 0) + 1
+      return acc
+    }, {})
+  ).sort((a, b) => b[1] - a[1]).slice(0, 10)
 
   const lastUpdated = [...channels]
     .filter(c => c.last_seen)
@@ -76,16 +78,14 @@ export default function StatsInsights({ channels }: Props) {
         </div>
 
         <div className="info-box insights-box">
-          <h4>{t('insights_recent')}</h4>
-          {recentlyAdded.length === 0
-            ? <p className="insights-empty">{t('insights_no_added')}</p>
+          <h4>{t('insights_countries')}</h4>
+          {byCountry.length === 0
+            ? <p className="insights-empty">{t('insights_no_seen')}</p>
             : <ul className="insights-list">
-                {recentlyAdded.map(c => (
-                  <li key={c.channel} className="insights-row">
-                    <span className="insights-name" title={c.channel}>{c.channel}</span>
-                    <span className="insights-value" title={fmtDate(c.added)}>
-                      {relativeTime(c.added)}
-                    </span>
+                {byCountry.map(([country, count]) => (
+                  <li key={country} className="insights-row">
+                    <span className="insights-name" title={country}>{country}</span>
+                    <span className="insights-value">{count.toLocaleString()}</span>
                   </li>
                 ))}
               </ul>

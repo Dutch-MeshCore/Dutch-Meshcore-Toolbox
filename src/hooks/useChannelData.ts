@@ -30,11 +30,23 @@ export function useChannelData(serverMode: boolean, localEdits: LocalEdits) {
 
   useEffect(() => {
     let cancelled = false
+    async function fetchChannels(): Promise<ChannelMeta[]> {
+      // Primary: the same-origin proxy (Cloudflare Function in prod, Vite
+      // middleware in dev). Fallback: a committed sample so the page still
+      // renders offline or if the analyzer is unreachable.
+      try {
+        const res = await fetch('/channels-data')
+        if (!res.ok) throw new Error(`channels-data: ${res.status}`)
+        return await res.json()
+      } catch {
+        const res = await fetch('./data/channels-sample.json')
+        if (!res.ok) throw new Error(`channels-sample.json: ${res.status}`)
+        return await res.json()
+      }
+    }
     async function load() {
       try {
-        const res = await fetch('./data/channels.json')
-        if (!res.ok) throw new Error(`channels.json: ${res.status}`)
-        const arr: ChannelMeta[] = await res.json()
+        const arr = await fetchChannels()
         const newMeta: Record<string, ChannelMeta> = {}
         for (const c of arr) newMeta[c.channel] = c
         if (!cancelled) { setMetaMap(newMeta); setLoading(false) }

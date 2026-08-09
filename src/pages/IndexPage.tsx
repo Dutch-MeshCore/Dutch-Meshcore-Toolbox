@@ -4,7 +4,6 @@ import { useChannelData } from "../hooks/useChannelData";
 import { useChannelView } from "../hooks/useChannelView";
 import { useSelection } from "../hooks/useSelection";
 import { useToast } from "../hooks/useToast";
-import { useCategoryMap } from "../hooks/useCategoryMap";
 import { usePagination } from "../hooks/usePagination";
 import { useLang } from "../hooks/useLang";
 import Navbar from "../components/layout/Navbar";
@@ -43,7 +42,6 @@ export default function IndexPage() {
     clear: clearSelection,
   } = useSelection(filtered);
   const { toasts, toast } = useToast();
-  const categoryMap = useCategoryMap(allChannels);
 
   const [viewMode, setViewModeRaw] = useState<ViewMode>(
     () => (localStorage.getItem(LS_VIEW) as ViewMode) || "grid",
@@ -102,7 +100,6 @@ export default function IndexPage() {
           setFilter={setFilter}
           viewMode={viewMode}
           setViewMode={setViewMode}
-          categoryMap={categoryMap}
         />
 
         <ResultsBar
@@ -155,12 +152,6 @@ export default function IndexPage() {
                       {t('th_hash')}
                     </th>
                     <th
-                      className={`sortable${sortBy === "category" ? ` sort-${sortDir}` : ""}`}
-                      onClick={() => setSort("category")}
-                    >
-                      {t('th_category')}
-                    </th>
-                    <th
                       className={`sortable${sortBy === "country" ? ` sort-${sortDir}` : ""}`}
                       onClick={() => setSort("country")}
                     >
@@ -177,12 +168,6 @@ export default function IndexPage() {
                       onClick={() => setSort("scope")}
                     >
                       {t('th_scopes')}
-                    </th>
-                    <th
-                      className={`sortable${sortBy === "first_seen" ? ` sort-${sortDir}` : ""}`}
-                      onClick={() => setSort("first_seen")}
-                    >
-                      {t('th_first_seen')}
                     </th>
                     <th
                       className={`sortable${sortBy === "last_seen" ? ` sort-${sortDir}` : ""}`}

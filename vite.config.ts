@@ -13,6 +13,26 @@ export default defineConfig({
         server.middlewares.use(async (req, res, next) => {
           const url = req.url?.split('?')[0] ?? '/'
 
+          // Dev equivalent of functions/channels-data.js: fetch the live analyzer
+          // feed and map it with the same shared module the Pages Function uses.
+          if (url === '/channels-data') {
+            try {
+              const { mapAnalyzerResponse } = await server.ssrLoadModule('/src/utils/analyzerChannels.ts')
+              const upstream = await fetch('https://meshcore-analyzer.eu/api/channels', {
+                headers: { Accept: 'application/json' },
+              })
+              if (!upstream.ok) throw new Error(`upstream HTTP ${upstream.status}`)
+              const channels = mapAnalyzerResponse(await upstream.json())
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify(channels))
+            } catch (err) {
+              res.statusCode = 502
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: String((err as Error)?.message ?? err) }))
+            }
+            return
+          }
+
           if (url.startsWith('/data/') || url.startsWith('/channel-browser/data/')) {
             const dataUrl = url.replace(/^\/channel-browser/, '')
             const filePath = path.join(process.cwd(), 'public', dataUrl)

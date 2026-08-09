@@ -7,13 +7,10 @@ import type { FilterState } from '../types'
 
 const defaultFilters: FilterState = {
   search: '',
-  category: '',
-  subcategory: '',
   region: '',
   scope: '',
   country: '',
   onlyScoped: false,
-  onlyBare: false,
   minMessages: 0,
 }
 
@@ -27,7 +24,6 @@ describe('FilterControls', () => {
           setFilter={vi.fn()}
           viewMode="grid"
           setViewMode={vi.fn()}
-          categoryMap={{}}
         />
       </MemoryRouter>
     )

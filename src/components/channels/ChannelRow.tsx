@@ -36,13 +36,8 @@ export default function ChannelRow({ channel: c, selected, onToggleSelect, onCop
     if (ok) { onCopy('Copied key'); setCopiedKey(true); setTimeout(() => setCopiedKey(false), 1500) }
   }
 
-  const rowClass = [
-    !c._hasMeta ? 'bare-row' : '',
-    c._localEdit ? 'local-row' : '',
-  ].filter(Boolean).join(' ')
-
   return (
-    <tr className={rowClass}>
+    <tr>
       <td>
         <input
           type="checkbox"
@@ -71,15 +66,13 @@ export default function ChannelRow({ channel: c, selected, onToggleSelect, onCop
         </span>
       </td>
       <td><span className="lt-hash">{channelHash}</span></td>
-      <td><span className="lt-cat">{c.category || ''}</span></td>
-      <td><span className="lt-country">{c.country || ''}</span></td>
-      <td><span className="lt-region">{c.region || ''}</span></td>
+      <td><span className="lt-country">{(c.countries || []).join(', ')}</span></td>
+      <td><span className="lt-region">{(c.regions || []).join(', ')}</span></td>
 		<td>
 		  <span className="lt-scope">
 			{c.scopes?.join(', ') || ''}
 		  </span>
 		</td>
-      <td><span className="lt-date" title={fmtDate(c.first_seen)}>{relativeTime(c.first_seen)}</span></td>
       <td><span className="lt-date" title={fmtDate(c.last_seen)}>{relativeTime(c.last_seen)}</span></td>
       <td><span className="lt-count">{c.message_amount != null ? c.message_amount.toLocaleString() : '—'}</span></td>
       <td>
