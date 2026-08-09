@@ -22,6 +22,7 @@ interface Props {
   onStartOta: () => void
   onReboot: () => void
   onFactoryReset: () => void
+  onSyncClock: () => void
   onSendCommand: (cmd: string) => Promise<string>
   onExport: () => void
   onImport: (json: string) => void
@@ -31,7 +32,7 @@ interface Props {
 export default function ConfigForm({
   device, busy, presets, showAdvanced, onToggleAdvanced,
   onUpdate, onSave, onSendAdvert, onStartOta, onReboot, onFactoryReset,
-  onSendCommand, onExport, onImport, onReadMqtt,
+  onSyncClock, onSendCommand, onExport, onImport, onReadMqtt,
 }: Props) {
   const { t } = useLang()
   const [consoleOpen, setConsoleOpen] = useState(false)
@@ -91,6 +92,7 @@ export default function ConfigForm({
             e.target.value = ''
           }} />
         </label>
+        <button className="btn" onClick={onSyncClock}>🕐 {t('config_sync_clock')}</button>
         <button className="btn" onClick={onSendAdvert}>{t('config_send_advert')}</button>
         <button className="btn" onClick={onStartOta}>{t('config_start_ota')}</button>
         <button className="btn" onClick={onReboot}>{t('config_reboot')}</button>

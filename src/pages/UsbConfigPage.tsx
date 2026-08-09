@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLang } from '../hooks/useLang'
 import { useSerialDevice } from '../hooks/useSerialDevice'
 import ConfigForm from '../components/config/ConfigForm'
+import Navbar from '../components/layout/Navbar'
 import type { RadioPreset, SerialDeviceInfo } from '../types'
 import { PRESETS_URL } from '../utils/configUtils'
 
@@ -57,6 +58,16 @@ export default function UsbConfigPage() {
     await sendCommand('reset')
   }
 
+  async function handleSyncClock() {
+    // Push the browser's current time (epoch seconds, UTC) to the device, then
+    // read the clock back so the displayed value reflects the new time.
+    const epoch = Math.floor(Date.now() / 1000)
+    await sendCommand(`time ${epoch}`)
+    const clock = await sendCommand('clock')
+    if (clock) updateDevice({ clock: clock.trim() })
+    showToast(t('config_clock_synced_toast'))
+  }
+
   async function handleExport() {
     await exportConfig()
     showToast(t('config_exported_toast'))
@@ -74,34 +85,42 @@ export default function UsbConfigPage() {
   // ── Unsupported browser ───────────────────────────────────────────────────────
   if (!supported) {
     return (
-      <div className="page">
-        <div className="connect-screen">
-          <p className="info-banner warn">{t('config_unsupported')}</p>
+      <>
+        <Navbar />
+        <div className="page">
+          <div className="connect-screen">
+            <p className="info-banner warn">{t('config_unsupported')}</p>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 
   // ── Disconnected / connecting ─────────────────────────────────────────────────
   if (state !== 'connected' || !device) {
     return (
-      <div className="page">
-        <div className="connect-screen">
-          <h2>{t('config_title')}</h2>
-          <button
-            className="btn btn-accent"
-            onClick={connect}
-            disabled={state === 'connecting'}
-          >
-            {state === 'connecting' ? t('config_connecting') : t('config_connect')}
-          </button>
+      <>
+        <Navbar />
+        <div className="page">
+          <div className="connect-screen">
+            <h2>{t('config_title')}</h2>
+            <button
+              className="btn btn-accent"
+              onClick={connect}
+              disabled={state === 'connecting'}
+            >
+              {state === 'connecting' ? t('config_connecting') : t('config_connect')}
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 
   // ── Connected ─────────────────────────────────────────────────────────────────
   return (
+    <>
+    <Navbar />
     <div className="page device-page">
       {/* Busy overlay */}
       {busy && (
@@ -132,6 +151,7 @@ export default function UsbConfigPage() {
         onStartOta={handleStartOta}
         onReboot={handleReboot}
         onFactoryReset={handleFactoryReset}
+        onSyncClock={handleSyncClock}
         onSendCommand={sendCommand}
         onExport={handleExport}
         onImport={handleImport}
@@ -150,5 +170,6 @@ export default function UsbConfigPage() {
         </a>
       </footer>
     </div>
+    </>
   )
 }
