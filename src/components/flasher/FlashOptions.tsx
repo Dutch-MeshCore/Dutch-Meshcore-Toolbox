@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FlasherDevice, DeviceFirmware, FlasherConfig } from '../../types'
 import { getFirmwarePath, getRoleFwValue, sortVersionsDesc, FLASHER_BASE_URL } from '../../utils/flasherUtils'
 import { useLang } from '../../hooks/useLang'
+import FlashConfirmModal from './FlashConfirmModal'
 
 interface Props {
   device: FlasherDevice
@@ -27,10 +28,20 @@ export default function FlashOptions({
   const versions = sortVersionsDesc(Object.keys(firmware.version ?? {}))
   const [version, setVersion] = useState(versions[0] ?? '')
   const [wipe, setWipe] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
   const versionData = firmware.version?.[version]
   const notes = versionData?.notes ?? ''
   const files = versionData?.files ?? []
+
+  // DMC observer/MQTT firmware needs the merged "Full flash" (partition table) for a
+  // first-time install; flag when the user picked an app-only ("App update") version.
+  // Detect observer via the role AND the file names, so a custom-uploaded observer
+  // .bin (role 'custom') is caught too — that's how users flash our own builds.
+  const isObserver = /mqtt|observer/i.test(firmware.role) ||
+    files.some(f => /observer|mqtt/i.test(f.name))
+  const hasMergedFile = files.some(f => f.type === 'flash-wipe' || /-merged\.bin$/i.test(f.name))
+  const observerAppUpdate = isObserver && !hasMergedFile
   const title    = getRoleFwValue(firmware, config.role, 'title')
   const subTitle = getRoleFwValue(firmware, config.role, 'subTitle')
   const tooltip  = getRoleFwValue(firmware, config.role, 'tooltip')
@@ -90,7 +101,7 @@ export default function FlashOptions({
       <div className="action-bar">
         <button
           className="btn btn-accent"
-          onClick={() => onFlash({ version, wipe })}
+          onClick={() => setConfirmOpen(true)}
           disabled={!supported || nrfEraserFlashing}
           title={supported ? t('flasher_flash_tooltip') : t('flasher_unsupported')}
         >
@@ -107,6 +118,14 @@ export default function FlashOptions({
           </a>
         ))}
       </div>
+
+      {confirmOpen && (
+        <FlashConfirmModal
+          observerAppUpdate={observerAppUpdate}
+          onCancel={() => setConfirmOpen(false)}
+          onProceed={() => { setConfirmOpen(false); onFlash({ version, wipe }) }}
+        />
+      )}
     </div>
   )
 }
