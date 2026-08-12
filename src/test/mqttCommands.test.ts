@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import {
   defaultMqttSettings, cloneMqttSettings, isMqttSupportedReply, MQTT_SLOT_COUNT,
   mqttGetCommands, assembleMqttSettings, buildMqttCommands,
+  MQTT_PRESETS, PACKET_TYPES, parsePacketFilter, formatPacketFilter,
+  normalizePacketFilter, sanitizeImportedMqtt,
 } from '../lib/config/mqttCommands'
 
 describe('mqtt model', () => {
@@ -198,5 +200,112 @@ describe('buildMqttCommands', () => {
     expect(buildMqttCommands(a, base)).toEqual({ cmds: ['set snmp on'], needsReboot: true })
     const b = cloneMqttSettings(base); b.raw = true
     expect(buildMqttCommands(b, base).needsReboot).toBe(false)
+  })
+})
+
+describe('preset table parity with firmware', () => {
+  it('mirrors MQTTPresets.h (35 built-ins incl. the DMC defaults)', () => {
+    expect(MQTT_PRESETS).toHaveLength(35)
+    expect(MQTT_PRESETS).toContain('dutchmeshcore-1')
+    expect(MQTT_PRESETS).toContain('dutchmeshcore-2')
+    expect(MQTT_PRESETS).toContain('meshcore-analyzer-eu') // slot-3 default
+  })
+})
+
+describe('packet filter helpers', () => {
+  it('treats all/empty as all and none as none', () => {
+    expect(normalizePacketFilter('all')).toBe('all')
+    expect(normalizePacketFilter('')).toBe('all')
+    expect(normalizePacketFilter('none')).toBe('none')
+  })
+  it('parses names and numbers to an ascending numeric CSV', () => {
+    expect(normalizePacketFilter('advert,txt_msg')).toBe('2,4')
+    expect(normalizePacketFilter('4,2')).toBe('2,4')
+    expect(normalizePacketFilter('txt_msg')).toBe('2')
+  })
+  it('ignores unknown/out-of-range tokens', () => {
+    expect(normalizePacketFilter('advert,bogus,99')).toBe('4')
+  })
+  it('collapses a full named set back to all', () => {
+    const allNames = PACKET_TYPES.map(p => p.name).join(',')
+    expect(normalizePacketFilter(allNames)).toBe('all')
+  })
+  it('parse/format round-trips a partial set', () => {
+    expect(formatPacketFilter(parsePacketFilter('2,4'))).toBe('2,4')
+    expect(parsePacketFilter('all').size).toBe(PACKET_TYPES.length)
+    expect(parsePacketFilter('none').size).toBe(0)
+  })
+})
+
+describe('neighbors / watchdog / per-slot filter', () => {
+  it('defaults: watchdog 5, neighbors off + unsupported, slot filter all', () => {
+    const s = defaultMqttSettings()
+    expect(s.radioWatchdog).toBe(5)
+    expect(s.neighbors).toBe(false)
+    expect(s.neighborsSupported).toBe(false)
+    expect(s.slots[0].filter).toBe('all')
+  })
+  it('requests the new get keys', () => {
+    const cmds = mqttGetCommands()
+    expect(cmds).toContain('mqtt.neighbors')
+    expect(cmds).toContain('mqtt.neighbors.interval')
+    expect(cmds).toContain('radio.watchdog')
+    expect(cmds).toContain('mqtt1.filter')
+    expect(cmds).toContain('mqtt6.filter')
+  })
+  it('assembles support flag, interval, watchdog and slot filter', () => {
+    const s = assembleMqttSettings({
+      'mqtt.neighbors': '> on',
+      'mqtt.neighbors.interval': '> 24 hours',
+      'radio.watchdog': '> 10 min',
+      'mqtt1.preset': '> dutchmeshcore-1',
+      'mqtt1.filter': '> 2,4',
+    })
+    expect(s.neighborsSupported).toBe(true)
+    expect(s.neighbors).toBe(true)
+    expect(s.neighborsInterval).toBe(24)
+    expect(s.radioWatchdog).toBe(10)
+    expect(s.slots[0].filter).toBe('2,4')
+  })
+  it('marks neighbors unsupported when the firmware rejects the get', () => {
+    expect(assembleMqttSettings({ 'mqtt.neighbors': '> Unknown command' }).neighborsSupported).toBe(false)
+  })
+  it('emits watchdog and per-slot filter for active slots', () => {
+    const base = defaultMqttSettings()
+    const next = cloneMqttSettings(base)
+    next.radioWatchdog = 0
+    next.slots[0].preset = 'dutchmeshcore-1'
+    next.slots[0].filter = '2,4'
+    const { cmds } = buildMqttCommands(next, base)
+    expect(cmds).toContain('set radio.watchdog 0')
+    expect(cmds).toContain('set mqtt1.filter 2,4')
+  })
+  it('gates neighbors commands on live support', () => {
+    const base = defaultMqttSettings() // unsupported
+    const a = cloneMqttSettings(base); a.neighbors = true
+    expect(buildMqttCommands(a, base).cmds).not.toContain('set mqtt.neighbors on')
+    const base2 = cloneMqttSettings(base); base2.neighborsSupported = true
+    const b = cloneMqttSettings(base2); b.neighbors = true
+    expect(buildMqttCommands(b, base2).cmds).toContain('set mqtt.neighbors on')
+  })
+  it('does not push a filter for a disabled (none) slot', () => {
+    const base = defaultMqttSettings()
+    const next = cloneMqttSettings(base)
+    next.slots[0].filter = 'none' // preset still 'none'
+    expect(buildMqttCommands(next, base).cmds).not.toContain('set mqtt1.filter none')
+  })
+})
+
+describe('sanitizeImportedMqtt', () => {
+  it('fills fields missing from an older backup and forces live neighbor support', () => {
+    const s = sanitizeImportedMqtt({ origin: 'X', slots: [{ preset: 'dutchmeshcore-1' }] }, true)
+    expect(s.origin).toBe('X')
+    expect(s.radioWatchdog).toBe(5)       // absent in file -> default
+    expect(s.slots).toHaveLength(MQTT_SLOT_COUNT)
+    expect(s.slots[0].filter).toBe('all') // absent in file -> default
+    expect(s.neighborsSupported).toBe(true)
+  })
+  it('never trusts a file-provided neighborsSupported', () => {
+    expect(sanitizeImportedMqtt({ neighborsSupported: true }, false).neighborsSupported).toBe(false)
   })
 })

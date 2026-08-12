@@ -7,13 +7,68 @@
 
 export const MQTT_SLOT_COUNT = 6
 
-/** Built-in broker presets (mirrors the MQTT_IMPLEMENTATION.md preset table). */
+/** Built-in broker presets (mirrors MeshCore/src/helpers/MQTTPresets.h,
+ *  MQTT_PRESETS[] — keep in the same order the firmware declares them). */
 export const MQTT_PRESETS: readonly string[] = [
   'analyzer-us', 'analyzer-eu', 'nz-analyzer', 'meshmapper', 'meshrank', 'waev',
   'meshomatic', 'cascadiamesh', 'tennmesh', 'nashmesh', 'ctmesh', 'chimesh',
-  'meshat.se', 'eastidahomesh', 'dutchmeshcore-1', 'dutchmeshcore-2', 'coloradomesh',
-  'meshcore-ca-1', 'meshcore-ca-2', 'bostonmesh', 'inwmesh',
+  'meshat.se', 'eastidahomesh', 'coloradomesh', 'dutchmeshcore-1', 'dutchmeshcore-2',
+  'meshcore-analyzer-eu', 'meshcore-ca-1', 'meshcore-ca-2', 'meshcore-fi',
+  'okimesh-1', 'okimesh-2', 'inwmesh', 'bostonmesh', 'rflab', 'ipnt.uk', 'flmesh',
+  'corecomms', 'meshtexas', 'mesh-chaun14', 'wcmesh', 'atvirastinklas', 'gomesh',
+  'idahomesh',
 ] as const
+
+/** MQTT per-slot packet-type filter (mirrors MeshCore/src/helpers/MQTTPacketFilter.h).
+ *  The firmware stores a uint16 bitmask over MeshCore payload types 0..15. The CLI
+ *  `set mqttN.filter <spec>` accepts `all`, `none`, or a CSV of type names/numbers;
+ *  `get mqttN.filter` returns `all`, `none`, or an ascending CSV of numbers. We keep
+ *  that canonical spec string as the model (so import/export round-trips verbatim). */
+export const PACKET_TYPES: readonly { num: number; name: string }[] = [
+  { num: 0, name: 'req' }, { num: 1, name: 'response' }, { num: 2, name: 'txt_msg' },
+  { num: 3, name: 'ack' }, { num: 4, name: 'advert' }, { num: 5, name: 'grp_txt' },
+  { num: 6, name: 'grp_data' }, { num: 7, name: 'anon_req' }, { num: 8, name: 'path' },
+  { num: 9, name: 'trace' }, { num: 10, name: 'multipart' }, { num: 11, name: 'control' },
+  { num: 15, name: 'raw_custom' },
+] as const
+
+export const PACKET_FILTER_ALL = 'all'
+export const PACKET_FILTER_NONE = 'none'
+
+/** Normalize a raw reply/spec to the canonical model string. Empty (or the
+ *  firmware's backward-compat empty) means "all". */
+export function normalizePacketFilter(spec: string): string {
+  const v = (spec ?? '').trim().toLowerCase()
+  if (v === '' || v === PACKET_FILTER_ALL) return PACKET_FILTER_ALL
+  if (v === PACKET_FILTER_NONE) return PACKET_FILTER_NONE
+  const set = parsePacketFilter(v)
+  return formatPacketFilter(set)
+}
+
+/** Parse a filter spec into the set of enabled type numbers (0..15). `all`/empty
+ *  yields the full set; unknown/invalid tokens are ignored. */
+export function parsePacketFilter(spec: string): Set<number> {
+  const v = (spec ?? '').trim().toLowerCase()
+  if (v === '' || v === PACKET_FILTER_ALL) return new Set(PACKET_TYPES.map(p => p.num))
+  if (v === PACKET_FILTER_NONE) return new Set()
+  const out = new Set<number>()
+  for (const tok of v.split(',').map(t => t.trim()).filter(Boolean)) {
+    const byName = PACKET_TYPES.find(p => p.name === tok)
+    if (byName) { out.add(byName.num); continue }
+    const n = parseInt(tok, 10)
+    if (Number.isFinite(n) && n >= 0 && n <= 15) out.add(n)
+  }
+  return out
+}
+
+/** Format a set of type numbers back to a canonical spec: `all`, `none`, or an
+ *  ascending CSV of numbers (matching the firmware's own `get` output). */
+export function formatPacketFilter(set: Set<number>): string {
+  const known = PACKET_TYPES.map(p => p.num)
+  if (known.every(n => set.has(n)) && set.size === known.length) return PACKET_FILTER_ALL
+  if (set.size === 0) return PACKET_FILTER_NONE
+  return [...set].sort((a, b) => a - b).join(',')
+}
 
 export interface MqttSlot {
   preset: string // a preset name, 'custom', or 'none'
@@ -24,6 +79,7 @@ export interface MqttSlot {
   token: string
   topic: string
   audience: string
+  filter: string // packet-type filter spec: 'all' | 'none' | CSV of type numbers
 }
 
 export interface MqttSettings {
@@ -35,6 +91,10 @@ export interface MqttSettings {
   tx: 'off' | 'on' | 'advert'
   rx: boolean
   interval: number
+  neighbors: boolean // PSRAM-only (WITH_MQTT_NEIGHBORS); unsupported elsewhere
+  neighborsInterval: number // hours, 12–336
+  neighborsSupported: boolean // false when firmware rejects get mqtt.neighbors
+  radioWatchdog: number // minutes, 0–120 (0 = disabled)
   ntp: string
   owner: string
   email: string
@@ -57,13 +117,14 @@ export interface MqttSettings {
 }
 
 export function defaultMqttSlot(): MqttSlot {
-  return { preset: 'none', server: '', port: 0, username: '', password: '', token: '', topic: '', audience: '' }
+  return { preset: 'none', server: '', port: 0, username: '', password: '', token: '', topic: '', audience: '', filter: PACKET_FILTER_ALL }
 }
 
 export function defaultMqttSettings(): MqttSettings {
   return {
     origin: '', iata: '', status: true, packets: true, raw: false, tx: 'advert', rx: true,
-    interval: 5, ntp: '', owner: '', email: '',
+    interval: 5, neighbors: false, neighborsInterval: 24, neighborsSupported: false,
+    radioWatchdog: 5, ntp: '', owner: '', email: '',
     slots: Array.from({ length: MQTT_SLOT_COUNT }, defaultMqttSlot),
     alert: false, alertPsk: '', alertHashtag: '', alertRegion: '',
     alertWifi: 30, alertMqtt: 240, alertInterval: 60,
@@ -74,6 +135,46 @@ export function defaultMqttSettings(): MqttSettings {
 
 export function cloneMqttSettings(s: MqttSettings): MqttSettings {
   return { ...s, slots: s.slots.map(sl => ({ ...sl })) }
+}
+
+/** Overlay an imported (possibly old or partial) mqtt object onto current defaults
+ *  so fields missing from an older backup don't become `undefined` (which would
+ *  otherwise emit `set … undefined`). `neighborsSupported` is a live device
+ *  capability, so it always comes from the connected device, never the file. */
+export function sanitizeImportedMqtt(raw: unknown, liveNeighborsSupported: boolean): MqttSettings {
+  const base = defaultMqttSettings()
+  const r = (raw ?? {}) as Record<string, unknown>
+  const out = base as unknown as Record<string, unknown>
+  const scalarKeys: (keyof MqttSettings)[] = [
+    'origin', 'iata', 'status', 'packets', 'raw', 'tx', 'rx', 'interval', 'neighbors',
+    'neighborsInterval', 'radioWatchdog', 'ntp', 'owner', 'email', 'alert', 'alertPsk',
+    'alertHashtag', 'alertRegion', 'alertWifi', 'alertMqtt', 'alertInterval', 'snmp',
+    'snmpCommunity', 'wifiSsid', 'wifiPassword', 'wifiPowersave', 'timezone', 'timezoneOffset',
+  ]
+  for (const k of scalarKeys) {
+    const v = r[k as string]
+    if (v !== undefined && v !== null && typeof v === typeof out[k as string]) {
+      out[k as string] = v
+    }
+  }
+  const rawSlots = Array.isArray(r.slots) ? (r.slots as unknown[]) : []
+  base.slots = Array.from({ length: MQTT_SLOT_COUNT }, (_, i) => {
+    const ds = defaultMqttSlot()
+    const rs = (rawSlots[i] ?? {}) as Partial<MqttSlot>
+    return {
+      preset: typeof rs.preset === 'string' ? rs.preset : ds.preset,
+      server: typeof rs.server === 'string' ? rs.server : ds.server,
+      port: typeof rs.port === 'number' ? rs.port : ds.port,
+      username: typeof rs.username === 'string' ? rs.username : ds.username,
+      password: typeof rs.password === 'string' ? rs.password : ds.password,
+      token: typeof rs.token === 'string' ? rs.token : ds.token,
+      topic: typeof rs.topic === 'string' ? rs.topic : ds.topic,
+      audience: typeof rs.audience === 'string' ? rs.audience : ds.audience,
+      filter: typeof rs.filter === 'string' ? normalizePacketFilter(rs.filter) : ds.filter,
+    }
+  })
+  base.neighborsSupported = liveNeighborsSupported
+  return base
 }
 
 /** Strip the firmware's leading "> " prompt from a get reply. */
@@ -115,7 +216,8 @@ function parsePowersave(reply: string): 'none' | 'min' | 'max' {
 export function mqttGetCommands(): string[] {
   const cmds = [
     'mqtt.origin', 'mqtt.iata', 'mqtt.packets', 'mqtt.raw', 'mqtt.tx', 'mqtt.rx',
-    'mqtt.interval', 'mqtt.ntp', 'mqtt.owner', 'mqtt.email',
+    'mqtt.interval', 'mqtt.neighbors', 'mqtt.neighbors.interval', 'radio.watchdog',
+    'mqtt.ntp', 'mqtt.owner', 'mqtt.email',
     'alert', 'alert.psk', 'alert.hashtag', 'alert.region', 'alert.wifi', 'alert.mqtt', 'alert.interval',
     'snmp', 'snmp.community',
     'wifi.ssid', 'wifi.pwd', 'wifi.powersave', 'timezone', 'timezone.offset',
@@ -124,6 +226,7 @@ export function mqttGetCommands(): string[] {
     cmds.push(
       `mqtt${n}.preset`, `mqtt${n}.server`, `mqtt${n}.port`, `mqtt${n}.username`,
       `mqtt${n}.password`, `mqtt${n}.token`, `mqtt${n}.topic`, `mqtt${n}.audience`,
+      `mqtt${n}.filter`,
     )
   }
   return cmds
@@ -141,6 +244,13 @@ export function assembleMqttSettings(r: Record<string, string>): MqttSettings {
   s.tx = parseTx(g('mqtt.tx'))
   s.rx = parseBool(g('mqtt.rx'))
   s.interval = parseFirstInt(g('mqtt.interval')) || s.interval
+  // mqtt.neighbors is PSRAM-only; a non-on/off reply (unknown command / error)
+  // means the running firmware doesn't support it — hide the control instead.
+  const neighborsReply = stripReply(g('mqtt.neighbors')).toLowerCase()
+  s.neighborsSupported = neighborsReply === 'on' || neighborsReply === 'off'
+  s.neighbors = neighborsReply === 'on'
+  s.neighborsInterval = parseFirstInt(g('mqtt.neighbors.interval')) || s.neighborsInterval
+  s.radioWatchdog = parseFirstInt(g('radio.watchdog'))
   s.ntp = parseStr(g('mqtt.ntp'))
   s.owner = parseStr(g('mqtt.owner'))
   s.email = parseStr(g('mqtt.email'))
@@ -169,6 +279,7 @@ export function assembleMqttSettings(r: Record<string, string>): MqttSettings {
     sl.token = parseStr(g(`mqtt${n}.token`))
     sl.topic = parseStr(g(`mqtt${n}.topic`))
     sl.audience = parseStr(g(`mqtt${n}.audience`))
+    sl.filter = normalizePacketFilter(stripReply(g(`mqtt${n}.filter`)))
   }
   return s
 }
@@ -193,6 +304,12 @@ export function buildMqttCommands(
   if (next.tx !== base.tx) cmds.push(`set mqtt.tx ${next.tx}`)
   if (next.rx !== base.rx) cmds.push(`set mqtt.rx ${onoff(next.rx)}`)
   if (next.interval !== base.interval) cmds.push(`set mqtt.interval ${next.interval}`)
+  // Neighbor scoping is PSRAM-only — only emit when the firmware reported support.
+  if (next.neighborsSupported) {
+    if (next.neighbors !== base.neighbors) cmds.push(`set mqtt.neighbors ${onoff(next.neighbors)}`)
+    if (next.neighborsInterval !== base.neighborsInterval) cmds.push(`set mqtt.neighbors.interval ${next.neighborsInterval}`)
+  }
+  if (next.radioWatchdog !== base.radioWatchdog) cmds.push(`set radio.watchdog ${next.radioWatchdog}`)
   if (next.ntp !== base.ntp) cmds.push(next.ntp ? `set mqtt.ntp ${next.ntp}` : 'set mqtt.ntp none')
   if (next.owner !== base.owner && next.owner) cmds.push(`set mqtt.owner ${next.owner}`)
   if (next.email !== base.email && next.email) cmds.push(`set mqtt.email ${next.email}`)
@@ -217,6 +334,10 @@ export function buildMqttCommands(
       if (a.token !== b.token && a.token) cmds.push(`set mqtt${n}.token ${a.token}`)
       if (a.topic !== b.topic && a.topic) cmds.push(`set mqtt${n}.topic ${a.topic}`)
       if (a.audience !== b.audience && a.audience) cmds.push(`set mqtt${n}.audience ${a.audience}`)
+    }
+    // Packet-type filter applies to any active slot (preset or custom).
+    if (a.preset !== 'none' && a.filter !== b.filter) {
+      cmds.push(`set mqtt${n}.filter ${a.filter || PACKET_FILTER_ALL}`)
     }
   }
 

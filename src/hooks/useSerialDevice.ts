@@ -16,6 +16,7 @@ import {
   defaultMqttSettings,
   isMqttSupportedReply,
   mqttGetCommands,
+  sanitizeImportedMqtt,
   type MqttSettings,
 } from '../lib/config/mqttCommands'
 
@@ -331,7 +332,10 @@ export function useSerialDevice() {
     // against the device's loaded state if available, else firmware defaults
     // (a full re-apply of the backup).
     if (data.mqtt && device.mqttCapable) {
-      patch.mqtt = data.mqtt as MqttSettings
+      // Live neighbor-scoping capability comes from the connected device, not the
+      // file; missing fields in an older backup fall back to firmware defaults.
+      const liveNeighbors = device.mqttDevice?.neighborsSupported ?? device.mqtt?.neighborsSupported ?? false
+      patch.mqtt = sanitizeImportedMqtt(data.mqtt, liveNeighbors)
       patch.mqttDevice = device.mqttDevice ?? defaultMqttSettings()
     }
 

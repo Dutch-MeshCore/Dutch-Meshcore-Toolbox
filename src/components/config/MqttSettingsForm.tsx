@@ -1,7 +1,38 @@
 import { useState } from 'react'
 import {
   MQTT_PRESETS, MQTT_SLOT_COUNT, cloneMqttSettings, type MqttSettings, type MqttSlot,
+  PACKET_TYPES, PACKET_FILTER_ALL, PACKET_FILTER_NONE,
+  parsePacketFilter, formatPacketFilter, normalizePacketFilter,
 } from '../../lib/config/mqttCommands'
+
+/** Per-slot packet-type filter: quick All/None + a checkbox per named type.
+ *  Checkboxes derive from the canonical spec ('all' → every type checked), so no
+ *  extra local state is needed and the value round-trips for import/export. */
+function PacketFilterField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const selected = parsePacketFilter(value)
+  const setTypes = (next: Set<number>) => onChange(formatPacketFilter(next))
+  return (
+    <div className="field-group">
+      <label>Packet-type filter <span className="field-hint">({normalizePacketFilter(value)})</span></label>
+      <div className="btn-row" style={{ display: 'flex', gap: '.4rem', marginBottom: '.3rem' }}>
+        <button type="button" className="btn btn-sm" onClick={() => onChange(PACKET_FILTER_ALL)}>All</button>
+        <button type="button" className="btn btn-sm" onClick={() => onChange(PACKET_FILTER_NONE)}>None</button>
+      </div>
+      <div className="packet-filter-types" style={{ display: 'flex', flexWrap: 'wrap', gap: '.15rem 1rem' }}>
+        {PACKET_TYPES.map(pt => (
+          <label key={pt.num} className="check-row" style={{ minWidth: '9rem' }}>
+            <input type="checkbox" checked={selected.has(pt.num)} onChange={e => {
+              const next = new Set(selected)
+              if (e.target.checked) next.add(pt.num); else next.delete(pt.num)
+              setTypes(next)
+            }} />
+            {pt.name} <span className="field-hint">({pt.num})</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 interface Props {
   value: MqttSettings
@@ -92,6 +123,24 @@ export default function MqttSettingsForm({ value, onChange, onSendCommand }: Pro
               <input type="number" min={1} max={60} value={value.interval}
                 onChange={e => patch(s => { s.interval = clampInt(e.target.value, 1, 60) })} />
             </div>
+          </div>
+          {value.neighborsSupported && (
+            <>
+              <label className="check-row">
+                <input type="checkbox" checked={value.neighbors} onChange={e => patch(s => { s.neighbors = e.target.checked })} />
+                Publish neighbor tables <span className="field-hint">(PSRAM boards only)</span>
+              </label>
+              <div className="field-group">
+                <label>Neighbor publish interval (12–336 h)</label>
+                <input type="number" min={12} max={336} value={value.neighborsInterval}
+                  onChange={e => patch(s => { s.neighborsInterval = clampInt(e.target.value, 12, 336) })} />
+              </div>
+            </>
+          )}
+          <div className="field-group">
+            <label>Radio watchdog (0–120 min, 0 = off)</label>
+            <input type="number" min={0} max={120} value={value.radioWatchdog}
+              onChange={e => patch(s => { s.radioWatchdog = clampInt(e.target.value, 0, 120) })} />
           </div>
           <div className="field-group">
             <label>NTP server (blank = pool.ntp.org)</label>
@@ -209,6 +258,9 @@ export default function MqttSettingsForm({ value, onChange, onSendCommand }: Pro
                       </div>
                     </div>
                   </div>
+                )}
+                {sl.preset !== 'none' && (
+                  <PacketFilterField value={sl.filter} onChange={f => patchSlot(i, s => { s.filter = f })} />
                 )}
               </div>
             )
