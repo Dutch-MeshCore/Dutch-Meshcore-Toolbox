@@ -152,15 +152,22 @@ export function useSerialDevice() {
     } catch { /* optional */ }
 
     // Base "hardware/advanced" settings (bridge / FEM / LR2021). Read eagerly (only
-    // ~10 probes) and keep only when the device actually supports at least one.
+    // ~10 probes) and keep only when the device actually supports at least one. This
+    // is bounded: a slow or unresponsive device must never stall the whole connect on
+    // these probes, so cap the batch and simply skip the panel if it does not finish.
     let hardware: HardwareSettings | undefined
     let hardwareDevice: HardwareSettings | undefined
     try {
-      setBusy('Reading hardware settings…')
-      const hwReplies: Record<string, string> = {}
-      for (const cmd of hardwareGetCommands()) hwReplies[cmd] = await cli.sendCommand(`get ${cmd}`)
-      const hw = assembleHardwareSettings(hwReplies)
-      if (hasAnyHardware(hw)) { hardware = hw; hardwareDevice = cloneHardwareSettings(hw) }
+      const readHardware = async () => {
+        const hwReplies: Record<string, string> = {}
+        for (const cmd of hardwareGetCommands()) hwReplies[cmd] = await cli.sendCommand(`get ${cmd}`)
+        return assembleHardwareSettings(hwReplies)
+      }
+      const hw = await Promise.race<HardwareSettings | null>([
+        readHardware().catch(() => null),
+        new Promise<null>(resolve => setTimeout(() => resolve(null), 6000)),
+      ])
+      if (hw && hasAnyHardware(hw)) { hardware = hw; hardwareDevice = cloneHardwareSettings(hw) }
     } catch { /* optional */ }
 
     setDevice(prev => ({
