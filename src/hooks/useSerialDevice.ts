@@ -100,8 +100,8 @@ export function useSerialDevice() {
       }
 
       // Boolean vars (cad, radio.rxgain, repeat, allow.read.only): if the device
-      // didn't answer on/off — e.g. radio.rxgain on non-SX126x boards falls through
-      // to the generic `radio` reply — treat as unsupported and skip.
+      // didn't answer on/off - e.g. radio.rxgain on non-SX126x boards falls through
+      // to the generic `radio` reply - treat as unsupported and skip.
       if (typeof DEFAULT_DEVICE_VARS[key] === 'boolean' && typeof value !== 'boolean') continue
 
       if (key === 'radio') {
@@ -307,15 +307,15 @@ export function useSerialDevice() {
       vars: plainVars,
     }
 
-    // DMC packet-filter settings — only present on filter-capable firmware.
+    // DMC packet-filter settings - only present on filter-capable firmware.
     if (device.filterDevice) out.filter = device.filterDevice
 
-    // Base bridge / FEM / LR2021 settings — only present when the device has them.
+    // Base bridge / FEM / LR2021 settings - only present when the device has them.
     if (device.hardwareDevice) out.hardware = device.hardwareDevice
 
-    // DMC MQTT observer settings — read fresh so the backup is complete even if the
+    // DMC MQTT observer settings - read fresh so the backup is complete even if the
     // panel was never opened. Only on MQTT-capable firmware. Secrets (broker
-    // passwords, tokens, alert PSK, owner key) are included — the backup is the
+    // passwords, tokens, alert PSK, owner key) are included - the backup is the
     // device owner's.
     if (device.mqttCapable) {
       setBusy('Reading MQTT settings for backup…')
@@ -359,12 +359,12 @@ export function useSerialDevice() {
     const patch: Partial<SerialDeviceInfo> = { vars: newVars }
     if (data.vars['prv.key']) patch.importPrvKey = data.vars['prv.key']
 
-    // DMC packet-filter — restore only on filter-capable firmware (regular firmware
+    // DMC packet-filter - restore only on filter-capable firmware (regular firmware
     // has no device.filter, so this is skipped). Applied vs the device's current
     // filter on save.
     if (data.filter && device.filter) patch.filter = data.filter as FilterSettings
 
-    // DMC MQTT observer settings — restore only on MQTT-capable firmware. Diff
+    // DMC MQTT observer settings - restore only on MQTT-capable firmware. Diff
     // against the device's loaded state if available, else firmware defaults
     // (a full re-apply of the backup).
     if (data.mqtt && device.mqttCapable) {
@@ -375,7 +375,7 @@ export function useSerialDevice() {
       patch.mqttDevice = device.mqttDevice ?? defaultMqttSettings()
     }
 
-    // Base hardware settings — restore only what the connected device supports;
+    // Base hardware settings - restore only what the connected device supports;
     // capability flags come from the live device, values fall back to defaults.
     if (data.hardware && device.hardware && device.hardwareDevice) {
       patch.hardware = sanitizeImportedHardware(data.hardware, device.hardwareDevice)

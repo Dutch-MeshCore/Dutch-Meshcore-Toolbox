@@ -8,7 +8,7 @@
 export const MQTT_SLOT_COUNT = 6
 
 /** Built-in broker presets (mirrors MeshCore/src/helpers/MQTTPresets.h,
- *  MQTT_PRESETS[] — keep in the same order the firmware declares them). */
+ *  MQTT_PRESETS[] - keep in the same order the firmware declares them). */
 export const MQTT_PRESETS: readonly string[] = [
   'analyzer-us', 'analyzer-eu', 'nz-analyzer', 'meshmapper', 'meshrank', 'waev',
   'meshomatic', 'cascadiamesh', 'tennmesh', 'nashmesh', 'ctmesh', 'chimesh',
@@ -92,9 +92,9 @@ export interface MqttSettings {
   rx: boolean
   interval: number
   neighbors: boolean // PSRAM-only (WITH_MQTT_NEIGHBORS); unsupported elsewhere
-  neighborsInterval: number // hours, 12–336
+  neighborsInterval: number // hours, 12-336
   neighborsSupported: boolean // false when firmware rejects get mqtt.neighbors
-  radioWatchdog: number // minutes, 0–120 (0 = disabled)
+  radioWatchdog: number // minutes, 0-120 (0 = disabled)
   ntp: string
   owner: string
   email: string
@@ -108,7 +108,7 @@ export interface MqttSettings {
   alertInterval: number
   snmp: boolean
   snmpCommunity: string
-  // WiFi + time (esp32 observer firmware — the transport the MQTT bridge runs on)
+  // WiFi + time (esp32 observer firmware - the transport the MQTT bridge runs on)
   wifiSsid: string
   wifiPassword: string
   wifiPowersave: 'none' | 'min' | 'max'
@@ -245,7 +245,7 @@ export function assembleMqttSettings(r: Record<string, string>): MqttSettings {
   s.rx = parseBool(g('mqtt.rx'))
   s.interval = parseFirstInt(g('mqtt.interval')) || s.interval
   // mqtt.neighbors is PSRAM-only; a non-on/off reply (unknown command / error)
-  // means the running firmware doesn't support it — hide the control instead.
+  // means the running firmware doesn't support it - hide the control instead.
   const neighborsReply = stripReply(g('mqtt.neighbors')).toLowerCase()
   s.neighborsSupported = neighborsReply === 'on' || neighborsReply === 'off'
   s.neighbors = neighborsReply === 'on'
@@ -304,7 +304,7 @@ export function buildMqttCommands(
   if (next.tx !== base.tx) cmds.push(`set mqtt.tx ${next.tx}`)
   if (next.rx !== base.rx) cmds.push(`set mqtt.rx ${onoff(next.rx)}`)
   if (next.interval !== base.interval) cmds.push(`set mqtt.interval ${next.interval}`)
-  // Neighbor scoping is PSRAM-only — only emit when the firmware reported support.
+  // Neighbor scoping is PSRAM-only - only emit when the firmware reported support.
   if (next.neighborsSupported) {
     if (next.neighbors !== base.neighbors) cmds.push(`set mqtt.neighbors ${onoff(next.neighbors)}`)
     if (next.neighborsInterval !== base.neighborsInterval) cmds.push(`set mqtt.neighbors.interval ${next.neighborsInterval}`)
@@ -322,7 +322,7 @@ export function buildMqttCommands(
   if (next.timezone !== base.timezone && next.timezone) cmds.push(`set timezone ${next.timezone}`)
   if (next.timezoneOffset !== base.timezoneOffset) cmds.push(`set timezone.offset ${next.timezoneOffset}`)
 
-  // Slots — preset first so the slot type is in place before custom fields
+  // Slots - preset first so the slot type is in place before custom fields
   for (let i = 0; i < MQTT_SLOT_COUNT; i++) {
     const n = i + 1, a = next.slots[i], b = base.slots[i]
     if (a.preset !== b.preset) cmds.push(`set mqtt${n}.preset ${a.preset}`)
@@ -341,7 +341,7 @@ export function buildMqttCommands(
     }
   }
 
-  // Alerts — configure sub-settings, then flip the master toggle last
+  // Alerts - configure sub-settings, then flip the master toggle last
   if (next.alertPsk !== base.alertPsk) cmds.push(next.alertPsk ? `set alert.psk ${next.alertPsk}` : 'set alert.psk')
   if (next.alertHashtag !== base.alertHashtag) cmds.push(next.alertHashtag ? `set alert.hashtag ${next.alertHashtag}` : 'set alert.hashtag')
   if (next.alertRegion !== base.alertRegion) cmds.push(next.alertRegion ? `set alert.region ${next.alertRegion}` : 'set alert.region')
@@ -350,7 +350,7 @@ export function buildMqttCommands(
   if (next.alertInterval !== base.alertInterval) cmds.push(`set alert.interval ${next.alertInterval}`)
   if (next.alert !== base.alert) cmds.push(`set alert ${onoff(next.alert)}`)
 
-  // SNMP — reboot required
+  // SNMP - reboot required
   if (next.snmp !== base.snmp) { cmds.push(`set snmp ${onoff(next.snmp)}`); needsReboot = true }
   if (next.snmpCommunity !== base.snmpCommunity && next.snmpCommunity) {
     cmds.push(`set snmp.community ${next.snmpCommunity}`); needsReboot = true

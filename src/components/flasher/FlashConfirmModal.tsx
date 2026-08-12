@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useLang } from '../../hooks/useLang'
 
 interface Props {
-  /** True when an observer firmware is being flashed as an App update (app-only) —
+  /** True when an observer firmware is being flashed as an App update (app-only) -
    *  a first-time observer install needs the merged "Full flash" for the partitions. */
   observerAppUpdate: boolean
   onCancel: () => void
@@ -10,7 +10,7 @@ interface Props {
 }
 
 /** Pre-flash reminder: back up the device config (the DMC tools store extra MQTT /
- *  filter settings a flash can wipe), and — for a first-time observer install —
+ *  filter settings a flash can wipe), and - for a first-time observer install -
  *  steer the user to the merged "Full flash" image. */
 export default function FlashConfirmModal({ observerAppUpdate, onCancel, onProceed }: Props) {
   const { t } = useLang()

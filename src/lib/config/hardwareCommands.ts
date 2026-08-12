@@ -16,12 +16,12 @@ export interface HardwareSettings {
   bridgeType: string // read-only capability tag: 'rs232' | 'espnow' | 'none'
   bridgeSupported: boolean // WITH_BRIDGE → enabled/delay/source
   bridgeEnabled: boolean
-  bridgeDelay: number // ms, 0–10000
+  bridgeDelay: number // ms, 0-10000
   bridgeSource: 'rx' | 'tx' // model uses rx/tx; firmware `get` reports logRx/logTx
   rs232Supported: boolean
-  bridgeBaud: number // 9600–115200
+  bridgeBaud: number // 9600-115200
   espnowSupported: boolean
-  bridgeChannel: number // 1–14
+  bridgeChannel: number // 1-14
   bridgeSecret: string // secret (serial-read only)
   // External FEM gain (board-capability gated)
   femRxSupported: boolean
@@ -114,7 +114,7 @@ export function assembleHardwareSettings(r: Record<string, string>): HardwareSet
   s.femTxSupported = isOnOff(g('radio.fem.txgain'))
   if (s.femTxSupported) s.femTxgain = parseBoolOnOff(g('radio.fem.txgain'))
 
-  // `get extra.sf` is NOT capability-gated — it always answers with a bare (no
+  // `get extra.sf` is NOT capability-gated - it always answers with a bare (no
   // `> ` prompt) CSV or "No extra SF configured". Only a numeric CSV reliably
   // indicates an LR2021 board actually using side detectors, so gate on that to
   // avoid showing a field whose `set` (LR2021-only) would no-op elsewhere.
@@ -161,7 +161,7 @@ export function buildHardwareCommands(
 /** Overlay an imported (possibly old or partial) hardware object onto current
  *  defaults so missing fields don't become `undefined`. The `*Supported` flags are
  *  live device capabilities, so they always come from the connected device, never
- *  the file — the field values are only applied where the device supports them. */
+ *  the file - the field values are only applied where the device supports them. */
 export function sanitizeImportedHardware(raw: unknown, live: HardwareSettings): HardwareSettings {
   const out = cloneHardwareSettings(live) // start from live capabilities + current values
   const r = (raw ?? {}) as Partial<HardwareSettings>

@@ -113,8 +113,8 @@ interface GHFile {
 
 interface FirmwareVariant {
   versionKey: string     // e.g. "v1.15.0"
-  mergedUrl:  string     // full flash — address 0x0
-  appUrl:     string     // app-only — address 0x10000
+  mergedUrl:  string     // full flash - address 0x0
+  appUrl:     string     // app-only - address 0x10000
 }
 
 interface RoleEntry {
@@ -193,23 +193,23 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
           version: Object.fromEntries(
             [...role.versions.values()].flatMap(({ versionKey, mergedUrl, appUrl }) => [
               ...(appUrl ? [[
-                `${versionKey} — App update`,
+                `${versionKey} - App update`,
                 {
                   files: [{
                     type: 'flash-update' as const,
                     name: appUrl,
-                    title: 'App update — keeps bootloader, partition table & config',
+                    title: 'App update - keeps bootloader, partition table & config',
                   }],
                   notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
                 },
               ]] : []),
               ...(mergedUrl ? [[
-                `${versionKey} — Full flash`,
+                `${versionKey} - Full flash`,
                 {
                   files: [{
                     type: 'flash-wipe' as const,
                     name: mergedUrl,
-                    title: 'Full flash — merged bin (bootloader + partition + app)',
+                    title: 'Full flash - merged bin (bootloader + partition + app)',
                   }],
                   notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
                 },
@@ -322,14 +322,14 @@ export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
       for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
         if (entry.type === 'esp32') {
           if (entry.appUrl) {
-            version[`${versionKey} — App update`] = {
-              files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update — keeps bootloader, partition table & config' }],
+            version[`${versionKey} - App update`] = {
+              files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update - keeps bootloader, partition table & config' }],
               notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
             }
           }
           if (entry.mergedUrl) {
-            version[`${versionKey} — Full flash`] = {
-              files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash — merged bin (bootloader + partition + app)' }],
+            version[`${versionKey} - Full flash`] = {
+              files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash - merged bin (bootloader + partition + app)' }],
               notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
             }
           }
@@ -368,7 +368,7 @@ export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
 
 /**
  * Combine the repeater and MQTT DMC configs into one FlasherConfig that carries
- * both makers — they render as two separate groups (repeater first) in the flasher.
+ * both makers - they render as two separate groups (repeater first) in the flasher.
  */
 export function mergeDmcConfigs(repeater: FlasherConfig, mqtt: FlasherConfig): FlasherConfig {
   return {

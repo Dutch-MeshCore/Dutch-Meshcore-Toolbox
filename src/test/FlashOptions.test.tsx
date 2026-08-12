@@ -70,7 +70,7 @@ describe('FlashOptions', () => {
     const observerAppOnly: DeviceFirmware = {
       role: 'dutchmeshcore_mqtt',
       version: {
-        'v1.17.0 — App update': { files: [{ type: 'flash-update', name: 'obs.bin', title: 'App update' }] },
+        'v1.17.0 - App update': { files: [{ type: 'flash-update', name: 'obs.bin', title: 'App update' }] },
       },
     }
     render(wrap(
@@ -87,7 +87,7 @@ describe('FlashOptions', () => {
     const observerMerged: DeviceFirmware = {
       role: 'dutchmeshcore_mqtt',
       version: {
-        'v1.17.0 — Full flash': { files: [{ type: 'flash-wipe', name: 'obs-merged.bin', title: 'Full flash' }] },
+        'v1.17.0 - Full flash': { files: [{ type: 'flash-wipe', name: 'obs-merged.bin', title: 'Full flash' }] },
       },
     }
     render(wrap(

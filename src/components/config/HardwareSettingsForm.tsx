@@ -32,7 +32,7 @@ export default function HardwareSettingsForm({ value, onChange }: Props) {
           </label>
           <div className="field-row">
             <div className="field-group">
-              <label>Bridge delay (0–10000 ms)</label>
+              <label>Bridge delay (0-10000 ms)</label>
               <input type="number" min={0} max={10000} value={value.bridgeDelay}
                 onChange={e => patch(s => { s.bridgeDelay = clampInt(e.target.value, 0, 10000) })} />
             </div>
@@ -47,7 +47,7 @@ export default function HardwareSettingsForm({ value, onChange }: Props) {
 
           {value.rs232Supported && (
             <div className="field-group">
-              <label>RS232 baud (9600–{BRIDGE_MAX_BAUD})</label>
+              <label>RS232 baud (9600-{BRIDGE_MAX_BAUD})</label>
               <input type="number" min={9600} max={BRIDGE_MAX_BAUD} value={value.bridgeBaud}
                 onChange={e => patch(s => { s.bridgeBaud = clampInt(e.target.value, 9600, BRIDGE_MAX_BAUD) })} />
             </div>
@@ -56,7 +56,7 @@ export default function HardwareSettingsForm({ value, onChange }: Props) {
           {value.espnowSupported && (
             <div className="field-row">
               <div className="field-group">
-                <label>ESP-NOW channel (1–14)</label>
+                <label>ESP-NOW channel (1-14)</label>
                 <input type="number" min={1} max={14} value={value.bridgeChannel}
                   onChange={e => patch(s => { s.bridgeChannel = clampInt(e.target.value, 1, 14) })} />
               </div>

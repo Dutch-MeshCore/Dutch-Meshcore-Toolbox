@@ -37,7 +37,7 @@ export default function FlashOptions({
   // DMC observer/MQTT firmware needs the merged "Full flash" (partition table) for a
   // first-time install; flag when the user picked an app-only ("App update") version.
   // Detect observer via the role AND the file names, so a custom-uploaded observer
-  // .bin (role 'custom') is caught too — that's how users flash our own builds.
+  // .bin (role 'custom') is caught too - that's how users flash our own builds.
   const isObserver = /mqtt|observer/i.test(firmware.role) ||
     files.some(f => /observer|mqtt/i.test(f.name))
   const hasMergedFile = files.some(f => f.type === 'flash-wipe' || /-merged\.bin$/i.test(f.name))
@@ -54,7 +54,7 @@ export default function FlashOptions({
       </div>
 
       <div className="panel">
-        <div className="panel-legend">{title}{subTitle ? ` — ${subTitle}` : ''}</div>
+        <div className="panel-legend">{title}{subTitle ? ` - ${subTitle}` : ''}</div>
         {tooltip && <p style={{ fontSize: '.85rem', color: 'var(--muted)', margin: '0 0 .75rem' }}>{tooltip}</p>}
         {notice && <div className="info-banner warn" dangerouslySetInnerHTML={{ __html: notice }} />}
 

@@ -22,11 +22,11 @@ describe('buildDmcConfig', () => {
     expect(config.device).toHaveLength(1)
     expect(config.device[0].name).toBe('Heltec V3')
     expect(config.device[0].firmware[0].role).toBe('dutchmeshcore_mqtt')
-    expect(config.device[0].firmware[0].version['v1.15.0 — App update'].files[0]).toMatchObject({
+    expect(config.device[0].firmware[0].version['v1.15.0 - App update'].files[0]).toMatchObject({
       type: 'flash-update',
       name: 'https://example.test/heltec-v3-app.bin',
     })
-    expect(config.device[0].firmware[0].version['v1.15.0 — Full flash'].files[0]).toMatchObject({
+    expect(config.device[0].firmware[0].version['v1.15.0 - Full flash'].files[0]).toMatchObject({
       type: 'flash-wipe',
       name: 'https://example.test/heltec-v3-merged.bin',
     })
@@ -59,8 +59,8 @@ describe('buildDmcConfig', () => {
     })
 
     const roomserver = device.firmware[1]
-    expect(roomserver.version['v1.15.0 — App update'].files[0].name).toBe('https://example.test/roomserver-app.bin')
-    expect(roomserver.version['v1.15.0 — Full flash'].files[0].name).toBe('https://example.test/roomserver-merged.bin')
+    expect(roomserver.version['v1.15.0 - App update'].files[0].name).toBe('https://example.test/roomserver-app.bin')
+    expect(roomserver.version['v1.15.0 - Full flash'].files[0].name).toBe('https://example.test/roomserver-merged.bin')
   })
 
   it('builds roomserver observer MQTT firmware from the Dutch release filename shape', () => {
@@ -79,10 +79,10 @@ describe('buildDmcConfig', () => {
     expect(config.device[0].name).toBe('Heltec Wireless Tracker')
     const roomserver = config.device[0].firmware[0]
     expect(roomserver.role).toBe('dutchmeshcore_roomserver_mqtt')
-    expect(roomserver.version['1.15.0 — App update'].files[0].name).toBe(
+    expect(roomserver.version['1.15.0 - App update'].files[0].name).toBe(
       'https://example.test/tracker-roomserver-app.bin'
     )
-    expect(roomserver.version['1.15.0 — Full flash'].files[0].name).toBe(
+    expect(roomserver.version['1.15.0 - Full flash'].files[0].name).toBe(
       'https://example.test/tracker-roomserver-merged.bin'
     )
   })
@@ -97,7 +97,7 @@ describe('buildDmcConfig', () => {
 
     const roomserver = config.device[0].firmware[0]
     expect(roomserver.role).toBe('dutchmeshcore_roomserver_mqtt')
-    expect(roomserver.version['v1.15.0 — App update'].files[0].name).toBe(
+    expect(roomserver.version['v1.15.0 - App update'].files[0].name).toBe(
       `${PREBUILT_RAW_BASE}/Heltec_v3_roomserver_mqtt-v1.15.0-dutchmeshcore.nl-ebb7801d.bin`
     )
   })
@@ -123,7 +123,7 @@ describe('buildDmcConfig', () => {
     ])
     const rs = config.device[0].firmware[0]
     expect(rs.role).toBe('dutchmeshcore_roomserver_mqtt')
-    expect(rs.version['v1.16.0-dev — App update'].files[0].name).toBe('https://example.test/rs-app.bin')
+    expect(rs.version['v1.16.0-dev - App update'].files[0].name).toBe('https://example.test/rs-app.bin')
   })
 })
 
@@ -145,11 +145,11 @@ describe('buildDmcRepeaterConfig', () => {
     expect(device.type).toBe('esp32')
     expect(device.maker).toBe('dutchmeshcore_repeater')
     expect(device.firmware[0].role).toBe('dutchmeshcore_repeater')
-    expect(device.firmware[0].version['1.16.0-dev — App update'].files[0]).toMatchObject({
+    expect(device.firmware[0].version['1.16.0-dev - App update'].files[0]).toMatchObject({
       type: 'flash-update',
       name: 'https://example.test/v3-app.bin',
     })
-    expect(device.firmware[0].version['1.16.0-dev — Full flash'].files[0]).toMatchObject({
+    expect(device.firmware[0].version['1.16.0-dev - Full flash'].files[0]).toMatchObject({
       type: 'flash-wipe',
       name: 'https://example.test/v3-merged.bin',
     })
@@ -219,7 +219,7 @@ describe('mergeDmcConfigs', () => {
     expect(merged.maker.dutchmeshcore_repeater.name).toBe('DutchMeshCore Firmware')
     expect(merged.maker.dutchmeshcore.name).toBe('DutchMeshCore-MQTT-Firmware')
 
-    // A shared device name appears once under each maker — two separate blocks.
+    // A shared device name appears once under each maker - two separate blocks.
     const v3 = merged.device.filter(d => d.name === 'Heltec V3')
     expect(v3.map(d => d.maker).sort()).toEqual(['dutchmeshcore', 'dutchmeshcore_repeater'])
   })
