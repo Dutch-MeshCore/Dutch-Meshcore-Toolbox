@@ -19,7 +19,7 @@ interface Props {
   onToggleAdvanced: () => void
   onUpdate: (patch: Partial<SerialDeviceInfo>) => void
   onSave: () => void
-  onSendAdvert: () => void
+  onSendAdvert: (zeroHop: boolean) => void
   onStartOta: () => void
   onReboot: () => void
   onFactoryReset: () => void
@@ -42,6 +42,7 @@ export default function ConfigForm({
   const [showDmc, setShowDmc] = useState(false)
   const [showMqtt, setShowMqtt] = useState(false)
   const [mqttLoaded, setMqttLoaded] = useState(false)
+  const [advertZeroHop, setAdvertZeroHop] = useState(false)
   const vanity = useVanityKey()
 
   const vars = device.vars
@@ -94,7 +95,19 @@ export default function ConfigForm({
           }} />
         </label>
         <button className="btn" onClick={onSyncClock}>🕐 {t('config_sync_clock')}</button>
-        <button className="btn" onClick={onSendAdvert}>{t('config_send_advert')}</button>
+        <span className="advert-action">
+          <button className="btn" onClick={() => onSendAdvert(advertZeroHop)}>{t('config_send_advert')}</button>
+          <select
+            className="advert-mode"
+            value={advertZeroHop ? 'direct' : 'flood'}
+            title={t('config_advert_type')}
+            aria-label={t('config_advert_type')}
+            onChange={e => setAdvertZeroHop(e.target.value === 'direct')}
+          >
+            <option value="flood">{t('config_advert_flood')}</option>
+            <option value="direct">{t('config_advert_direct')}</option>
+          </select>
+        </span>
         <button className="btn" onClick={onStartOta}>{t('config_start_ota')}</button>
         <button className="btn" onClick={onReboot}>{t('config_reboot')}</button>
         <button className="btn" onClick={onFactoryReset}>{t('config_factory_reset')}</button>

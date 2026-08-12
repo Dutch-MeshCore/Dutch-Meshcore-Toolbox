@@ -42,10 +42,11 @@ export default function UsbConfigPage() {
     }
   }
 
-  async function handleSendAdvert() {
-    const reply = await sendCommand('advert')
-    // Show the device's own reply when it sends one (e.g. "OK - Advert sent"),
-    // otherwise a localized confirmation.
+  async function handleSendAdvert(zeroHop: boolean) {
+    // Flood advert propagates across the mesh; zero-hop only reaches direct
+    // neighbours. Show the device's own reply ("OK - Advert sent" /
+    // "OK - zerohop advert sent"), else a localized confirmation.
+    const reply = await sendCommand(zeroHop ? 'advert.zerohop' : 'advert')
     showToast(reply?.trim() || t('config_advert_sent_toast'))
   }
 

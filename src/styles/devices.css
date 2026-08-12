@@ -52,6 +52,16 @@
   margin-bottom: .75rem;
 }
 
+/* Send Advert: button + flood/direct selector kept together in the action row */
+.advert-action {
+  display: inline-flex;
+  align-items: stretch;
+  gap: .3rem;
+}
+.advert-action .advert-mode {
+  padding: 0 .4rem;
+}
+
 /* Changelog page */
 .changelog-tabs {
   display: flex;
