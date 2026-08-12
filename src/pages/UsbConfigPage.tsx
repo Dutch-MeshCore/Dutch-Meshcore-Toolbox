@@ -43,18 +43,26 @@ export default function UsbConfigPage() {
   }
 
   async function handleSendAdvert() {
-    await sendCommand('advert')
+    const reply = await sendCommand('advert')
+    // Show the device's own reply when it sends one (e.g. "OK - Advert sent"),
+    // otherwise a localized confirmation.
+    showToast(reply?.trim() || t('config_advert_sent_toast'))
   }
 
   async function handleStartOta() {
     await sendCommand('ota')
+    showToast(t('config_ota_started_toast'))
   }
 
   async function handleReboot() {
+    // Reboot drops the serial link, so the command may not reply — show the
+    // feedback immediately rather than awaiting a response that never comes.
+    showToast(t('config_rebooting_toast'))
     await sendCommand('reboot')
   }
 
   async function handleFactoryReset() {
+    showToast(t('config_factory_reset_toast'))
     await sendCommand('reset')
   }
 
