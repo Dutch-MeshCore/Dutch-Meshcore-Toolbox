@@ -1,5 +1,6 @@
 import type { FilterSettings } from './lib/config/filterCommands'
 import type { MqttSettings } from './lib/config/mqttCommands'
+import type { HardwareSettings } from './lib/config/hardwareCommands'
 
 export interface ChannelMeta {
   channel: string
@@ -176,6 +177,11 @@ export interface SerialDeviceInfo {
   mqttCapable?: boolean
   mqtt?: MqttSettings
   mqttDevice?: MqttSettings
+  // Base "hardware/advanced" settings (bridge / FEM gain / LR2021 side detectors),
+  // read eagerly on connect. hardware is the editable copy; hardwareDevice is the
+  // snapshot the save diff is computed against.
+  hardware?: HardwareSettings
+  hardwareDevice?: HardwareSettings
 }
 
 export interface RadioPreset {

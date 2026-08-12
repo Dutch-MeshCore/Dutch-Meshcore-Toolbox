@@ -8,6 +8,7 @@ import MapDialog from './MapDialog'
 import { useVanityKey } from '../../hooks/useVanityKey'
 import FilterSettingsForm from './FilterSettingsForm'
 import MqttSettingsForm from './MqttSettingsForm'
+import HardwareSettingsForm from './HardwareSettingsForm'
 import { defaultFilterSettings } from '../../lib/config/filterCommands'
 
 interface Props {
@@ -508,6 +509,16 @@ export default function ConfigForm({
       </button>
 
       {AdvancedSection}
+
+      {device.hardware && (
+        <div className="panel">
+          <div className="panel-legend">Serial bridge &amp; hardware</div>
+          <HardwareSettingsForm
+            value={device.hardware}
+            onChange={hw => onUpdate({ hardware: hw })}
+          />
+        </div>
+      )}
 
       <div className="action-bar" style={{ marginTop: '1rem' }}>
         <button className="btn btn-accent" onClick={onSave}>💾 {t('config_save')}</button>

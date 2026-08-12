@@ -52,6 +52,16 @@
   margin-bottom: .75rem;
 }
 
+/* Sub-heading inside a panel (e.g. the bridge / FEM groups in the hardware form). */
+.panel-legend-sub {
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  margin: .5rem 0 .4rem;
+}
+
 .panel[aria-disabled="true"],
 .panel.disabled {
   opacity: .5;

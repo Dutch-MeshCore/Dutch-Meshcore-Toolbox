@@ -19,6 +19,15 @@ import {
   sanitizeImportedMqtt,
   type MqttSettings,
 } from '../lib/config/mqttCommands'
+import {
+  assembleHardwareSettings,
+  buildHardwareCommands,
+  cloneHardwareSettings,
+  hardwareGetCommands,
+  hasAnyHardware,
+  sanitizeImportedHardware,
+  type HardwareSettings,
+} from '../lib/config/hardwareCommands'
 
 export function useSerialDevice() {
   const supported = typeof navigator !== 'undefined' && 'serial' in navigator
@@ -142,6 +151,18 @@ export function useSerialDevice() {
       mqttCapable = isMqttSupportedReply(await cli.sendCommand('get mqtt.config.valid'))
     } catch { /* optional */ }
 
+    // Base "hardware/advanced" settings (bridge / FEM / LR2021). Read eagerly (only
+    // ~10 probes) and keep only when the device actually supports at least one.
+    let hardware: HardwareSettings | undefined
+    let hardwareDevice: HardwareSettings | undefined
+    try {
+      setBusy('Reading hardware settings…')
+      const hwReplies: Record<string, string> = {}
+      for (const cmd of hardwareGetCommands()) hwReplies[cmd] = await cli.sendCommand(`get ${cmd}`)
+      const hw = assembleHardwareSettings(hwReplies)
+      if (hasAnyHardware(hw)) { hardware = hw; hardwareDevice = cloneHardwareSettings(hw) }
+    } catch { /* optional */ }
+
     setDevice(prev => ({
       version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice,
       filter, filterDevice, mqttCapable,
@@ -149,6 +170,7 @@ export function useSerialDevice() {
       // resync the base snapshot to the current values so the diff stays clean.
       mqtt: prev?.mqtt,
       mqttDevice: prev?.mqtt ? cloneMqttSettings(prev.mqtt) : undefined,
+      hardware, hardwareDevice,
     }))
     setBusy('')
   }
@@ -225,6 +247,12 @@ export function useSerialDevice() {
         if (rb) needsReboot = true
       }
 
+      if (device.hardware && device.hardwareDevice) {
+        const { cmds, needsReboot: rb } = buildHardwareCommands(device.hardware, device.hardwareDevice)
+        for (const cmd of cmds) await cli.sendCommand(cmd)
+        if (rb) needsReboot = true
+      }
+
       await _getData(cliRef.current as unknown as Parameters<typeof _getData>[0])
       setBusy('')
       return { needsReboot }
@@ -270,12 +298,20 @@ export function useSerialDevice() {
       if (prvKey) plainVars['prv.key'] = prvKey
     } catch { /* optional */ }
 
-    const out: { vars: Record<string, unknown>; filter?: FilterSettings; mqtt?: MqttSettings } = {
+    const out: {
+      vars: Record<string, unknown>
+      filter?: FilterSettings
+      mqtt?: MqttSettings
+      hardware?: HardwareSettings
+    } = {
       vars: plainVars,
     }
 
     // DMC packet-filter settings — only present on filter-capable firmware.
     if (device.filterDevice) out.filter = device.filterDevice
+
+    // Base bridge / FEM / LR2021 settings — only present when the device has them.
+    if (device.hardwareDevice) out.hardware = device.hardwareDevice
 
     // DMC MQTT observer settings — read fresh so the backup is complete even if the
     // panel was never opened. Only on MQTT-capable firmware. Secrets (broker
@@ -337,6 +373,13 @@ export function useSerialDevice() {
       const liveNeighbors = device.mqttDevice?.neighborsSupported ?? device.mqtt?.neighborsSupported ?? false
       patch.mqtt = sanitizeImportedMqtt(data.mqtt, liveNeighbors)
       patch.mqttDevice = device.mqttDevice ?? defaultMqttSettings()
+    }
+
+    // Base hardware settings — restore only what the connected device supports;
+    // capability flags come from the live device, values fall back to defaults.
+    if (data.hardware && device.hardware && device.hardwareDevice) {
+      patch.hardware = sanitizeImportedHardware(data.hardware, device.hardwareDevice)
+      patch.hardwareDevice = device.hardwareDevice
     }
 
     setDevice(d => d ? { ...d, ...patch } : d)
