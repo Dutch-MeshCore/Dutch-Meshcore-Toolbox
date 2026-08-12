@@ -11,6 +11,10 @@ export const STRINGS = {
     nav_keygen: 'Sleutels',
     nav_filter: 'Filter CLI',
     nav_connected: 'Community Projecten',
+    nav_changelog: 'Changelog',
+    changelog_title: 'Changelog',
+    changelog_tab_firmware: 'Firmware',
+    changelog_tab_toolbox: 'Toolbox',
 
     // KeygenPage
     keygen_title: 'MC-Keygen',
@@ -320,6 +324,10 @@ export const STRINGS = {
     nav_keygen: 'Keys',
     nav_filter: 'Filter CLI',
     nav_connected: 'Community Projects',
+    nav_changelog: 'Changelog',
+    changelog_title: 'Changelog',
+    changelog_tab_firmware: 'Firmware',
+    changelog_tab_toolbox: 'Toolbox',
 
     // KeygenPage
     keygen_title: 'MC-Keygen',

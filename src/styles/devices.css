@@ -52,6 +52,27 @@
   margin-bottom: .75rem;
 }
 
+/* Changelog page */
+.changelog-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.changelog-list {
+  margin: .25rem 0 0;
+  padding-left: 1.25rem;
+  line-height: 1.55;
+}
+.changelog-list li { margin: .4rem 0; }
+.changelog-list code { font-size: .85em; }
+.changelog-date {
+  color: var(--muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 /* Sub-heading inside a panel (e.g. the bridge / FEM groups in the hardware form). */
 .panel-legend-sub {
   font-size: .72rem;

@@ -107,6 +107,7 @@ export default function Navbar() {
 
             <Link to="/keygen" className={pathname === '/keygen' ? 'active' : ''} onClick={close}>{t('nav_keygen')}</Link>
             <Link to="/connected-brokers" className={pathname === '/connected-brokers' ? 'active' : ''} onClick={close}>{t('nav_connected')}</Link>
+            <Link to="/changelog" className={pathname === '/changelog' ? 'active' : ''} onClick={close}>{t('nav_changelog')}</Link>
           </div>
           <div className="nav-actions">
             <a

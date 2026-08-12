@@ -9,6 +9,7 @@ import MctoMqttPage from './pages/MctoMqttPage'
 import ConnectedBrokersPage from './pages/ConnectedBrokersPage'
 import FlasherPage from './pages/FlasherPage'
 import UsbConfigPage from './pages/UsbConfigPage'
+import ChangelogPage from './pages/ChangelogPage'
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/keygen" element={<KeygenPage />} />
         <Route path="/flasher" element={<FlasherPage />} />
         <Route path="/usb-config" element={<UsbConfigPage />} />
+        <Route path="/changelog" element={<ChangelogPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </HashRouter>
