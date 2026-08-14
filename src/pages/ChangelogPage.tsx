@@ -32,6 +32,17 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   en: {
     firmware: [
       {
+        version: 'v1.17.1',
+        date: '2026-08-14',
+        title: 'MQTT Observer',
+        items: [
+          <>Merged upstream MeshCore <strong>v1.17.1</strong> into the observer branch, so nodes now report <code>v1.17.1</code> as their version (previously only the commit hash told you a build was the latest). <Doc href={DOCS.branch}>Branch: dmc-observer-dev-1-17</Doc>.</>,
+          <><strong>Scoped-reply routing fix</strong>: replies are no longer dropped when <code>flood.max.unscoped</code> is low.</>,
+          <>New <code>radio.fem.txgain on|off</code> command, and a fix so <code>radio.fem.rxgain</code> persists, for boards with a controllable FEM PA (Station G3). The toolbox USB Setup already manages both.</>,
+          <>Other upstream fixes merged: nRF52 radio entropy combined with the CC310 hardware RNG, plus pin fixes for Heltec T1, Heltec MeshPocket, and LilyGo T-Echo Lite.</>,
+        ],
+      },
+      {
         version: 'v1.17.0',
         date: '2026-08-12',
         title: 'MQTT Observer',
@@ -74,6 +85,17 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   },
   nl: {
     firmware: [
+      {
+        version: 'v1.17.1',
+        date: '2026-08-14',
+        title: 'MQTT Observer',
+        items: [
+          <>Upstream MeshCore <strong>v1.17.1</strong> samengevoegd in de observer-branch, zodat nodes nu <code>v1.17.1</code> als versie melden (voorheen kon je alleen aan de commit-hash zien dat een build de nieuwste was). <Doc href={DOCS.branch}>Branch: dmc-observer-dev-1-17</Doc>.</>,
+          <><strong>Fix voor scoped-reply-routing</strong>: antwoorden worden niet meer verworpen wanneer <code>flood.max.unscoped</code> laag is.</>,
+          <>Nieuw commando <code>radio.fem.txgain on|off</code>, en een fix zodat <code>radio.fem.rxgain</code> bewaard blijft, voor boards met een regelbare FEM-PA (Station G3). De toolbox USB-instellingen beheren beide al.</>,
+          <>Overige upstream-fixes samengevoegd: nRF52-radio-entropie gecombineerd met de CC310-hardware-RNG, plus pin-fixes voor Heltec T1, Heltec MeshPocket en LilyGo T-Echo Lite.</>,
+        ],
+      },
       {
         version: 'v1.17.0',
         date: '2026-08-12',
