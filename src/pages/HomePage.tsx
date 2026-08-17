@@ -10,6 +10,7 @@ const copy = {
     heroSub: 'Kies wat je wilt doen. De technische pagina\'s blijven beschikbaar, maar de startpagina wijst je sneller naar de juiste tool.',
     startTitle: 'Nieuw hier?',
     startBody: 'DutchMeshCore helpt je kanalen vinden, nodes configureren, firmware flashen en community-projecten ontdekken.',
+    startCta: 'Aan de slag',
     primaryChannels: 'Kanalen bekijken',
     primaryMqtt: 'MQTT instellen',
     primaryFlash: 'Firmware flashen',
@@ -61,7 +62,7 @@ const copy = {
     radioAdvert: 'Advert interval',
     radioAdvertValue: '50 uur minimum (flood adverts)',
     radioFirmware: 'Firmware',
-    radioFirmwareValue: '1.15 of nieuwer',
+    radioFirmwareValue: 'v1.17 aanbevolen (1.15 minimum)',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
@@ -79,6 +80,7 @@ const copy = {
     heroSub: 'Choose what you want to do. The technical pages are still here, but the start page gets you to the right tool faster.',
     startTitle: 'New here?',
     startBody: 'DutchMeshCore helps you find channels, configure nodes, flash firmware, and discover community projects.',
+    startCta: 'Get started',
     primaryChannels: 'Browse channels',
     primaryMqtt: 'Set up MQTT',
     primaryFlash: 'Flash firmware',
@@ -130,7 +132,7 @@ const copy = {
     radioAdvert: 'Advert interval',
     radioAdvertValue: '50 hours minimum (flood adverts)',
     radioFirmware: 'Firmware',
-    radioFirmwareValue: '1.15 or newer',
+    radioFirmwareValue: 'v1.17 recommended (1.15 minimum)',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
@@ -236,7 +238,8 @@ export default function HomePage() {
             <p>{c.startBody}</p>
           </div>
           <div className="start-actions">
-            <Link className="btn btn-accent" to="/channel-browser">{c.primaryChannels}</Link>
+            <Link className="btn btn-accent" to="/getting-started">{c.startCta}</Link>
+            <Link className="btn" to="/channel-browser">{c.primaryChannels}</Link>
             <Link className="btn" to="/mqtt-cli">{c.primaryMqtt}</Link>
             <Link className="btn" to="/flasher">{c.primaryFlash}</Link>
           </div>

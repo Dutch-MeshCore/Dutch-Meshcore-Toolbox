@@ -72,6 +72,7 @@ export default function Navbar() {
         <div className={`nav-menu${menuOpen ? ' open' : ''}`}>
           <div className="nav-links">
             <Link to="/" className={pathname === '/' ? 'active' : ''} onClick={close}>{t('nav_home')}</Link>
+            <Link to="/getting-started" className={pathname === '/getting-started' ? 'active' : ''} onClick={close}>{t('nav_getstarted')}</Link>
 
             <Link to="/channel-browser" className={inChannelBrowser ? 'active' : ''} onClick={close}>{t('nav_browser')}</Link>
 
@@ -106,6 +107,7 @@ export default function Navbar() {
             </div>
 
             <Link to="/keygen" className={pathname === '/keygen' ? 'active' : ''} onClick={close}>{t('nav_keygen')}</Link>
+            <Link to="/cli-wiki" className={pathname === '/cli-wiki' ? 'active' : ''} onClick={close}>{t('nav_cli_wiki')}</Link>
             <Link to="/connected-brokers" className={pathname === '/connected-brokers' ? 'active' : ''} onClick={close}>{t('nav_connected')}</Link>
             <Link to="/changelog" className={pathname === '/changelog' ? 'active' : ''} onClick={close}>{t('nav_changelog')}</Link>
           </div>

@@ -52,6 +52,20 @@
   margin-bottom: .75rem;
 }
 
+/* ── Getting Started page ───────────────────────────────────────────────────── */
+.gs-tier-list {
+  line-height: 1.6;
+  margin: 0 0 .75rem;
+  padding-left: 1.2rem;
+}
+
+.gs-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .5rem;
+}
+
 /* Send Advert: button + flood/direct selector kept together in the action row */
 .advert-action {
   display: inline-flex;
@@ -81,6 +95,111 @@
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
+}
+
+/* CLI Wiki page */
+.wiki-controls {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+.wiki-control-label {
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-top: .5rem;
+}
+.wiki-control-label:first-child { margin-top: 0; }
+.wiki-variant-tabs, .wiki-device-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.wiki-variant-desc {
+  font-size: .85rem;
+  color: var(--muted);
+  margin: 0;
+}
+.wiki-variant-src {
+  font-size: .8rem;
+}
+.wiki-device-desc {
+  font-size: .85rem;
+  opacity: .8;
+  margin: .1rem 0 .3rem;
+}
+.wiki-search {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-size: .9rem;
+  padding: .45rem .65rem;
+  margin-top: .25rem;
+}
+.wiki-search:focus { outline: none; border-color: var(--accent); }
+.wiki-empty {
+  color: var(--muted);
+  font-size: .9rem;
+}
+.wiki-cmd-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wiki-cmd {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .45rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.wiki-cmd:last-child { border-bottom: none; }
+.wiki-cmd-code {
+  font-family: monospace;
+  font-weight: 600;
+  font-size: .85rem;
+}
+.wiki-cmd-desc {
+  color: var(--muted);
+  flex: 1 1 12rem;
+  font-size: .85rem;
+}
+.wiki-badge, .wiki-note-tag {
+  font-size: .7rem;
+  padding: .05rem .4rem;
+  border-radius: calc(var(--r) / 2);
+  background: rgba(var(--accent-rgb), .12);
+  color: var(--accent);
+  border: 1px solid rgba(var(--accent-rgb), .28);
+}
+
+/* Chip toggle (device-type selector) */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surf2);
+  color: var(--text);
+  font-size: .85rem;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.chip:hover { border-color: var(--accent); }
+.chip-active {
+  background: var(--button-accent-bg);
+  border-color: var(--button-accent-bg);
+  color: var(--button-accent-color);
+  font-weight: 600;
 }
 
 /* Sub-heading inside a panel (e.g. the bridge / FEM groups in the hardware form). */

@@ -10,6 +10,8 @@ import ConnectedBrokersPage from './pages/ConnectedBrokersPage'
 import FlasherPage from './pages/FlasherPage'
 import UsbConfigPage from './pages/UsbConfigPage'
 import ChangelogPage from './pages/ChangelogPage'
+import CliWikiPage from './pages/CliWikiPage'
+import GettingStartedPage from './pages/GettingStartedPage'
 
 export default function App() {
   return (
@@ -26,6 +28,8 @@ export default function App() {
         <Route path="/flasher" element={<FlasherPage />} />
         <Route path="/usb-config" element={<UsbConfigPage />} />
         <Route path="/changelog" element={<ChangelogPage />} />
+        <Route path="/cli-wiki" element={<CliWikiPage />} />
+        <Route path="/getting-started" element={<GettingStartedPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </HashRouter>
