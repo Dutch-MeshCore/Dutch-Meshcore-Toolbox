@@ -32,6 +32,15 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   en: {
     firmware: [
       {
+        version: 'v1.17.1 · PacketLog',
+        date: '2026-08-19',
+        title: 'Repeater PacketLog',
+        items: [
+          <>New <strong>DutchMeshCore Repeater PacketLog</strong> builds: the DMC repeater firmware with per-packet RX/TX logging (<code>MESH_PACKET_LOGGING</code>) written to the USB serial console, for all 91 repeater boards. Lets an external tool – such as an <strong>MC-to-MQTT</strong> bridge or logger – ingest live packet data over serial, without the on-device MQTT stack. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-v1.17.1">Release: dmc-repeater-packetlog-v1.17.1</Doc>.</>,
+          <>Built from the non-MQTT <code>dmc-dev</code> base, so the runtime <strong>packet filter</strong> (<code>filter</code> CLI) is included. Companion and room-server builds are unchanged. Flash it from the new <strong>DutchMeshCore-PacketLog-Firmware</strong> group in the Flasher.</>,
+        ],
+      },
+      {
         version: 'v1.17.1',
         date: '2026-08-14',
         title: 'MQTT Observer',
@@ -62,6 +71,14 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'Flasher: PacketLog firmware group',
+        date: '2026-08-19',
+        items: [
+          <>Added the <strong>DutchMeshCore-PacketLog-Firmware</strong> group – the DMC repeater builds with serial packet logging (91 boards, v1.17.1) – alongside the existing repeater and MQTT groups.</>,
+          <>All firmware maker groups now <strong>start collapsed</strong> for a cleaner list; expand the one you want.</>,
+        ],
+      },
+      {
         version: 'USB Setup: full firmware parity',
         date: '2026-08-12',
         items: [
@@ -85,6 +102,15 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   },
   nl: {
     firmware: [
+      {
+        version: 'v1.17.1 · PacketLog',
+        date: '2026-08-19',
+        title: 'Repeater PacketLog',
+        items: [
+          <>Nieuwe <strong>DutchMeshCore Repeater PacketLog</strong>-builds: de DMC-repeater-firmware met per-pakket RX/TX-logging (<code>MESH_PACKET_LOGGING</code>) naar de USB-seriële console, voor alle 91 repeater-boards. Laat een externe tool – zoals een <strong>MC-naar-MQTT</strong>-bridge of logger – live pakketdata via serieel inlezen, zonder de MQTT-stack op het apparaat. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-v1.17.1">Release: dmc-repeater-packetlog-v1.17.1</Doc>.</>,
+          <>Gebouwd op de niet-MQTT <code>dmc-dev</code>-basis, dus het runtime <strong>packetfilter</strong> (<code>filter</code>-CLI) is inbegrepen. Companion- en room-server-builds zijn ongewijzigd. Flash het via de nieuwe <strong>DutchMeshCore-PacketLog-Firmware</strong>-groep in de Flasher.</>,
+        ],
+      },
       {
         version: 'v1.17.1',
         date: '2026-08-14',
@@ -115,6 +141,14 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
       },
     ],
     toolbox: [
+      {
+        version: 'Flasher: PacketLog-firmwaregroep',
+        date: '2026-08-19',
+        items: [
+          <>De <strong>DutchMeshCore-PacketLog-Firmware</strong>-groep toegevoegd – de DMC-repeater-builds met seriële packetlogging (91 boards, v1.17.1) – naast de bestaande repeater- en MQTT-groepen.</>,
+          <>Alle firmware-groepen <strong>starten nu ingeklapt</strong> voor een overzichtelijkere lijst; klap de gewenste groep uit.</>,
+        ],
+      },
       {
         version: 'USB-instellingen: volledige firmware-pariteit',
         date: '2026-08-12',

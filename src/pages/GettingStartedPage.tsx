@@ -11,9 +11,10 @@ const copy = {
     s2h: 'What each build adds',
     s2official: 'the meshcore.io baseline. Companion, repeater, room-server and sensor roles.',
     s2rep: 'official plus the RF packet filter and rate limiting, to keep the mesh clean.',
+    s2packetlog: 'the repeater build plus per-packet RX/TX logging to the USB serial console (MESH_PACKET_LOGGING). Lets an external tool – such as an MC-to-MQTT bridge or logger – ingest live packet data over serial, without the on-device MQTT stack.',
     s2mqtt: 'everything in the repeater build plus the MQTT observer bridge, per-broker packet filter, neighbour publishing, WebConfig, SNMP, fault alerts and pull-based OTA.',
     s3h: 'Which build do I want?',
-    s3: 'Chatting from a handheld? Stay on the companion (official) firmware. Running a relay? Use the DMC repeater build. Want your node to show up on the analyzers and the map? Use the MQTT/observer build.',
+    s3: 'Chatting from a handheld? Stay on the companion (official) firmware. Running a relay? Use the DMC repeater build. Feeding packet data to an external MC-to-MQTT bridge or logger over serial? Use the DMC Repeater PacketLog build. Want your node to show up on the analyzers and the map on its own? Use the MQTT/observer build.',
     s4h: 'Flash it',
     s4: 'Open the Flasher, pick your board and the DMC firmware, and use the merged “Full flash” image for a first install so the partition table is written. Export your config first if you are re-flashing – flashing can wipe settings.',
     s5h: 'Configure it',
@@ -31,9 +32,10 @@ const copy = {
     s2h: 'Wat elke build toevoegt',
     s2official: 'de meshcore.io-basis. Companion-, repeater-, room-server- en sensorrollen.',
     s2rep: 'officieel plus het RF-packetfilter en rate limiting, om het mesh schoon te houden.',
+    s2packetlog: 'de repeater-build plus per-pakket RX/TX-logging naar de USB-seriële console (MESH_PACKET_LOGGING). Laat een externe tool – zoals een MC-naar-MQTT-bridge of logger – live pakketdata via serieel inlezen, zonder de MQTT-stack op het apparaat.',
     s2mqtt: 'alles uit de repeater-build plus de MQTT-observer-bridge, packetfilter per broker, buurpublicatie, WebConfig, SNMP, storingsmeldingen en pull-gebaseerde OTA.',
     s3h: 'Welke build wil ik?',
-    s3: 'Chatten vanaf een handheld? Blijf op de companion-firmware (officieel). Draai je een relay? Gebruik de DMC-repeater-build. Wil je dat je node op de analyzers en de kaart verschijnt? Gebruik de MQTT/observer-build.',
+    s3: 'Chatten vanaf een handheld? Blijf op de companion-firmware (officieel). Draai je een relay? Gebruik de DMC-repeater-build. Wil je pakketdata via serieel naar een externe MC-naar-MQTT-bridge of logger sturen? Gebruik de DMC Repeater PacketLog-build. Wil je dat je node zelf op de analyzers en de kaart verschijnt? Gebruik de MQTT/observer-build.',
     s4h: 'Flashen',
     s4: 'Open de Flasher, kies je board en de DMC-firmware, en gebruik het merged “Full flash”-image voor een eerste installatie zodat de partitietabel wordt geschreven. Exporteer eerst je config als je opnieuw flasht – flashen kan instellingen wissen.',
     s5h: 'Configureren',
@@ -64,6 +66,7 @@ export default function GettingStartedPage() {
           <ul className="gs-tier-list">
             <li><strong>MeshCore</strong> – {c.s2official}</li>
             <li><strong>DMC Repeater</strong> – {c.s2rep}</li>
+            <li><strong>DMC Repeater PacketLog</strong> – {c.s2packetlog}</li>
             <li><strong>DMC MQTT / Observer</strong> – {c.s2mqtt}</li>
           </ul>
           <Link className="btn btn-sm" to="/cli-wiki">{c.goWiki} →</Link>
