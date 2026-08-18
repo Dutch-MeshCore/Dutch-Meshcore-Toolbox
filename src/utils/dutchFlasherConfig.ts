@@ -24,15 +24,18 @@ export const PREBUILT_RAW_BASE =
 
 // All DMC firmware is published as GitHub Releases on the fork below: tags containing
 // `mqtt` are the MQTT bridge firmware; `dmc-repeater-*` tags are the non-MQTT repeater.
-const MESHCORE_REPO       = 'Dutch-MeshCore/MeshCore'
-const REPEATER_TAG_PREFIX = 'dmc-repeater-'
+const MESHCORE_REPO        = 'Dutch-MeshCore/MeshCore'
+const REPEATER_TAG_PREFIX  = 'dmc-repeater-'
+// PacketLog shares the `dmc-repeater-` prefix but is its own maker group.
+const PACKETLOG_TAG_PREFIX = 'dmc-repeater-packetlog-'
 
 const DMC_RELEASES_URL =
   `https://api.github.com/repos/${MESHCORE_REPO}/releases?per_page=100`
 
 // MQTT and non-MQTT repeater firmware are shown as two separate maker groups.
-const DMC_MQTT_MAKER     = 'dutchmeshcore'
-const DMC_REPEATER_MAKER = 'dutchmeshcore_repeater'
+const DMC_MQTT_MAKER      = 'dutchmeshcore'
+const DMC_REPEATER_MAKER  = 'dutchmeshcore_repeater'
+const DMC_PACKETLOG_MAKER = 'dutchmeshcore_packetlog'
 
 const DMC_MQTT_MAKER_META = {
   name:    'DutchMeshCore-MQTT-Firmware',
@@ -43,6 +46,12 @@ const DMC_MQTT_MAKER_META = {
 const DMC_REPEATER_MAKER_META = {
   name:    'DutchMeshCore Firmware',
   repo:    'https://github.com/Dutch-MeshCore/MeshCore',
+  website: 'https://dutchmeshcore.nl',
+}
+
+const DMC_PACKETLOG_MAKER_META = {
+  name:    'DutchMeshCore-PacketLog-Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-repeater-packetlog',
   website: 'https://dutchmeshcore.nl',
 }
 
@@ -249,6 +258,29 @@ const REPEATER_ROLE = {
   subTitle: 'Repeater (non-MQTT)',
 } as const
 
+const PACKETLOG_ROLE = {
+  role:     'dutchmeshcore_packetlog',
+  icon:     '📝',
+  title:    'DutchMeshCore Repeater PacketLog',
+  subTitle: 'Repeater + packet logging',
+} as const
+
+// buildDmcRepeaterConfig is shared by the plain repeater and PacketLog groups; these
+// options select the maker/role/tag-prefix for each. Their release assets share the
+// same `{Device}_repeater-…` filename shape.
+interface RepeaterBuildOpts {
+  maker:     string
+  makerMeta: { name: string; repo: string; website: string }
+  role:      { role: string; icon: string; title: string; subTitle: string }
+  tagPrefix: string
+}
+const REPEATER_OPTS: RepeaterBuildOpts = {
+  maker: DMC_REPEATER_MAKER, makerMeta: DMC_REPEATER_MAKER_META, role: REPEATER_ROLE, tagPrefix: REPEATER_TAG_PREFIX,
+}
+const PACKETLOG_OPTS: RepeaterBuildOpts = {
+  maker: DMC_PACKETLOG_MAKER, makerMeta: DMC_PACKETLOG_MAKER_META, role: PACKETLOG_ROLE, tagPrefix: PACKETLOG_TAG_PREFIX,
+}
+
 interface GHReleaseAsset {
   name: string
   browser_download_url: string
@@ -267,16 +299,17 @@ function extOf(name: string): 'bin' | 'uf2' | 'zip' | null {
 }
 
 /** Derive the display version from a release tag: dmc-repeater-v1.16.0-dev → 1.16.0-dev */
-function repeaterVersion(tag: string): string {
-  return tag.replace(REPEATER_TAG_PREFIX, '').replace(/^v/, '')
+function repeaterVersion(tag: string, prefix: string = REPEATER_TAG_PREFIX): string {
+  return tag.replace(prefix, '').replace(/^v/, '')
 }
 
 /**
  * Build a FlasherConfig from `dmc-repeater-*` GitHub Releases. Filenames carry no
  * semver (`{Device}_repeater-dev-{hash}[-merged].{ext}`) so the version comes from
  * the release tag. Handles esp32 (.bin app/merged) and nRF52 (.uf2/.zip) devices.
+ * `opts` selects the maker/role/tag-prefix (repeater by default; PacketLog reuses it).
  */
-export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
+export function buildDmcRepeaterConfig(releases: GHRelease[], opts: RepeaterBuildOpts = REPEATER_OPTS): FlasherConfig {
   type Variant = { type: 'esp32' | 'nrf52'; appUrl: string; mergedUrl: string }
   // deviceKey -> versionKey -> Variant
   const deviceMap = new Map<string, Map<string, Variant>>()
@@ -289,7 +322,7 @@ export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
   }
 
   for (const release of releases) {
-    const versionKey = repeaterVersion(release.tag_name)
+    const versionKey = repeaterVersion(release.tag_name, opts.tagPrefix)
     for (const asset of release.assets) {
       const ext = extOf(asset.name)
       if (!ext) continue
@@ -342,12 +375,12 @@ export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
       }
 
       return {
-        maker: DMC_REPEATER_MAKER,
+        maker: opts.maker,
         class: 'community' as const,
         name:  DEVICE_LABELS[deviceKey] ?? deviceKey.replace(/_/g, ' '),
         type:  deviceType,
         firmware: [{
-          role: REPEATER_ROLE.role,
+          role: opts.role.role,
           tooltip: deviceType === 'esp32'
             ? 'App update keeps bootloader & settings. Full flash is for new or factory-reset devices.'
             : undefined,
@@ -359,24 +392,30 @@ export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
 
   return {
     staticPath: '',
-    role: { [REPEATER_ROLE.role]: { icon: REPEATER_ROLE.icon, title: REPEATER_ROLE.title, subTitle: REPEATER_ROLE.subTitle } },
+    role: { [opts.role.role]: { icon: opts.role.icon, title: opts.role.title, subTitle: opts.role.subTitle } },
     notice: {},
-    maker: { [DMC_REPEATER_MAKER]: DMC_REPEATER_MAKER_META },
+    maker: { [opts.maker]: opts.makerMeta },
     device: devices,
   }
 }
 
+/** PacketLog repeater firmware (`dmc-repeater-packetlog-*` releases) — same builder,
+ *  own maker/role/tag-prefix. Rendered as a separate group in the flasher. */
+export function buildDmcPacketlogConfig(releases: GHRelease[]): FlasherConfig {
+  return buildDmcRepeaterConfig(releases, PACKETLOG_OPTS)
+}
+
 /**
- * Combine the repeater and MQTT DMC configs into one FlasherConfig that carries
- * both makers - they render as two separate groups (repeater first) in the flasher.
+ * Combine DMC configs (repeater, PacketLog, MQTT) into one FlasherConfig carrying every
+ * maker - they render as separate groups (repeater first) in the flasher.
  */
-export function mergeDmcConfigs(repeater: FlasherConfig, mqtt: FlasherConfig): FlasherConfig {
+export function mergeDmcConfigs(...configs: FlasherConfig[]): FlasherConfig {
   return {
     staticPath: '',
-    role:   { ...mqtt.role, ...repeater.role },
-    notice: { ...mqtt.notice, ...repeater.notice },
-    maker:  { ...mqtt.maker, ...repeater.maker },
-    device: [...repeater.device, ...mqtt.device],
+    role:   Object.assign({}, ...configs.map(c => c.role)),
+    notice: Object.assign({}, ...configs.map(c => c.notice)),
+    maker:  Object.assign({}, ...configs.map(c => c.maker)),
+    device: configs.flatMap(c => c.device),
   }
 }
 
@@ -417,7 +456,8 @@ export async function fetchDmcConfig(): Promise<FlasherConfig> {
 
   // Fall back to the live GitHub API (may hit rate limits unauthenticated). All DMC
   // firmware lives in MeshCore releases: `mqtt`-tagged releases feed the MQTT bridge
-  // config; `dmc-repeater-*` releases feed the non-MQTT repeater config.
+  // config; `dmc-repeater-*` releases feed the non-MQTT repeater config; and the
+  // `dmc-repeater-packetlog-*` subset feeds the PacketLog config.
   const releases = await fetchMeshcoreReleases()
 
   const mqttFiles: GHFile[] = releases
@@ -426,9 +466,16 @@ export async function fetchDmcConfig(): Promise<FlasherConfig> {
       const version = dmcTagVersion(r.tag_name)
       return r.assets.map(a => ({ name: a.name, download_url: a.browser_download_url, version }))
     })
-  const repeaterReleases = releases.filter(r => r.tag_name.startsWith(REPEATER_TAG_PREFIX))
+  // PacketLog shares the `dmc-repeater-` prefix, so keep the two release sets disjoint.
+  const packetlogReleases = releases.filter(r => r.tag_name.startsWith(PACKETLOG_TAG_PREFIX))
+  const repeaterReleases  = releases.filter(r =>
+    r.tag_name.startsWith(REPEATER_TAG_PREFIX) && !r.tag_name.startsWith(PACKETLOG_TAG_PREFIX))
 
-  const config = mergeDmcConfigs(buildDmcRepeaterConfig(repeaterReleases), buildDmcConfig(mqttFiles))
+  const config = mergeDmcConfigs(
+    buildDmcRepeaterConfig(repeaterReleases),
+    buildDmcPacketlogConfig(packetlogReleases),
+    buildDmcConfig(mqttFiles),
+  )
   writeCache(DMC_CACHE_KEY, config)
   return config
 }

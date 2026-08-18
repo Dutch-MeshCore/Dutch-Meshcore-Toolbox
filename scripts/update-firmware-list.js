@@ -60,11 +60,15 @@ const DMC_ROLE_DEFS = [
 // Non-MQTT repeater firmware (separate GitHub Releases source — see buildDmcRepeaterConfig)
 const DMC_REPEATER_ROLE = { separator: '_repeater-', role: 'dutchmeshcore_repeater', icon: '📡', title: 'DutchMeshCore Repeater', subTitle: 'Repeater (non-MQTT)' }
 
+// Repeater firmware with packet logging enabled (dmc-repeater-packetlog-* releases)
+const DMC_PACKETLOG_ROLE = { separator: '_repeater-', role: 'dutchmeshcore_packetlog', icon: '📝', title: 'DutchMeshCore Repeater PacketLog', subTitle: 'Repeater + packet logging' }
+
 const ALL_ROLE_DEFS = [
   ...MESHCORE_DEV_ROLES,
   ...MESHCOMOD_ROLES,
   ...DMC_ROLE_DEFS,
   DMC_REPEATER_ROLE,
+  DMC_PACKETLOG_ROLE,
 ]
 
 // MQTT and non-MQTT repeater firmware render as two separate maker groups.
@@ -77,6 +81,12 @@ const DMC_MQTT_MAKER_META = {
 const DMC_REPEATER_MAKER_META = {
   name:    'DutchMeshCore Firmware',
   repo:    'https://github.com/Dutch-MeshCore/MeshCore',
+  website: 'https://dutchmeshcore.nl',
+}
+
+const DMC_PACKETLOG_MAKER_META = {
+  name:    'DutchMeshCore-PacketLog-Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-repeater-packetlog',
   website: 'https://dutchmeshcore.nl',
 }
 
@@ -408,7 +418,11 @@ async function buildDmcFirmwareConfig() {
 async function buildDmcRepeaterConfig() {
   console.log('Dutch-MeshCore/MeshCore (dmc-repeater releases)')
   const releases = (await fetchReleases('Dutch-MeshCore', 'MeshCore'))
-    .filter(r => typeof r.tag_name === 'string' && r.tag_name.startsWith('dmc-repeater-'))
+    // `dmc-repeater-packetlog-*` shares the `dmc-repeater-` prefix but is its own
+    // maker group (see buildDmcPacketlogConfig), so exclude it here.
+    .filter(r => typeof r.tag_name === 'string'
+      && r.tag_name.startsWith('dmc-repeater-')
+      && !r.tag_name.startsWith('dmc-repeater-packetlog-'))
 
   const files = releases.flatMap(rel => {
     const versionKey = rel.tag_name.replace('dmc-repeater-', '').replace(/^v/, '')
@@ -424,6 +438,30 @@ async function buildDmcRepeaterConfig() {
   })
   console.log(`  → ${releases.length} dmc-repeater releases, ${files.length} firmware files`)
   return buildConfig(files, 'dutchmeshcore_repeater', DMC_REPEATER_MAKER_META)
+}
+
+// PacketLog repeater firmware — GitHub Releases tagged `dmc-repeater-packetlog-*` on
+// the fork. Same asset shape as the plain repeater firmware (`{Device}_repeater-…`),
+// but built with MESH_PACKET_LOGGING enabled and shown as its own maker group.
+async function buildDmcPacketlogConfig() {
+  console.log('Dutch-MeshCore/MeshCore (dmc-repeater-packetlog releases)')
+  const releases = (await fetchReleases('Dutch-MeshCore', 'MeshCore'))
+    .filter(r => typeof r.tag_name === 'string' && r.tag_name.startsWith('dmc-repeater-packetlog-'))
+
+  const files = releases.flatMap(rel => {
+    const versionKey = rel.tag_name.replace('dmc-repeater-packetlog-', '').replace(/^v/, '')
+    return (rel.assets ?? []).flatMap(a => {
+      const ext = extOf(a.name)
+      if (!ext) return []
+      const sepIdx = a.name.indexOf('_repeater-')
+      if (sepIdx < 0) return []
+      const deviceKey = a.name.slice(0, sepIdx)
+      const isMerged = a.name.endsWith('-merged.' + ext)
+      return [{ deviceKey, role: 'dutchmeshcore_packetlog', versionKey, isMerged, ext, url: a.browser_download_url }]
+    })
+  })
+  console.log(`  → ${releases.length} dmc-repeater-packetlog releases, ${files.length} firmware files`)
+  return buildConfig(files, 'dutchmeshcore_packetlog', DMC_PACKETLOG_MAKER_META)
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -467,18 +505,21 @@ async function main() {
   // ── DMC firmware (MQTT + non-MQTT repeater) ───────────────────────────────
   console.log('\nBuilding DutchMeshCore firmware list…')
   try {
-    const [mqttRes, repeaterRes] = await Promise.allSettled([
+    const [mqttRes, repeaterRes, packetlogRes] = await Promise.allSettled([
       buildDmcFirmwareConfig(),
       buildDmcRepeaterConfig(),
+      buildDmcPacketlogConfig(),
     ])
     const emptyConfig = { staticPath: '', role: {}, notice: {}, maker: {}, device: [] }
-    const dmcMqtt     = mqttRes.status === 'fulfilled' ? mqttRes.value : emptyConfig
-    const dmcRepeater = repeaterRes.status === 'fulfilled' ? repeaterRes.value : emptyConfig
-    if (mqttRes.status === 'rejected')     console.error('DMC MQTT build failed:', mqttRes.reason)
-    if (repeaterRes.status === 'rejected') console.error('DMC repeater build failed:', repeaterRes.reason)
+    const dmcMqtt      = mqttRes.status === 'fulfilled' ? mqttRes.value : emptyConfig
+    const dmcRepeater  = repeaterRes.status === 'fulfilled' ? repeaterRes.value : emptyConfig
+    const dmcPacketlog = packetlogRes.status === 'fulfilled' ? packetlogRes.value : emptyConfig
+    if (mqttRes.status === 'rejected')      console.error('DMC MQTT build failed:', mqttRes.reason)
+    if (repeaterRes.status === 'rejected')  console.error('DMC repeater build failed:', repeaterRes.reason)
+    if (packetlogRes.status === 'rejected') console.error('DMC packetlog build failed:', packetlogRes.reason)
 
-    // Two maker groups (repeater first, then MQTT) in one config.
-    const dmcConfig = mergeConfigs([dmcRepeater, dmcMqtt])
+    // Three maker groups (repeater, then PacketLog, then MQTT) in one config.
+    const dmcConfig = mergeConfigs([dmcRepeater, dmcPacketlog, dmcMqtt])
     if (dmcConfig.device.length) {
       const dmcOutput = { generated: new Date().toISOString(), ...dmcConfig }
       writeFileSync(DMC_OUT, JSON.stringify(dmcOutput, null, 2))

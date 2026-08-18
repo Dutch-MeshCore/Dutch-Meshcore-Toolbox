@@ -48,7 +48,7 @@ function deviceHasVersion(device: FlasherDevice, version: string): boolean {
   )
 }
 
-const MAKER_ORDER_FIRST = ['dutchmeshcore_repeater', 'dutchmeshcore']
+const MAKER_ORDER_FIRST = ['dutchmeshcore_repeater', 'dutchmeshcore', 'dutchmeshcore_packetlog']
 
 interface Props {
   devices: FlasherDevice[]
@@ -59,7 +59,8 @@ interface Props {
 export default function DeviceList({ devices, makerNames, onSelect }: Props) {
   const { t } = useLang()
   const [query, setQuery] = useState('')
-  const [expanded, setExpanded] = useState<Set<string>>(new Set(MAKER_ORDER_FIRST))
+  // All maker groups start collapsed; the user expands the one they want.
+  const [expanded, setExpanded] = useState<Set<string>>(new Set())
   const [versionFilter, setVersionFilter] = useState<Record<string, string>>({})
   const [preview, setPreview] = useState<Preview | null>(null)
 

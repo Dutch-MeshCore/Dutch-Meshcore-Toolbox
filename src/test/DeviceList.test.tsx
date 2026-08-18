@@ -15,11 +15,14 @@ const makerNames = {
 }
 
 function renderList(onSelect = vi.fn()) {
-  return render(
+  const utils = render(
     <LangProvider>
       <DeviceList devices={devices} makerNames={makerNames} onSelect={onSelect} />
     </LangProvider>
   )
+  // Maker groups start collapsed; expand the group so its devices are visible.
+  fireEvent.click(screen.getByText('DutchMeshCore MQTT Firmware'))
+  return utils
 }
 
 describe('DeviceList', () => {
@@ -105,6 +108,7 @@ describe('DeviceList', () => {
         />
       </LangProvider>,
     )
+    fireEvent.click(screen.getByText('DutchMeshCore MQTT Firmware'))
     fireEvent.mouseEnter(screen.getByText('Meshtiny').closest('button') as HTMLButtonElement)
     expect(screen.queryByTestId('device-preview')).not.toBeInTheDocument()
   })

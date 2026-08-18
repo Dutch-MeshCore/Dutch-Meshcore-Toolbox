@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   buildDmcConfig,
   buildDmcRepeaterConfig,
+  buildDmcPacketlogConfig,
   mergeDmcConfigs,
   PREBUILT_RAW_BASE,
 } from '../utils/dutchFlasherConfig'
@@ -194,6 +195,61 @@ describe('buildDmcRepeaterConfig', () => {
     ])
 
     expect(config.device.map(d => d.name)).toEqual(['SenseCAP Solar'])
+  })
+})
+
+describe('buildDmcPacketlogConfig', () => {
+  it('builds packetlog firmware under its own maker/role with the tag-derived version', () => {
+    const config = buildDmcPacketlogConfig([
+      {
+        tag_name: 'dmc-repeater-packetlog-v1.17.1',
+        assets: [
+          { name: 'Heltec_v3_repeater-v1.17.1-packetlog-42d5c835.bin', browser_download_url: 'https://example.test/v3-app.bin' },
+          { name: 'Heltec_v3_repeater-v1.17.1-packetlog-42d5c835-merged.bin', browser_download_url: 'https://example.test/v3-merged.bin' },
+        ],
+      },
+    ])
+
+    expect(config.device).toHaveLength(1)
+    const device = config.device[0]
+    expect(device.name).toBe('Heltec V3')
+    expect(device.maker).toBe('dutchmeshcore_packetlog')
+    expect(device.firmware[0].role).toBe('dutchmeshcore_packetlog')
+    // Version comes from the tag with the packetlog prefix (and leading v) stripped.
+    expect(device.firmware[0].version['1.17.1 - App update'].files[0]).toMatchObject({
+      type: 'flash-update',
+      name: 'https://example.test/v3-app.bin',
+    })
+    expect(config.maker.dutchmeshcore_packetlog.name).toBe('DutchMeshCore-PacketLog-Firmware')
+    expect(config.role.dutchmeshcore_packetlog).toMatchObject({
+      title: 'DutchMeshCore Repeater PacketLog',
+      subTitle: 'Repeater + packet logging',
+    })
+  })
+
+  it('keeps packetlog, repeater and mqtt as three separate maker groups', () => {
+    const repeater = buildDmcRepeaterConfig([
+      { tag_name: 'dmc-repeater-v1.17.1', assets: [
+        { name: 'Heltec_v3_repeater-v1.17.1-abc.bin', browser_download_url: 'https://example.test/rep.bin' },
+      ] },
+    ])
+    const packetlog = buildDmcPacketlogConfig([
+      { tag_name: 'dmc-repeater-packetlog-v1.17.1', assets: [
+        { name: 'Heltec_v3_repeater-v1.17.1-packetlog-abc.bin', browser_download_url: 'https://example.test/pl.bin' },
+      ] },
+    ])
+    const mqtt = buildDmcConfig([
+      { name: 'Heltec_v3_repeater_observer_mqtt-v1.17.1-dutchmeshcore.nl-abc.bin', download_url: 'https://example.test/mqtt.bin' },
+    ])
+
+    const merged = mergeDmcConfigs(repeater, packetlog, mqtt)
+    expect(Object.keys(merged.maker).sort()).toEqual(
+      ['dutchmeshcore', 'dutchmeshcore_packetlog', 'dutchmeshcore_repeater'],
+    )
+    const v3 = merged.device.filter(d => d.name === 'Heltec V3')
+    expect(v3.map(d => d.maker).sort()).toEqual(
+      ['dutchmeshcore', 'dutchmeshcore_packetlog', 'dutchmeshcore_repeater'],
+    )
   })
 })
 
