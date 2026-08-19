@@ -15,6 +15,8 @@ import {
   assembleFilterSettings,
   parseFilterBlockedCounts,
   parseFilterCount,
+  serializeFilterSettings,
+  parseSharedFilterSettings,
 } from '../lib/config/filterCommands'
 
 describe('filter model', () => {
@@ -187,6 +189,52 @@ describe('parseFilterCount', () => {
   })
   it('returns an empty object when there is no data', () => {
     expect(parseFilterCount('> ')).toEqual({})
+  })
+})
+
+describe('serializeFilterSettings / parseSharedFilterSettings', () => {
+  it('round-trips a settings object through the tagged wrapper', () => {
+    const s = defaultFilterSettings()
+    s.enabled = true
+    s.minHashBytes = 2
+    s.channels = ['Public', '#bot']
+    s.perType[5].hops = 16
+    s.perType[2].rateLimit = 10
+    const text = serializeFilterSettings(s)
+    expect(JSON.parse(text)).toMatchObject({ type: 'dmc-filter', version: 1 })
+    expect(parseSharedFilterSettings(text)).toEqual(s)
+  })
+
+  it('returns null for non-JSON and non-filter JSON', () => {
+    expect(parseSharedFilterSettings('not json')).toBeNull()
+    expect(parseSharedFilterSettings('{"foo":1}')).toBeNull()
+    expect(parseSharedFilterSettings('{"type":"dmc-filter","version":1}')).toBeNull()
+  })
+
+  it('accepts a bare settings object without the wrapper', () => {
+    const s = defaultFilterSettings()
+    s.malformed = true
+    expect(parseSharedFilterSettings(JSON.stringify(s))).toEqual(s)
+  })
+
+  it('sanitizes out-of-range values, bad channels, and short perType', () => {
+    const raw = {
+      enabled: true,
+      malformed: 'yes',            // invalid type -> ignored, stays default false
+      minHashBytes: 9,             // clamp to 3
+      channels: ['ok', 'bad name', '', 42, 'ok'], // drop whitespace/empty/non-string
+      perType: [{ hops: 999, rateLimit: -5, rateSecs: 10 }], // clamp; rest default
+    }
+    const out = parseSharedFilterSettings(JSON.stringify(raw))!
+    expect(out.enabled).toBe(true)
+    expect(out.malformed).toBe(false)
+    expect(out.minHashBytes).toBe(3)
+    expect(out.channels).toEqual(['ok'])
+    expect(out.perType).toHaveLength(12)
+    expect(out.perType[0].hops).toBe(64)
+    expect(out.perType[0].rateLimit).toBe(0)
+    expect(out.perType[0].rateSecs).toBe(10)
+    expect(out.perType[1].hops).toBe(8) // untouched default
   })
 })
 

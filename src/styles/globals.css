@@ -5487,3 +5487,19 @@ select option {
 .filter-type-table { width: 100%; border-collapse: collapse; margin-top: .5rem; font-size: .9rem; }
 .filter-type-table th, .filter-type-table td { padding: .25rem .4rem; text-align: left; }
 .filter-type-table input { width: 6rem; }
+
+.filter-share { margin-top: 1rem; }
+.filter-share-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin: .4rem 0; }
+.filter-share-paste { display: flex; gap: .5rem; align-items: flex-start; }
+.filter-share-textarea {
+  flex: 1;
+  min-width: 0;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 8px;
+}

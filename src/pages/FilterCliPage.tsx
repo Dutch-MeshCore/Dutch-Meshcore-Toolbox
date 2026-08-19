@@ -5,6 +5,7 @@ import { useLang } from '../hooks/useLang'
 import { useToast } from '../hooks/useToast'
 import Toast from '../components/ui/Toast'
 import FilterSettingsForm from '../components/config/FilterSettingsForm'
+import FilterShareControls from '../components/config/FilterShareControls'
 import { buildFilterCommands, defaultFilterSettings, PAYLOAD_TYPES } from '../lib/config/filterCommands'
 
 const copy = {
@@ -99,6 +100,8 @@ export default function FilterCliPage() {
         <div className="info-box privacy-box"><span>ℹ</span><p>{c.intro}</p></div>
 
         <FilterSettingsForm value={settings} onChange={setSettings} />
+
+        <FilterShareControls value={settings} onImport={setSettings} onToast={toast} />
 
         <div className="output-section">
           <div className="output-header">

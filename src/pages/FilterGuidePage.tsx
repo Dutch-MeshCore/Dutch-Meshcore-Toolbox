@@ -5,6 +5,7 @@ import { useLang } from '../hooks/useLang'
 import { useToast } from '../hooks/useToast'
 import Toast from '../components/ui/Toast'
 import FilterSettingsForm from '../components/config/FilterSettingsForm'
+import FilterShareControls from '../components/config/FilterShareControls'
 import { useSerialDevice } from '../hooks/useSerialDevice'
 import {
   PAYLOAD_TYPES,
@@ -312,6 +313,12 @@ export default function FilterGuidePage() {
                 <button className="btn btn-sm" onClick={readFilter}>{c.live_reread}</button>
                 <button className="btn btn-sm" onClick={disconnect}>{c.live_disconnect}</button>
               </div>
+
+              <FilterShareControls
+                value={device.filter}
+                onImport={f => updateDevice({ filter: f })}
+                onToast={toast}
+              />
 
               <div className="output-header" style={{ marginTop: '1rem' }}>
                 <p className="section-title">

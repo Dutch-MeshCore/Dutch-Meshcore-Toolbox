@@ -184,6 +184,76 @@ export function assembleFilterSettings(replies: FilterReplies): FilterSettings {
   return s
 }
 
+const SHARE_TYPE = 'dmc-filter'
+const SHARE_VERSION = 1
+
+/** Serialize filter settings into a shareable, tagged JSON string. */
+export function serializeFilterSettings(s: FilterSettings): string {
+  return JSON.stringify({ type: SHARE_TYPE, version: SHARE_VERSION, settings: s }, null, 2)
+}
+
+function clampInt(v: unknown, min: number, max: number): number | null {
+  const n = typeof v === 'number' ? v : NaN
+  if (!Number.isFinite(n)) return null
+  return Math.min(max, Math.max(min, Math.round(n)))
+}
+
+/**
+ * Parse and sanitize a shared filter-settings string. Accepts either the tagged
+ * wrapper produced by serializeFilterSettings or a bare FilterSettings object.
+ * Unknown or out-of-range fields are clamped/dropped by overlaying onto the
+ * firmware defaults, so the result is always a safe FilterSettings. Returns null
+ * for non-JSON input or JSON that does not look like filter settings.
+ */
+export function parseSharedFilterSettings(text: string): FilterSettings | null {
+  let data: unknown
+  try { data = JSON.parse(text) } catch { return null }
+  if (!data || typeof data !== 'object') return null
+
+  const tagged = data as { type?: unknown; settings?: unknown }
+  const raw = (tagged.type === SHARE_TYPE ? tagged.settings : data) as Record<string, unknown> | undefined
+  if (!raw || typeof raw !== 'object') return null
+
+  const looksLikeFilter =
+    typeof raw.enabled === 'boolean' ||
+    typeof raw.malformed === 'boolean' ||
+    typeof raw.minHashBytes === 'number' ||
+    Array.isArray(raw.channels) ||
+    Array.isArray(raw.perType)
+  if (!looksLikeFilter) return null
+
+  const s = defaultFilterSettings()
+  if (typeof raw.enabled === 'boolean') s.enabled = raw.enabled
+  if (typeof raw.malformed === 'boolean') s.malformed = raw.malformed
+
+  const hash = clampInt(raw.minHashBytes, 1, 3)
+  if (hash !== null) s.minHashBytes = hash
+
+  if (Array.isArray(raw.channels)) {
+    const seen = new Set<string>()
+    s.channels = raw.channels
+      .filter((c): c is string => typeof c === 'string' && c.trim().length > 0 && !/\s/.test(c))
+      .filter(c => (seen.has(c) ? false : (seen.add(c), true)))
+      .slice(0, 16)
+  }
+
+  if (Array.isArray(raw.perType)) {
+    for (let i = 0; i < PAYLOAD_TYPE_COUNT; i++) {
+      const p = raw.perType[i]
+      if (!p || typeof p !== 'object') continue
+      const pt = p as Record<string, unknown>
+      const hops = clampInt(pt.hops, 0, 64)
+      const rateLimit = clampInt(pt.rateLimit, 0, 65535)
+      const rateSecs = clampInt(pt.rateSecs, 0, 4294967295)
+      if (hops !== null) s.perType[i].hops = hops
+      if (rateLimit !== null) s.perType[i].rateLimit = rateLimit
+      if (rateSecs !== null) s.perType[i].rateSecs = rateSecs
+    }
+  }
+
+  return s
+}
+
 export interface FilterBlockedCounts {
   hops: number
   rate: number
