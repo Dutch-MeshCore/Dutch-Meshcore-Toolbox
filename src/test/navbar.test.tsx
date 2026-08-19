@@ -20,15 +20,20 @@ describe('Navbar', () => {
     expect(screen.getByText(/DutchMeshCore/i)).toBeInTheDocument()
   })
 
-  it('renders device tools nav trigger', () => {
+  it('renders the Tools nav trigger', () => {
     renderNavbar()
-    expect(screen.getByText(/Device tools|Apparaat-tools/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^tools$/i })).toBeInTheDocument()
   })
 
-  it('renders console and repeater setup in device tools menu', () => {
+  it('renders console and repeater setup in the Tools menu', () => {
     renderNavbar()
     expect(screen.getByRole('link', { name: /console/i })).toHaveAttribute('href', '/flasher?console=1')
     expect(screen.getByRole('link', { name: /repeater setup/i })).toHaveAttribute('href', '/usb-config')
+  })
+
+  it('renders the Info nav trigger', () => {
+    renderNavbar()
+    expect(screen.getByRole('button', { name: /^info$/i })).toBeInTheDocument()
   })
 
   it('does not render a link to the Local Editor', () => {

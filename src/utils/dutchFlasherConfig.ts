@@ -4,9 +4,13 @@
  * Files follow the naming pattern:
  *   {DeviceKey}_{firmwareRole}-{version}[-merged].bin
  *
- * Supported firmware roles:
+ * Supported MQTT firmware roles:
  *   repeater_observer_mqtt
- *   room_server_observer_mqtt
+ *   room_server_observer_mqtt / room_server_mqtt / roomserver_mqtt
+ *
+ * The non-MQTT repeater and PacketLog releases are handled as their own maker
+ * groups (see scripts/update-firmware-list.js), so the flasher shows three
+ * DutchMeshCore groups in total.
  *
  * The GitHub API is queried at runtime so the flasher automatically picks up
  * new firmware releases whenever the branch is updated.
@@ -39,7 +43,7 @@ const DMC_PACKETLOG_MAKER = 'dutchmeshcore_packetlog'
 
 const DMC_MQTT_MAKER_META = {
   name:    'DutchMeshCore-MQTT-Firmware',
-  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases/tag/repeater-mqtt-v1.16.0',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=mqtt',
   website: 'https://dutchmeshcore.nl',
 }
 
@@ -399,7 +403,7 @@ export function buildDmcRepeaterConfig(releases: GHRelease[], opts: RepeaterBuil
   }
 }
 
-/** PacketLog repeater firmware (`dmc-repeater-packetlog-*` releases) — same builder,
+/** PacketLog repeater firmware (`dmc-repeater-packetlog-*` releases) – same builder,
  *  own maker/role/tag-prefix. Rendered as a separate group in the flasher. */
 export function buildDmcPacketlogConfig(releases: GHRelease[]): FlasherConfig {
   return buildDmcRepeaterConfig(releases, PACKETLOG_OPTS)

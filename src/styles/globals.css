@@ -68,6 +68,21 @@
     inset 0 0 0 1px rgba(255,255,255,.035),
     0 18px 40px rgba(0,0,0,.28);
   --r:       8px;
+  /* Fonts (matches meshcore-analyzer.eu): Aldrich headings, IBM Plex Sans body, IBM Plex Mono code */
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-head: 'Aldrich', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', Consolas, 'Fira Mono', monospace;
+}
+
+/* Per-theme font overrides keep the win95 / minimalistic aesthetics intact. */
+[data-theme="win95"] {
+  --font-sans: 'Tahoma', 'MS Sans Serif', Arial, sans-serif;
+  --font-head: 'Tahoma', 'MS Sans Serif', Arial, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+[data-theme="minimalistic"] {
+  --font-sans: Georgia, 'Times New Roman', serif;
+  --font-head: Georgia, 'Times New Roman', serif;
 }
 
 /* ── Light theme ────────────────────────────────────────────────────────────── */
@@ -1242,11 +1257,23 @@
 body {
   background: var(--body-bg);
   color: var(--text);
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.5;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+}
+
+.nav-brand {
+  font-family: var(--font-head);
 }
 
 body::before {
@@ -1550,7 +1577,7 @@ body::after {
   overflow-wrap: anywhere;
 }
 
-/* home page — two-collector grid */
+/* home page – two-collector grid */
 .mqtt-collectors-grid {
   display: flex;
   gap: 1rem;
@@ -1924,7 +1951,7 @@ body::after {
 
 .iata-display {
   color: var(--accent);
-  font-family: Consolas, "Fira Mono", monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
   min-width: 48px;
 }
@@ -1961,7 +1988,7 @@ body::after {
 
 .slot-label {
   color: var(--heading-color);
-  font-family: Consolas, "Fira Mono", monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
 }
 
@@ -2037,7 +2064,7 @@ body::after {
 .cmd-comment {
   display: block;
   color: var(--muted);
-  font-family: Consolas, "Fira Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   margin: 8px 0 4px;
 }
@@ -2056,7 +2083,7 @@ body::after {
 
 .cmd-line code {
   color: var(--accent);
-  font-family: Consolas, "Fira Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   overflow-wrap: anywhere;
 }
@@ -2134,10 +2161,10 @@ body::after {
 
 .help-cmd-table code {
   color: var(--accent);
-  font-family: Consolas, "Fira Mono", monospace;
+  font-family: var(--font-mono);
 }
 
-/* help dialog — section titles and scroll cap */
+/* help dialog – section titles and scroll cap */
 .help-section-title {
   font-size: 0.7rem;
   font-weight: 700;
@@ -2540,7 +2567,7 @@ select option {
 }
 
 .lt-name {
-  font-family: 'Consolas', 'Fira Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
   color: var(--heading-color);
   white-space: nowrap;
@@ -2552,7 +2579,7 @@ select option {
 }
 
 .lt-key {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
   white-space: nowrap;
@@ -2574,7 +2601,7 @@ select option {
 }
 
 .lt-scope {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: #93bfff;
 }
@@ -2721,7 +2748,7 @@ select option {
   font-size: 15px;
   font-weight: 700;
   color: var(--heading-color);
-  font-family: 'Consolas', 'Fira Mono', monospace;
+  font-family: var(--font-mono);
   word-break: break-all;
   cursor: pointer;
 }
@@ -2732,7 +2759,7 @@ select option {
 
 .hex-key {
   cursor: pointer;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
   margin-bottom: 8px;
@@ -2805,7 +2832,7 @@ select option {
   border: 1px solid var(--scope-border);
   border-radius: 4px;
   font-size: 11px;
-  font-family: monospace;
+  font-family: var(--font-mono);
   padding: 1px 6px;
   margin: 2px 2px 0 0;
 }
@@ -2926,7 +2953,7 @@ select option {
 }
 
 .modal-head .channel-sub {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   color: var(--accent);
   margin-top: 2px;
@@ -3113,7 +3140,7 @@ select option {
   padding: 2px 7px;
   border-radius: 4px;
   font-size: 12px;
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 .server-bar a {
@@ -3180,7 +3207,7 @@ select option {
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   min-height: 34px;
 }
 
@@ -3249,9 +3276,15 @@ select option {
   display: flex;
   gap: 14px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex: 1 1 auto;
   justify-content: center;
+  min-width: 0;
+}
+
+.nav-links a,
+.nav-dropdown-trigger {
+  white-space: nowrap;
 }
 
 .nav-links a {
@@ -3282,10 +3315,22 @@ select option {
   gap: 3px;
   background: none;
   border: none;
-  padding: 0;
+  padding: 4px 8px;
+  border-radius: 6px;
   cursor: pointer;
   font: inherit;
-  color: inherit;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.nav-dropdown-trigger:hover {
+  color: var(--text);
+  background: var(--nav-hover-bg);
+}
+
+.nav-dropdown-trigger.active {
+  color: var(--nav-active-color);
+  background: var(--nav-active-bg);
 }
 
 .nav-caret {
@@ -3334,7 +3379,79 @@ select option {
   flex: 0 0 auto;
 }
 
-@media (max-width: 768px) {
+.theme-trigger,
+.lang-trigger {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 6px;
+  padding: 4px 9px;
+  line-height: 1;
+  transition: border-color .15s, color .15s;
+}
+
+.theme-trigger { font-size: 16px; }
+.lang-trigger { font-size: 13px; font-weight: 600; }
+
+.theme-trigger:hover,
+.lang-trigger:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-menu {
+  left: auto;
+  right: 0;
+  transform: none;
+  min-width: 180px;
+}
+
+.theme-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.theme-item:hover {
+  color: var(--text);
+  background: var(--nav-hover-bg);
+}
+
+.theme-item.active {
+  color: var(--nav-active-color);
+  background: var(--nav-active-bg);
+}
+
+.theme-item-icon {
+  width: 18px;
+  text-align: center;
+}
+
+.theme-check {
+  margin-left: auto;
+  color: var(--brand-accent);
+}
+
+.nav-ext {
+  opacity: 0.55;
+  font-size: 0.85em;
+}
+
+@media (max-width: 900px) {
+  .nav-inner {
+    flex-wrap: wrap;
+  }
+
   .nav-hamburger {
     display: flex;
   }
@@ -3344,6 +3461,10 @@ select option {
     width: 100%;
     flex-direction: column;
     gap: 0;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
   }
 
   .nav-menu.open {
@@ -3583,7 +3704,7 @@ select option {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--text);
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 11.5px;
 }
 
@@ -4963,7 +5084,7 @@ select option {
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 8px 12px;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--accent);
 }
@@ -5216,7 +5337,7 @@ select option {
   text-decoration: underline;
 }
 
-/* ── Connected Brokers — win95 overrides ─────────────────────────────────── */
+/* ── Connected Brokers – win95 overrides ─────────────────────────────────── */
 [data-theme="win95"] .broker-card {
   background: #c0c0c0;
   border: 2px solid;
@@ -5306,7 +5427,7 @@ select option {
   left: 14px;
 }
 
-/* ── Connected Brokers — minimalistic overrides ──────────────────────────── */
+/* ── Connected Brokers – minimalistic overrides ──────────────────────────── */
 [data-theme="minimalistic"] .broker-card {
   border-radius: 0;
   border-color: var(--border);

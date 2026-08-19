@@ -13,7 +13,7 @@ interface Preview {
 }
 
 // Position the board preview next to the cursor: to its right when it fits,
-// otherwise to its left — always clamped so it stays within the viewport.
+// otherwise to its left – always clamped so it stays within the viewport.
 function previewStyle(x: number, y: number): React.CSSProperties {
   const gap = 16
   const width = 320 // keep in sync with .device-preview max-width
@@ -34,7 +34,7 @@ function getGroupVersions(devices: FlasherDevice[]): string[] {
   for (const device of devices) {
     for (const fw of device.firmware) {
       for (const key of Object.keys(fw.version ?? {})) {
-        const v = key.split(' — ')[0]
+        const v = key.split(' – ')[0]
         if (!seen.has(v)) { seen.add(v); result.push(v) }
       }
     }

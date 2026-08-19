@@ -499,7 +499,7 @@ export default function ConfigForm({
             const next = !showMqtt
             setShowMqtt(next)
             // Skip the read if settings are already loaded or were restored from a
-            // backup (an import populates device.mqtt — re-reading would clobber it).
+            // backup (an import populates device.mqtt – re-reading would clobber it).
             if (next && !mqttLoaded && !device.mqtt) { await onReadMqtt(); setMqttLoaded(true) }
           }}
         >

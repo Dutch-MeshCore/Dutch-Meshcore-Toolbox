@@ -119,7 +119,7 @@ describe('assembleMqttSettings', () => {
       'mqtt2.password': '> secret',
       'mqtt2.token': '> (not set)',
       'mqtt2.topic': '> (default: meshcore/{iata}/{device}/{type})',
-      'mqtt2.audience': '> (not set — custom slots use username/password auth)',
+      'mqtt2.audience': '> (not set – custom slots use username/password auth)',
     }
     const s = assembleMqttSettings(r)
     expect(s.origin).toBe('MyObserver')

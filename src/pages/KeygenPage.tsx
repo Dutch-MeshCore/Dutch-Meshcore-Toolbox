@@ -121,7 +121,7 @@ export default function KeygenPage() {
                 />
                 {diff && (
                   <span className="keygen-difficulty" style={{ color: diff.color }}>
-                    {diff.label} — ~{expectedAttempts(prefixLen)} {t('keygen_attempts_avg')}
+                    {diff.label} – ~{expectedAttempts(prefixLen)} {t('keygen_attempts_avg')}
                   </span>
                 )}
               </div>
@@ -291,7 +291,7 @@ export default function KeygenPage() {
 
         <footer className="site-footer">
           <a href="https://github.com/Dutch-MeshCore" target="_blank" rel="noopener noreferrer">Dutch-MeshCore</a>
-          {' '}— {t('footer')}
+          {' '}– {t('footer')}
         </footer>
       </main>
 

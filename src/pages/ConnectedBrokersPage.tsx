@@ -61,6 +61,35 @@ const copy = {
     dataNote2Link: 'free subscriber account required',
     footer: 'Community tools for MeshCore NL - 2026',
   },
+  de: {
+    title: 'Verbundene Projekte',
+    subtitle: 'Projekte und Analyzer, die derzeit Live-Daten aus dem DutchMeshCore subscriber-Feed empfangen.',
+    publicTitle: 'Projekte, die mit den DutchMeshCore-Servern verbunden sind',
+    privateTitle: 'Private Projekte',
+    privateNote: 'Es sind außerdem einige private Projekte aktiv, die aber noch nicht öffentlich geteilt wurden.',
+    privateCard: 'Privates Projekt',
+    privateCardDesc: 'Details werden noch nicht geteilt. Weitere Informationen folgen, sobald etwaige Projekte öffentlich werden.',
+    visitSite: 'Website besuchen',
+    openWiki: 'Wiki öffnen',
+    openAnalyzer: 'Analyzer öffnen',
+    openWebsite: 'Website öffnen',
+    type_analyzer: 'Analyzer',
+    type_app: 'App',
+    type_map: 'Kartenvisualisierung',
+    type_wiki: 'Wiki',
+    cornmeisterDesc: 'Live-MQTT-Analyzer für DutchMeshCore observer-Daten. Zeigt rohe Paketausgabe und Netzwerkaktivität in Echtzeit.',
+    kiekrDesc: 'Community-Toolbox für MeshCore. Die iOS- und Android-App koppelt sich über Bluetooth mit MeshCore-kompatiblen LoRa-Funkgeräten für Nachrichten und Mesh-Erkundung.',
+    mcradarDesc: 'Kartenbasierte Visualisierung, die MeshCore-Knoten und Paketrouten auf Basis von DutchMeshCore subscriber-Daten darstellt.',
+    meshwikiDesc: 'Der MeshWiki MQTT-broker empfängt DutchMeshCore observer-Daten und stellt sie der MeshWiki.nl-Community zur Verfügung.',
+    techspeeltuinDesc: 'Techspeeltuin.nl empfängt DutchMeshCore-Daten und visualisiert MeshCore-Netzwerkaktivität für die Community.',
+    overrideDesc: 'Live-MQTT-Analyzer von mesh.override.nl. Zeigt MeshCore-Netzwerkaktivität auf Basis von DutchMeshCore subscriber-Daten.',
+    spamdetectorDesc: 'mc-spamdetector.nl erkennt und markiert Spam im MeshCore-Netzwerk auf Basis von DutchMeshCore subscriber-Daten.',
+    dataNote: 'Alle diese Projekte empfangen Daten über den DutchMeshCore MQTT subscriber. Möchtest du deinen eigenen Analyzer anschließen? Sieh dir die',
+    dataNoteLinkText: 'Config-Generatoren',
+    dataNote2: 'für die richtigen broker-Einstellungen an.',
+    dataNote2Link: 'kostenloses subscriber-Konto erforderlich',
+    footer: 'Community-Tools für MeshCore NL – 2026',
+  },
 }
 
 type CopyKey = keyof typeof copy.en
@@ -190,7 +219,7 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
           <line x1="20" y1="80" x2="7"  y2="50" />
           <line x1="7"  y1="50" x2="20" y2="20" />
           <line x1="20" y1="20" x2="50" y2="7"  />
-          {/* W shape — left-peak → left-valley → center-peak → right-valley → right-peak */}
+          {/* W shape – left-peak → left-valley → center-peak → right-valley → right-peak */}
           <line x1="28" y1="28" x2="36" y2="62" />
           <line x1="36" y1="62" x2="50" y2="38" />
           <line x1="50" y1="38" x2="64" y2="62" />
@@ -220,18 +249,18 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
           <line x1="20" y1="80" x2="36" y2="62" />
           <line x1="80" y1="80" x2="64" y2="62" />
         </g>
-        {/* W center peak — pulse first */}
+        {/* W center peak – pulse first */}
         <circle cx="50" cy="38" r="5" fill="url(#meshwikiGrad)">
           <animate attributeName="r" values="5;7;5" dur="2.5s" begin="0s" repeatCount="indefinite" />
         </circle>
-        {/* W outer peaks — pulse second */}
+        {/* W outer peaks – pulse second */}
         <circle cx="28" cy="28" r="4.5" fill="url(#meshwikiGrad)">
           <animate attributeName="r" values="4.5;6.5;4.5" dur="2.5s" begin="0.25s" repeatCount="indefinite" />
         </circle>
         <circle cx="72" cy="28" r="4.5" fill="url(#meshwikiGrad)">
           <animate attributeName="r" values="4.5;6.5;4.5" dur="2.5s" begin="0.25s" repeatCount="indefinite" />
         </circle>
-        {/* W valleys — pulse third */}
+        {/* W valleys – pulse third */}
         <circle cx="36" cy="62" r="4.5" fill="url(#meshwikiGrad)">
           <animate attributeName="r" values="4.5;6.5;4.5" dur="2.5s" begin="0.5s" repeatCount="indefinite" />
         </circle>
@@ -242,7 +271,7 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
         <circle cx="50" cy="74" r="4.5" fill="url(#meshwikiGrad)">
           <animate attributeName="r" values="4.5;6.5;4.5" dur="2.5s" begin="0.5s" repeatCount="indefinite" />
         </circle>
-        {/* Outer ring — pulse last */}
+        {/* Outer ring – pulse last */}
         <circle cx="50" cy="7"  r="4" fill="url(#meshwikiGrad)">
           <animate attributeName="r" values="4;6;4" dur="2.5s" begin="0.75s" repeatCount="indefinite" />
         </circle>
@@ -429,7 +458,7 @@ export default function ConnectedBrokersPage() {
         </p>
         <footer className="site-footer">
           <a href="https://github.com/Dutch-MeshCore" target="_blank" rel="noopener noreferrer">Dutch-MeshCore</a>
-          {' '}— {c.footer}
+          {' '}– {c.footer}
         </footer>
       </main>
     </>

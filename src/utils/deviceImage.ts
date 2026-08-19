@@ -3,7 +3,7 @@
 // Our device data is auto-generated from firmware filenames and only carries the chip
 // `type` (esp32/nrf52), never the board. The board SVGs in public/img/ can't be matched
 // to devices automatically (name/slug conventions diverge too much), so the pairing is
-// maintained here by hand. Unmapped devices intentionally resolve to `null` — no preview.
+// maintained here by hand. Unmapped devices intentionally resolve to `null` – no preview.
 
 // Raw device name (as it appears in the firmware JSON) → SVG basename in public/img/.
 // Multiple names may share one image (device families / display-vs-no-display variants).

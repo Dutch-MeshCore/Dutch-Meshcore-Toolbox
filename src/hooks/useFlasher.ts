@@ -72,7 +72,7 @@ export function useFlasher() {
 
     try {
       if (device.type === 'esp32') {
-        // @ts-ignore — esp32.js has no TS types
+        // @ts-ignore – esp32.js has no TS types
         const { ESPLoader, Transport, HardReset } = await import('../lib/flasher/esp32.js')
         const port = await navigator.serial.requestPort()
         portRef.current = port
@@ -121,7 +121,7 @@ export function useFlasher() {
         setState(s => ({ ...s, percent: 100 }))
 
       } else if (device.type === 'nrf52') {
-        // @ts-ignore — dfu.js has no TS types
+        // @ts-ignore – dfu.js has no TS types
         const { Dfu } = await import('../lib/flasher/dfu.js')
         if (!portRef.current) {
           portRef.current = await navigator.serial.requestPort()
@@ -152,7 +152,7 @@ export function useFlasher() {
       const port = await navigator.serial.requestPort()
       // 1200-baud touch resets the device into the Adafruit bootloader (matches the
       // upstream flasher's `Dfu.forceDfuMode`). It then re-enumerates as a new serial
-      // port, so drop this one — flash() re-requests the bootloader port.
+      // port, so drop this one – flash() re-requests the bootloader port.
       await Dfu.forceDfuMode(port)
       portRef.current = null
       setState(s => ({ ...s, dfuComplete: true }))

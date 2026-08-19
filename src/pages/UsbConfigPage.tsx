@@ -51,12 +51,12 @@ export default function UsbConfigPage() {
   }
 
   async function handleStartOta() {
-    await sendCommand('ota')
+    await sendCommand('start ota')
     showToast(t('config_ota_started_toast'))
   }
 
   async function handleReboot() {
-    // Reboot drops the serial link, so the command may not reply — show the
+    // Reboot drops the serial link, so the command may not reply – show the
     // feedback immediately rather than awaiting a response that never comes.
     showToast(t('config_rebooting_toast'))
     await sendCommand('reboot')
@@ -64,7 +64,7 @@ export default function UsbConfigPage() {
 
   async function handleFactoryReset() {
     showToast(t('config_factory_reset_toast'))
-    await sendCommand('reset')
+    await sendCommand('erase')
   }
 
   async function handleSyncClock() {

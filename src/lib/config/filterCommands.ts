@@ -187,7 +187,7 @@ export function assembleFilterSettings(replies: FilterReplies): FilterSettings {
 /**
  * True if a bare `filter` reply is the DMC packet-filter status line
  * (`> Filter on|off: Blocked [...]`). Used to detect filter support by
- * capability rather than firmware name — stock firmware answers an unknown
+ * capability rather than firmware name – stock firmware answers an unknown
  * `filter` command with `> Unknown command`, which does not match.
  */
 export function isFilterStatusReply(reply: string): boolean {

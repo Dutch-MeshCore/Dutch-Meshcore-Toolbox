@@ -17,7 +17,7 @@ const device: FlasherDevice = {
   firmware: [
     { role: 'repeater',   version: { 'v1.0': { files: [{ type: 'flash-wipe', name: 'a.bin', title: 'A' }] } } },
     { role: 'roomServer', version: { 'v1.0': { files: [{ type: 'flash-wipe', name: 'b.bin', title: 'B' }] } } },
-    { role: 'gui',        version: {} }, // no files — should be hidden
+    { role: 'gui',        version: {} }, // no files – should be hidden
   ],
 }
 

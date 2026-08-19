@@ -7,16 +7,16 @@ interface Props {
 }
 
 function fmtDate(iso: string | null | undefined): string {
-  if (!iso) return '—'
+  if (!iso) return '–'
   const d = new Date(iso)
-  if (isNaN(d.getTime())) return '—'
+  if (isNaN(d.getTime())) return '–'
   return d.toLocaleDateString('nl-NL', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
 function relativeTime(iso: string | null | undefined): string {
-  if (!iso) return '—'
+  if (!iso) return '–'
   const d = new Date(iso)
-  if (isNaN(d.getTime())) return '—'
+  if (isNaN(d.getTime())) return '–'
   const diffMs = Date.now() - d.getTime()
   if (diffMs < 0) return fmtDate(iso)
   const mins = Math.floor(diffMs / 60_000)

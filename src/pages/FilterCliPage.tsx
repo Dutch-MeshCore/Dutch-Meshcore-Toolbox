@@ -11,7 +11,7 @@ const copy = {
     title: 'Repeater Pakketfilter CLI',
     sub: 'Stel het pakketfilter in en krijg kant-en-klare CLI-opdrachten voor je repeater.',
     bannerTitle: 'Aangepaste DMC-firmware',
-    bannerSub: 'Het pakketfilter is alleen beschikbaar in de aangepaste DutchMeshCore repeater-firmware.',
+    bannerSub: 'Het pakketfilter is alleen beschikbaar in de aangepaste DutchMeshCore repeater- en room-server-firmware.',
     intro: 'De opdrachten gaan ervan uit dat het filter op de standaardwaarden staat. Voer eerst "filter reset" uit als je twijfelt.',
     output: 'Gegenereerde opdrachten',
     copyAll: 'Alles kopiëren',
@@ -24,7 +24,7 @@ const copy = {
     title: 'Repeater Packet-Filter CLI',
     sub: 'Configure the packet filter and get ready-to-paste CLI commands for your repeater.',
     bannerTitle: 'Custom DMC firmware',
-    bannerSub: 'The packet filter is only available in the custom DutchMeshCore repeater firmware.',
+    bannerSub: 'The packet filter is only available in the custom DutchMeshCore repeater and room-server firmware.',
     intro: 'The commands assume the filter is at its default settings. Run "filter reset" first if unsure.',
     output: 'Generated commands',
     copyAll: 'Copy all',
@@ -32,6 +32,19 @@ const copy = {
     empty: 'Adjust settings to generate commands.',
     copiedAll: 'All commands copied!', nothing: 'Nothing to copy yet.',
     help: 'Command reference', footer: 'Repeater Packet-Filter CLI - 2026',
+  },
+  de: {
+    title: 'Repeater Paketfilter-CLI',
+    sub: 'Konfiguriere den Paketfilter und erhalte fertige CLI-Befehle für deinen repeater.',
+    bannerTitle: 'Angepasste DMC-firmware',
+    bannerSub: 'Der Paketfilter ist nur in der angepassten DutchMeshCore repeater- und room-server-firmware verfügbar.',
+    intro: 'Die Befehle setzen voraus, dass der Filter auf den Standardwerten steht. Führe im Zweifel zuerst "filter reset" aus.',
+    output: 'Generierte Befehle',
+    copyAll: 'Alles kopieren',
+    copy: 'Kopieren', copied: 'Kopiert!',
+    empty: 'Passe die Einstellungen an, um Befehle zu generieren.',
+    copiedAll: 'Alle Befehle kopiert!', nothing: 'Noch nichts zum Kopieren.',
+    help: 'Befehlsreferenz', footer: 'Repeater Paketfilter-CLI - 2026',
   },
 }
 
@@ -109,7 +122,7 @@ export default function FilterCliPage() {
 
         <footer className="site-footer">
           <a href="https://dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">DutchMeshCore.nl</a>
-          {' '}— {c.footer}
+          {' '}– {c.footer}
         </footer>
       </main>
 
@@ -124,16 +137,16 @@ export default function FilterCliPage() {
             <div className="help-body">
               <table className="help-cmd-table">
                 <tbody>
-                  <tr><td><code>filter on</code> / <code>filter off</code></td><td>{lang === 'nl' ? 'Filter in-/uitschakelen.' : 'Enable/disable the filter.'}</td></tr>
-                  <tr><td><code>filter reset</code></td><td>{lang === 'nl' ? 'Herstel standaardwaarden.' : 'Restore default settings.'}</td></tr>
-                  <tr><td><code>filter hops &lt;type&gt; &lt;0–64&gt;</code></td><td>{lang === 'nl' ? 'Max. hops per payload-type.' : 'Max hops per payload type.'}</td></tr>
-                  <tr><td><code>filter rate &lt;type&gt; &lt;limit&gt; &lt;secs&gt;</code></td><td>{lang === 'nl' ? 'Snelheidslimiet per type.' : 'Rate limit per type.'}</td></tr>
-                  <tr><td><code>filter channel add|remove &lt;#name|Public&gt;</code></td><td>{lang === 'nl' ? 'Blokkeer GRP_TXT-kanaal.' : 'Block a GRP_TXT channel.'}</td></tr>
-                  <tr><td><code>filter hash &lt;1–3&gt;</code></td><td>{lang === 'nl' ? 'Min. path-hash bytes.' : 'Min path-hash bytes.'}</td></tr>
-                  <tr><td><code>filter malformed on|off</code></td><td>{lang === 'nl' ? 'Scan op ongeldige UTF-8.' : 'Scan for malformed UTF-8.'}</td></tr>
+                  <tr><td><code>filter on</code> / <code>filter off</code></td><td>{lang === 'de' ? 'Filter aktivieren/deaktivieren.' : lang === 'nl' ? 'Filter in-/uitschakelen.' : 'Enable/disable the filter.'}</td></tr>
+                  <tr><td><code>filter reset</code></td><td>{lang === 'de' ? 'Standardwerte wiederherstellen.' : lang === 'nl' ? 'Herstel standaardwaarden.' : 'Restore default settings.'}</td></tr>
+                  <tr><td><code>filter hops &lt;type&gt; &lt;0–64&gt;</code></td><td>{lang === 'de' ? 'Max. Hops pro Payload-Typ.' : lang === 'nl' ? 'Max. hops per payload-type.' : 'Max hops per payload type.'}</td></tr>
+                  <tr><td><code>filter rate &lt;type&gt; &lt;limit&gt; &lt;secs&gt;</code></td><td>{lang === 'de' ? 'Ratenlimit pro Typ.' : lang === 'nl' ? 'Snelheidslimiet per type.' : 'Rate limit per type.'}</td></tr>
+                  <tr><td><code>filter channel add|remove &lt;#name|Public&gt;</code></td><td>{lang === 'de' ? 'GRP_TXT-Kanal blockieren.' : lang === 'nl' ? 'Blokkeer GRP_TXT-kanaal.' : 'Block a GRP_TXT channel.'}</td></tr>
+                  <tr><td><code>filter hash &lt;1–3&gt;</code></td><td>{lang === 'de' ? 'Min. Pfad-Hash-Bytes.' : lang === 'nl' ? 'Min. path-hash bytes.' : 'Min path-hash bytes.'}</td></tr>
+                  <tr><td><code>filter malformed on|off</code></td><td>{lang === 'de' ? 'Auf fehlerhaftes UTF-8 scannen.' : lang === 'nl' ? 'Scan op ongeldige UTF-8.' : 'Scan for malformed UTF-8.'}</td></tr>
                 </tbody>
               </table>
-              <p className="help-section-title">{lang === 'nl' ? 'Payload-types' : 'Payload types'}</p>
+              <p className="help-section-title">{lang === 'de' ? 'Payload-Typen' : lang === 'nl' ? 'Payload-types' : 'Payload types'}</p>
               <p>{PAYLOAD_TYPES.map(pt => `${String(pt.index).padStart(2, '0')}=${pt.name}`).join('  ')}</p>
             </div>
           </div>

@@ -343,7 +343,7 @@ export class Dfu {
 
     let bytesSent = 0;
     // Brief stabilization pause before starting data transfer (mirrors Python's implicit
-    // pause at count=0 — it sleeps FLASH_PAGE_WRITE_TIME after the very first packet).
+    // pause at count=0 – it sleeps FLASH_PAGE_WRITE_TIME after the very first packet).
     await sleep(FLASH_PAGE_WRITE_TIME * 1000);
 
     // Send firmware packets

@@ -115,11 +115,11 @@ const ALL_BROKERS = [
   },
 ] as const
 
-// Brokers that publish to DutchMeshCore — used to determine whether receiver brokers should be locked.
+// Brokers that publish to DutchMeshCore – used to determine whether receiver brokers should be locked.
 const DMC_SOURCE_IDS = new Set<string>(['dutch-meshcore-1', 'dutch-meshcore-2'])
 
 // Brokers that already receive a full copy of DutchMeshCore data via the subscriber feed.
-// Publishing to these directly would duplicate every packet — lock them while any DMC source is active.
+// Publishing to these directly would duplicate every packet – lock them while any DMC source is active.
 const DMC_RECEIVER_IDS = new Set<string>(['cornmeister', 'meshwiki'])
 
 // Brokers that may be connected to the DutchMeshCore subscriber in the future.
@@ -154,7 +154,7 @@ const SEPARATOR = [
   ``,
   ``,
   `# ${'─'.repeat(77)}`,
-  `# DutchMeshCore Toolbox — gegenereerde toevoegingen / generated additions`,
+  `# DutchMeshCore Toolbox – gegenereerde toevoegingen / generated additions`,
   `#`,
   `# ⚠  Controleer dit gedeelte zorgvuldig voor je het toepast.`,
   `#    Kopieer dit niet blindelings over je bestaande configuratie heen.`,
@@ -175,17 +175,18 @@ const copy = {
     modeLegacy: 'Oud (.env.local)',
     infoTitle: 'Wat is MCtoMQTT?',
     infoBody: 'MCtoMQTT is een brug-applicatie die MeshCore-apparaten verbindt met MQTT-brokers. Het configuratiebestand bepaalt met welke brokers verbinding wordt gemaakt en hoe authenticatie verloopt.',
+    requiresPacketlog: 'Deze brug werkt alleen in combinatie met de DutchMeshCore PacketLog-firmware, die de pakketdata via de USB-seriële console beschikbaar maakt.',
     beta: 'Gegenereerde configuratie kan onvolledig of onjuist zijn. Controleer altijd de uitvoer voordat je deze toepast op je systeem.',
-    privacyNote: 'Niets verlaat je apparaat — ook geüploade bestanden worden volledig lokaal in je browser verwerkt en nooit verstuurd.',
+    privacyNote: 'Niets verlaat je apparaat – ook geüploade bestanden worden volledig lokaal in je browser verwerkt en nooit verstuurd.',
     importTitle: 'Bestaande configuratie importeren (optioneel)',
-    importHint: '.toml of .env.local bestand — wordt alleen lokaal gelezen, verlaat je apparaat niet.',
+    importHint: '.toml of .env.local bestand – wordt alleen lokaal gelezen, verlaat je apparaat niet.',
     importBtn: 'Bestand kiezen',
     importClear: 'Verwijderen',
     importWarnTitle: 'Controleer voor gebruik',
-    importWarnBody: 'De gegenereerde toevoegingen staan onderaan je originele configuratie. Controleer het gecombineerde resultaat zorgvuldig voordat je het toepast — kopieer dit niet blindelings over je bestaande bestand heen zonder het te controleren.',
+    importWarnBody: 'De gegenereerde toevoegingen staan onderaan je originele configuratie. Controleer het gecombineerde resultaat zorgvuldig voordat je het toepast – kopieer dit niet blindelings over je bestaande bestand heen zonder het te controleren.',
     settingsTitle: 'Instellingen',
     ownerLabel: 'Publieke sleutel eigenaar (64 hex tekens)',
-    ownerHint: 'De publieke sleutel van je MeshCore companion device — 64 hexadecimale tekens.',
+    ownerHint: 'De publieke sleutel van je MeshCore companion device – 64 hexadecimale tekens.',
     ownerInvalid: 'Voer precies 64 hexadecimale tekens in (0–9, a–f / A–F).',
     emailLabel: 'E-mailadres eigenaar (optioneel)',
     emailHint: 'Optioneel e-mailadres van de node-eigenaar.',
@@ -220,17 +221,18 @@ const copy = {
     modeLegacy: 'Old (.env.local)',
     infoTitle: 'What is MCtoMQTT?',
     infoBody: 'MCtoMQTT is a bridge application that connects MeshCore devices to MQTT brokers. The configuration file defines which brokers to connect to and how authentication is handled.',
+    requiresPacketlog: 'This bridge only works in combination with the DutchMeshCore PacketLog firmware, which exposes the packet data over the USB serial console.',
     beta: 'Generated configuration may be incomplete or incorrect. Always review the output before applying it to your system.',
-    privacyNote: 'Nothing leaves your device — uploaded files are processed entirely in your browser and are never sent anywhere.',
+    privacyNote: 'Nothing leaves your device – uploaded files are processed entirely in your browser and are never sent anywhere.',
     importTitle: 'Import existing config (optional)',
-    importHint: '.toml or .env.local file — read locally only, never leaves your device.',
+    importHint: '.toml or .env.local file – read locally only, never leaves your device.',
     importBtn: 'Choose file',
     importClear: 'Remove',
     importWarnTitle: 'Review before applying',
-    importWarnBody: 'The generated additions are appended below your original config. Review the combined result carefully before applying it — do not blindly copy it over your existing file without checking.',
+    importWarnBody: 'The generated additions are appended below your original config. Review the combined result carefully before applying it – do not blindly copy it over your existing file without checking.',
     settingsTitle: 'Settings',
     ownerLabel: 'Owner public key (64 hex chars)',
-    ownerHint: 'The public key of your MeshCore companion device — 64 hexadecimal characters.',
+    ownerHint: 'The public key of your MeshCore companion device – 64 hexadecimal characters.',
     ownerInvalid: 'Enter exactly 64 hexadecimal characters (0–9, a–f / A–F).',
     emailLabel: 'Owner email address (optional)',
     emailHint: 'Optional e-mail address of the node owner.',
@@ -256,6 +258,52 @@ const copy = {
     copiedAll: 'Configuration copied!',
     download: 'Download',
     footer: 'MCtoMQTT Configuration Generator - 2026',
+  },
+  de: {
+    title: 'MCtoMQTT Konfigurationsgenerator',
+    sub: 'Erzeuge eine MCtoMQTT-Konfigurationsdatei für die DutchMeshCore-Collectors.',
+    modeLabel: 'Welche Version verwendest du?',
+    modeToml: 'Neu (TOML)',
+    modeLegacy: 'Alt (.env.local)',
+    infoTitle: 'Was ist MCtoMQTT?',
+    infoBody: 'MCtoMQTT ist eine Bridge-Anwendung, die MeshCore-Geräte mit MQTT-Brokern verbindet. Die Konfigurationsdatei legt fest, mit welchen Brokern eine Verbindung hergestellt wird und wie die Authentifizierung erfolgt.',
+    requiresPacketlog: 'Diese Bridge funktioniert nur in Kombination mit der DutchMeshCore PacketLog-Firmware, die die Paketdaten über die USB-serielle Konsole bereitstellt.',
+    beta: 'Die erzeugte Konfiguration kann unvollständig oder fehlerhaft sein. Überprüfe die Ausgabe immer, bevor du sie auf deinem System anwendest.',
+    privacyNote: 'Nichts verlässt dein Gerät – auch hochgeladene Dateien werden vollständig lokal in deinem Browser verarbeitet und niemals versendet.',
+    importTitle: 'Bestehende Konfiguration importieren (optional)',
+    importHint: '.toml- oder .env.local-Datei – wird nur lokal gelesen und verlässt dein Gerät nicht.',
+    importBtn: 'Datei wählen',
+    importClear: 'Entfernen',
+    importWarnTitle: 'Vor dem Anwenden prüfen',
+    importWarnBody: 'Die erzeugten Ergänzungen werden unter deiner ursprünglichen Konfiguration angehängt. Überprüfe das kombinierte Ergebnis sorgfältig, bevor du es anwendest – kopiere es nicht blindlings über deine bestehende Datei, ohne es zu prüfen.',
+    settingsTitle: 'Einstellungen',
+    ownerLabel: 'Öffentlicher Schlüssel des Eigentümers (64 Hex-Zeichen)',
+    ownerHint: 'Der öffentliche Schlüssel deines MeshCore-Companion-Geräts – 64 hexadezimale Zeichen.',
+    ownerInvalid: 'Gib genau 64 hexadezimale Zeichen ein (0–9, a–f / A–F).',
+    emailLabel: 'E-Mail-Adresse des Eigentümers (optional)',
+    emailHint: 'Optionale E-Mail-Adresse des Knoten-Eigentümers.',
+    iataLabel: 'IATA-Flughafencode',
+    iataPick: 'Flughafen wählen',
+    iataOther: 'Andere',
+    iataCustom: 'Eigener IATA-Code',
+    iataHint: 'Standortcode für deinen Knoten, z. B. RTM für Rotterdam.',
+    serialLabel: 'Serielle Ports (optional)',
+    serialHint: 'Kommagetrennte Liste serieller Ports, z. B. /dev/ttyUSB0. Für automatische Erkennung leer lassen.',
+    brokersTitle: 'Broker',
+    brokerEnabled: 'Aktiviert',
+    authPassword: 'Passwort (fest)',
+    blockedBadge: 'Empfängt DMC-Daten',
+    blockedHint: 'Diese Plattform empfängt bereits Daten über den DutchMeshCore-Subscriber. Ein direktes Hinzufügen würde jedes Paket duplizieren.',
+    pendingBadge: 'DMC-Verbindung ausstehend',
+    pendingHint: 'Diese Plattform wird möglicherweise bald mit DutchMeshCore verbunden. Überprüfe die Connected-Brokers-Seite auf Updates.',
+    outputTitleToml: 'Erzeugte Konfiguration (MCtoMQTT.toml)',
+    outputTitleLegacy: 'Erzeugte Konfiguration (.env.local)',
+    outputTitleMergedToml: 'Kombinierte Konfiguration (MCtoMQTT.toml)',
+    outputTitleMergedLegacy: 'Kombinierte Konfiguration (.env.local)',
+    copyAll: 'Alles kopieren',
+    copiedAll: 'Konfiguration kopiert!',
+    download: 'Herunterladen',
+    footer: 'MCtoMQTT Konfigurationsgenerator - 2026',
   },
 }
 
@@ -477,6 +525,8 @@ export default function MctoMqttPage() {
         <h1 className="page-title">{c.title}</h1>
         <p className="page-sub">{c.sub}</p>
 
+        <p className="info-banner warn">{c.requiresPacketlog}</p>
+
         <div className="mcmqtt-version-select">
           <span className="mcmqtt-version-label">{c.modeLabel}</span>
           <div className="mcmqtt-mode-toggle">
@@ -497,7 +547,7 @@ export default function MctoMqttPage() {
 
         <div className="beta-banner">
           <span className="beta-banner-icon">⚠</span>
-          <span className="beta-banner-text"><strong>Beta — </strong>{c.beta}</span>
+          <span className="beta-banner-text"><strong>Beta – </strong>{c.beta}</span>
         </div>
 
         <details className="info-panel" open>
@@ -595,7 +645,7 @@ export default function MctoMqttPage() {
             >
               <option value="">{c.iataPick}</option>
               {AIRPORTS.map(([code, name]) => (
-                <option key={code} value={code}>{code} — {name}</option>
+                <option key={code} value={code}>{code} – {name}</option>
               ))}
               <option value="other">{c.iataOther}</option>
             </select>

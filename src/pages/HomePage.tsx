@@ -62,7 +62,8 @@ const copy = {
     radioAdvert: 'Advert interval',
     radioAdvertValue: '50 uur minimum (flood adverts)',
     radioFirmware: 'Firmware',
-    radioFirmwareValue: 'v1.17 aanbevolen (1.15 minimum)',
+    radioFirmwareValue: 'v1.17.1 aanbevolen (1.15 minimum)',
+    radioNodeSettings: 'Node-instellingen',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
@@ -132,7 +133,8 @@ const copy = {
     radioAdvert: 'Advert interval',
     radioAdvertValue: '50 hours minimum (flood adverts)',
     radioFirmware: 'Firmware',
-    radioFirmwareValue: 'v1.17 recommended (1.15 minimum)',
+    radioFirmwareValue: 'v1.17.1 recommended (1.15 minimum)',
+    radioNodeSettings: 'Node Settings',
     server: 'Server',
     protocol: 'Protocol',
     tls: 'TLS',
@@ -144,6 +146,77 @@ const copy = {
     copy: 'Copy',
     useAsBroker: 'Use as custom broker',
     footer: 'Community tools for MeshCore NL - 2026',
+  },
+  de: {
+    hero: 'Tools für das niederländische MeshCore-Netzwerk.',
+    heroSub: 'Wähle, was du tun möchtest. Die technischen Seiten bleiben erhalten, aber die Startseite führt dich schneller zum passenden Tool.',
+    startTitle: 'Neu hier?',
+    startBody: 'DutchMeshCore hilft dir, Kanäle zu finden, Knoten zu konfigurieren, Firmware zu flashen und Community-Projekte zu entdecken.',
+    startCta: 'Loslegen',
+    primaryChannels: 'Kanäle ansehen',
+    primaryMqtt: 'MQTT einrichten',
+    primaryFlash: 'Firmware flashen',
+    tools: 'Wähle deine Aufgabe',
+    toolBrowser: 'Kanäle finden',
+    toolBrowserMeta: 'Channel Browser',
+    browserDesc: 'Kanäle suchen, Schlüssel kopieren und Listen für MeshCore NL exportieren.',
+    toolMqtt: 'MQTT-Befehle erstellen',
+    toolMqttMeta: 'MQTT CLI Setup',
+    mqttDesc: 'Broker-Daten eingeben und fertige CLI-Befehle für deinen Knoten erhalten.',
+    toolToml: 'Bridge-Konfiguration erstellen',
+    toolTomlMeta: 'MCtoMQTT',
+    tomlDesc: 'Erzeuge eine TOML- oder Legacy-Konfiguration für eine MCtoMQTT bridge, Home Assistant und andere MQTT-Integrationen.',
+    toolFlasher: 'Gerät flashen',
+    toolFlasherMeta: 'Flasher',
+    flasherDesc: 'Firmware direkt aus dem Browser auf unterstützte MeshCore-Geräte flashen.',
+    toolUsb: 'Repeater einrichten',
+    toolUsbMeta: 'USB Config',
+    usbDesc: 'Konfiguriere einen repeater oder room-server über USB-Seriell.',
+    toolKeygen: 'Schlüssel generieren',
+    toolKeygenMeta: 'MC-Keygen',
+    keygenDesc: 'Erstelle ein Vanity-Ed25519-Schlüsselpaar für einen wiedererkennbaren Knoten-Präfix.',
+    toolProjects: 'Community-Projekte ansehen',
+    toolProjectsMeta: 'Community Projects',
+    projectsDesc: 'Sieh dir Apps, Analyzer und Projekte rund um DutchMeshCore-Daten an.',
+    live: 'Live',
+    linksTitle: 'Nützliche Links',
+    linksSub: 'Aktuelle Referenzen für MeshCore NL, Regionsbenennung, Firmware und Community-Tools.',
+    communities: 'MeshCore Nederland Communities',
+    communitiesSub: 'Nützliche MeshCore NL-Communities zum Folgen oder Beitreten.',
+    analyzers: 'MeshCore Analyzers',
+    analyzersSub: 'Dashboards für Live-Netzwerkausgabe und Kanalaktivität auf Basis von DutchMeshCore-Daten.',
+    mqttTitle: 'DutchMeshCore MQTT-Verbindungsinformationen',
+    mqttSub: 'Collector-Server für observer-Daten und Community-Analyzer.',
+    radioTitle: 'NL Radio Settings',
+    radioSub: 'Empfohlene Funkeinstellungen für MeshCore NL.',
+    radioParam: 'Parameter',
+    radioValue: 'Wert',
+    radioPreset: 'Radio preset',
+    radioPresetValue: 'Custom',
+    radioSf: 'Spreading factor',
+    radioSfValue: 'SF7',
+    radioCr: 'Coding rate',
+    radioCrValue: 'CR5 (auf 8 setzen, wenn du auf 5 nichts empfängst)',
+    radioFrequency: 'Frequenz',
+    radioFrequencyValue: '869.618 MHz',
+    radioBandwidth: 'Bandbreite',
+    radioBandwidthValue: '62.5 kHz',
+    radioAdvert: 'Advert interval',
+    radioAdvertValue: '50 Stunden Minimum (flood adverts)',
+    radioFirmware: 'Firmware',
+    radioFirmwareValue: 'v1.17.1 empfohlen (1.15 Minimum)',
+    radioNodeSettings: 'Node-Einstellungen',
+    server: 'Server',
+    protocol: 'Protokoll',
+    tls: 'TLS',
+    audience: 'Audience',
+    auth: 'Authentifizierung',
+    topicFormat: 'Topic-Format',
+    collector: 'Collector',
+    copied: 'Kopiert!',
+    copy: 'Kopieren',
+    useAsBroker: 'Als benutzerdefinierten broker verwenden',
+    footer: 'Community-Tools für MeshCore NL - 2026',
   },
 }
 
@@ -293,6 +366,9 @@ export default function HomePage() {
                   <tr><td>{c.radioFirmware}</td><td><code>{c.radioFirmwareValue}</code></td></tr>
                 </tbody>
               </table>
+              <div className="quick-links">
+                <a className="quick-link" href="https://settings.dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">{c.radioNodeSettings} ↗</a>
+              </div>
             </div>
           </div>
         </details>
@@ -456,7 +532,7 @@ export default function HomePage() {
                 <a className="quick-link" href="https://meshwiki.nl/wiki/Lijst_van_regio%27s" target="_blank" rel="noopener noreferrer">Scope / Region Guide</a>
                 <a className="quick-link" href="https://flasher.meshcore.io/" target="_blank" rel="noopener noreferrer">MeshCore Flasher</a>
                 <a className="quick-link" href="https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox" target="_blank" rel="noopener noreferrer">Toolbox Repo</a>
-                <a className="quick-link" href="https://github.com/Dutch-MeshCore/Dutch-MeshCore-MQTT" target="_blank" rel="noopener noreferrer">Firmware Repo</a>
+                <a className="quick-link" href="https://github.com/Dutch-MeshCore/MeshCore" target="_blank" rel="noopener noreferrer">Firmware Repo</a>
               </div>
             </div>
 
@@ -465,7 +541,7 @@ export default function HomePage() {
               <p>{c.communitiesSub}</p>
               <div className="quick-links">
                 <a className="quick-link" href="https://meshwiki.nl" target="_blank" rel="noopener noreferrer">MeshWiki</a>
-                <a className="quick-link" href="https://www.localmesh.nl/" target="_blank" rel="noopener noreferrer">Localmesh</a>
+                <a className="quick-link" href="https://mc-spamdetector.nl/" target="_blank" rel="noopener noreferrer">MC Spam Detector</a>
                 <a className="quick-link" href="https://discord.dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">Discord</a>
               </div>
             </div>
@@ -485,7 +561,7 @@ export default function HomePage() {
 
         <footer className="site-footer">
           <a href="https://github.com/Dutch-MeshCore" target="_blank" rel="noopener noreferrer">Dutch-MeshCore</a>
-          {' '}— {c.footer}
+          {' '}– {c.footer}
         </footer>
       </main>
     </>

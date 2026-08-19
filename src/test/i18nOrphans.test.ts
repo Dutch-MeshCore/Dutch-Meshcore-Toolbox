@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { STRINGS } from '../i18n'
 
-describe('i18n — no orphaned editor/howto keys', () => {
+describe('i18n – no orphaned editor/howto keys', () => {
   it('does not contain nav_editor key', () => {
     expect('nav_editor' in STRINGS.en).toBe(false)
     expect('nav_editor' in STRINGS.nl).toBe(false)

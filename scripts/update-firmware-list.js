@@ -57,7 +57,7 @@ const DMC_ROLE_DEFS = [
   { separator: '_roomserver_mqtt-',           role: 'dutchmeshcore_roomserver_mqtt', icon: '🏠', title: 'DutchMeshCore Roomserver MQTT', subTitle: 'Room Server + MQTT'            },
 ]
 
-// Non-MQTT repeater firmware (separate GitHub Releases source — see buildDmcRepeaterConfig)
+// Non-MQTT repeater firmware (separate GitHub Releases source – see buildDmcRepeaterConfig)
 const DMC_REPEATER_ROLE = { separator: '_repeater-', role: 'dutchmeshcore_repeater', icon: '📡', title: 'DutchMeshCore Repeater', subTitle: 'Repeater (non-MQTT)' }
 
 // Repeater firmware with packet logging enabled (dmc-repeater-packetlog-* releases)
@@ -74,7 +74,7 @@ const ALL_ROLE_DEFS = [
 // MQTT and non-MQTT repeater firmware render as two separate maker groups.
 const DMC_MQTT_MAKER_META = {
   name:    'DutchMeshCore-MQTT-Firmware',
-  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases/tag/repeater-mqtt-v1.16.0',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=mqtt',
   website: 'https://dutchmeshcore.nl',
 }
 
@@ -259,14 +259,14 @@ function buildConfig(files, makerKey, makerMeta) {
         for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
           if (entry.type === 'esp32') {
             if (entry.appUrl) {
-              version[`${versionKey} — App update`] = {
-                files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update — keeps bootloader, partition table & config' }],
+              version[`${versionKey} – App update`] = {
+                files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update – keeps bootloader, partition table & config' }],
                 notes: 'Updates firmware only. Bootloader and saved settings are preserved.',
               }
             }
             if (entry.mergedUrl) {
-              version[`${versionKey} — Full flash`] = {
-                files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash — merged binary (bootloader + partition + app)' }],
+              version[`${versionKey} – Full flash`] = {
+                files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash – merged binary (bootloader + partition + app)' }],
                 notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
               }
             }
@@ -391,7 +391,7 @@ async function buildMeshcomodConfig() {
   })
 }
 
-// MQTT observer firmware — GitHub Releases on the fork whose tag contains `mqtt`
+// MQTT observer firmware – GitHub Releases on the fork whose tag contains `mqtt`
 // (e.g. `repeater-mqtt-*`, `dmc-room-server-mqtt-*`). The `dmc-repeater-*` (non-MQTT)
 // releases are excluded by the tag filter. Asset filenames carry the version, so the
 // existing `_repeater_observer_mqtt-` / `_room_server_observer_mqtt-` parser is reused.
@@ -412,7 +412,7 @@ async function buildDmcFirmwareConfig() {
   return buildConfig(files, 'dutchmeshcore', DMC_MQTT_MAKER_META)
 }
 
-// Non-MQTT repeater firmware — GitHub Releases tagged `dmc-repeater-*` on the fork.
+// Non-MQTT repeater firmware – GitHub Releases tagged `dmc-repeater-*` on the fork.
 // Filenames carry no semver, so the version comes from the release tag. Rendered as
 // its own maker group (separate from the MQTT firmware).
 async function buildDmcRepeaterConfig() {
@@ -440,7 +440,7 @@ async function buildDmcRepeaterConfig() {
   return buildConfig(files, 'dutchmeshcore_repeater', DMC_REPEATER_MAKER_META)
 }
 
-// PacketLog repeater firmware — GitHub Releases tagged `dmc-repeater-packetlog-*` on
+// PacketLog repeater firmware – GitHub Releases tagged `dmc-repeater-packetlog-*` on
 // the fork. Same asset shape as the plain repeater firmware (`{Device}_repeater-…`),
 // but built with MESH_PACKET_LOGGING enabled and shown as its own maker group.
 async function buildDmcPacketlogConfig() {
@@ -469,7 +469,7 @@ async function buildDmcPacketlogConfig() {
 async function main() {
   console.log('Building community firmware list…')
   if (!GH_TOKEN) {
-    console.warn('GITHUB_TOKEN not set — using unauthenticated API (60 req/hr limit)\n')
+    console.warn('GITHUB_TOKEN not set – using unauthenticated API (60 req/hr limit)\n')
   }
 
   const results = await Promise.allSettled([
@@ -487,7 +487,7 @@ async function main() {
   }
 
   if (!configs.length) {
-    console.error('All sources failed — nothing to write.')
+    console.error('All sources failed – nothing to write.')
     process.exit(1)
   }
 
@@ -526,7 +526,7 @@ async function main() {
       console.log(`✓ Wrote ${DMC_OUT}`)
       console.log(`  ${dmcConfig.device.length} devices`)
     } else {
-      console.warn('DMC: no devices parsed — skipping write')
+      console.warn('DMC: no devices parsed – skipping write')
     }
   } catch (err) {
     console.error('DMC build failed:', err.message)

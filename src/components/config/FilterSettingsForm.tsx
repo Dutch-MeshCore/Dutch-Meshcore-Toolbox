@@ -25,7 +25,7 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
   function addChannel() {
     const name = channelInput.trim()
     // The device splits CLI args on spaces, so a name with whitespace would be
-    // silently truncated on-device — reject it here.
+    // silently truncated on-device – reject it here.
     if (!name || /\s/.test(name) || value.channels.length >= 16) return
     if (!value.channels.includes(name)) patch(s => { s.channels.push(name) })
     setChannelInput('')
@@ -96,7 +96,7 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
         aria-expanded={advancedOpen}
         onClick={() => setAdvancedOpen(o => !o)}
       >
-        {advancedOpen ? '▲' : '▼'} Advanced — per payload type
+        {advancedOpen ? '▲' : '▼'} Advanced – per payload type
       </button>
 
       {advancedOpen && (

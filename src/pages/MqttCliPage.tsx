@@ -11,7 +11,7 @@ type AuthMode = 'none' | 'jwt' | 'token' | 'pass'
 interface CustomConfig {
   server: string
   port: string
-  /** 'token' is intentionally excluded — token auth is only for named presets (e.g. MeshRank), not custom brokers */
+  /** 'token' is intentionally excluded – token auth is only for named presets (e.g. MeshRank), not custom brokers */
   authMode: 'none' | 'jwt' | 'pass'
   audience: string
   username: string
@@ -114,7 +114,7 @@ const copy = {
     customPassword: 'Wachtwoord',
     customTopic: 'Aangepast topic (optioneel)',
     customTopicHint: 'Placeholders: {iata} {device} {token} {type}',
-    noFreeSlot: 'Geen vrij slot — kies er handmatig een',
+    noFreeSlot: 'Geen vrij slot – kies er handmatig een',
     brokerApplied: 'Toegepast op slot {n}',
   },
   en: {
@@ -167,8 +167,61 @@ const copy = {
     customPassword: 'Password',
     customTopic: 'Custom topic (optional)',
     customTopicHint: 'Placeholders: {iata} {device} {token} {type}',
-    noFreeSlot: 'No free slot — select one manually',
+    noFreeSlot: 'No free slot – select one manually',
     brokerApplied: 'Applied to slot {n}',
+  },
+  de: {
+    title: 'MeshCore MQTT-Einrichtung',
+    sub: 'Konfiguriere MQTT-Slots und erhalte fertige CLI-Befehle zum Einfügen für deinen Knoten.',
+    bannerTitle: 'DutchMeshCore Firmware',
+    bannerSub: 'Dieses Tool ist auf die DutchMeshCore MQTT-Firmware und das niederländische Meshnetzwerk abgestimmt.',
+    stepsTitle: 'So benutzt du dieses Tool',
+    steps: 'Wähle einen IATA-Flughafencode, wähle die MQTT-Presets, die du aktivieren möchtest, trage Tokens ein, wo nötig, und kopiere die generierten Befehle in die MeshCore CLI.',
+    defaultsTitle: 'Standard-Slots',
+    defaults: 'DutchMeshCore Firmware verwendet standardmäßig Slot 1 für dutchmeshcore-1 und Slot 2 für dutchmeshcore-2. Meistens musst du nur deinen IATA-Code festlegen.',
+    beta: 'Generierte Befehle können unvollständig oder falsch sein. Überprüfe die Ausgabe immer, bevor du sie auf deinen Knoten anwendest.',
+    privacy: 'Diese Seite speichert und sendet nichts. Alles wird nur lokal verwendet, um Befehle zu generieren.',
+    global: 'Globale Einstellungen',
+    airport: 'IATA-Flughafencode',
+    pick: 'Flughafen auswählen',
+    other: 'Andere',
+    custom: 'Benutzerdefinierter IATA-Code',
+    wifiSsid: 'WiFi-Netzwerkname (SSID)',
+    wifiSsidHint: 'Name des WiFi-Netzwerks, mit dem sich dein Knoten verbindet.',
+    wifiPassword: 'WiFi-Passwort',
+    wifiPasswordHint: 'Passwort für das WiFi-Netzwerk.',
+    wifiSection: 'WiFi-Einstellungen',
+    email: 'E-Mail-Adresse des Eigentümers',
+    emailHint: 'Optional, zur Eigentumsprüfung oder für observer-Benachrichtigungen.',
+    slots: 'MQTT-Slots (1-6)',
+    slotWarningTitle: 'Experimentelle Slots 3-6',
+    slotWarning: 'Slots 3 bis 6 funktionieren nur auf Modulen mit PSRAM, wenn du deine eigene Firmware mit -D MAX_MQTT_BROKERS=6 baust. Diese Unterstützung ist hochgradig experimentell.',
+    output: 'Generierte Befehle',
+    copyAll: 'Alle kopieren',
+    copy: 'Kopieren',
+    copied: 'Kopiert!',
+    empty: 'Wähle ein Preset, um Befehle zu generieren.',
+    token: 'Token',
+    tokenHint: 'Hol dir deinen MeshRank-Token unter',
+    copiedAll: 'Alle Befehle kopiert!',
+    nothing: 'Noch nichts zum Kopieren.',
+    help: 'Befehlsreferenz',
+    footer: 'MeshCore MQTT-Einrichtungstool - 2026',
+    customServer: 'Server-URL',
+    customServerHint: 'Vollständige broker-URL inklusive Pfad, z. B. wss://my-broker.example.com:443/mqtt',
+    customPort: 'Port',
+    customAuth: 'Authentifizierung',
+    authNone: 'Keine',
+    authJwt: 'JWT',
+    authPass: 'Benutzer / Passwort',
+    customAudience: 'Audience',
+    customAudienceHint: 'JWT-Audience, meist der Hostname des broker',
+    customUsername: 'Benutzername',
+    customPassword: 'Passwort',
+    customTopic: 'Benutzerdefiniertes Topic (optional)',
+    customTopicHint: 'Platzhalter: {iata} {device} {token} {type}',
+    noFreeSlot: 'Kein freier Slot – wähle manuell einen aus',
+    brokerApplied: 'Auf Slot {n} angewendet',
   },
 }
 
@@ -218,7 +271,7 @@ export default function MqttCliPage() {
     updateCustomConfig(firstFree, prefill)
     toast(c.brokerApplied.replace('{n}', String(firstFree + 1)), 'ok')
     window.history.replaceState({}, '')
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps — intentionally runs once on mount
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps – intentionally runs once on mount
 
   const presetMap = useMemo(() => Object.fromEntries(PRESETS.map(p => [p.id, p])) as Record<string, Preset>, [])
   const iata = iataSelect === 'other' ? normalizeIata(iataCustom) : iataSelect
@@ -236,12 +289,12 @@ export default function MqttCliPage() {
     }
 
     if (active.some(s => s.preset.needsIata)) {
-      lines.push({ type: 'comment', text: lang === 'nl' ? 'Stel je IATA-code in' : 'Set your IATA code' })
+      lines.push({ type: 'comment', text: lang === 'de' ? 'IATA-Code festlegen' : lang === 'nl' ? 'Stel je IATA-code in' : 'Set your IATA code' })
       lines.push({ type: 'cmd', text: `set mqtt.iata ${iata || 'XXX'}` })
     }
 
     if (email.trim()) {
-      lines.push({ type: 'comment', text: lang === 'nl' ? 'Stel je e-mailadres in' : 'Set your email address' })
+      lines.push({ type: 'comment', text: lang === 'de' ? 'E-Mail-Adresse festlegen' : lang === 'nl' ? 'Stel je e-mailadres in' : 'Set your email address' })
       lines.push({ type: 'cmd', text: `set mqtt.email ${email.trim()}` })
     }
 
@@ -265,7 +318,7 @@ export default function MqttCliPage() {
       }
     }
 
-    lines.push({ type: 'comment', text: lang === 'nl' ? 'Herstart om instellingen toe te passen' : 'Reboot to apply settings' })
+    lines.push({ type: 'comment', text: lang === 'de' ? 'Neustart, um Einstellungen zu übernehmen' : lang === 'nl' ? 'Herstart om instellingen toe te passen' : 'Reboot to apply settings' })
     lines.push({ type: 'cmd', text: 'reboot' })
     return lines
   }, [c.wifiSection, customConfigs, email, iata, lang, presetMap, slots, tokens, wifiSsid, wifiPassword])
@@ -324,7 +377,7 @@ export default function MqttCliPage() {
 
         <div className="beta-banner">
           <span className="beta-banner-icon">⚠</span>
-          <span className="beta-banner-text"><strong>Beta — </strong>{c.beta}</span>
+          <span className="beta-banner-text"><strong>Beta – </strong>{c.beta}</span>
         </div>
 
         <div className="header">
@@ -349,7 +402,7 @@ export default function MqttCliPage() {
                 <a className="quick-link" href="https://www.iata.org/en/publications/directories/code-search/" target="_blank" rel="noopener noreferrer">IATA</a>
                 <a className="quick-link" href="https://meshrank.net" target="_blank" rel="noopener noreferrer">MeshRank</a>
                 <a className="quick-link" href="https://flasher.meshcore.io/" target="_blank" rel="noopener noreferrer">MeshCore Flasher</a>
-                <a className="quick-link" href="https://github.com/Dutch-MeshCore/Dutch-MeshCore-MQTT" target="_blank" rel="noopener noreferrer">Firmware Repo</a>
+                <a className="quick-link" href="https://github.com/Dutch-MeshCore/MeshCore" target="_blank" rel="noopener noreferrer">Firmware Repo</a>
               </div>
             </div>
           </div>
@@ -560,8 +613,8 @@ export default function MqttCliPage() {
 
         <footer className="site-footer">
           <a href="https://dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">DutchMeshCore.nl</a>
-          {' '}— <a href="https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox" target="_blank" rel="noopener noreferrer">Toolbox Repo</a>
-          {' '}— {c.footer}
+          {' '}– <a href="https://github.com/Dutch-MeshCore/Dutch-Meshcore-Toolbox" target="_blank" rel="noopener noreferrer">Toolbox Repo</a>
+          {' '}– {c.footer}
         </footer>
       </main>
 
@@ -573,55 +626,55 @@ export default function MqttCliPage() {
               <button className="help-close-btn" onClick={() => setHelpOpen(false)} aria-label="Close">×</button>
             </div>
             <div className="help-body">
-              <p className="help-section-title">{lang === 'nl' ? 'Algemeen MQTT' : 'Global MQTT'}</p>
+              <p className="help-section-title">{lang === 'de' ? 'Globales MQTT' : lang === 'nl' ? 'Algemeen MQTT' : 'Global MQTT'}</p>
               <table className="help-cmd-table">
                 <tbody>
-                  <tr><td><code>set mqtt.iata &lt;code&gt;</code></td><td>{lang === 'nl' ? 'IATA-luchthavencode (automatisch hoofdletters).' : 'IATA airport code (auto-uppercased).'}</td></tr>
-                  <tr><td><code>set mqtt.email &lt;email&gt;</code></td><td>{lang === 'nl' ? 'E-mailadres eigenaar.' : 'Owner email address.'}</td></tr>
-                  <tr><td><code>set mqtt.origin &lt;name&gt;</code></td><td>{lang === 'nl' ? 'Overschrijft de origin-naam.' : 'Overrides the origin name.'}</td></tr>
-                  <tr><td><code>set mqtt.status &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Schakel statuspublicatie in/uit.' : 'Enable/disable status publishing.'}</td></tr>
-                  <tr><td><code>set mqtt.packets &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Schakel pakket-uplinking in/uit.' : 'Enable/disable packet uplinking.'}</td></tr>
-                  <tr><td><code>set mqtt.raw &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Schakel raw frame-uplinking in/uit.' : 'Enable/disable raw frame uplinking.'}</td></tr>
-                  <tr><td><code>set mqtt.rx &lt;on|off&gt;</code></td><td>{lang === 'nl' ? 'Uplink ontvangen (RX) pakketten.' : 'Uplink received (RX) packets.'}</td></tr>
-                  <tr><td><code>set mqtt.tx &lt;on|off|advert&gt;</code></td><td>{lang === 'nl' ? 'Uplink verzonden (TX) pakketten.' : 'Uplink transmitted (TX) packets.'}</td></tr>
-                  <tr><td><code>set mqtt.interval &lt;minutes&gt;</code></td><td>{lang === 'nl' ? 'Status publicatie-interval (1–60 min).' : 'Status publish interval (1–60 min).'}</td></tr>
+                  <tr><td><code>set mqtt.iata &lt;code&gt;</code></td><td>{lang === 'de' ? 'IATA-Flughafencode (automatisch Großbuchstaben).' : lang === 'nl' ? 'IATA-luchthavencode (automatisch hoofdletters).' : 'IATA airport code (auto-uppercased).'}</td></tr>
+                  <tr><td><code>set mqtt.email &lt;email&gt;</code></td><td>{lang === 'de' ? 'E-Mail-Adresse des Eigentümers.' : lang === 'nl' ? 'E-mailadres eigenaar.' : 'Owner email address.'}</td></tr>
+                  <tr><td><code>set mqtt.origin &lt;name&gt;</code></td><td>{lang === 'de' ? 'Überschreibt den origin-Namen.' : lang === 'nl' ? 'Overschrijft de origin-naam.' : 'Overrides the origin name.'}</td></tr>
+                  <tr><td><code>set mqtt.status &lt;on|off&gt;</code></td><td>{lang === 'de' ? 'Statusveröffentlichung aktivieren/deaktivieren.' : lang === 'nl' ? 'Schakel statuspublicatie in/uit.' : 'Enable/disable status publishing.'}</td></tr>
+                  <tr><td><code>set mqtt.packets &lt;on|off&gt;</code></td><td>{lang === 'de' ? 'Paket-Uplinking aktivieren/deaktivieren.' : lang === 'nl' ? 'Schakel pakket-uplinking in/uit.' : 'Enable/disable packet uplinking.'}</td></tr>
+                  <tr><td><code>set mqtt.raw &lt;on|off&gt;</code></td><td>{lang === 'de' ? 'Raw-Frame-Uplinking aktivieren/deaktivieren.' : lang === 'nl' ? 'Schakel raw frame-uplinking in/uit.' : 'Enable/disable raw frame uplinking.'}</td></tr>
+                  <tr><td><code>set mqtt.rx &lt;on|off&gt;</code></td><td>{lang === 'de' ? 'Empfangene (RX) Pakete per Uplink senden.' : lang === 'nl' ? 'Uplink ontvangen (RX) pakketten.' : 'Uplink received (RX) packets.'}</td></tr>
+                  <tr><td><code>set mqtt.tx &lt;on|off|advert&gt;</code></td><td>{lang === 'de' ? 'Gesendete (TX) Pakete per Uplink senden.' : lang === 'nl' ? 'Uplink verzonden (TX) pakketten.' : 'Uplink transmitted (TX) packets.'}</td></tr>
+                  <tr><td><code>set mqtt.interval &lt;minutes&gt;</code></td><td>{lang === 'de' ? 'Intervall der Statusveröffentlichung (1–60 min).' : lang === 'nl' ? 'Status publicatie-interval (1–60 min).' : 'Status publish interval (1–60 min).'}</td></tr>
                 </tbody>
               </table>
 
-              <p className="help-section-title">{lang === 'nl' ? 'Per slot' : 'Per slot'}</p>
+              <p className="help-section-title">{lang === 'de' ? 'Pro Slot' : lang === 'nl' ? 'Per slot' : 'Per slot'}</p>
               <table className="help-cmd-table">
                 <tbody>
-                  <tr><td><code>set mqtt&lt;N&gt;.preset &lt;name&gt;</code></td><td>{lang === 'nl' ? 'Kiest de preset voor slot N.' : 'Selects the preset for slot N.'}</td></tr>
-                  <tr><td><code>set mqtt&lt;N&gt;.token &lt;token&gt;</code></td><td>{lang === 'nl' ? 'Per-slot token (bijv. MeshRank).' : 'Per-slot token (e.g. MeshRank).'}</td></tr>
-                  <tr><td><code>get mqtt.presets</code></td><td>{lang === 'nl' ? 'Toont alle beschikbare presets.' : 'Lists all available presets.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.preset &lt;name&gt;</code></td><td>{lang === 'de' ? 'Wählt das preset für Slot N.' : lang === 'nl' ? 'Kiest de preset voor slot N.' : 'Selects the preset for slot N.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.token &lt;token&gt;</code></td><td>{lang === 'de' ? 'Token pro Slot (z. B. MeshRank).' : lang === 'nl' ? 'Per-slot token (bijv. MeshRank).' : 'Per-slot token (e.g. MeshRank).'}</td></tr>
+                  <tr><td><code>get mqtt.presets</code></td><td>{lang === 'de' ? 'Listet alle verfügbaren presets auf.' : lang === 'nl' ? 'Toont alle beschikbare presets.' : 'Lists all available presets.'}</td></tr>
                 </tbody>
               </table>
 
-              <p className="help-section-title">{lang === 'nl' ? 'Aangepast slot (preset: custom)' : 'Custom slot (preset: custom)'}</p>
+              <p className="help-section-title">{lang === 'de' ? 'Benutzerdefinierter Slot (preset: custom)' : lang === 'nl' ? 'Aangepast slot (preset: custom)' : 'Custom slot (preset: custom)'}</p>
               <table className="help-cmd-table">
                 <tbody>
-                  <tr><td><code>set mqtt&lt;N&gt;.server &lt;url&gt;</code></td><td>{lang === 'nl' ? 'Broker-URL.' : 'Broker URL.'}</td></tr>
-                  <tr><td><code>set mqtt&lt;N&gt;.port &lt;port&gt;</code></td><td>{lang === 'nl' ? 'Broker-poort (1–65535).' : 'Broker port (1–65535).'}</td></tr>
-                  <tr><td><code>set mqtt&lt;N&gt;.audience &lt;host&gt;</code></td><td>{lang === 'nl' ? 'JWT-audience (Ed25519-authenticatie). Leegmaken → gebruiker/wachtwoord.' : 'JWT audience (Ed25519 auth). Clear to revert to user/pass.'}</td></tr>
-                  <tr><td><code>set mqtt&lt;N&gt;.username &lt;user&gt;</code></td><td>{lang === 'nl' ? 'Gebruikersnaam (gebruiker/wachtwoord).' : 'Username (user/pass auth).'}</td></tr>
-                  <tr><td><code>set mqtt&lt;N&gt;.password &lt;pass&gt;</code></td><td>{lang === 'nl' ? 'Wachtwoord (gebruiker/wachtwoord).' : 'Password (user/pass auth).'}</td></tr>
-                  <tr><td><code>set mqtt&lt;N&gt;.topic &lt;template&gt;</code></td><td>{lang === 'nl' ? 'Aangepast topic-template. Placeholders: {iata} {device} {token} {type}.' : 'Custom topic template. Placeholders: {iata} {device} {token} {type}.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.server &lt;url&gt;</code></td><td>{lang === 'de' ? 'Broker-URL.' : lang === 'nl' ? 'Broker-URL.' : 'Broker URL.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.port &lt;port&gt;</code></td><td>{lang === 'de' ? 'Broker-Port (1–65535).' : lang === 'nl' ? 'Broker-poort (1–65535).' : 'Broker port (1–65535).'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.audience &lt;host&gt;</code></td><td>{lang === 'de' ? 'JWT-Audience (Ed25519-Authentifizierung). Leeren → Benutzer/Passwort.' : lang === 'nl' ? 'JWT-audience (Ed25519-authenticatie). Leegmaken → gebruiker/wachtwoord.' : 'JWT audience (Ed25519 auth). Clear to revert to user/pass.'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.username &lt;user&gt;</code></td><td>{lang === 'de' ? 'Benutzername (Benutzer/Passwort).' : lang === 'nl' ? 'Gebruikersnaam (gebruiker/wachtwoord).' : 'Username (user/pass auth).'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.password &lt;pass&gt;</code></td><td>{lang === 'de' ? 'Passwort (Benutzer/Passwort).' : lang === 'nl' ? 'Wachtwoord (gebruiker/wachtwoord).' : 'Password (user/pass auth).'}</td></tr>
+                  <tr><td><code>set mqtt&lt;N&gt;.topic &lt;template&gt;</code></td><td>{lang === 'de' ? 'Benutzerdefiniertes Topic-Template. Platzhalter: {iata} {device} {token} {type}.' : lang === 'nl' ? 'Aangepast topic-template. Placeholders: {iata} {device} {token} {type}.' : 'Custom topic template. Placeholders: {iata} {device} {token} {type}.'}</td></tr>
                 </tbody>
               </table>
 
               <p className="help-section-title">WiFi</p>
               <table className="help-cmd-table">
                 <tbody>
-                  <tr><td><code>set wifi.ssid &lt;ssid&gt;</code></td><td>{lang === 'nl' ? 'WiFi-netwerknaam.' : 'WiFi network name.'}</td></tr>
-                  <tr><td><code>set wifi.pwd &lt;password&gt;</code></td><td>{lang === 'nl' ? 'WiFi-wachtwoord.' : 'WiFi password.'}</td></tr>
-                  <tr><td><code>set wifi.powersave &lt;none|min|max&gt;</code></td><td>{lang === 'nl' ? 'WiFi energiebesparing.' : 'WiFi power saving mode.'}</td></tr>
+                  <tr><td><code>set wifi.ssid &lt;ssid&gt;</code></td><td>{lang === 'de' ? 'WiFi-Netzwerkname.' : lang === 'nl' ? 'WiFi-netwerknaam.' : 'WiFi network name.'}</td></tr>
+                  <tr><td><code>set wifi.pwd &lt;password&gt;</code></td><td>{lang === 'de' ? 'WiFi-Passwort.' : lang === 'nl' ? 'WiFi-wachtwoord.' : 'WiFi password.'}</td></tr>
+                  <tr><td><code>set wifi.powersave &lt;none|min|max&gt;</code></td><td>{lang === 'de' ? 'WiFi-Energiesparmodus.' : lang === 'nl' ? 'WiFi energiebesparing.' : 'WiFi power saving mode.'}</td></tr>
                 </tbody>
               </table>
 
-              <p className="help-section-title">{lang === 'nl' ? 'Operationeel' : 'Operational'}</p>
+              <p className="help-section-title">{lang === 'de' ? 'Betrieb' : lang === 'nl' ? 'Operationeel' : 'Operational'}</p>
               <table className="help-cmd-table">
                 <tbody>
-                  <tr><td><code>reboot</code></td><td>{lang === 'nl' ? 'Herstart de node om instellingen toe te passen.' : 'Reboot the node to apply settings.'}</td></tr>
+                  <tr><td><code>reboot</code></td><td>{lang === 'de' ? 'Startet den Knoten neu, um Einstellungen zu übernehmen.' : lang === 'nl' ? 'Herstart de node om instellingen toe te passen.' : 'Reboot the node to apply settings.'}</td></tr>
                 </tbody>
               </table>
             </div>

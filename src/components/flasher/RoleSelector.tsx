@@ -27,7 +27,7 @@ export default function RoleSelector({ device, config, onSelect, onBack }: Props
               <button className="role-btn" onClick={() => onSelect(fw)} title={tooltip}>
                 <span className="role-icon">{icon}</span>
                 <span>
-                  {title}{subTitle ? ` — ${subTitle}` : ''}
+                  {title}{subTitle ? ` – ${subTitle}` : ''}
                   {tooltip && <span className="role-desc">{tooltip}</span>}
                 </span>
               </button>

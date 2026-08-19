@@ -5,7 +5,7 @@
  * `de-bw-str`, `europe`, `hansemesh`. The country is the token before the first
  * `-`; only recognised ISO-style country codes are surfaced (aggregate/community
  * scopes such as `europe`, `dach`, `bremesh` are ignored). Regions are limited to
- * the twelve Dutch provinces — this is the DutchMeshCore toolbox, and mapping every
+ * the twelve Dutch provinces – this is the DutchMeshCore toolbox, and mapping every
  * European sub-region would flood the filter with noise. Unmapped scopes stay
  * visible in the Scopes column regardless.
  */

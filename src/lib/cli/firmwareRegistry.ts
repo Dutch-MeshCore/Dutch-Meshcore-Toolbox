@@ -5,6 +5,7 @@
 
 import type { StringKey } from '../../i18n'
 import { CLI_DESC_NL } from './descriptions.nl'
+import { CLI_DESC_DE } from './descriptions.de'
 
 export type DeviceTypeKey = 'companion' | 'repeater' | 'roomserver' | 'sensor'
 
@@ -310,7 +311,7 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'get mqtt.presets',      category: 'mqtt', deviceTypes: 'all', desc: 'List built-in broker presets (e.g. dutchmeshcore-1, dutchmeshcore-2, meshcore-analyzer-eu).' },
   { cmd: 'get mqtt.config.valid', category: 'mqtt', deviceTypes: 'all', desc: 'Show whether the MQTT config is valid.' },
 
-  // MQTT bridge – per slot (firmware exposes N=1..6; the toolbox drives slots 1-2)
+  // MQTT bridge – per slot (firmware exposes N=1..6; the toolbox drives all six)
   { cmd: 'set mqtt1.preset ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt1.preset ',   desc: 'Slot 1 preset (e.g. dutchmeshcore-1, meshcore-analyzer-eu, custom, none).' },
   { cmd: 'set mqtt1.server ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt1.server ',   desc: 'Slot 1 broker host (custom preset).' },
   { cmd: 'set mqtt1.port ',     category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt1.port ',     desc: 'Slot 1 port (1-65535).' },
@@ -329,12 +330,56 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'set mqtt2.topic ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt2.topic ',    desc: 'Slot 2 topic template (custom preset only).' },
   { cmd: 'set mqtt2.audience ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt2.audience ', desc: 'Slot 2 JWT audience (blank to clear).' },
   { cmd: 'get mqtt2.diag',      category: 'mqtt', deviceTypes: 'all', desc: 'Slot 2 connection diagnostics.' },
+  { cmd: 'set mqtt3.preset ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.preset ',   desc: 'Slot 3 preset (e.g. meshcore-analyzer-eu, custom, none).' },
+  { cmd: 'set mqtt3.server ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.server ',   desc: 'Slot 3 broker host (custom preset).' },
+  { cmd: 'set mqtt3.port ',     category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.port ',     desc: 'Slot 3 port (1-65535).' },
+  { cmd: 'set mqtt3.username ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.username ', desc: 'Slot 3 username.' },
+  { cmd: 'set mqtt3.password ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.password ', desc: 'Slot 3 password.' },
+  { cmd: 'set mqtt3.token ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.token ',    desc: 'Slot 3 JWT token.' },
+  { cmd: 'set mqtt3.topic ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.topic ',    desc: 'Slot 3 topic template (custom preset only).' },
+  { cmd: 'set mqtt3.audience ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt3.audience ', desc: 'Slot 3 JWT audience (blank to clear).' },
+  { cmd: 'get mqtt3.diag',      category: 'mqtt', deviceTypes: 'all', desc: 'Slot 3 connection diagnostics.' },
+  { cmd: 'set mqtt4.preset ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.preset ',   desc: 'Slot 4 preset (e.g. meshcore-analyzer-eu, custom, none).' },
+  { cmd: 'set mqtt4.server ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.server ',   desc: 'Slot 4 broker host (custom preset).' },
+  { cmd: 'set mqtt4.port ',     category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.port ',     desc: 'Slot 4 port (1-65535).' },
+  { cmd: 'set mqtt4.username ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.username ', desc: 'Slot 4 username.' },
+  { cmd: 'set mqtt4.password ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.password ', desc: 'Slot 4 password.' },
+  { cmd: 'set mqtt4.token ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.token ',    desc: 'Slot 4 JWT token.' },
+  { cmd: 'set mqtt4.topic ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.topic ',    desc: 'Slot 4 topic template (custom preset only).' },
+  { cmd: 'set mqtt4.audience ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt4.audience ', desc: 'Slot 4 JWT audience (blank to clear).' },
+  { cmd: 'get mqtt4.diag',      category: 'mqtt', deviceTypes: 'all', desc: 'Slot 4 connection diagnostics.' },
+  { cmd: 'set mqtt5.preset ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.preset ',   desc: 'Slot 5 preset (e.g. meshcore-analyzer-eu, custom, none).' },
+  { cmd: 'set mqtt5.server ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.server ',   desc: 'Slot 5 broker host (custom preset).' },
+  { cmd: 'set mqtt5.port ',     category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.port ',     desc: 'Slot 5 port (1-65535).' },
+  { cmd: 'set mqtt5.username ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.username ', desc: 'Slot 5 username.' },
+  { cmd: 'set mqtt5.password ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.password ', desc: 'Slot 5 password.' },
+  { cmd: 'set mqtt5.token ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.token ',    desc: 'Slot 5 JWT token.' },
+  { cmd: 'set mqtt5.topic ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.topic ',    desc: 'Slot 5 topic template (custom preset only).' },
+  { cmd: 'set mqtt5.audience ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt5.audience ', desc: 'Slot 5 JWT audience (blank to clear).' },
+  { cmd: 'get mqtt5.diag',      category: 'mqtt', deviceTypes: 'all', desc: 'Slot 5 connection diagnostics.' },
+  { cmd: 'set mqtt6.preset ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.preset ',   desc: 'Slot 6 preset (e.g. meshcore-analyzer-eu, custom, none).' },
+  { cmd: 'set mqtt6.server ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.server ',   desc: 'Slot 6 broker host (custom preset).' },
+  { cmd: 'set mqtt6.port ',     category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.port ',     desc: 'Slot 6 port (1-65535).' },
+  { cmd: 'set mqtt6.username ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.username ', desc: 'Slot 6 username.' },
+  { cmd: 'set mqtt6.password ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.password ', desc: 'Slot 6 password.' },
+  { cmd: 'set mqtt6.token ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.token ',    desc: 'Slot 6 JWT token.' },
+  { cmd: 'set mqtt6.topic ',    category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.topic ',    desc: 'Slot 6 topic template (custom preset only).' },
+  { cmd: 'set mqtt6.audience ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.audience ', desc: 'Slot 6 JWT audience (blank to clear).' },
+  { cmd: 'get mqtt6.diag',      category: 'mqtt', deviceTypes: 'all', desc: 'Slot 6 connection diagnostics.' },
 
   // v1.17 per-broker packet filter (mqtt_broker_filter_reference.md)
   { cmd: 'set mqtt1.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt1.filter ', desc: 'Slot 1 publish filter: all | none | CSV of type names/numbers. Example: set mqtt1.filter txt_msg,advert', sinceVersion: 'v1.17' },
   { cmd: 'get mqtt1.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 1 publish filter.', sinceVersion: 'v1.17' },
   { cmd: 'set mqtt2.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt2.filter ', desc: 'Slot 2 publish filter: all | none | CSV of type names/numbers.', sinceVersion: 'v1.17' },
   { cmd: 'get mqtt2.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 2 publish filter.', sinceVersion: 'v1.17' },
+  { cmd: 'set mqtt3.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt3.filter ', desc: 'Slot 3 publish filter: all | none | CSV of type names/numbers.', sinceVersion: 'v1.17' },
+  { cmd: 'get mqtt3.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 3 publish filter.', sinceVersion: 'v1.17' },
+  { cmd: 'set mqtt4.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt4.filter ', desc: 'Slot 4 publish filter: all | none | CSV of type names/numbers.', sinceVersion: 'v1.17' },
+  { cmd: 'get mqtt4.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 4 publish filter.', sinceVersion: 'v1.17' },
+  { cmd: 'set mqtt5.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt5.filter ', desc: 'Slot 5 publish filter: all | none | CSV of type names/numbers.', sinceVersion: 'v1.17' },
+  { cmd: 'get mqtt5.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 5 publish filter.', sinceVersion: 'v1.17' },
+  { cmd: 'set mqtt6.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt6.filter ', desc: 'Slot 6 publish filter: all | none | CSV of type names/numbers.', sinceVersion: 'v1.17' },
+  { cmd: 'get mqtt6.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 6 publish filter.', sinceVersion: 'v1.17' },
 
   // v1.17 neighbour publishing (neighbour_discovery_reference.md). PSRAM-only (WITH_MQTT_NEIGHBORS).
   { cmd: 'discover.scopes',            category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Refresh the neighbour table and publish it to MQTT now (one-shot).', sinceVersion: 'v1.17' },
@@ -351,6 +396,10 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'get wifi.ssid',       category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi SSID.' },
   { cmd: 'get wifi.pwd',        category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi password.' },
   { cmd: 'get wifi.powersave',  category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi power-save mode.' },
+
+  // Pull-based OTA over the observer WiFi connection (ota.dutchmeshcore.nl)
+  { cmd: 'ota check',  category: 'ota', deviceTypes: ['repeater','roomserver'], desc: 'Check ota.dutchmeshcore.nl for a newer DutchMeshCore release over the observer WiFi connection.', sinceVersion: 'v1.17' },
+  { cmd: 'ota update', category: 'ota', deviceTypes: ['repeater','roomserver'], desc: 'Download and install the latest DutchMeshCore firmware over the observer WiFi connection (pull-based OTA).', sinceVersion: 'v1.17' },
 
   // Timezone
   { cmd: 'set timezone ',        category: 'timezone', deviceTypes: 'all', placeholder: 'set timezone ', desc: 'Set IANA timezone (e.g. Europe/Amsterdam).' },
@@ -442,5 +491,5 @@ export function searchCommands(list: CliCommand[], query: string): CliCommand[] 
 // (not UI chrome): English lives on the command, Dutch in CLI_DESC_NL. Falls
 // back to English when no translation exists.
 export function localizedDesc(cmd: CliCommand, lang: string): string {
-  return lang === 'nl' ? (CLI_DESC_NL[cmd.cmd] ?? cmd.desc) : cmd.desc
+  return lang === 'de' ? (CLI_DESC_DE[cmd.cmd] ?? cmd.desc) : lang === 'nl' ? (CLI_DESC_NL[cmd.cmd] ?? cmd.desc) : cmd.desc
 }

@@ -95,7 +95,7 @@ export default function MqttSettingsForm({ value, onChange, onSendCommand }: Pro
           </div>
           <label className="check-row">
             <input type="checkbox" checked={value.status} onChange={e => patch(s => { s.status = e.target.checked })} />
-            Publish periodic status messages <span className="field-hint">(write-only — firmware does not report current state)</span>
+            Publish periodic status messages <span className="field-hint">(write-only – firmware does not report current state)</span>
           </label>
           <label className="check-row">
             <input type="checkbox" checked={value.packets} onChange={e => patch(s => { s.packets = e.target.checked })} />

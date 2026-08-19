@@ -20,7 +20,10 @@ export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
     const stored = localStorage.getItem(LS_KEY) as Lang | null
     if (stored) return stored
-    return navigator.language.toLowerCase().startsWith('nl') ? 'nl' : 'en'
+    const nav = navigator.language.toLowerCase()
+    if (nav.startsWith('nl')) return 'nl'
+    if (nav.startsWith('de')) return 'de'
+    return 'en'
   })
 
   const setLang = useCallback((l: Lang) => {

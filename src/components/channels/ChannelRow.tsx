@@ -74,7 +74,7 @@ export default function ChannelRow({ channel: c, selected, onToggleSelect, onCop
 		  </span>
 		</td>
       <td><span className="lt-date" title={fmtDate(c.last_seen)}>{relativeTime(c.last_seen)}</span></td>
-      <td><span className="lt-count">{c.message_amount != null ? c.message_amount.toLocaleString() : '—'}</span></td>
+      <td><span className="lt-count">{c.message_amount != null ? c.message_amount.toLocaleString() : '–'}</span></td>
       <td>
         <div className="lt-acts">
           {!readOnlyActions && (

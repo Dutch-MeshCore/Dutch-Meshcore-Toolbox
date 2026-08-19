@@ -2,14 +2,21 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme, type Theme } from '../../hooks/useTheme'
 import { useLang } from '../../hooks/useLang'
+import type { StringKey, Lang } from '../../i18n'
 
-type OpenDropdown = 'config' | 'devices' | null
+type OpenDropdown = 'tools' | 'config' | 'info' | 'theme' | 'lang' | null
 
-const THEMES: { id: Theme; icon: string; label: string }[] = [
-  { id: 'dark',  icon: '🌙', label: 'Dark'       },
-  { id: 'light', icon: '☀',  label: 'Light'      },
-  { id: 'win95', icon: '🖥',  label: 'Windows 95' },
-  { id: 'minimalistic', icon: '◦', label: 'Minimalistic' },
+const THEMES: { id: Theme; icon: string; labelKey: StringKey }[] = [
+  { id: 'dark',  icon: '🌙', labelKey: 'theme_dark'    },
+  { id: 'light', icon: '☀',  labelKey: 'theme_light'   },
+  { id: 'win95', icon: '🖥',  labelKey: 'theme_win95'   },
+  { id: 'minimalistic', icon: '◦', labelKey: 'theme_minimal' },
+]
+
+const LANGS: { id: Lang; label: string; short: string }[] = [
+  { id: 'nl', label: 'Nederlands', short: '🇳🇱 NL' },
+  { id: 'en', label: 'English',    short: '🇬🇧 EN' },
+  { id: 'de', label: 'Deutsch',    short: '🇩🇪 DE' },
 ]
 
 export default function Navbar() {
@@ -17,8 +24,11 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme()
   const { lang, setLang, t } = useLang()
   const inChannelBrowser = pathname.startsWith('/channel-browser')
+  const inTools = inChannelBrowser || pathname === '/flasher' || pathname === '/usb-config' || pathname === '/keygen'
   const inConfig = pathname === '/mqtt-cli' || pathname === '/filter-cli' || pathname === '/mcmqtt-toml'
-  const inDevices = pathname === '/flasher' || pathname === '/usb-config'
+  const inInfo = pathname === '/cli-wiki' || pathname === '/connected-brokers' || pathname === '/changelog'
+  const currentTheme = THEMES.find(th => th.id === theme) ?? THEMES[0]
+  const currentLang = LANGS.find(l => l.id === lang) ?? LANGS[1]
   const [menuOpen, setMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null)
   const navRef = useRef<HTMLElement>(null)
@@ -74,7 +84,25 @@ export default function Navbar() {
             <Link to="/" className={pathname === '/' ? 'active' : ''} onClick={close}>{t('nav_home')}</Link>
             <Link to="/getting-started" className={pathname === '/getting-started' ? 'active' : ''} onClick={close}>{t('nav_getstarted')}</Link>
 
-            <Link to="/channel-browser" className={inChannelBrowser ? 'active' : ''} onClick={close}>{t('nav_browser')}</Link>
+            <div className={`nav-dropdown${openDropdown === 'tools' ? ' open' : ''}`}>
+              <button
+                className={`nav-dropdown-trigger${inTools ? ' active' : ''}`}
+                onClick={() => toggleDropdown('tools')}
+                aria-expanded={openDropdown === 'tools'}
+              >
+                {t('nav_tools')} <span className="nav-caret" aria-hidden="true">▾</span>
+              </button>
+              <div className="nav-dropdown-menu">
+                <Link to="/flasher" className={pathname === '/flasher' ? 'active' : ''} onClick={close}>{t('nav_flasher')}</Link>
+                <Link to="/flasher?console=1" onClick={close}>{t('flasher_console')}</Link>
+                <Link to="/usb-config" className={pathname === '/usb-config' ? 'active' : ''} onClick={close}>{t('flasher_repeater_setup')}</Link>
+                <Link to="/keygen" className={pathname === '/keygen' ? 'active' : ''} onClick={close}>{t('nav_keygen')}</Link>
+                <Link to="/channel-browser" className={inChannelBrowser ? 'active' : ''} onClick={close}>{t('nav_browser')}</Link>
+                <a href="https://triangulator.dutchmeshcore.nl" target="_blank" rel="noopener noreferrer" onClick={close}>
+                  {t('nav_triangulator')} <span className="nav-ext" aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
 
             <div className={`nav-dropdown${openDropdown === 'config' ? ' open' : ''}`}>
               <button
@@ -91,25 +119,20 @@ export default function Navbar() {
               </div>
             </div>
 
-            <div className={`nav-dropdown${openDropdown === 'devices' ? ' open' : ''}`}>
+            <div className={`nav-dropdown${openDropdown === 'info' ? ' open' : ''}`}>
               <button
-                className={`nav-dropdown-trigger${inDevices ? ' active' : ''}`}
-                onClick={() => toggleDropdown('devices')}
-                aria-expanded={openDropdown === 'devices'}
+                className={`nav-dropdown-trigger${inInfo ? ' active' : ''}`}
+                onClick={() => toggleDropdown('info')}
+                aria-expanded={openDropdown === 'info'}
               >
-                {t('nav_devices')} <span className="nav-caret" aria-hidden="true">▾</span>
+                {t('nav_info')} <span className="nav-caret" aria-hidden="true">▾</span>
               </button>
               <div className="nav-dropdown-menu">
-                <Link to="/flasher" className={pathname === '/flasher' ? 'active' : ''} onClick={close}>{t('nav_flasher')}</Link>
-                <Link to="/flasher?console=1" onClick={close}>{t('flasher_console')}</Link>
-                <Link to="/usb-config" className={pathname === '/usb-config' ? 'active' : ''} onClick={close}>{t('flasher_repeater_setup')}</Link>
+                <Link to="/cli-wiki" className={pathname === '/cli-wiki' ? 'active' : ''} onClick={close}>{t('nav_cli_wiki')}</Link>
+                <Link to="/connected-brokers" className={pathname === '/connected-brokers' ? 'active' : ''} onClick={close}>{t('nav_connected')}</Link>
+                <Link to="/changelog" className={pathname === '/changelog' ? 'active' : ''} onClick={close}>{t('nav_changelog')}</Link>
               </div>
             </div>
-
-            <Link to="/keygen" className={pathname === '/keygen' ? 'active' : ''} onClick={close}>{t('nav_keygen')}</Link>
-            <Link to="/cli-wiki" className={pathname === '/cli-wiki' ? 'active' : ''} onClick={close}>{t('nav_cli_wiki')}</Link>
-            <Link to="/connected-brokers" className={pathname === '/connected-brokers' ? 'active' : ''} onClick={close}>{t('nav_connected')}</Link>
-            <Link to="/changelog" className={pathname === '/changelog' ? 'active' : ''} onClick={close}>{t('nav_changelog')}</Link>
           </div>
           <div className="nav-actions">
             <a
@@ -126,26 +149,57 @@ export default function Navbar() {
               </svg>
               <span>Join Discord</span>
             </a>
-            <button
-              className="icon-btn lang-toggle"
-              title="Switch language / Taal wisselen"
-              onClick={() => setLang(lang === 'nl' ? 'en' : 'nl')}
-            >
-              {lang === 'nl' ? '🇬🇧 EN' : '🇳🇱 NL'}
-            </button>
-            <div className="view-btns" title="Switch theme">
-              {THEMES.map(t => (
-                <button
-                  key={t.id}
-                  className={`view-btn${theme === t.id ? ' active' : ''}`}
-                  onClick={() => setTheme(t.id)}
-                  title={t.label}
-                  aria-label={t.label}
-                  aria-pressed={theme === t.id}
-                >
-                  {t.icon}
-                </button>
-              ))}
+            <div className={`nav-dropdown lang-dropdown${openDropdown === 'lang' ? ' open' : ''}`}>
+              <button
+                className="nav-dropdown-trigger lang-trigger"
+                onClick={() => toggleDropdown('lang')}
+                aria-expanded={openDropdown === 'lang'}
+                title={t('nav_language')}
+                aria-label={t('nav_language')}
+              >
+                {currentLang.short}
+                <span className="nav-caret" aria-hidden="true">▾</span>
+              </button>
+              <div className="nav-dropdown-menu theme-menu">
+                {LANGS.map(l => (
+                  <button
+                    key={l.id}
+                    className={`theme-item${lang === l.id ? ' active' : ''}`}
+                    onClick={() => { setLang(l.id); setOpenDropdown(null) }}
+                    aria-pressed={lang === l.id}
+                  >
+                    <span className="theme-item-icon" aria-hidden="true">{l.short.split(' ')[0]}</span>
+                    {l.label}
+                    {lang === l.id && <span className="theme-check" aria-hidden="true">✓</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className={`nav-dropdown theme-dropdown${openDropdown === 'theme' ? ' open' : ''}`}>
+              <button
+                className="nav-dropdown-trigger theme-trigger"
+                onClick={() => toggleDropdown('theme')}
+                aria-expanded={openDropdown === 'theme'}
+                title={t('nav_theme')}
+                aria-label={t('nav_theme')}
+              >
+                <span aria-hidden="true">{currentTheme.icon}</span>
+                <span className="nav-caret" aria-hidden="true">▾</span>
+              </button>
+              <div className="nav-dropdown-menu theme-menu">
+                {THEMES.map(th => (
+                  <button
+                    key={th.id}
+                    className={`theme-item${theme === th.id ? ' active' : ''}`}
+                    onClick={() => { setTheme(th.id); setOpenDropdown(null) }}
+                    aria-pressed={theme === th.id}
+                  >
+                    <span className="theme-item-icon" aria-hidden="true">{th.icon}</span>
+                    {t(th.labelKey)}
+                    {theme === th.id && <span className="theme-check" aria-hidden="true">✓</span>}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

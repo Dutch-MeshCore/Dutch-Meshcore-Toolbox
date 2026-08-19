@@ -5,7 +5,7 @@ import IndexPage from '../pages/IndexPage'
 import type { ChannelMeta } from '../types'
 
 // Regression: switching pages on the channel browser. The page must not snap
-// back to page 1 when it re-renders — a fresh derived `allChannels`/`filtered`
+// back to page 1 when it re-renders – a fresh derived `allChannels`/`filtered`
 // array each render used to trigger usePagination's reset-to-1 effect.
 
 function makeChannels(n: number): ChannelMeta[] {

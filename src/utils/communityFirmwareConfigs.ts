@@ -3,10 +3,10 @@
  * combined FlasherConfig ready to be merged with the main DutchMeshCore config.
  *
  * Sources (GitHub Releases):
- *   meshcore-dev/MeshCore  — companion, room-server, repeater
+ *   meshcore-dev/MeshCore  – companion, room-server, repeater
  *
  * Source (prebuilt/ directory, no version in filename):
- *   ALLFATHER-BV/meshcomod — repeater-tcp, companion-radio-*, room-server-multitransport
+ *   ALLFATHER-BV/meshcomod – repeater-tcp, companion-radio-*, room-server-multitransport
  */
 
 import type { FlasherConfig } from '../types'
@@ -114,7 +114,7 @@ const MESHCORE_DEV_ROLES: RoleDef[] = [
   { separator: '_repeater-',               role: 'repeater',             icon: '📡', title: 'Repeater',         subTitle: ''               },
 ]
 
-// meshcomod uses no version in filenames — separator runs to the end (before [-merged].bin)
+// meshcomod uses no version in filenames – separator runs to the end (before [-merged].bin)
 const MESHCOMOD_ROLES: RoleDef[] = [
   { separator: '_companion_radio_usb_tcp',      role: 'companion_radio_usb_tcp',      icon: '🔌', title: 'Companion Radio', subTitle: 'USB + TCP transport' },
   { separator: '_companion_radio_touch',         role: 'companion_radio_touch',         icon: '📱', title: 'Companion Radio', subTitle: 'Touch display'       },
@@ -187,7 +187,7 @@ function parseDirAsset(name: string, url: string, roleDefs: RoleDef[]): ParsedFi
 /**
  * Converts a flat list of parsed firmware files into a FlasherConfig.
  *
- * For ESP32 (.bin):  creates "vX — App update" and "vX — Full flash" entries.
+ * For ESP32 (.bin):  creates "vX – App update" and "vX – Full flash" entries.
  * For nRF52 (.zip):  creates a single "vX" entry (prefers .zip over .uf2).
  * For meshcomod:     version key is always "Latest".
  */
@@ -259,14 +259,14 @@ function buildConfig(
         for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
           if (entry.type === 'esp32') {
             if (entry.appUrl) {
-              version[`${versionKey} — App update`] = {
-                files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update — keeps bootloader, partition table & config' }],
+              version[`${versionKey} – App update`] = {
+                files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update – keeps bootloader, partition table & config' }],
                 notes: 'Updates firmware only. Bootloader and saved settings are preserved.',
               }
             }
             if (entry.mergedUrl) {
-              version[`${versionKey} — Full flash`] = {
-                files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash — merged binary (bootloader + partition + app)' }],
+              version[`${versionKey} – Full flash`] = {
+                files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash – merged binary (bootloader + partition + app)' }],
                 notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
               }
             }
@@ -342,7 +342,7 @@ function writeCache<T>(key: string, data: T): void {
   try { sessionStorage.setItem(key, JSON.stringify({ data, ts: Date.now() })) } catch {}
 }
 
-// Fetch one page of releases — enough to cover all current role types per repo.
+// Fetch one page of releases – enough to cover all current role types per repo.
 // Using a single call instead of paginating keeps us well within the 60 req/hour
 // unauthenticated GitHub API rate limit.
 async function fetchReleaseAssets(owner: string, repo: string): Promise<GHReleaseAsset[]> {

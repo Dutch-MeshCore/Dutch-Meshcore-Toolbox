@@ -26,7 +26,7 @@ interface Entry {
   items: ReactNode[]
 }
 
-type LangKey = 'en' | 'nl'
+type LangKey = 'en' | 'nl' | 'de'
 
 const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   en: {
@@ -36,7 +36,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
         date: '2026-08-19',
         title: 'Repeater PacketLog',
         items: [
-          <>New <strong>DutchMeshCore Repeater PacketLog</strong> builds: the DMC repeater firmware with per-packet RX/TX logging (<code>MESH_PACKET_LOGGING</code>) written to the USB serial console, for all 91 repeater boards. Lets an external tool – such as an <strong>MC-to-MQTT</strong> bridge or logger – ingest live packet data over serial, without the on-device MQTT stack. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-v1.17.1">Release: dmc-repeater-packetlog-v1.17.1</Doc>.</>,
+          <>New <strong>DutchMeshCore Repeater PacketLog</strong> builds: the DMC repeater firmware with per-packet RX/TX logging (<code>MESH_PACKET_LOGGING</code>) written to the USB serial console, for all 88 repeater boards. Lets an external tool – such as an <strong>MC-to-MQTT</strong> bridge or logger – ingest live packet data over serial, without the on-device MQTT stack. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-v1.17.1">Release: dmc-repeater-packetlog-v1.17.1</Doc>.</>,
           <>Built from the non-MQTT <code>dmc-dev</code> base, so the runtime <strong>packet filter</strong> (<code>filter</code> CLI) is included. Companion and room-server builds are unchanged. Flash it from the new <strong>DutchMeshCore-PacketLog-Firmware</strong> group in the Flasher.</>,
         ],
       },
@@ -71,10 +71,22 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'UI refresh: navbar, German & fonts',
+        date: '2026-08-19',
+        items: [
+          <>Rebuilt the <strong>navbar</strong> into five grouped menus (Tools / Configure / Info) with single <strong>theme</strong> and <strong>language</strong> pickers, so it no longer wraps on longer labels; the active menu is now highlighted.</>,
+          <>Added a full <strong>German (Deutsch)</strong> translation across the app, switchable via the new three-language picker (NL / EN / DE).</>,
+          <>New typography: <strong>Aldrich</strong> headings, <strong>IBM Plex Sans</strong> body and <strong>IBM Plex Mono</strong> code.</>,
+          <><strong>Getting Started</strong> now covers the <strong>DMC Room Server MQTT</strong> build and the WiFi OTA flow (<code>ota check</code> / <code>ota update</code>), which the CLI Wiki lists for both repeater and room-server builds.</>,
+          <>New quick links: <strong>Node Settings</strong> (settings.dutchmeshcore.nl) on the home page and <strong>Triangulator</strong> in the Tools menu. MCtoMQTT now notes it needs the PacketLog firmware.</>,
+          <>Accuracy fixes: corrected the PacketLog board count, fixed the USB Setup OTA / factory-reset commands (<code>start ota</code> / <code>erase</code>), documented MQTT slots 3-6 in the CLI Wiki, and refreshed stale firmware links.</>,
+        ],
+      },
+      {
         version: 'Flasher: PacketLog firmware group',
         date: '2026-08-19',
         items: [
-          <>Added the <strong>DutchMeshCore-PacketLog-Firmware</strong> group – the DMC repeater builds with serial packet logging (91 boards, v1.17.1) – alongside the existing repeater and MQTT groups.</>,
+          <>Added the <strong>DutchMeshCore-PacketLog-Firmware</strong> group – the DMC repeater builds with serial packet logging (88 boards, v1.17.1) – alongside the existing repeater and MQTT groups.</>,
           <>All firmware maker groups now <strong>start collapsed</strong> for a cleaner list; expand the one you want.</>,
         ],
       },
@@ -107,7 +119,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
         date: '2026-08-19',
         title: 'Repeater PacketLog',
         items: [
-          <>Nieuwe <strong>DutchMeshCore Repeater PacketLog</strong>-builds: de DMC-repeater-firmware met per-pakket RX/TX-logging (<code>MESH_PACKET_LOGGING</code>) naar de USB-seriële console, voor alle 91 repeater-boards. Laat een externe tool – zoals een <strong>MC-naar-MQTT</strong>-bridge of logger – live pakketdata via serieel inlezen, zonder de MQTT-stack op het apparaat. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-v1.17.1">Release: dmc-repeater-packetlog-v1.17.1</Doc>.</>,
+          <>Nieuwe <strong>DutchMeshCore Repeater PacketLog</strong>-builds: de DMC-repeater-firmware met per-pakket RX/TX-logging (<code>MESH_PACKET_LOGGING</code>) naar de USB-seriële console, voor alle 88 repeater-boards. Laat een externe tool – zoals een <strong>MC-naar-MQTT</strong>-bridge of logger – live pakketdata via serieel inlezen, zonder de MQTT-stack op het apparaat. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-v1.17.1">Release: dmc-repeater-packetlog-v1.17.1</Doc>.</>,
           <>Gebouwd op de niet-MQTT <code>dmc-dev</code>-basis, dus het runtime <strong>packetfilter</strong> (<code>filter</code>-CLI) is inbegrepen. Companion- en room-server-builds zijn ongewijzigd. Flash het via de nieuwe <strong>DutchMeshCore-PacketLog-Firmware</strong>-groep in de Flasher.</>,
         ],
       },
@@ -142,10 +154,22 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'UI-vernieuwing: navbar, Duits & lettertypen',
+        date: '2026-08-19',
+        items: [
+          <>De <strong>navbar</strong> herbouwd tot vijf gegroepeerde menu's (Tools / Configureren / Info) met losse kiezers voor <strong>thema</strong> en <strong>taal</strong>, zodat hij niet meer omslaat bij langere labels; het actieve menu wordt nu gemarkeerd.</>,
+          <>Een volledige <strong>Duitse (Deutsch)</strong> vertaling toegevoegd, te kiezen via de nieuwe drietalige kiezer (NL / EN / DE).</>,
+          <>Nieuwe typografie: <strong>Aldrich</strong>-koppen, <strong>IBM Plex Sans</strong>-tekst en <strong>IBM Plex Mono</strong>-code.</>,
+          <><strong>Aan de slag</strong> behandelt nu de <strong>DMC Room Server MQTT</strong>-build en de wifi-OTA (<code>ota check</code> / <code>ota update</code>), die de CLI-wiki toont voor zowel repeater- als room-server-builds.</>,
+          <>Nieuwe snelkoppelingen: <strong>Node-instellingen</strong> (settings.dutchmeshcore.nl) op de startpagina en <strong>Triangulator</strong> in het Tools-menu. MCtoMQTT vermeldt nu dat de PacketLog-firmware nodig is.</>,
+          <>Correcties: het PacketLog-boardaantal gecorrigeerd, de OTA-/fabrieksreset-commando's in USB-instellingen hersteld (<code>start ota</code> / <code>erase</code>), MQTT-slots 3-6 gedocumenteerd in de CLI-wiki en verouderde firmware-links vernieuwd.</>,
+        ],
+      },
+      {
         version: 'Flasher: PacketLog-firmwaregroep',
         date: '2026-08-19',
         items: [
-          <>De <strong>DutchMeshCore-PacketLog-Firmware</strong>-groep toegevoegd – de DMC-repeater-builds met seriële packetlogging (91 boards, v1.17.1) – naast de bestaande repeater- en MQTT-groepen.</>,
+          <>De <strong>DutchMeshCore-PacketLog-Firmware</strong>-groep toegevoegd – de DMC-repeater-builds met seriële packetlogging (88 boards, v1.17.1) – naast de bestaande repeater- en MQTT-groepen.</>,
           <>Alle firmware-groepen <strong>starten nu ingeklapt</strong> voor een overzichtelijkere lijst; klap de gewenste groep uit.</>,
         ],
       },
@@ -167,6 +191,89 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <>Een <strong>back-upherinnering</strong> vóór het flashen die aanraadt eerst de apparaatconfiguratie te exporteren (met een snelkoppeling naar USB-instellingen), omdat flashen MQTT-/observer-instellingen, filters per slot, wifi en meldingen kan wissen.</>,
           <>Een <strong>waarschuwing bij een eerste observer-installatie</strong>: observer-firmware als alleen-app-image installeren wordt gemarkeerd, met verwijzing naar de merged "Full flash"-image zodat de partitietabel wordt geschreven. Werkt ook voor geüploade observer-<code>.bin</code>-bestanden.</>,
           <>De tekst is firmware-neutraal, dus ook agessaman-observer-firmwaregebruikers zijn gedekt.</>,
+        ],
+      },
+    ],
+  },
+  de: {
+    firmware: [
+      {
+        version: 'v1.17.1 · PacketLog',
+        date: '2026-08-19',
+        title: 'Repeater PacketLog',
+        items: [
+          <>Neue <strong>DutchMeshCore Repeater PacketLog</strong>-Builds: die DMC-Repeater-Firmware mit Logging pro Paket für RX/TX (<code>MESH_PACKET_LOGGING</code>) auf die serielle USB-Konsole, für alle 88 Repeater-Boards. Ermöglicht einem externen Tool – etwa einer <strong>MC-zu-MQTT</strong>-bridge oder einem Logger – das Einlesen von Live-Paketdaten über die serielle Schnittstelle, ohne den MQTT-Stack auf dem Gerät. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-v1.17.1">Release: dmc-repeater-packetlog-v1.17.1</Doc>.</>,
+          <>Gebaut auf der Nicht-MQTT-Basis <code>dmc-dev</code>, daher ist der <strong>Paketfilter</strong> zur Laufzeit (<code>filter</code>-CLI) enthalten. Companion- und room-server-Builds sind unverändert. Flashe sie über die neue Gruppe <strong>DutchMeshCore-PacketLog-Firmware</strong> im Flasher.</>,
+        ],
+      },
+      {
+        version: 'v1.17.1',
+        date: '2026-08-14',
+        title: 'MQTT Observer',
+        items: [
+          <>Upstream-MeshCore <strong>v1.17.1</strong> in den observer-Branch zusammengeführt, sodass Knoten nun <code>v1.17.1</code> als Version melden (zuvor konnte man nur am Commit-Hash erkennen, dass ein Build der neueste war). <Doc href={DOCS.branch}>Branch: dmc-observer-dev-1-17</Doc>.</>,
+          <><strong>Fix für Scoped-Reply-Routing</strong>: Antworten werden nicht mehr verworfen, wenn <code>flood.max.unscoped</code> niedrig ist.</>,
+          <>Neuer Befehl <code>radio.fem.txgain on|off</code> und ein Fix, damit <code>radio.fem.rxgain</code> erhalten bleibt, für Boards mit einer steuerbaren FEM-PA (Station G3). Das Toolbox-USB-Setup verwaltet bereits beides.</>,
+          <>Weitere Upstream-Fixes zusammengeführt: nRF52-Radio-Entropie kombiniert mit dem CC310-Hardware-RNG, dazu Pin-Fixes für Heltec T1, Heltec MeshPocket und LilyGo T-Echo Lite.</>,
+        ],
+      },
+      {
+        version: 'v1.17.0',
+        date: '2026-08-12',
+        title: 'MQTT Observer',
+        items: [
+          <>Sauber auf Upstream-MeshCore <strong>v1.17.0</strong> neu aufgebaut als Zusammenführung der observer-Firmware und des DutchMeshCore-Forks (Branding, Boards, CI). <Doc href={DOCS.branch}>Branch: dmc-observer-dev-1-17</Doc>.</>,
+          <>MQTT-observer-bridge: bis zu 6 Broker-Slots, 35 integrierte Broker-Presets und Veröffentlichung von status / packets / raw / TX / RX. <Doc href={DOCS.mqttImpl}>MQTT-Implementierungsleitfaden</Doc>.</>,
+          <><strong>Paketfilter pro Broker</strong>: eine Allowlist pro Slot für MeshCore-Payload-Typen (<code>set mqttN.filter all|none|list</code>), sodass jeder Broker eine andere Paketmischung empfangen kann. <Doc href={DOCS.brokerFilter}>Referenz Filter pro Broker</Doc>.</>,
+          <><strong>Nachbar-Erkennung</strong>: Veröffentliche die Zero-Hop-Nachbartabelle (SNR, Alter des letzten Empfangs, Region-Scopes) im <code>neighbors</code>-Topic, einmalig (<code>discover.scopes</code>) oder periodisch (<code>mqtt.neighbors</code>). <Doc href={DOCS.neighbours}>Referenz Nachbar-Erkennung</Doc>.</>,
+          <><strong>Repeater-Paketfilter</strong> (RF): Verwerfe geflutete Pakete nach Hop-Anzahl, Rate pro Typ, Kanal, Path-Hash-Größe und fehlerhafte Gruppennachrichten. <Doc href={DOCS.packetFilter}>Referenz Paketfilter</Doc>.</>,
+          <><strong>WebConfig</strong>-Captive-Portal auf dem Gerät, Radio-Watchdog, SNMP-Agent und Störungsmeldungen.</>,
+          <>Pull-basiertes <strong>OTA</strong> auf DutchMeshCore-Releases ausgerichtet (<code>ota.dutchmeshcore.nl</code>); Standard-Broker-Slots <code>dutchmeshcore-1</code> / <code>dutchmeshcore-2</code> / <code>meshcore-analyzer-eu</code>, Zeitzone Europe/Amsterdam.</>,
+          <>Heltec Wireless Tracker v1.1-Fixes (ST7735-HSPI-Guard, PA-Power-Guard, active-high VEXT) und Unterstützung für Boards ohne PSRAM (3 MQTT-Slots, Abstimmung für knappen Heap).</>,
+          <>Die neuesten Upstream-Board- und Radio-Fixes zusammengeführt: Heltec T096-Pins, T-Echo Card TCXO, ProMicro-Pinmap, T-Beam Supreme S3 Display-Wiederherstellung, Station G3 externe FEM-Prefs, LR2021 Preamble / IRQ-Timeout.</>,
+          <>Vollständige CLI-Referenz für jeden Befehl. <Doc href={DOCS.cli}>CLI-Befehle</Doc>.</>,
+        ],
+      },
+    ],
+    toolbox: [
+      {
+        version: 'UI-Auffrischung: Navbar, Deutsch & Schriften',
+        date: '2026-08-19',
+        items: [
+          <>Die <strong>Navbar</strong> in fünf gruppierte Menüs (Tools / Konfigurieren / Info) mit einzelnen Auswahlen für <strong>Thema</strong> und <strong>Sprache</strong> neu aufgebaut, sodass sie bei längeren Labels nicht mehr umbricht; das aktive Menü wird nun hervorgehoben.</>,
+          <>Eine vollständige <strong>deutsche (Deutsch)</strong> Übersetzung der App hinzugefügt, wählbar über die neue dreisprachige Auswahl (NL / EN / DE).</>,
+          <>Neue Typografie: <strong>Aldrich</strong>-Überschriften, <strong>IBM Plex Sans</strong>-Text und <strong>IBM Plex Mono</strong>-Code.</>,
+          <><strong>Erste Schritte</strong> behandelt nun den <strong>DMC Room Server MQTT</strong>-Build und den WiFi-OTA-Ablauf (<code>ota check</code> / <code>ota update</code>), den das CLI Wiki für Repeater- und Room-Server-Builds anzeigt.</>,
+          <>Neue Schnelllinks: <strong>Node-Einstellungen</strong> (settings.dutchmeshcore.nl) auf der Startseite und <strong>Triangulator</strong> im Tools-Menü. MCtoMQTT weist nun darauf hin, dass die PacketLog-Firmware benötigt wird.</>,
+          <>Korrekturen: die PacketLog-Board-Anzahl korrigiert, die OTA-/Werksreset-Befehle im USB-Setup behoben (<code>start ota</code> / <code>erase</code>), MQTT-Slots 3-6 im CLI Wiki dokumentiert und veraltete Firmware-Links aktualisiert.</>,
+        ],
+      },
+      {
+        version: 'Flasher: PacketLog firmware group',
+        date: '2026-08-19',
+        items: [
+          <>Die Gruppe <strong>DutchMeshCore-PacketLog-Firmware</strong> hinzugefügt – die DMC-Repeater-Builds mit seriellem Paket-Logging (88 Boards, v1.17.1) – neben den bestehenden repeater- und MQTT-Gruppen.</>,
+          <>Alle Firmware-Maker-Gruppen <strong>starten jetzt eingeklappt</strong> für eine übersichtlichere Liste; klappe die gewünschte auf.</>,
+        ],
+      },
+      {
+        version: 'USB Setup: full firmware parity',
+        date: '2026-08-12',
+        items: [
+          <>Den <strong>Paketfilter pro Broker</strong> pro Slot hinzugefügt (Alle / Keine plus ein Kontrollkästchen pro Pakettyp), passend zur Firmware. <Doc href={DOCS.brokerFilter}>Filter-Referenz</Doc>.</>,
+          <>Das Broker-Preset-Dropdown auf alle <strong>35</strong> Presets aktualisiert (fügt <code>meshcore-analyzer-eu</code> und andere hinzu).</>,
+          <>Bedienelemente für <strong>Nachbar-Veröffentlichung</strong> (aktivieren plus Intervall) und die <strong>Radio-Watchdog</strong>-Einstellung, nur auf Firmware angezeigt, die sie unterstützt. <Doc href={DOCS.neighbours}>Referenz Nachbar-Erkennung</Doc>.</>,
+          <>Serielle <strong>bridge</strong> (RS232 / ESP-NOW), externe <strong>FEM-Verstärkung</strong> (RX/TX) und LR2021-Side-Detector-SFs, begrenzt auf das, was das angeschlossene Gerät meldet.</>,
+          <><strong>Import / Export</strong> überträgt nun all das oben Genannte vollständig, sodass ein Backup die komplette observer-Konfiguration wiederherstellt.</>,
+        ],
+      },
+      {
+        version: 'Flasher: safer flashing',
+        date: '2026-08-12',
+        items: [
+          <>Eine <strong>Backup-Erinnerung</strong> vor dem Flashen, die dazu anhält, zuerst die Gerätekonfiguration zu exportieren (mit einer Verknüpfung zum USB-Setup), da das Flashen MQTT-/observer-Einstellungen, Filter pro Slot, WiFi und Meldungen löschen kann.</>,
+          <>Eine <strong>Warnung bei der ersten observer-Installation</strong>: observer-Firmware als reines App-Image zu installieren wird markiert, mit Hinweis auf das zusammengeführte "Full flash"-Image, damit die Partitionstabelle geschrieben wird. Funktioniert auch für hochgeladene observer-<code>.bin</code>-Dateien.</>,
+          <>Die Formulierung ist firmware-neutral, sodass auch Nutzer der agessaman-observer-Firmware abgedeckt sind.</>,
         ],
       },
     ],

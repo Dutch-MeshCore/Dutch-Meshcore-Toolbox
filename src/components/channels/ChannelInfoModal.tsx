@@ -44,7 +44,7 @@ export default function ChannelInfoModal({ channel: c, onClose }: Props) {
             <div className="info-row">
               <span className="info-label">Location</span>
               <span className="info-value">
-                {[(c.countries || []).join(', '), (c.regions || []).join(', ')].filter(Boolean).join(' — ')}
+                {[(c.countries || []).join(', '), (c.regions || []).join(', ')].filter(Boolean).join(' – ')}
               </span>
             </div>
           ) : null}
