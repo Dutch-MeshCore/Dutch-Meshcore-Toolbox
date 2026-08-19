@@ -74,6 +74,8 @@ const copy = {
     live_nofilter: 'This device is connected but its firmware has no packet filter. Flash the custom DMC repeater firmware to use it.',
     live_applied: 'Filter applied to device.',
     live_stats_h: 'Live blocked counts', live_stats_refresh: 'Refresh stats',
+    live_stats_updated: (t: string) => `updated ${t}`,
+    live_stats_toast: 'Stats refreshed.', live_stats_error: 'Could not read stats from the device.',
     stat_hops: 'Hops', stat_rate: 'Rate', stat_channel: 'Channel', stat_hash: 'Hash', stat_malformed: 'Malformed',
   },
   nl: {
@@ -135,6 +137,8 @@ const copy = {
     live_nofilter: 'Dit apparaat is verbonden, maar de firmware heeft geen pakketfilter. Flash de aangepaste DMC-repeater-firmware om het te gebruiken.',
     live_applied: 'Filter toegepast op apparaat.',
     live_stats_h: 'Live geblokkeerde aantallen', live_stats_refresh: 'Statistieken verversen',
+    live_stats_updated: (t: string) => `bijgewerkt om ${t}`,
+    live_stats_toast: 'Statistieken bijgewerkt.', live_stats_error: 'Kon statistieken niet van het apparaat lezen.',
     stat_hops: 'Hops', stat_rate: 'Snelheid', stat_channel: 'Kanaal', stat_hash: 'Hash', stat_malformed: 'Ongeldig',
   },
   de: {
@@ -196,6 +200,8 @@ const copy = {
     live_nofilter: 'Dieses Gerät ist verbunden, aber seine Firmware hat keinen Paketfilter. Flashe die angepasste DMC-Repeater-Firmware, um ihn zu nutzen.',
     live_applied: 'Filter auf das Gerät angewendet.',
     live_stats_h: 'Live blockierte Anzahlen', live_stats_refresh: 'Statistiken aktualisieren',
+    live_stats_updated: (t: string) => `aktualisiert um ${t}`,
+    live_stats_toast: 'Statistiken aktualisiert.', live_stats_error: 'Statistiken konnten nicht vom Gerät gelesen werden.',
     stat_hops: 'Hops', stat_rate: 'Rate', stat_channel: 'Kanal', stat_hash: 'Hash', stat_malformed: 'Fehlerhaft',
   },
 } as const
@@ -214,16 +220,24 @@ export default function FilterGuidePage() {
   const { toasts, toast } = useToast()
   const [blocked, setBlocked] = useState<FilterBlockedCounts | null>(null)
   const [perType, setPerType] = useState<Record<number, { hops: number; rate: number }>>({})
+  const [statsAt, setStatsAt] = useState<string | null>(null)
 
-  async function refreshStats() {
-    const status = await sendCommand('filter')
-    setBlocked(parseFilterBlockedCounts(status))
-    setPerType(parseFilterCount(await sendCommand('filter count')))
+  async function refreshStats(notify = true) {
+    try {
+      const b = parseFilterBlockedCounts(await sendCommand('filter'))
+      const pt = parseFilterCount(await sendCommand('filter count'))
+      setBlocked(b)
+      setPerType(pt)
+      setStatsAt(new Date().toLocaleTimeString())
+      if (notify) toast(c.live_stats_toast, 'ok')
+    } catch {
+      if (notify) toast(c.live_stats_error, 'err')
+    }
   }
 
   async function applyFilter() {
     await setData()
-    await refreshStats()
+    await refreshStats(false)
     toast(c.live_applied, 'ok')
   }
 
@@ -269,8 +283,11 @@ export default function FilterGuidePage() {
               </div>
 
               <div className="output-header" style={{ marginTop: '1rem' }}>
-                <p className="section-title">{c.live_stats_h}</p>
-                <button className="btn btn-sm" onClick={refreshStats}>{c.live_stats_refresh}</button>
+                <p className="section-title">
+                  {c.live_stats_h}
+                  {statsAt && <span className="field-hint"> · {c.live_stats_updated(statsAt)}</span>}
+                </p>
+                <button className="btn btn-sm" onClick={() => refreshStats()}>{c.live_stats_refresh}</button>
               </div>
               {blocked && (
                 <p>
