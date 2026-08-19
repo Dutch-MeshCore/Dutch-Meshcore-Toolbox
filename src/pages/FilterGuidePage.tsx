@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
@@ -74,6 +74,7 @@ const copy = {
     live_nofilter: 'This device is connected but its firmware has no packet filter. Flash the custom DMC repeater firmware to use it.',
     live_applied: 'Filter applied to device.',
     live_stats_h: 'Live blocked counts', live_stats_refresh: 'Refresh stats',
+    live_stats_auto: 'Auto-refresh on connect',
     live_stats_updated: (t: string) => `updated ${t}`,
     live_stats_toast: 'Stats refreshed.', live_stats_error: 'Could not read stats from the device.',
     stat_hops: 'Hops', stat_rate: 'Rate', stat_channel: 'Channel', stat_hash: 'Hash', stat_malformed: 'Malformed',
@@ -137,6 +138,7 @@ const copy = {
     live_nofilter: 'Dit apparaat is verbonden, maar de firmware heeft geen pakketfilter. Flash de aangepaste DMC-repeater-firmware om het te gebruiken.',
     live_applied: 'Filter toegepast op apparaat.',
     live_stats_h: 'Live geblokkeerde aantallen', live_stats_refresh: 'Statistieken verversen',
+    live_stats_auto: 'Automatisch verversen bij verbinden',
     live_stats_updated: (t: string) => `bijgewerkt om ${t}`,
     live_stats_toast: 'Statistieken bijgewerkt.', live_stats_error: 'Kon statistieken niet van het apparaat lezen.',
     stat_hops: 'Hops', stat_rate: 'Snelheid', stat_channel: 'Kanaal', stat_hash: 'Hash', stat_malformed: 'Ongeldig',
@@ -200,11 +202,14 @@ const copy = {
     live_nofilter: 'Dieses Gerät ist verbunden, aber seine Firmware hat keinen Paketfilter. Flashe die angepasste DMC-Repeater-Firmware, um ihn zu nutzen.',
     live_applied: 'Filter auf das Gerät angewendet.',
     live_stats_h: 'Live blockierte Anzahlen', live_stats_refresh: 'Statistiken aktualisieren',
+    live_stats_auto: 'Beim Verbinden automatisch aktualisieren',
     live_stats_updated: (t: string) => `aktualisiert um ${t}`,
     live_stats_toast: 'Statistiken aktualisiert.', live_stats_error: 'Statistiken konnten nicht vom Gerät gelesen werden.',
     stat_hops: 'Hops', stat_rate: 'Rate', stat_channel: 'Kanal', stat_hash: 'Hash', stat_malformed: 'Fehlerhaft',
   },
 } as const
+
+const LS_AUTO_STATS = 'meshcore-filter-autostats'
 
 // Firmware defaults, sourced from the shared model so they match the device.
 const DEFAULTS = defaultFilterSettings()
@@ -221,6 +226,7 @@ export default function FilterGuidePage() {
   const [blocked, setBlocked] = useState<FilterBlockedCounts | null>(null)
   const [perType, setPerType] = useState<Record<number, { hops: number; rate: number }>>({})
   const [statsAt, setStatsAt] = useState<string | null>(null)
+  const [autoStats, setAutoStats] = useState<boolean>(() => localStorage.getItem(LS_AUTO_STATS) !== 'off')
 
   async function refreshStats(notify = true) {
     try {
@@ -234,6 +240,31 @@ export default function FilterGuidePage() {
       if (notify) toast(c.live_stats_error, 'err')
     }
   }
+
+  // Persist the auto-refresh preference (default on).
+  useEffect(() => {
+    localStorage.setItem(LS_AUTO_STATS, autoStats ? 'on' : 'off')
+  }, [autoStats])
+
+  // Auto-load stats once per connection when the preference is on. Reset the
+  // one-shot guard and clear stale stats when the device disconnects.
+  const autoLoadedRef = useRef(false)
+  useEffect(() => {
+    if (state !== 'connected') {
+      autoLoadedRef.current = false
+      setBlocked(null)
+      setPerType({})
+      setStatsAt(null)
+      return
+    }
+    if (autoStats && device?.filter && !autoLoadedRef.current) {
+      autoLoadedRef.current = true
+      void refreshStats(false)
+    }
+    // refreshStats is a stable closure over this render; deps intentionally
+    // limited to the connection/preference signals that should trigger a load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, device?.filter, autoStats])
 
   async function applyFilter() {
     await setData()
@@ -289,6 +320,14 @@ export default function FilterGuidePage() {
                 </p>
                 <button className="btn btn-sm" onClick={() => refreshStats()}>{c.live_stats_refresh}</button>
               </div>
+              <label className="check-row">
+                <input
+                  type="checkbox"
+                  checked={autoStats}
+                  onChange={e => setAutoStats(e.target.checked)}
+                />
+                {c.live_stats_auto}
+              </label>
               {blocked && (
                 <p>
                   {c.stat_hops}: {blocked.hops} | {c.stat_rate}: {blocked.rate} | {c.stat_channel}: {blocked.channel} | {c.stat_hash}: {blocked.hash} | {c.stat_malformed}: {blocked.malformed}
