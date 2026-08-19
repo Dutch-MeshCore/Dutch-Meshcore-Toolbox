@@ -274,7 +274,7 @@ export default function HomePage() {
       desc: c.keygenDesc,
     },
     {
-      to: '/connected-brokers',
+      to: '/connected-projects',
       iconText: '◎',
       title: c.toolProjects,
       meta: c.toolProjectsMeta,
@@ -541,7 +541,6 @@ export default function HomePage() {
               <p>{c.communitiesSub}</p>
               <div className="quick-links">
                 <a className="quick-link" href="https://meshwiki.nl" target="_blank" rel="noopener noreferrer">MeshWiki</a>
-                <a className="quick-link" href="https://mc-spamdetector.nl/" target="_blank" rel="noopener noreferrer">MC Spam Detector</a>
                 <a className="quick-link" href="https://discord.dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">Discord</a>
               </div>
             </div>
@@ -554,6 +553,7 @@ export default function HomePage() {
                 <a className="quick-link" href="https://mc-radar.woodwar.com/" target="_blank" rel="noopener noreferrer">MC-Radar</a>
                 <a className="quick-link" href="https://meshrank.net" target="_blank" rel="noopener noreferrer">MeshRank</a>
                 <a className="quick-link" href="https://analyzer.letsmesh.net/" target="_blank" rel="noopener noreferrer">LetsMesh Analyzer</a>
+                <a className="quick-link" href="https://mc-spamdetector.nl/" target="_blank" rel="noopener noreferrer">MC Spam Detector</a>
               </div>
             </div>
           </div>

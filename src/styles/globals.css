@@ -5203,7 +5203,7 @@ select option {
 }
 
 /* ── Connected Brokers page ─────────────────────────────────────────────────── */
-.connected-brokers-page {
+.connected-projects-page {
   max-width: 860px;
 }
 .brokers-section {

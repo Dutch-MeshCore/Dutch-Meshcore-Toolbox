@@ -26,7 +26,7 @@ export default function Navbar() {
   const inChannelBrowser = pathname.startsWith('/channel-browser')
   const inTools = inChannelBrowser || pathname === '/flasher' || pathname === '/usb-config' || pathname === '/keygen'
   const inConfig = pathname === '/mqtt-cli' || pathname === '/filter-cli' || pathname === '/mcmqtt-toml'
-  const inInfo = pathname === '/cli-wiki' || pathname === '/connected-brokers' || pathname === '/changelog'
+  const inInfo = pathname === '/cli-wiki' || pathname === '/connected-projects' || pathname === '/changelog'
   const currentTheme = THEMES.find(th => th.id === theme) ?? THEMES[0]
   const currentLang = LANGS.find(l => l.id === lang) ?? LANGS[1]
   const [menuOpen, setMenuOpen] = useState(false)
@@ -129,7 +129,7 @@ export default function Navbar() {
               </button>
               <div className="nav-dropdown-menu">
                 <Link to="/cli-wiki" className={pathname === '/cli-wiki' ? 'active' : ''} onClick={close}>{t('nav_cli_wiki')}</Link>
-                <Link to="/connected-brokers" className={pathname === '/connected-brokers' ? 'active' : ''} onClick={close}>{t('nav_connected')}</Link>
+                <Link to="/connected-projects" className={pathname === '/connected-projects' ? 'active' : ''} onClick={close}>{t('nav_connected')}</Link>
                 <Link to="/changelog" className={pathname === '/changelog' ? 'active' : ''} onClick={close}>{t('nav_changelog')}</Link>
               </div>
             </div>

@@ -19,6 +19,7 @@ const copy = {
     type_app: 'App',
     type_map: 'Kaartvisualisatie',
     type_wiki: 'Wiki',
+    analyzerEuDesc: 'Uitgebreide MeshCore-analyzer voor het EU-netwerk: live kaart, packet-decoder, node-statistieken en kanaalactiviteit op basis van DutchMeshCore subscriber-data.',
     cornmeisterDesc: 'Live MQTT-analyzer voor DutchMeshCore-observer data. Toont ruwe pakketuitvoer en netwerkactiviteit in realtime.',
     kiekrDesc: 'Community toolbox voor MeshCore. De iOS- en Android-app koppelt via Bluetooth met MeshCore-compatible LoRa-radio\'s voor berichten en mesh-verkenning.',
     mcradarDesc: 'Kaartgebaseerde visualizer die MeshCore-nodes en pakketroutes weergeeft op basis van DutchMeshCore subscriber-data.',
@@ -26,10 +27,9 @@ const copy = {
     techspeeltuinDesc: 'Techspeeltuin.nl ontvangt DutchMeshCore-data en visualiseert MeshCore-netwerkactiviteit voor de community.',
     overrideDesc: 'Live MQTT-analyzer van mesh.override.nl. Toont MeshCore-netwerkactiviteit op basis van DutchMeshCore subscriber-data.',
     spamdetectorDesc: 'mc-spamdetector.nl detecteert en markeert spam op het MeshCore-netwerk op basis van DutchMeshCore subscriber-data.',
-    dataNote: 'Al deze projecten ontvangen data via de DutchMeshCore MQTT subscriber. Wil je je eigen analyzer aansluiten? Bekijk de',
-    dataNoteLinkText: 'Config Generatoren',
-    dataNote2: 'voor de juiste brokerinstellingen.',
-    dataNote2Link: 'gratis subscriber account vereist',
+    dataNote: 'Al deze projecten ontvangen data van de DutchMeshCore MQTT subscriber. Wil je ook je eigen publieke project aansluiten? Dat kan! Er is voor het ontvangen van DMC-MQTT-verkeer wel een gratis subscriber-account vereist, en er zijn uiteraard wat voorwaarden; deze kun je inzien tijdens het',
+    dataNoteLinkText: 'aanvraagproces',
+    dataNote2: '(MQTT-data aanleveren kan zonder account!).',
     footer: 'Community tools voor MeshCore NL - 2026',
   },
   en: {
@@ -48,6 +48,7 @@ const copy = {
     type_app: 'App',
     type_map: 'Map visualizer',
     type_wiki: 'Wiki',
+    analyzerEuDesc: 'Full-featured MeshCore analyzer for the EU network: live map, packet decoder, node stats and channel activity based on DutchMeshCore subscriber data.',
     cornmeisterDesc: 'Live MQTT analyzer for DutchMeshCore observer data. Displays raw packet output and network activity in real time.',
     kiekrDesc: 'Community toolbox for MeshCore. The iOS and Android app pairs over Bluetooth with MeshCore-compatible LoRa radios for messaging and mesh exploration.',
     mcradarDesc: 'Map-based visualizer displaying MeshCore nodes and packet routes based on DutchMeshCore subscriber data.',
@@ -55,10 +56,9 @@ const copy = {
     techspeeltuinDesc: 'Techspeeltuin.nl receives DutchMeshCore data and visualises MeshCore network activity for the community.',
     overrideDesc: 'Live MQTT analyzer by mesh.override.nl. Displays MeshCore network activity based on DutchMeshCore subscriber data.',
     spamdetectorDesc: 'mc-spamdetector.nl detects and flags spam on the MeshCore network based on DutchMeshCore subscriber data.',
-    dataNote: 'All these projects receive data via the DutchMeshCore MQTT subscriber. Want to connect your own analyzer? Check the',
-    dataNoteLinkText: 'Config Generators',
-    dataNote2: 'for the correct broker settings.',
-    dataNote2Link: 'free subscriber account required',
+    dataNote: 'All these projects receive data from the DutchMeshCore MQTT subscriber. Want to connect your own public project too? You can! Receiving DMC-MQTT traffic does require a free subscriber account, and there are of course a few conditions, which you can review during the',
+    dataNoteLinkText: 'application process',
+    dataNote2: '(supplying MQTT data works without an account!).',
     footer: 'Community tools for MeshCore NL - 2026',
   },
   de: {
@@ -77,6 +77,7 @@ const copy = {
     type_app: 'App',
     type_map: 'Kartenvisualisierung',
     type_wiki: 'Wiki',
+    analyzerEuDesc: 'Voll ausgestatteter MeshCore-Analyzer für das EU-Netz: Live-Karte, Paket-Decoder, Knoten-Statistiken und Kanalaktivität auf Basis von DutchMeshCore subscriber-Daten.',
     cornmeisterDesc: 'Live-MQTT-Analyzer für DutchMeshCore observer-Daten. Zeigt rohe Paketausgabe und Netzwerkaktivität in Echtzeit.',
     kiekrDesc: 'Community-Toolbox für MeshCore. Die iOS- und Android-App koppelt sich über Bluetooth mit MeshCore-kompatiblen LoRa-Funkgeräten für Nachrichten und Mesh-Erkundung.',
     mcradarDesc: 'Kartenbasierte Visualisierung, die MeshCore-Knoten und Paketrouten auf Basis von DutchMeshCore subscriber-Daten darstellt.',
@@ -84,10 +85,9 @@ const copy = {
     techspeeltuinDesc: 'Techspeeltuin.nl empfängt DutchMeshCore-Daten und visualisiert MeshCore-Netzwerkaktivität für die Community.',
     overrideDesc: 'Live-MQTT-Analyzer von mesh.override.nl. Zeigt MeshCore-Netzwerkaktivität auf Basis von DutchMeshCore subscriber-Daten.',
     spamdetectorDesc: 'mc-spamdetector.nl erkennt und markiert Spam im MeshCore-Netzwerk auf Basis von DutchMeshCore subscriber-Daten.',
-    dataNote: 'Alle diese Projekte empfangen Daten über den DutchMeshCore MQTT subscriber. Möchtest du deinen eigenen Analyzer anschließen? Sieh dir die',
-    dataNoteLinkText: 'Config-Generatoren',
-    dataNote2: 'für die richtigen broker-Einstellungen an.',
-    dataNote2Link: 'kostenloses subscriber-Konto erforderlich',
+    dataNote: 'Alle diese Projekte empfangen Daten vom DutchMeshCore MQTT subscriber. Möchtest du auch dein eigenes öffentliches Projekt anschließen? Das geht! Für den Empfang von DMC-MQTT-Verkehr ist zwar ein kostenloses subscriber-Konto erforderlich, und es gibt natürlich einige Bedingungen, die du während des',
+    dataNoteLinkText: 'Antragsverfahrens',
+    dataNote2: 'einsehen kannst (das Bereitstellen von MQTT-Daten ist ohne Konto möglich!).',
     footer: 'Community-Tools für MeshCore NL – 2026',
   },
 }
@@ -104,7 +104,7 @@ interface BrokerEntry {
   url: string
   typeKey: 'type_analyzer' | 'type_app' | 'type_map'
   extraTags?: CopyKey[]
-  descKey: 'cornmeisterDesc' | 'kiekrDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltuinDesc' | 'spamdetectorDesc' | 'overrideDesc'
+  descKey: 'analyzerEuDesc' | 'cornmeisterDesc' | 'kiekrDesc' | 'mcradarDesc' | 'meshwikiDesc' | 'techspeeltuinDesc' | 'spamdetectorDesc' | 'overrideDesc'
   icon: string
   iconImg?: string
   iconImgTransparent?: boolean
@@ -356,18 +356,26 @@ const PUBLIC_BROKERS: BrokerEntry[] = [
     icon: '🛡️',
     iconImg: '',
   },
+  {
+    name: 'MeshCore Analyzer EU',
+    url: 'https://meshcore-analyzer.eu',
+    typeKey: 'type_analyzer',
+    extraTags: ['type_map'],
+    descKey: 'analyzerEuDesc',
+    icon: '🌐',
+  },
 ]
 
 const PRIVATE_COUNT = 1
 
-export default function ConnectedBrokersPage() {
+export default function ConnectedProjectsPage() {
   const { lang } = useLang()
   const c = copy[lang]
 
   return (
     <>
       <Navbar />
-      <main className="page home-page connected-brokers-page">
+      <main className="page home-page connected-projects-page">
         <section className="hero">
           <img
             className="hero-logo"
@@ -450,11 +458,8 @@ export default function ConnectedBrokersPage() {
 
         <p className="brokers-data-note">
           {c.dataNote}{' '}
-          <a href="#/mqtt-cli">{c.dataNoteLinkText}</a>
-          {' '}{c.dataNote2}{' '}
-          <a href="https://portal.dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">
-            {c.dataNote2Link}
-          </a>
+          <a href="https://portal.dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">{c.dataNoteLinkText}</a>
+          {' '}{c.dataNote2}
         </p>
         <footer className="site-footer">
           <a href="https://github.com/Dutch-MeshCore" target="_blank" rel="noopener noreferrer">Dutch-MeshCore</a>
