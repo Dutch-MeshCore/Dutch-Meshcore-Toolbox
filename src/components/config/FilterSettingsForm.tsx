@@ -1,10 +1,59 @@
 import { useState } from 'react'
 import { PAYLOAD_TYPES, cloneFilterSettings, type FilterSettings } from '../../lib/config/filterCommands'
+import { useLang } from '../../hooks/useLang'
 
 interface Props {
   value: FilterSettings
   onChange: (next: FilterSettings) => void
 }
+
+const copy = {
+  en: {
+    enable: 'Enable packet filter',
+    minHash: 'Min path-hash bytes (1–3)',
+    malformed: 'Scan public-channel text for malformed UTF-8',
+    blocked: 'Blocked channels',
+    none: 'None',
+    channelPlaceholder: '#channel or Public',
+    add: 'Add',
+    advanced: 'Advanced – per payload type',
+    colType: 'Type',
+    colHops: 'Max hops (0–64)',
+    colRate: 'Rate limit',
+    colWindow: 'Window (s)',
+    remove: (ch: string) => `Remove ${ch}`,
+  },
+  nl: {
+    enable: 'Pakketfilter inschakelen',
+    minHash: 'Min. path-hash bytes (1–3)',
+    malformed: 'Scan tekst op publieke kanalen op ongeldige UTF-8',
+    blocked: 'Geblokkeerde kanalen',
+    none: 'Geen',
+    channelPlaceholder: '#kanaal of Public',
+    add: 'Toevoegen',
+    advanced: 'Geavanceerd – per payload-type',
+    colType: 'Type',
+    colHops: 'Max. hops (0–64)',
+    colRate: 'Snelheidslimiet',
+    colWindow: 'Venster (s)',
+    remove: (ch: string) => `${ch} verwijderen`,
+  },
+  de: {
+    enable: 'Paketfilter aktivieren',
+    minHash: 'Min. Path-Hash-Bytes (1–3)',
+    malformed: 'Text öffentlicher Kanäle auf fehlerhaftes UTF-8 prüfen',
+    blocked: 'Blockierte Kanäle',
+    none: 'Keine',
+    channelPlaceholder: '#Kanal oder Public',
+    add: 'Hinzufügen',
+    advanced: 'Erweitert – pro Payload-Typ',
+    colType: 'Typ',
+    colHops: 'Max. Hops (0–64)',
+    colRate: 'Ratenlimit',
+    colWindow: 'Fenster (s)',
+    remove: (ch: string) => `${ch} entfernen`,
+  },
+} as const
 
 function clampInt(v: string, min: number, max: number): number {
   const n = Math.round(Number(v))
@@ -13,6 +62,8 @@ function clampInt(v: string, min: number, max: number): number {
 }
 
 export default function FilterSettingsForm({ value, onChange }: Props) {
+  const { lang } = useLang()
+  const c = copy[lang]
   const [advancedOpen, setAdvancedOpen] = useState(false)
   const [channelInput, setChannelInput] = useState('')
 
@@ -39,12 +90,12 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
           checked={value.enabled}
           onChange={e => patch(s => { s.enabled = e.target.checked })}
         />
-        Enable packet filter
+        {c.enable}
       </label>
 
       <div className="field-row" style={{ marginTop: '.5rem' }}>
         <div className="field-group">
-          <label htmlFor="filter-min-hash">Min path-hash bytes (1–3)</label>
+          <label htmlFor="filter-min-hash">{c.minHash}</label>
           <input
             id="filter-min-hash"
             type="number" min={1} max={3}
@@ -59,20 +110,20 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
               checked={value.malformed}
               onChange={e => patch(s => { s.malformed = e.target.checked })}
             />
-            Scan public-channel text for malformed UTF-8
+            {c.malformed}
           </label>
         </div>
       </div>
 
       <div className="field-group" style={{ marginTop: '.5rem' }}>
-        <label>Blocked channels ({value.channels.length}/16)</label>
+        <label>{c.blocked} ({value.channels.length}/16)</label>
         <div className="filter-channel-list">
-          {value.channels.length === 0 && <span className="field-hint">None</span>}
+          {value.channels.length === 0 && <span className="field-hint">{c.none}</span>}
           {value.channels.map(ch => (
             <span key={ch} className="filter-channel-chip">
               {ch}
               <button
-                type="button" className="chip-remove" aria-label={`Remove ${ch}`}
+                type="button" className="chip-remove" aria-label={c.remove(ch)}
                 onClick={() => patch(s => { s.channels = s.channels.filter(c => c !== ch) })}
               >×</button>
             </span>
@@ -82,11 +133,11 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
           <input
             value={channelInput}
             onChange={e => setChannelInput(e.target.value)}
-            placeholder="#channel or Public"
+            placeholder={c.channelPlaceholder}
             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addChannel() } }}
           />
           <button type="button" className="btn" onClick={addChannel} disabled={value.channels.length >= 16}>
-            Add
+            {c.add}
           </button>
         </div>
       </div>
@@ -96,13 +147,13 @@ export default function FilterSettingsForm({ value, onChange }: Props) {
         aria-expanded={advancedOpen}
         onClick={() => setAdvancedOpen(o => !o)}
       >
-        {advancedOpen ? '▲' : '▼'} Advanced – per payload type
+        {advancedOpen ? '▲' : '▼'} {c.advanced}
       </button>
 
       {advancedOpen && (
         <table className="filter-type-table" aria-label="Per-payload-type settings">
           <thead>
-            <tr><th>Type</th><th>Max hops (0–64)</th><th>Rate limit</th><th>Window (s)</th></tr>
+            <tr><th>{c.colType}</th><th>{c.colHops}</th><th>{c.colRate}</th><th>{c.colWindow}</th></tr>
           </thead>
           <tbody>
             {PAYLOAD_TYPES.map(pt => (

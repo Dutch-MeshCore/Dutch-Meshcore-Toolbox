@@ -184,6 +184,47 @@ export function assembleFilterSettings(replies: FilterReplies): FilterSettings {
   return s
 }
 
+export interface FilterBlockedCounts {
+  hops: number
+  rate: number
+  channel: number
+  hash: number
+  malformed: number
+}
+
+/**
+ * Parse the blocked breakdown from the `filter` status line, e.g.
+ * `Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]`.
+ * Returns null when the reply is not a DMC filter status line.
+ */
+export function parseFilterBlockedCounts(reply: string): FilterBlockedCounts | null {
+  if (!isFilterStatusReply(reply)) return null
+  const num = (label: string): number => {
+    const m = reply.match(new RegExp(label + '\\s*:\\s*(\\d+)', 'i'))
+    return m ? parseInt(m[1], 10) : 0
+  }
+  return {
+    hops: num('Hops'),
+    rate: num('Rate'),
+    channel: num('Channel'),
+    hash: num('Hash'),
+    malformed: num('Malformed'),
+  }
+}
+
+/**
+ * Parse `filter count` output. Each line is `<type>: <hopsBlocked>,<rateBlocked>`,
+ * e.g. `05: 2,10`. Returns a map keyed by payload-type index.
+ */
+export function parseFilterCount(reply: string): Record<number, { hops: number; rate: number }> {
+  const out: Record<number, { hops: number; rate: number }> = {}
+  for (const line of reply.split('\n')) {
+    const m = line.match(/^\s*>?\s*(\d{1,2})\s*:\s*(\d+)\s*,\s*(\d+)\s*$/)
+    if (m) out[parseInt(m[1], 10)] = { hops: parseInt(m[2], 10), rate: parseInt(m[3], 10) }
+  }
+  return out
+}
+
 /**
  * True if a bare `filter` reply is the DMC packet-filter status line
  * (`> Filter on|off: Blocked [...]`). Used to detect filter support by

@@ -13,6 +13,8 @@ import {
   parseFilterHash,
   parseFilterMalformed,
   assembleFilterSettings,
+  parseFilterBlockedCounts,
+  parseFilterCount,
 } from '../lib/config/filterCommands'
 
 describe('filter model', () => {
@@ -165,6 +167,26 @@ describe('filter reply parsers', () => {
     expect(s.channels).toEqual(['Public'])
     expect(s.minHashBytes).toBe(3)
     expect(s.malformed).toBe(true)
+  })
+})
+
+describe('parseFilterBlockedCounts', () => {
+  it('parses the blocked breakdown from the status line', () => {
+    const r = '> Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]'
+    expect(parseFilterBlockedCounts(r)).toEqual({ hops: 3, rate: 12, channel: 1, hash: 0, malformed: 2 })
+  })
+  it('returns null when the line is not a filter status line', () => {
+    expect(parseFilterBlockedCounts('> Unknown command')).toBeNull()
+  })
+})
+
+describe('parseFilterCount', () => {
+  it('parses per-type blocked counts', () => {
+    const r = '05: 2,10\n02: 0,4'
+    expect(parseFilterCount(r)).toEqual({ 5: { hops: 2, rate: 10 }, 2: { hops: 0, rate: 4 } })
+  })
+  it('returns an empty object when there is no data', () => {
+    expect(parseFilterCount('> ')).toEqual({})
   })
 })
 

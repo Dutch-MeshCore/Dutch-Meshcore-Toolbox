@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
 import { useToast } from '../hooks/useToast'
@@ -19,6 +20,7 @@ const copy = {
     empty: 'Pas instellingen aan om opdrachten te genereren.',
     copiedAll: 'Alle opdrachten gekopieerd!', nothing: 'Nog niets om te kopiëren.',
     help: 'Commandoreferentie', footer: 'Repeater Pakketfilter CLI - 2026',
+    howto: 'Hoe het werkt',
   },
   en: {
     title: 'Repeater Packet-Filter CLI',
@@ -32,6 +34,7 @@ const copy = {
     empty: 'Adjust settings to generate commands.',
     copiedAll: 'All commands copied!', nothing: 'Nothing to copy yet.',
     help: 'Command reference', footer: 'Repeater Packet-Filter CLI - 2026',
+    howto: 'How it works',
   },
   de: {
     title: 'Repeater Paketfilter-CLI',
@@ -45,6 +48,7 @@ const copy = {
     empty: 'Passe die Einstellungen an, um Befehle zu generieren.',
     copiedAll: 'Alle Befehle kopiert!', nothing: 'Noch nichts zum Kopieren.',
     help: 'Befehlsreferenz', footer: 'Repeater Paketfilter-CLI - 2026',
+    howto: 'Wie es funktioniert',
   },
 }
 
@@ -89,6 +93,7 @@ export default function FilterCliPage() {
         <div className="header">
           <h1>{c.title}</h1>
           <p>{c.sub}</p>
+          <Link className="btn btn-sm" to="/filter-guide">{c.howto} →</Link>
         </div>
 
         <div className="info-box privacy-box"><span>ℹ</span><p>{c.intro}</p></div>

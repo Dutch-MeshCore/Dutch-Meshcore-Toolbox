@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage'
 import IndexPage from './pages/IndexPage'
 import MqttCliPage from './pages/MqttCliPage'
 import FilterCliPage from './pages/FilterCliPage'
+import FilterGuidePage from './pages/FilterGuidePage'
 import KeygenPage from './pages/KeygenPage'
 import MctoMqttPage from './pages/MctoMqttPage'
 import ConnectedProjectsPage from './pages/ConnectedProjectsPage'
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/channel-browser" element={<IndexPage />} />
         <Route path="/mqtt-cli" element={<MqttCliPage />} />
         <Route path="/filter-cli" element={<FilterCliPage />} />
+        <Route path="/filter-guide" element={<FilterGuidePage />} />
         <Route path="/mcmqtt-toml" element={<MctoMqttPage />} />
         <Route path="/connected-projects" element={<ConnectedProjectsPage />} />
         <Route path="/connected-brokers" element={<Navigate to="/connected-projects" replace />} />

@@ -2088,6 +2088,22 @@ body::after {
   overflow-wrap: anywhere;
 }
 
+.cmd-block {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin: 6px 0 10px;
+  overflow-x: auto;
+}
+
+.cmd-block code {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre;
+}
+
 .btn-sm {
   padding: 4px 8px;
   font-size: 11px;

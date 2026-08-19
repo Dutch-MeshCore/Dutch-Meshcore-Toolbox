@@ -25,7 +25,7 @@ export default function Navbar() {
   const { lang, setLang, t } = useLang()
   const inChannelBrowser = pathname.startsWith('/channel-browser')
   const inTools = inChannelBrowser || pathname === '/flasher' || pathname === '/usb-config' || pathname === '/keygen'
-  const inConfig = pathname === '/mqtt-cli' || pathname === '/filter-cli' || pathname === '/mcmqtt-toml'
+  const inConfig = pathname === '/mqtt-cli' || pathname === '/filter-cli' || pathname === '/filter-guide' || pathname === '/mcmqtt-toml'
   const inInfo = pathname === '/cli-wiki' || pathname === '/connected-projects' || pathname === '/changelog'
   const currentTheme = THEMES.find(th => th.id === theme) ?? THEMES[0]
   const currentLang = LANGS.find(l => l.id === lang) ?? LANGS[1]
@@ -115,6 +115,7 @@ export default function Navbar() {
               <div className="nav-dropdown-menu">
                 <Link to="/mqtt-cli" className={pathname === '/mqtt-cli' ? 'active' : ''} onClick={close}>{t('nav_mqtt')}</Link>
                 <Link to="/filter-cli" className={pathname === '/filter-cli' ? 'active' : ''} onClick={close}>{t('nav_filter')}</Link>
+                <Link to="/filter-guide" className={pathname === '/filter-guide' ? 'active' : ''} onClick={close}>{t('nav_filter_guide')}</Link>
                 <Link to="/mcmqtt-toml" className={pathname === '/mcmqtt-toml' ? 'active' : ''} onClick={close}>{t('nav_toml')}</Link>
               </div>
             </div>

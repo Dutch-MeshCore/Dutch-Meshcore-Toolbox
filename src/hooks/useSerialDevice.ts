@@ -198,6 +198,27 @@ export function useSerialDevice() {
     }
   }, [])
 
+  const readFilter = useCallback(async () => {
+    const cli = cliRef.current as { sendCommand: (c: string) => Promise<string> } | null
+    if (!cli) return
+    setBusy('Reading packet filter…')
+    try {
+      const status = await cli.sendCommand('filter')
+      if (!isFilterStatusReply(status)) return
+      const filter = assembleFilterSettings({
+        status,
+        hops: await cli.sendCommand('filter hops'),
+        rate: await cli.sendCommand('filter rate'),
+        channels: await cli.sendCommand('filter channel list'),
+        hash: await cli.sendCommand('filter hash'),
+        malformed: await cli.sendCommand('filter malformed'),
+      })
+      setDevice(d => (d ? { ...d, filter, filterDevice: cloneFilterSettings(filter) } : d))
+    } finally {
+      setBusy('')
+    }
+  }, [])
+
   const setData = useCallback(async () => {
     if (!device) return
     const cli = cliRef.current as {
@@ -393,5 +414,5 @@ export function useSerialDevice() {
     return true
   }, [device])
 
-  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson, readMqtt }
+  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson, readMqtt, readFilter }
 }
