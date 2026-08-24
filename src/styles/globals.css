@@ -2265,6 +2265,45 @@ body::after {
 .help-section-title:first-child {
   margin-top: 0;
 }
+
+/* Panel help – legend layout + field list */
+.panel-legend.panel-legend--help {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.panel-legend.panel-legend--help .icon-btn {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+}
+
+.help-field-list {
+  margin: .75rem 0 0;
+}
+
+.help-field-list > div {
+  padding: .5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.help-field-list > div:last-child {
+  border-bottom: none;
+}
+
+.help-field-list dt {
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0 0 .15rem;
+}
+
+.help-field-list dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
 /* ── Stats ─────────────────────────────────────────────────────────────────── */
 .stats {
   display: flex;

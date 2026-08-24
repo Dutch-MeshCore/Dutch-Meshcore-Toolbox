@@ -11,6 +11,7 @@ import RegionSettingsForm from './RegionSettingsForm'
 import RegionGatingForm from './RegionGatingForm'
 import MqttSettingsForm from './MqttSettingsForm'
 import HardwareSettingsForm from './HardwareSettingsForm'
+import PanelHelp from './PanelHelp'
 import { defaultFilterSettings } from '../../lib/config/filterCommands'
 
 interface Props {
@@ -122,7 +123,10 @@ export default function ConfigForm({
   // ── Section: Name & Location ─────────────────────────────────────────────────
   const LocationSection = (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_location')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_location')}</span>
+        <PanelHelp id="location" />
+      </div>
 
       <div className="field-group">
         <label>Name</label>
@@ -164,7 +168,10 @@ export default function ConfigForm({
   // ── Section: Access ───────────────────────────────────────────────────────────
   const AccessSection = (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_access')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_access')}</span>
+        <PanelHelp id="access" />
+      </div>
 
       <label className="check-row">
         <input
@@ -199,7 +206,10 @@ export default function ConfigForm({
   // ── Section: Room Server ──────────────────────────────────────────────────────
   const RoomSection = device.role === 'roomServer' ? (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_room')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_room')}</span>
+        <PanelHelp id="room" />
+      </div>
       <label className="check-row">
         <input
           type="checkbox"
@@ -217,7 +227,10 @@ export default function ConfigForm({
 
   const RadioSection = (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_radio')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_radio')}</span>
+        <PanelHelp id="radio" />
+      </div>
 
       {presets.length > 0 && (
         <div className="field-group">
@@ -303,7 +316,10 @@ export default function ConfigForm({
   // ── Section: Advertising ─────────────────────────────────────────────────────
   const AdvertSection = (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_advert')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_advert')}</span>
+        <PanelHelp id="advert" />
+      </div>
 
       <div className="field-row">
         <div className="field-group">
@@ -340,7 +356,10 @@ export default function ConfigForm({
 
   const OwnerSection = (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_owner')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_owner')}</span>
+        <PanelHelp id="owner" />
+      </div>
 
       <div className="field-group">
         <label>Owner info (| = newline on device)</label>
@@ -368,7 +387,10 @@ export default function ConfigForm({
   // ── Section: Advanced ─────────────────────────────────────────────────────────
   const AdvancedSection = showAdvanced ? (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_advanced')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_advanced')}</span>
+        <PanelHelp id="advanced" />
+      </div>
 
       <div className="field-row">
         <div className="field-group">
@@ -455,7 +477,10 @@ export default function ConfigForm({
   // by useSerialDevice only for filter-capable firmware), independent of its name.
   const FilterPanel = device.filter ? (
     <div className="panel">
-      <div className="panel-legend">{t('config_section_filter')}</div>
+      <div className="panel-legend panel-legend--help">
+        <span>{t('config_section_filter')}</span>
+        <PanelHelp id="filter" />
+      </div>
       <FilterSettingsForm
         value={device.filter}
         onChange={f => onUpdate({ filter: f })}
@@ -503,7 +528,10 @@ export default function ConfigForm({
       )}
       {showRegion && device.region && (
         <div className="panel">
-          <div className="panel-legend">{t('config_section_region')}</div>
+          <div className="panel-legend panel-legend--help">
+            <span>{t('config_section_region')}</span>
+            <PanelHelp id="region" />
+          </div>
           <RegionSettingsForm
             value={device.region}
             onChange={r => onUpdate({ region: r })}
@@ -520,7 +548,10 @@ export default function ConfigForm({
       )}
       {showRegionGating && device.region && device.dcGateSupported && (
         <div className="panel">
-          <div className="panel-legend">{t('config_section_region_gating')}</div>
+          <div className="panel-legend panel-legend--help">
+            <span>{t('config_section_region_gating')}</span>
+            <PanelHelp id="regionGating" />
+          </div>
           <RegionGatingForm
             value={device.region}
             onChange={r => onUpdate({ region: r })}
@@ -546,7 +577,10 @@ export default function ConfigForm({
       )}
       {showMqtt && device.mqtt && (
         <div className="panel">
-          <div className="panel-legend">{t('config_show_mqtt')}</div>
+          <div className="panel-legend panel-legend--help">
+            <span>{t('config_show_mqtt')}</span>
+            <PanelHelp id="mqtt" />
+          </div>
           <MqttSettingsForm
             value={device.mqtt}
             onChange={mqtt => onUpdate({ mqtt })}
@@ -563,7 +597,10 @@ export default function ConfigForm({
 
       {device.hardware && (
         <div className="panel">
-          <div className="panel-legend">Serial bridge &amp; hardware</div>
+          <div className="panel-legend panel-legend--help">
+            <span>Serial bridge &amp; hardware</span>
+            <PanelHelp id="hardware" />
+          </div>
           <HardwareSettingsForm
             value={device.hardware}
             onChange={hw => onUpdate({ hardware: hw })}
