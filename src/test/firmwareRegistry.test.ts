@@ -94,3 +94,39 @@ describe('firmwareRegistry helpers', () => {
     expect(searchCommands(all, 'firmwareversie').some(c => c.cmd === 'ver')).toBe(true)
   })
 })
+
+describe('v1.17 region-gating / region-list / filter-interval registry entries', () => {
+  // dmc-mqtt is the widest variant: it folds in every command array.
+  const all = FIRMWARE_VARIANTS['dmc-mqtt'].commands
+  const byCmd = (cmd: string) => all.find(c => c.cmd === cmd)
+
+  it('exposes the full dc.gate duty-cycle gating family', () => {
+    const cmds = [
+      'get dc.gate',
+      'set dc.gate ',
+      'get dc.gate.thresh',
+      'set dc.gate.thresh ',
+      'get dc.gate.hyst',
+      'set dc.gate.hyst ',
+      'get dc.gate.status',
+    ]
+    for (const cmd of cmds) {
+      expect(byCmd(cmd), `missing registry entry: ${cmd}`).toBeDefined()
+    }
+  })
+
+  it('adds region list allowed / denied sub-variants', () => {
+    expect(byCmd('region list allowed')).toBeDefined()
+    expect(byCmd('region list denied')).toBeDefined()
+  })
+
+  it('adds the mqtt.filter.interval pair', () => {
+    expect(byCmd('get mqtt.filter.interval')).toBeDefined()
+    expect(byCmd('set mqtt.filter.interval ')).toBeDefined()
+  })
+
+  it('describes af as airtime factor, not filter', () => {
+    expect(byCmd('get af')!.desc).toMatch(/airtime factor/i)
+    expect(byCmd('set af ')!.desc).toMatch(/airtime factor/i)
+  })
+})

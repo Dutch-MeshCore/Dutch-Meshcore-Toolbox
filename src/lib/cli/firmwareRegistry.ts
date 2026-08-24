@@ -103,8 +103,16 @@ export const MESHCORE_COMMANDS: CliCommand[] = [
   { cmd: 'set radio.rxgain off',   category: 'radio', deviceTypes: 'all',                    desc: 'Disable RX gain boost.' },
   { cmd: 'get dutycycle',          category: 'radio', deviceTypes: 'all',                    desc: 'Show current duty-cycle limit (%).' },
   { cmd: 'set dutycycle ',         category: 'radio', deviceTypes: 'all', placeholder: 'set dutycycle ', desc: 'Set duty-cycle limit. Range: 1-100.' },
-  { cmd: 'get af',                 category: 'radio', deviceTypes: 'all',                    desc: 'Show airtime filter setting.' },
-  { cmd: 'set af ',                category: 'radio', deviceTypes: 'all', placeholder: 'set af ',        desc: 'Set airtime filter value.' },
+  { cmd: 'get af',                 category: 'radio', deviceTypes: 'all',                    desc: 'Show airtime factor (duty-cycle budget).' },
+  { cmd: 'set af ',                category: 'radio', deviceTypes: 'all', placeholder: 'set af ',        desc: 'Set airtime factor directly (duty-cycle budget).' },
+  // v1.17 duty-cycle region gating (off by default; thresh 70 %, hyst 10 %)
+  { cmd: 'get dc.gate',            category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show duty-cycle region-gating state.', sinceVersion: 'v1.17' },
+  { cmd: 'set dc.gate ',           category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate ',        desc: 'Enable or disable duty-cycle region gating (0/1).', sinceVersion: 'v1.17' },
+  { cmd: 'get dc.gate.thresh',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show TX duty % above which gating activates.', sinceVersion: 'v1.17' },
+  { cmd: 'set dc.gate.thresh ',    category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.thresh ', desc: 'Set gating threshold (1-100 %). Default 70.', sinceVersion: 'v1.17' },
+  { cmd: 'get dc.gate.hyst',       category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show gating hysteresis margin.', sinceVersion: 'v1.17' },
+  { cmd: 'set dc.gate.hyst ',      category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.hyst ',   desc: 'Set gating hysteresis (0-50 %). Regions reopen below thresh minus hyst. Default 10.', sinceVersion: 'v1.17' },
+  { cmd: 'get dc.gate.status',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show live TX duty % and current gate level.', sinceVersion: 'v1.17' },
   { cmd: 'get int.thresh',         category: 'radio', deviceTypes: 'all',                    desc: 'Show interference threshold.' },
   { cmd: 'set int.thresh ',        category: 'radio', deviceTypes: 'all', placeholder: 'set int.thresh ', desc: 'Set interference threshold.' },
   { cmd: 'get agc.reset.interval', category: 'radio', deviceTypes: 'all',                    desc: 'Show AGC reset interval.' },
@@ -187,6 +195,8 @@ export const MESHCORE_COMMANDS: CliCommand[] = [
   { cmd: 'region allowf ',   category: 'region', deviceTypes: 'all', placeholder: 'region allowf ', desc: 'Allow-list a region filter.' },
   { cmd: 'region denyf ',    category: 'region', deviceTypes: 'all', placeholder: 'region denyf ',  desc: 'Deny-list a region filter.' },
   { cmd: 'region list',      category: 'region', deviceTypes: ['repeater','roomserver','sensor'],                desc: 'List regions.' },
+  { cmd: 'region list allowed', category: 'region', deviceTypes: ['repeater','roomserver','sensor'],            desc: 'List regions permitting flood.', sinceVersion: 'v1.17' },
+  { cmd: 'region list denied',  category: 'region', deviceTypes: ['repeater','roomserver','sensor'],            desc: 'List regions blocking flood.', sinceVersion: 'v1.17' },
   { cmd: 'region load ',     category: 'region', deviceTypes: 'all', placeholder: 'region load ', desc: 'Load region from storage.' },
 
   // Setters paired with existing getters (official v1.16 CommonCLI)
@@ -380,6 +390,8 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'get mqtt5.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 5 publish filter.', sinceVersion: 'v1.17' },
   { cmd: 'set mqtt6.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt6.filter ', desc: 'Slot 6 publish filter: all | none | CSV of type names/numbers.', sinceVersion: 'v1.17' },
   { cmd: 'get mqtt6.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 6 publish filter.', sinceVersion: 'v1.17' },
+  { cmd: 'get mqtt.filter.interval', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show filter-stats MQTT publish interval (seconds).', sinceVersion: 'v1.17', note: 'build-dependent' },
+  { cmd: 'set mqtt.filter.interval ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt.filter.interval ', desc: 'Set filter-stats MQTT publish interval (seconds). Default 60.', sinceVersion: 'v1.17', note: 'build-dependent' },
 
   // v1.17 neighbour publishing (neighbour_discovery_reference.md). PSRAM-only (WITH_MQTT_NEIGHBORS).
   { cmd: 'discover.scopes',            category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Refresh the neighbour table and publish it to MQTT now (one-shot).', sinceVersion: 'v1.17' },

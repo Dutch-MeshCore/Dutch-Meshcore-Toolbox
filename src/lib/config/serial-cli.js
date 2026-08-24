@@ -753,4 +753,26 @@ export class SerialCLI {
     }
     return this.setVariable('flood.max', max);
   }
+
+  // ===== Region + neighbour + duty-cycle gating (dmc-observer regiongating) =====
+
+  /** Dump the region hierarchy. */
+  async getRegionTree() { return this.sendCommand('region'); }
+
+  /** List regions filtered by flood permission. filter is 'allowed' or 'denied'. */
+  async getRegionList(filter) { return this.sendCommand(`region list ${filter}`); }
+
+  async setRegionHome(name) { return this.sendCommand(`region home ${name}`); }
+  async setRegionDefault(name) { return this.sendCommand(`region default ${name}`); }
+  async regionSave() { return this.sendCommand('region save'); }
+
+  /** Show the 8 most recent zero-hop neighbour adverts (repeater only). */
+  async getNeighbors() { return this.sendCommand('neighbors'); }
+  async discoverNeighbors() { return this.sendCommand('discover.neighbors'); }
+  async discoverScopes() { return this.sendCommand('discover.scopes'); }
+
+  async getDcGate() { return this.sendCommand('get dc.gate'); }
+  async getDcGateThresh() { return this.sendCommand('get dc.gate.thresh'); }
+  async getDcGateHyst() { return this.sendCommand('get dc.gate.hyst'); }
+  async getDcGateStatus() { return this.sendCommand('get dc.gate.status'); }
 }

@@ -10,6 +10,11 @@ import {
   type FilterSettings,
 } from '../lib/config/filterCommands'
 import {
+  regionSupported, assembleRegionSettings, cloneRegionSettings,
+  buildRegionCommands, regionToBackup, backupToRegion,
+  type RegionSettings, type RegionBackup,
+} from '../lib/config/regionCommands'
+import {
   assembleMqttSettings,
   buildMqttCommands,
   cloneMqttSettings,
@@ -170,9 +175,37 @@ export function useSerialDevice() {
       if (hw && hasAnyHardware(hw)) { hardware = hw; hardwareDevice = cloneHardwareSettings(hw) }
     } catch { /* optional */ }
 
+    // The region tree is a base repeater feature (v1.10+), so it is read whenever
+    // the `region` dump looks valid. Duty-cycle region gating (dc.gate) is DMC MQTT
+    // observer firmware only, detected separately: stock firmware answers `get
+    // dc.gate` with "Unknown command".
+    let region: RegionSettings | undefined
+    let regionDevice: RegionSettings | undefined
+    let dcGateSupported = false
+    try {
+      const tree = await cli.sendCommand('region')
+      if (regionSupported(tree)) {
+        setBusy('Reading region config…')
+        const dcGateReply = await cli.sendCommand('get dc.gate')
+        dcGateSupported = !/unknown command/i.test(dcGateReply)
+        region = assembleRegionSettings({
+          tree,
+          home: await cli.sendCommand('region home'),
+          default: await cli.sendCommand('region default'),
+          dcGate: {
+            enabled: dcGateReply,
+            thresh: await cli.sendCommand('get dc.gate.thresh'),
+            hyst: await cli.sendCommand('get dc.gate.hyst'),
+          },
+        })
+        regionDevice = cloneRegionSettings(region)
+      }
+    } catch { /* region is optional; ignore if unsupported or unresponsive */ }
+
     setDevice(prev => ({
       version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice,
       filter, filterDevice, mqttCapable,
+      region, regionDevice, dcGateSupported,
       // Preserve already-loaded MQTT settings across re-reads (e.g. after save) and
       // resync the base snapshot to the current values so the diff stays clean.
       mqtt: prev?.mqtt,
@@ -214,6 +247,31 @@ export function useSerialDevice() {
         malformed: await cli.sendCommand('filter malformed'),
       })
       setDevice(d => (d ? { ...d, filter, filterDevice: cloneFilterSettings(filter) } : d))
+    } finally {
+      setBusy('')
+    }
+  }, [])
+
+  const readRegion = useCallback(async () => {
+    const cli = cliRef.current as { sendCommand: (c: string) => Promise<string> } | null
+    if (!cli) return
+    setBusy('Reading region config…')
+    try {
+      const tree = await cli.sendCommand('region')
+      if (!regionSupported(tree)) return
+      const dcGateReply = await cli.sendCommand('get dc.gate')
+      const dcGateSupported = !/unknown command/i.test(dcGateReply)
+      const region = assembleRegionSettings({
+        tree,
+        home: await cli.sendCommand('region home'),
+        default: await cli.sendCommand('region default'),
+        dcGate: {
+          enabled: dcGateReply,
+          thresh: await cli.sendCommand('get dc.gate.thresh'),
+          hyst: await cli.sendCommand('get dc.gate.hyst'),
+        },
+      })
+      setDevice(d => (d ? { ...d, region, regionDevice: cloneRegionSettings(region), dcGateSupported } : d))
     } finally {
       setBusy('')
     }
@@ -265,6 +323,13 @@ export function useSerialDevice() {
       if (device.filter && device.filterDevice) {
         const filterCmds = buildFilterCommands(device.filter, device.filterDevice)
         for (const cmd of filterCmds) {
+          await cli.sendCommand(cmd)
+        }
+      }
+
+      if (device.region && device.regionDevice) {
+        const regionCmds = buildRegionCommands(device.region, device.regionDevice)
+        for (const cmd of regionCmds) {
           await cli.sendCommand(cmd)
         }
       }
@@ -329,6 +394,7 @@ export function useSerialDevice() {
     const out: {
       vars: Record<string, unknown>
       filter?: FilterSettings
+      region?: RegionBackup
       mqtt?: MqttSettings
       hardware?: HardwareSettings
     } = {
@@ -337,6 +403,9 @@ export function useSerialDevice() {
 
     // DMC packet-filter settings - only present on filter-capable firmware.
     if (device.filterDevice) out.filter = device.filterDevice
+
+    // DMC region-gating settings - only present on region-capable firmware.
+    if (device.regionDevice) out.region = regionToBackup(device.regionDevice)
 
     // Base bridge / FEM / LR2021 settings - only present when the device has them.
     if (device.hardwareDevice) out.hardware = device.hardwareDevice
@@ -403,6 +472,13 @@ export function useSerialDevice() {
       patch.mqttDevice = device.mqttDevice ?? defaultMqttSettings()
     }
 
+    // DMC region gating - restore only on region-capable firmware. The tree comes
+    // from the backup's def shorthand; dc.gate is kept from the connected device.
+    // Diffed against the device's loaded state on save.
+    if (data.region && device.region && device.regionDevice) {
+      patch.region = backupToRegion(data.region as RegionBackup, device.regionDevice)
+    }
+
     // Base hardware settings - restore only what the connected device supports;
     // capability flags come from the live device, values fall back to defaults.
     if (data.hardware && device.hardware && device.hardwareDevice) {
@@ -414,5 +490,5 @@ export function useSerialDevice() {
     return true
   }, [device])
 
-  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson, readMqtt, readFilter }
+  return { supported, state, device, busy, connect, disconnect, setData, sendCommand, updateDevice, exportConfig, importFromJson, readMqtt, readFilter, readRegion }
 }

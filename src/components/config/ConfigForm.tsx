@@ -7,6 +7,8 @@ import ConsoleDialog from './ConsoleDialog'
 import MapDialog from './MapDialog'
 import { useVanityKey } from '../../hooks/useVanityKey'
 import FilterSettingsForm from './FilterSettingsForm'
+import RegionSettingsForm from './RegionSettingsForm'
+import RegionGatingForm from './RegionGatingForm'
 import MqttSettingsForm from './MqttSettingsForm'
 import HardwareSettingsForm from './HardwareSettingsForm'
 import { defaultFilterSettings } from '../../lib/config/filterCommands'
@@ -40,6 +42,8 @@ export default function ConfigForm({
   const [mapOpen, setMapOpen] = useState(false)
   const [vanityOpen, setVanityOpen] = useState(false)
   const [showDmc, setShowDmc] = useState(false)
+  const [showRegion, setShowRegion] = useState(false)
+  const [showRegionGating, setShowRegionGating] = useState(false)
   const [showMqtt, setShowMqtt] = useState(false)
   const [mqttLoaded, setMqttLoaded] = useState(false)
   const [advertZeroHop, setAdvertZeroHop] = useState(false)
@@ -490,6 +494,40 @@ export default function ConfigForm({
         </button>
       )}
       {showDmc && FilterPanel}
+
+      {/* Vanilla region tree: base repeater feature, shown for any region-capable device. */}
+      {device.region && (
+        <button className="btn" onClick={() => setShowRegion(v => !v)} style={{ marginBottom: '.75rem' }}>
+          {showRegion ? '▲' : '▼'} {t('config_show_region')}
+        </button>
+      )}
+      {showRegion && device.region && (
+        <div className="panel">
+          <div className="panel-legend">{t('config_section_region')}</div>
+          <RegionSettingsForm
+            value={device.region}
+            onChange={r => onUpdate({ region: r })}
+            onSendCommand={onSendCommand}
+          />
+        </div>
+      )}
+
+      {/* Region gating (dc.gate) + neighbour discovery: DMC MQTT observer firmware only. */}
+      {device.region && device.dcGateSupported && (
+        <button className="btn" onClick={() => setShowRegionGating(v => !v)} style={{ marginBottom: '.75rem' }}>
+          {showRegionGating ? '▲' : '▼'} {t('config_show_region_gating')}
+        </button>
+      )}
+      {showRegionGating && device.region && device.dcGateSupported && (
+        <div className="panel">
+          <div className="panel-legend">{t('config_section_region_gating')}</div>
+          <RegionGatingForm
+            value={device.region}
+            onChange={r => onUpdate({ region: r })}
+            onSendCommand={onSendCommand}
+          />
+        </div>
+      )}
 
       {device.mqttCapable && (
         <button

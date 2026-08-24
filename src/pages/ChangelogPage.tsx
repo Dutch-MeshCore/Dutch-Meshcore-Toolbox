@@ -71,6 +71,16 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'USB Setup: region & region gating',
+        date: '2026-08-24',
+        items: [
+          <>New <strong>Region</strong> panel in USB Setup: edit the repeater's region tree (add / rename / remove regions, flood allow / deny, and pick the <strong>home</strong> and <strong>default</strong> scope), discover zero-hop <strong>neighbours</strong> (<code>discover.neighbors</code> / <code>discover.scopes</code>), and share or import the config as JSON aligned with config.meshcore.io. Region is a base repeater feature (v1.10+), shown for any region-capable device.</>,
+          <>Separate <strong>Region Gating</strong> panel for <strong>duty-cycle region gating</strong> (<code>dc.gate</code> enable, threshold and hysteresis, plus a live status read), shown only on DMC MQTT observer firmware that answers <code>get dc.gate</code>.</>,
+          <>Saving applies the tree to the device with discrete <code>region put</code> / <code>remove</code> / <code>allowf</code> / <code>denyf</code> commands, and <strong>Import / Export</strong> round-trips the whole region config.</>,
+          <>Documented the new region and <code>dc.gate</code> CLI commands (and corrected <code>af</code> to "airtime factor") in the CLI reference, in NL / EN / DE.</>,
+        ],
+      },
+      {
         version: 'UI refresh: navbar, German & fonts',
         date: '2026-08-19',
         items: [
@@ -154,6 +164,16 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'USB-instellingen: regio & regiogating',
+        date: '2026-08-24',
+        items: [
+          <>Nieuw <strong>Regio</strong>-paneel in USB-instellingen: bewerk de regioboom van de repeater (regio's toevoegen / hernoemen / verwijderen, flood toestaan / weigeren, en de <strong>thuis</strong>- en <strong>standaard</strong>-scope kiezen), ontdek zero-hop <strong>buren</strong> (<code>discover.neighbors</code> / <code>discover.scopes</code>), en deel of importeer de config als JSON, afgestemd op config.meshcore.io. Regio is een basis-repeaterfunctie (v1.10+), getoond voor elk regio-capabel apparaat.</>,
+          <>Apart <strong>Regiogating</strong>-paneel voor <strong>duty-cycle-regiogating</strong> (<code>dc.gate</code> aan/uit, drempel en hysterese, plus live status uitlezen), alleen getoond op DMC MQTT observer-firmware die <code>get dc.gate</code> ondersteunt.</>,
+          <>Opslaan past de boom toe op het apparaat met losse commando's <code>region put</code> / <code>remove</code> / <code>allowf</code> / <code>denyf</code>, en <strong>Import / Export</strong> verwerkt de volledige regioconfiguratie.</>,
+          <>De nieuwe regio- en <code>dc.gate</code>-CLI-commando's gedocumenteerd (en <code>af</code> gecorrigeerd naar "airtime factor") in de CLI-referentie, in NL / EN / DE.</>,
+        ],
+      },
+      {
         version: 'UI-vernieuwing: navbar, Duits & lettertypen',
         date: '2026-08-19',
         items: [
@@ -236,6 +256,16 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
       },
     ],
     toolbox: [
+      {
+        version: 'USB-Setup: Regionen & Regionen-Gating',
+        date: '2026-08-24',
+        items: [
+          <>Neues <strong>Regionen</strong>-Panel im USB-Setup: den Regionenbaum des Repeaters bearbeiten (Regionen hinzufügen / umbenennen / entfernen, Flooding erlauben / verweigern und den <strong>Heimat</strong>- und <strong>Standard</strong>-Scope wählen), Zero-Hop-<strong>Nachbarn</strong> ermitteln (<code>discover.neighbors</code> / <code>discover.scopes</code>) und die Konfiguration als JSON teilen oder importieren, abgestimmt auf config.meshcore.io. Regionen sind eine Basis-Repeater-Funktion (v1.10+), angezeigt für jedes regionsfähige Gerät.</>,
+          <>Separates <strong>Regionen-Gating</strong>-Panel für <strong>Duty-Cycle-Regionen-Gating</strong> (<code>dc.gate</code> ein/aus, Schwelle und Hysterese, plus Live-Status-Abfrage), nur auf DMC-MQTT-observer-Firmware angezeigt, die <code>get dc.gate</code> unterstützt.</>,
+          <>Beim Speichern wird der Baum mit einzelnen Befehlen <code>region put</code> / <code>remove</code> / <code>allowf</code> / <code>denyf</code> auf das Gerät angewendet, und <strong>Import / Export</strong> überträgt die gesamte Regionenkonfiguration.</>,
+          <>Die neuen Regionen- und <code>dc.gate</code>-CLI-Befehle dokumentiert (und <code>af</code> zu "airtime factor" korrigiert) in der CLI-Referenz, in NL / EN / DE.</>,
+        ],
+      },
       {
         version: 'UI-Auffrischung: Navbar, Deutsch & Schriften',
         date: '2026-08-19',
