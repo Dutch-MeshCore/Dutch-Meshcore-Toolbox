@@ -298,6 +298,13 @@ export default function MqttCliPage() {
       lines.push({ type: 'cmd', text: `set mqtt.email ${email.trim()}` })
     }
 
+    if (active.length > 0) {
+      lines.push({ type: 'comment', text: lang === 'de' ? 'Empfohlene Observer-Einstellungen' : lang === 'nl' ? 'Aanbevolen observer-instellingen' : 'Recommended observer settings' })
+      lines.push({ type: 'cmd', text: 'set mqtt.status on' })
+      lines.push({ type: 'cmd', text: 'set mqtt.raw on' })
+      lines.push({ type: 'cmd', text: 'set mqtt.interval 1' })
+    }
+
     for (const { preset, idx } of active) {
       lines.push({ type: 'comment', text: `Slot ${idx + 1} - ${preset.label}` })
       lines.push({ type: 'cmd', text: `set mqtt${idx + 1}.preset ${preset.id}` })
