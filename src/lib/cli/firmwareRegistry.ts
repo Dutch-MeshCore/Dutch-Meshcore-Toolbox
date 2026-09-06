@@ -256,18 +256,22 @@ export const DMC_REPEATER_COMMANDS: CliCommand[] = [
 
   // RF packet filter (examples/simple_repeater/Filter.{h,cpp}) – v1.17.
   { cmd: 'filter',                  category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Show packet-filter status and per-type blocking summary.', sinceVersion: 'v1.17' },
+  { cmd: 'filter help',             category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'List every filter subcommand.', sinceVersion: 'v1.17' },
+  { cmd: 'filter types',            category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'List all packet-type IDs and names (0-11).', sinceVersion: 'v1.17' },
   { cmd: 'filter on',               category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Enable the RF packet filter.', sinceVersion: 'v1.17' },
   { cmd: 'filter off',              category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Disable the RF packet filter.', sinceVersion: 'v1.17' },
   { cmd: 'filter reset',            category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Restore filter defaults.', sinceVersion: 'v1.17' },
   { cmd: 'filter hops ',            category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter hops ',    desc: 'Set max hop count per payload type. Example: filter hops 5 20 (type,max_hops). Bare "filter hops" shows current limits.', sinceVersion: 'v1.17' },
-  { cmd: 'filter rate ',            category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter rate ',    desc: 'Rate-limit a payload type. Example: filter rate 2 20 60 (type,limit,seconds). Bare "filter rate" shows config.', sinceVersion: 'v1.17' },
+  { cmd: 'filter rate ',            category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter rate ',    desc: 'Rate-limit a payload type. Example: filter rate 2 20 60 (type,limit,seconds[,soft]). Optional soft cutoff (below limit, 0 = off) drops probabilistically. Bare "filter rate" shows config.', sinceVersion: 'v1.17' },
   { cmd: 'filter channel list',     category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'List blocked channels.', sinceVersion: 'v1.17' },
   { cmd: 'filter channel add ',     category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter channel add ',    desc: 'Block a channel by name. Example: filter channel add Public', sinceVersion: 'v1.17' },
   { cmd: 'filter channel remove ',  category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter channel remove ', desc: 'Unblock a channel by name.', sinceVersion: 'v1.17' },
   { cmd: 'filter hash ',            category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter hash ',    desc: 'Set minimum path-hash bytes (1-3). Bare "filter hash" shows the current value.', sinceVersion: 'v1.17' },
+  { cmd: 'filter malformed',        category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Show the malformed-text scan state.', sinceVersion: 'v1.17' },
   { cmd: 'filter malformed on',     category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Drop public-channel text with malformed UTF-8.', sinceVersion: 'v1.17' },
   { cmd: 'filter malformed off',    category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Allow malformed public-channel text.', sinceVersion: 'v1.17' },
   { cmd: 'filter count',            category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Show per-payload-type blocking statistics.', sinceVersion: 'v1.17' },
+  { cmd: 'filter stats ',           category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter stats ',   desc: 'Show detailed drop stats for a topic: hops | rate | hash | channel | malformed | top. This is the data published to the MQTT filter topic on observer builds.', sinceVersion: 'v1.17' },
 
   // v1.17 external-FEM gain (board-capability gated: canControlLoRaFemLna / …FemPaGain)
   { cmd: 'get radio.fem.rxgain',    category: 'radio', deviceTypes: ['repeater','roomserver'],                                  desc: 'Show external-FEM RX LNA gain state.', sinceVersion: 'v1.17', note: 'build-dependent' },
@@ -319,6 +323,9 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'set mqtt.email ',       category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt.email ', desc: 'Set owner email.' },
   { cmd: 'get mqtt.email',        category: 'mqtt', deviceTypes: 'all', desc: 'Show owner email (serial only).', note: 'serial-only' },
   { cmd: 'get mqtt.presets',      category: 'mqtt', deviceTypes: 'all', desc: 'List built-in broker presets (e.g. dutchmeshcore-1, dutchmeshcore-2, meshcore-analyzer-eu).' },
+  { cmd: 'set mqtt.config on',    category: 'mqtt', deviceTypes: 'all', desc: "Enable opt-in publishing of this node's configuration to the MQTT config topic." },
+  { cmd: 'set mqtt.config off',   category: 'mqtt', deviceTypes: 'all', desc: "Disable publishing this node's configuration to the MQTT config topic." },
+  { cmd: 'get mqtt.config',       category: 'mqtt', deviceTypes: 'all', desc: 'Show whether config publishing is enabled.' },
   { cmd: 'get mqtt.config.valid', category: 'mqtt', deviceTypes: 'all', desc: 'Show whether the MQTT config is valid.' },
 
   // MQTT bridge – per slot (firmware exposes N=1..6; the toolbox drives all six)
@@ -391,7 +398,7 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'set mqtt6.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt6.filter ', desc: 'Slot 6 publish filter: all | none | CSV of type names/numbers.', sinceVersion: 'v1.17' },
   { cmd: 'get mqtt6.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 6 publish filter.', sinceVersion: 'v1.17' },
   { cmd: 'get mqtt.filter.interval', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show filter-stats MQTT publish interval (seconds).', sinceVersion: 'v1.17', note: 'build-dependent' },
-  { cmd: 'set mqtt.filter.interval ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt.filter.interval ', desc: 'Set filter-stats MQTT publish interval (seconds). Default 60.', sinceVersion: 'v1.17', note: 'build-dependent' },
+  { cmd: 'set mqtt.filter.interval ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt.filter.interval ', desc: 'Set filter-stats MQTT publish interval in seconds (60-600, 0 = disable the filter topic). Default 60.', sinceVersion: 'v1.17', note: 'build-dependent' },
 
   // v1.17 neighbour publishing (neighbour_discovery_reference.md). PSRAM-only (WITH_MQTT_NEIGHBORS).
   { cmd: 'discover.scopes',            category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Refresh the neighbour table and publish it to MQTT now (one-shot).', sinceVersion: 'v1.17' },
