@@ -277,6 +277,7 @@ export const CLI_DESC_NL: Record<string, string> = {
   "get wifi.powersave": "Toon WiFi-energiebesparingsmodus.",
   "ota check": "Controleer ota.dutchmeshcore.nl op een nieuwere DutchMeshCore-release via de observer-WiFi-verbinding.",
   "ota update": "Download en installeer de nieuwste DutchMeshCore-firmware via de observer-WiFi-verbinding (pull-gebaseerde OTA).",
+  "ota branch ": "Wissel het OTA-kanaal waarvan deze node updates haalt: stable, dev of default (bewaard, zonder opnieuw te flashen).",
   "set timezone ": "Stel IANA-tijdzone in (bijv. Europe/Amsterdam).",
   "get timezone": "Toon tijdzone.",
   "set timezone.offset ": "Stel UTC-offset in (-12..14).",

@@ -3,9 +3,9 @@ import Navbar from '../components/layout/Navbar'
 import { useLang } from '../hooks/useLang'
 
 // Firmware docs live in the MeshCore repo. This points at the published observer
-// branch; update the ref here if/when dmc-observer-dev-1-17 is renamed.
+// branch; update the ref here if/when dmc-observer-dev is renamed.
 const FW_REPO = 'https://github.com/Dutch-MeshCore/MeshCore'
-const FW_REF = 'dmc-observer-dev-1-17'
+const FW_REF = 'dmc-observer-dev'
 const DOCS = {
   brokerFilter: `${FW_REPO}/blob/${FW_REF}/docs/mqtt_broker_filter_reference.md`,
   neighbours: `${FW_REPO}/blob/${FW_REF}/docs/neighbour_discovery_reference.md`,
@@ -31,6 +31,16 @@ type LangKey = 'en' | 'nl' | 'de'
 const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   en: {
     firmware: [
+      {
+        version: 'v1.17.1-dev',
+        date: '2026-09-14',
+        title: 'MQTT Observer (dev channel)',
+        items: [
+          <>New rolling <strong>dev pre-release</strong> of the MQTT Observer firmware, based on upstream MeshCore <strong>v1.17.1</strong> (<code>dmc-observer-dev</code>). Flash the new <strong>1.17.1-dev</strong> builds from the <strong>DutchMeshCore-MQTT-Firmware</strong> group in the Flasher. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/observer-mqtt-dev">Release: observer-mqtt-dev</Doc>.</>,
+          <>New on-device <code>ota branch [stable|dev|default]</code> command: switch the OTA channel a node pulls from at runtime (persisted, no re-flash). A node flashed from the dev channel keeps receiving dev updates until you switch it back with <code>ota branch stable</code>.</>,
+          <>The dev channel is served from <code>ota.dutchmeshcore.nl</code> and is a <strong>rolling</strong> tag (assets are replaced in place), so builds report their version as <code>v1.17.1-dev-…-observer-mqtt-&lt;hash&gt;</code>.</>,
+        ],
+      },
       {
         version: 'v1.17.1 · PacketLog',
         date: '2026-08-19',
@@ -125,6 +135,16 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   nl: {
     firmware: [
       {
+        version: 'v1.17.1-dev',
+        date: '2026-09-14',
+        title: 'MQTT Observer (dev-kanaal)',
+        items: [
+          <>Nieuwe doorlopende <strong>dev-prerelease</strong> van de MQTT Observer-firmware, gebaseerd op upstream MeshCore <strong>v1.17.1</strong> (<code>dmc-observer-dev</code>). Flash de nieuwe <strong>1.17.1-dev</strong>-builds via de <strong>DutchMeshCore-MQTT-Firmware</strong>-groep in de Flasher. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/observer-mqtt-dev">Release: observer-mqtt-dev</Doc>.</>,
+          <>Nieuw commando op het apparaat <code>ota branch [stable|dev|default]</code>: wissel tijdens runtime het OTA-kanaal waarvan een node updates haalt (bewaard, zonder opnieuw te flashen). Een node die vanaf het dev-kanaal is geflasht blijft dev-updates ontvangen totdat je hem terugzet met <code>ota branch stable</code>.</>,
+          <>Het dev-kanaal wordt geserveerd vanaf <code>ota.dutchmeshcore.nl</code> en is een <strong>doorlopende</strong> tag (assets worden ter plekke vervangen), dus builds melden hun versie als <code>v1.17.1-dev-…-observer-mqtt-&lt;hash&gt;</code>.</>,
+        ],
+      },
+      {
         version: 'v1.17.1 · PacketLog',
         date: '2026-08-19',
         title: 'Repeater PacketLog',
@@ -217,6 +237,16 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   },
   de: {
     firmware: [
+      {
+        version: 'v1.17.1-dev',
+        date: '2026-09-14',
+        title: 'MQTT Observer (Dev-Kanal)',
+        items: [
+          <>Neue rollierende <strong>Dev-Vorabversion</strong> der MQTT-Observer-Firmware, basierend auf Upstream-MeshCore <strong>v1.17.1</strong> (<code>dmc-observer-dev</code>). Flashe die neuen <strong>1.17.1-dev</strong>-Builds über die Gruppe <strong>DutchMeshCore-MQTT-Firmware</strong> im Flasher. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/observer-mqtt-dev">Release: observer-mqtt-dev</Doc>.</>,
+          <>Neuer Gerätebefehl <code>ota branch [stable|dev|default]</code>: Wechsle zur Laufzeit den OTA-Kanal, aus dem ein Knoten Updates bezieht (persistent, ohne erneutes Flashen). Ein vom Dev-Kanal geflashter Knoten erhält weiterhin Dev-Updates, bis du ihn mit <code>ota branch stable</code> zurückstellst.</>,
+          <>Der Dev-Kanal wird von <code>ota.dutchmeshcore.nl</code> bereitgestellt und ist ein <strong>rollierender</strong> Tag (Assets werden an Ort und Stelle ersetzt), daher melden Builds ihre Version als <code>v1.17.1-dev-…-observer-mqtt-&lt;hash&gt;</code>.</>,
+        ],
+      },
       {
         version: 'v1.17.1 · PacketLog',
         date: '2026-08-19',

@@ -122,6 +122,10 @@ interface GHFile {
   /** Optional version override (e.g. derived from a release tag) used when the
    *  asset filename carries no semver. Falls back to the parsed filename version. */
   version?: string
+  /** Rolling dev channel (e.g. `observer-mqtt-dev`): the version comes from the
+   *  filename and is labelled `<semver>-dev` so it never collides with the stable
+   *  MQTT builds of the same semver. */
+  devChannel?: boolean
 }
 
 interface FirmwareVariant {
@@ -177,7 +181,9 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
     const url = f.download_url ?? `${PREBUILT_RAW_BASE}/${f.name}`
     // Release tags carry the canonical version; some assets (e.g. room-server) have
     // only `dev-<hash>` in the filename, so prefer the tag-derived override.
-    const versionKey = f.version ?? parsed.versionKey
+    const versionKey = f.devChannel
+      ? `${parsed.versionKey.replace(/^v/, '')}-dev`
+      : f.version ?? parsed.versionKey
 
     const device = map.get(parsed.deviceKey) ?? { deviceKey: parsed.deviceKey, roles: new Map() }
     const role = device.roles.get(parsed.role) ?? { role: parsed.role, versions: new Map() }
@@ -468,7 +474,10 @@ export async function fetchDmcConfig(): Promise<FlasherConfig> {
     .filter(r => /mqtt/i.test(r.tag_name))
     .flatMap(r => {
       const version = dmcTagVersion(r.tag_name)
-      return r.assets.map(a => ({ name: a.name, download_url: a.browser_download_url, version }))
+      // Rolling dev channel (e.g. `observer-mqtt-dev`): tag has no semver, so the
+      // filename semver is used and labelled `-dev` (see buildDmcConfig).
+      const devChannel = !version && /(?:^|[-_])dev$/i.test(r.tag_name)
+      return r.assets.map(a => ({ name: a.name, download_url: a.browser_download_url, version, devChannel }))
     })
   // PacketLog shares the `dmc-repeater-` prefix, so keep the two release sets disjoint.
   const packetlogReleases = releases.filter(r => r.tag_name.startsWith(PACKETLOG_TAG_PREFIX))

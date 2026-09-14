@@ -419,6 +419,7 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   // Pull-based OTA over the observer WiFi connection (ota.dutchmeshcore.nl)
   { cmd: 'ota check',  category: 'ota', deviceTypes: ['repeater','roomserver'], desc: 'Check ota.dutchmeshcore.nl for a newer DutchMeshCore release over the observer WiFi connection.', sinceVersion: 'v1.17' },
   { cmd: 'ota update', category: 'ota', deviceTypes: ['repeater','roomserver'], desc: 'Download and install the latest DutchMeshCore firmware over the observer WiFi connection (pull-based OTA).', sinceVersion: 'v1.17' },
+  { cmd: 'ota branch ', category: 'ota', deviceTypes: ['repeater','roomserver'], placeholder: 'ota branch ', desc: 'Switch the OTA channel this node pulls from: stable, dev, or default (persisted, no re-flash).', sinceVersion: 'v1.17' },
 
   // Timezone
   { cmd: 'set timezone ',        category: 'timezone', deviceTypes: 'all', placeholder: 'set timezone ', desc: 'Set IANA timezone (e.g. Europe/Amsterdam).' },

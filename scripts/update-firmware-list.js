@@ -403,9 +403,15 @@ async function buildDmcFirmwareConfig() {
     // Some assets (e.g. room-server) carry only `dev-<hash>` in the filename, so take
     // the canonical version from the release tag (sans `v` to match the repeater list).
     const tagVer = ((rel.tag_name.match(/v?\d+\.\d+\.\d+(?:-[\w.]+)?/) || [])[0] || '').replace(/^v/, '')
+    // Rolling dev channel (e.g. `observer-mqtt-dev`): the tag has no semver, so the
+    // version comes from the filename. Append `-dev` so these builds are labelled
+    // `1.17.1-dev` and never collide with the stable `1.17.1` MQTT builds.
+    const devChannel = !tagVer && /(?:^|[-_])dev$/i.test(rel.tag_name)
     return (rel.assets ?? []).flatMap(a => {
       const p = parseDmcAsset(a.name, a.browser_download_url)
-      return p ? [{ ...p, versionKey: tagVer || p.versionKey }] : []
+      if (!p) return []
+      const versionKey = tagVer || (devChannel ? `${p.versionKey.replace(/^v/, '')}-dev` : p.versionKey)
+      return [{ ...p, versionKey }]
     })
   })
   console.log(`  → ${releases.length} mqtt releases, ${files.length} firmware files`)

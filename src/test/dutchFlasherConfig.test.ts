@@ -126,6 +126,30 @@ describe('buildDmcConfig', () => {
     expect(rs.role).toBe('dutchmeshcore_roomserver_mqtt')
     expect(rs.version['v1.16.0-dev - App update'].files[0].name).toBe('https://example.test/rs-app.bin')
   })
+
+  it('labels rolling dev-channel builds `<semver>-dev` from the filename version', () => {
+    // The `observer-mqtt-dev` release has no semver in its tag, so fetchDmcConfig marks
+    // its files devChannel and the version must come from the filename with a `-dev`
+    // suffix, never a bare `v1.17.1` that collides with the stable 1.17.1 MQTT builds.
+    const config = buildDmcConfig([
+      {
+        name: 'Heltec_v3_repeater_observer_mqtt-v1.17.1-29011959.bin',
+        download_url: 'https://example.test/dev-app.bin',
+        devChannel: true,
+      },
+      {
+        name: 'Heltec_v3_repeater_observer_mqtt-v1.17.1-29011959-merged.bin',
+        download_url: 'https://example.test/dev-merged.bin',
+        devChannel: true,
+      },
+    ])
+
+    const fw = config.device[0].firmware[0]
+    expect(fw.role).toBe('dutchmeshcore_mqtt')
+    expect(Object.keys(fw.version)).toEqual(['1.17.1-dev - App update', '1.17.1-dev - Full flash'])
+    expect(fw.version['1.17.1-dev - App update'].files[0].name).toBe('https://example.test/dev-app.bin')
+    expect(fw.version['1.17.1-dev - Full flash'].files[0].name).toBe('https://example.test/dev-merged.bin')
+  })
 })
 
 describe('buildDmcRepeaterConfig', () => {
