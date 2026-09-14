@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-18T23:06:04.211Z",
+  "generated": "2026-09-14T18:43:33.992Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -6872,61 +6872,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_T190_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_T190_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_T190_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_T190_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -6968,6 +6939,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_T190_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_T190_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_T190_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_T190_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -6978,41 +7018,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7034,6 +7065,55 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7044,41 +7124,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7100,6 +7171,55 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7110,61 +7230,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_v3_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_v3_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_v3_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_v3_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7206,6 +7297,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_v3_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_v3_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_v3_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_v3_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7216,61 +7376,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7312,6 +7443,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7322,61 +7522,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_expansionkit_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_expansionkit_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7418,6 +7589,273 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_expansionkit_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/heltec_v4_expansionkit_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "dutchmeshcore",
+      "class": "community",
+      "name": "heltec v4 r8",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "dutchmeshcore_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "📡",
+          "title": "DutchMeshCore MQTT",
+          "subTitle": "Repeater + Observer + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "dutchmeshcore",
+      "class": "community",
+      "name": "heltec v4 r8 tft",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "dutchmeshcore_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "📡",
+          "title": "DutchMeshCore MQTT",
+          "subTitle": "Repeater + Observer + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "dutchmeshcore",
+      "class": "community",
+      "name": "heltec v4 r8 tft portrait",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "dutchmeshcore_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "📡",
+          "title": "DutchMeshCore MQTT",
+          "subTitle": "Repeater + Observer + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7434,6 +7872,26 @@
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_Wireless_Tracker_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_Wireless_Tracker_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.16.0 – App update": {
               "files": [
                 {
@@ -7494,61 +7952,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_WSL3_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_WSL3_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7590,6 +8019,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_WSL3_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Heltec_WSL3_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7600,41 +8098,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7650,6 +8139,55 @@
                 {
                   "type": "flash-wipe",
                   "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-repeater-mqtt-v1.17.1/LilyGo_TBeam_1W_repeater_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7732,61 +8270,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7828,6 +8337,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7838,61 +8416,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/RAK_3112_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/RAK_3112_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/RAK_3112_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/RAK_3112_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -7934,6 +8483,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/RAK_3112_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/RAK_3112_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/RAK_3112_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/RAK_3112_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -7944,61 +8562,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G2_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G2_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Station_G2_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Station_G2_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -8040,6 +8629,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G2_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G2_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Station_G2_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Station_G2_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -8050,41 +8708,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -8106,6 +8755,121 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "dutchmeshcore",
+      "class": "community",
+      "name": "Station G3 ESP32 r2",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "dutchmeshcore_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "📡",
+          "title": "DutchMeshCore MQTT",
+          "subTitle": "Repeater + Observer + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -8116,61 +8880,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -8212,6 +8947,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -8222,61 +9026,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1262_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1262_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -8318,6 +9093,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1262_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1262_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -8328,61 +9172,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1276_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1276_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -8424,6 +9239,75 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1276_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Tbeam_SX1276_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -8434,41 +9318,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -8490,6 +9365,55 @@
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
         }
       ]
     },
@@ -8500,61 +9424,32 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "dutchmeshcore_roomserver_mqtt",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "DutchMeshCore Roomserver MQTT",
-          "subTitle": "Room Server + MQTT",
-          "version": {
-            "1.17.1 – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.17.1 – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            },
-            "1.16.0-dev – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Xiao_S3_WIO_room_server_observer_mqtt-dev-f57f8c2.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "1.16.0-dev – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Xiao_S3_WIO_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
           "role": "dutchmeshcore_mqtt",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
           "icon": "📡",
           "title": "DutchMeshCore MQTT",
           "subTitle": "Repeater + Observer + MQTT",
           "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
             "1.17.1 – App update": {
               "files": [
                 {
@@ -8590,6 +9485,75 @@
                 {
                   "type": "flash-wipe",
                   "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/repeater-mqtt-v1.16.0/Xiao_S3_WIO_repeater_observer_mqtt-v1.16.0-7353df0-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "dutchmeshcore_roomserver_mqtt",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🏠",
+          "title": "DutchMeshCore Roomserver MQTT",
+          "subTitle": "Room Server + MQTT",
+          "version": {
+            "1.17.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.17.1 – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-f6e4e167.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.17.1 – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.17.1/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-f6e4e167-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            },
+            "1.16.0-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Xiao_S3_WIO_room_server_observer_mqtt-dev-f57f8c2.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "1.16.0-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/dmc-room-server-mqtt-v1.16.0-dev/Xiao_S3_WIO_room_server_observer_mqtt-dev-f57f8c2-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
