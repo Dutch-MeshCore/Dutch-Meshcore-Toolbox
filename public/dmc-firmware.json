@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-26T09:04:36.170Z",
+  "generated": "2026-09-27T09:47:32.231Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -6882,7 +6882,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -6892,7 +6892,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -6951,7 +6951,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -6961,7 +6961,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_T190_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7028,7 +7028,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7038,7 +7038,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7077,7 +7077,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7087,7 +7087,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v1_1_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7134,7 +7134,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7144,7 +7144,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7183,7 +7183,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7193,7 +7193,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_tracker_v2_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7240,7 +7240,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7250,7 +7250,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7309,7 +7309,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7319,7 +7319,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_v3_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7386,7 +7386,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7396,7 +7396,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7455,7 +7455,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7465,7 +7465,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7532,7 +7532,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7542,7 +7542,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7601,7 +7601,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7611,7 +7611,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_expansionkit_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7678,7 +7678,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7688,7 +7688,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7707,7 +7707,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7717,7 +7717,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7744,7 +7744,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7754,7 +7754,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7773,7 +7773,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7783,7 +7783,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7810,7 +7810,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7820,7 +7820,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7839,7 +7839,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7849,7 +7849,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/heltec_v4_r8_tft_portrait_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7876,7 +7876,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_Wireless_Tracker_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_Wireless_Tracker_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7886,7 +7886,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_Wireless_Tracker_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_Wireless_Tracker_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -7962,7 +7962,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -7972,7 +7972,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8031,7 +8031,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8041,7 +8041,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Heltec_WSL3_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8108,7 +8108,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8118,7 +8118,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8157,7 +8157,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8167,7 +8167,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_TBeam_1W_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8280,7 +8280,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8290,7 +8290,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8349,7 +8349,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8359,7 +8359,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/LilyGo_T3S3_sx1262_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8426,7 +8426,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8436,7 +8436,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8495,7 +8495,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8505,7 +8505,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/RAK_3112_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8572,7 +8572,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8582,7 +8582,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8641,7 +8641,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8651,7 +8651,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G2_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8718,7 +8718,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8728,7 +8728,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8767,7 +8767,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8777,7 +8777,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8824,7 +8824,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8834,7 +8834,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8853,7 +8853,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8863,7 +8863,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Station_G3_ESP32_r2_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8890,7 +8890,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8900,7 +8900,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -8959,7 +8959,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -8969,7 +8969,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/T_Beam_S3_Supreme_SX1262_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9036,7 +9036,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9046,7 +9046,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9105,7 +9105,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9115,7 +9115,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1262_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9182,7 +9182,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9192,7 +9192,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9251,7 +9251,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9261,7 +9261,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Tbeam_SX1276_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9328,7 +9328,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9338,7 +9338,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9377,7 +9377,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9387,7 +9387,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/ThinkNode_M7_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9434,7 +9434,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_repeater_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_repeater_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9444,7 +9444,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_repeater_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_repeater_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -9503,7 +9503,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-29011959.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-923fc428.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -9513,7 +9513,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-29011959-merged.bin",
+                  "name": "https://github.com/Dutch-MeshCore/MeshCore/releases/download/observer-mqtt-dev/Xiao_S3_WIO_room_server_observer_mqtt-v1.17.1-923fc428-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
