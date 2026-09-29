@@ -27,8 +27,13 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/community-firmware.json public/dmc-firmware.json
+          # Mirror into docs/ (the committed build output) so the deploy picks up the
+          # fresh lists even when it serves docs/ as-is without running a build.
+          cp public/community-firmware.json public/dmc-firmware.json docs/
+          git add public/community-firmware.json public/dmc-firmware.json docs/community-firmware.json docs/dmc-firmware.json
           git diff --staged --quiet && echo "No changes." || (
-            git commit -m "chore: update firmware lists [skip ci]"
+            # No [skip ci]: Cloudflare Pages honours it too and would never deploy
+            # the refreshed lists. GITHUB_TOKEN pushes do not re-trigger workflows.
+            git commit -m "chore: update firmware lists"
             git push
           )
