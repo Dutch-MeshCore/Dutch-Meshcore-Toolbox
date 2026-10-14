@@ -162,6 +162,18 @@ function extOf(name) {
   return null
 }
 
+// Display version for a `dmc-repeater[-packetlog]-*` asset: from the tag
+// (dmc-repeater-v1.17.1 → 1.17.1). A rolling dev tag (`dmc-repeater-dev`) has no
+// semver, so it comes from the filename (`{Device}_repeater-v1.17.1-{hash}.bin`) and
+// is labelled `1.17.1-dev`, matching the MQTT `observer-mqtt-dev` builds.
+function repeaterVersion(tag, prefix, assetName) {
+  const fromTag = tag.replace(prefix, '').replace(/^v/, '')
+  if (/^\d+\.\d+\.\d+/.test(fromTag) || !/(?:^|[-_])dev$/i.test(fromTag)) return fromTag
+  const tail = assetName.slice(assetName.indexOf('_repeater-') + '_repeater'.length)
+  const semver = (tail.match(/^-v?(\d+\.\d+\.\d+)/) || [])[1]
+  return semver ? `${semver}-dev` : fromTag
+}
+
 function parseReleaseAsset(name, url, roleDefs) {
   const ext = extOf(name)
   if (!ext) return null
@@ -431,12 +443,12 @@ async function buildDmcRepeaterConfig() {
       && !r.tag_name.startsWith('dmc-repeater-packetlog-'))
 
   const files = releases.flatMap(rel => {
-    const versionKey = rel.tag_name.replace('dmc-repeater-', '').replace(/^v/, '')
     return (rel.assets ?? []).flatMap(a => {
       const ext = extOf(a.name)
       if (!ext) return []
       const sepIdx = a.name.indexOf('_repeater-')
       if (sepIdx < 0) return []
+      const versionKey = repeaterVersion(rel.tag_name, 'dmc-repeater-', a.name)
       const deviceKey = a.name.slice(0, sepIdx)
       const isMerged = a.name.endsWith('-merged.' + ext)
       return [{ deviceKey, role: 'dutchmeshcore_repeater', versionKey, isMerged, ext, url: a.browser_download_url }]
@@ -455,12 +467,12 @@ async function buildDmcPacketlogConfig() {
     .filter(r => typeof r.tag_name === 'string' && r.tag_name.startsWith('dmc-repeater-packetlog-'))
 
   const files = releases.flatMap(rel => {
-    const versionKey = rel.tag_name.replace('dmc-repeater-packetlog-', '').replace(/^v/, '')
     return (rel.assets ?? []).flatMap(a => {
       const ext = extOf(a.name)
       if (!ext) return []
       const sepIdx = a.name.indexOf('_repeater-')
       if (sepIdx < 0) return []
+      const versionKey = repeaterVersion(rel.tag_name, 'dmc-repeater-packetlog-', a.name)
       const deviceKey = a.name.slice(0, sepIdx)
       const isMerged = a.name.endsWith('-merged.' + ext)
       return [{ deviceKey, role: 'dutchmeshcore_packetlog', versionKey, isMerged, ext, url: a.browser_download_url }]

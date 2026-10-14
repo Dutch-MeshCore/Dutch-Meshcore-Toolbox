@@ -185,6 +185,37 @@ describe('buildDmcRepeaterConfig', () => {
     })
   })
 
+  it('labels the rolling dmc-repeater-dev / packetlog-dev builds `<semver>-dev` from the filename', () => {
+    const repeater = buildDmcRepeaterConfig([
+      {
+        tag_name: 'dmc-repeater-dev',
+        assets: [
+          { name: 'Heltec_v3_repeater-v1.17.1-a75332f9.bin', browser_download_url: 'https://example.test/v3-app.bin' },
+          { name: 'Heltec_v3_repeater-v1.17.1-a75332f9-merged.bin', browser_download_url: 'https://example.test/v3-merged.bin' },
+        ],
+      },
+      {
+        tag_name: 'dmc-repeater-v1.17.1',
+        assets: [
+          { name: 'Heltec_v3_repeater-v1.17.1-85c7273.bin', browser_download_url: 'https://example.test/v3-stable.bin' },
+        ],
+      },
+    ])
+    expect(Object.keys(repeater.device[0].firmware[0].version)).toEqual([
+      '1.17.1-dev - App update', '1.17.1-dev - Full flash', '1.17.1 - App update',
+    ])
+
+    const packetlog = buildDmcPacketlogConfig([
+      {
+        tag_name: 'dmc-repeater-packetlog-dev',
+        assets: [
+          { name: 'RAK_4631_repeater-v1.17.1-packetlog-1ebe0339.zip', browser_download_url: 'https://example.test/rak.zip' },
+        ],
+      },
+    ])
+    expect(packetlog.device[0].firmware[0].version['1.17.1-dev'].files[0].name).toBe('https://example.test/rak.zip')
+  })
+
   it('builds nrf52 repeater firmware as a single entry, preferring zip over uf2', () => {
     const config = buildDmcRepeaterConfig([
       {
