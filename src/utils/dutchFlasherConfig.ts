@@ -308,9 +308,17 @@ function extOf(name: string): 'bin' | 'uf2' | 'zip' | null {
   return null
 }
 
-/** Derive the display version from a release tag: dmc-repeater-v1.16.0-dev → 1.16.0-dev */
-function repeaterVersion(tag: string, prefix: string = REPEATER_TAG_PREFIX): string {
-  return tag.replace(prefix, '').replace(/^v/, '')
+/**
+ * Derive the display version from a release tag: dmc-repeater-v1.16.0-dev → 1.16.0-dev.
+ * A rolling dev tag (`dmc-repeater-dev`, `dmc-repeater-packetlog-dev`) has no semver, so
+ * the semver comes from the asset filename (`{Device}_repeater-v1.17.1-{hash}.bin`) and is
+ * labelled `1.17.1-dev`, matching the MQTT `observer-mqtt-dev` builds.
+ */
+function repeaterVersion(tag: string, prefix: string = REPEATER_TAG_PREFIX, assetTail = ''): string {
+  const fromTag = tag.replace(prefix, '').replace(/^v/, '')
+  if (/^\d+\.\d+\.\d+/.test(fromTag) || !/(?:^|[-_])dev$/i.test(fromTag)) return fromTag
+  const semver = assetTail.match(/^-v?(\d+\.\d+\.\d+)/)?.[1]
+  return semver ? `${semver}-dev` : fromTag
 }
 
 /**
@@ -332,7 +340,6 @@ export function buildDmcRepeaterConfig(releases: GHRelease[], opts: RepeaterBuil
   }
 
   for (const release of releases) {
-    const versionKey = repeaterVersion(release.tag_name, opts.tagPrefix)
     for (const asset of release.assets) {
       const ext = extOf(asset.name)
       if (!ext) continue
@@ -340,6 +347,8 @@ export function buildDmcRepeaterConfig(releases: GHRelease[], opts: RepeaterBuil
       if (sepIdx < 0) continue
 
       const deviceKey = asset.name.slice(0, sepIdx)
+      const versionKey = repeaterVersion(release.tag_name, opts.tagPrefix,
+        asset.name.slice(sepIdx + REPEATER_SEPARATOR.length - 1))
       const url = asset.browser_download_url
 
       if (ext === 'bin') {
