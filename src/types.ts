@@ -1,4 +1,4 @@
-import type { FilterSettings } from './lib/config/filterCommands'
+import type { FilterSettings, FilterFeatures } from './lib/config/filterCommands'
 import type { RegionSettings } from './lib/config/regionCommands'
 import type { MqttSettings } from './lib/config/mqttCommands'
 import type { HardwareSettings } from './lib/config/hardwareCommands'
@@ -173,13 +173,16 @@ export interface SerialDeviceInfo {
   importPrvKey?: string
   filter?: FilterSettings
   filterDevice?: FilterSettings
+  // Optional filter features the firmware answered (soft cutoff, dry-run, rules, …),
+  // so the form hides and the save skips what an older DMC build does not know.
+  filterFeatures?: FilterFeatures
   // DMC region-gating settings, read eagerly on connect when the firmware answers
   // the `region` probe. region is the editable copy; regionDevice is the snapshot
   // the save diff is computed against.
   region?: RegionSettings
   regionDevice?: RegionSettings
-  // True only on DMC MQTT observer firmware that supports duty-cycle region gating
-  // (`get dc.gate` is recognized). Gates the separate Region Gating panel.
+  // True only on DMC firmware that supports duty-cycle region gating (`get dc.gate`
+  // answers on/off). Gates the separate Region Gating panel.
   dcGateSupported?: boolean
   // DMC MQTT observer settings (only set when the firmware is MQTT-capable).
   // mqtt/mqttDevice are loaded lazily when the panel is opened (readMqtt).

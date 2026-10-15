@@ -23,7 +23,7 @@ const copy = {
     bannerSub: 'The packet filter is only available in the custom DutchMeshCore repeater and room-server firmware.',
 
     s_what_h: 'What the filter does',
-    s_what: 'The filter can block forwarded packets based on hop count, per-type rate limits, minimum path-hash size, group-channel name, malformed group text, and packet type.',
+    s_what: 'The filter can block forwarded packets based on hop count, per-type rate limits, minimum path-hash size, group-channel name, malformed group text, and packet type. Current dev builds add a per-origin advert window, blocked path prefixes, sender and text rules, a message age limit, and a dry-run mode.',
     rule1: 'The filter is disabled by default; you have to enable it.',
     rule2: 'Only forwarded packets are filtered.',
     rule3: 'Direct-routed packets always bypass the filter, and priority packets involving known ACL contacts are exempt too.',
@@ -39,6 +39,7 @@ const copy = {
 
     s_rate_h: 'Rate limiting',
     s_rate: 'Caps how many packets of a type are forwarded within a time window. Configure with "filter rate <type> <limit> <seconds>": "filter rate 05 20 60" allows 20 Group Text packets every 60 seconds. A limit of 0 disables rate limiting for that type. Defaults:',
+    s_rate_soft: 'Current dev builds add an optional soft cutoff as a fourth argument: "filter rate 05 20 60 15" forwards up to 15 packets per window normally and then drops a growing share between 15 and 20, instead of a hard stop at 20. 0 (or omitting it) turns it off; it must stay below the limit.',
 
     s_channel_h: 'Channel blocking',
     s_channel: 'Stops a repeater from forwarding a noisy group channel: "filter channel add <name>", "filter channel remove <name>", "filter channel list". Up to 16 channels can be blocked. Only Group Text (GRP_TXT) packets are affected, and the repeater still receives them; it just does not forward them.',
@@ -49,11 +50,27 @@ const copy = {
     s_malformed_h: 'Malformed group-message filtering',
     s_malformed: 'When on, Group Text packets are validated for a valid timestamp within ±1 week, a valid message structure, non-empty text, and valid UTF-8: "filter malformed on" / "filter malformed off", default off.',
 
+    s_dryrun_h: 'Dry-run (dev builds)',
+    s_dryrun: 'Not sure a limit is right? "filter dryrun on" evaluates every rule and counts every drop exactly as it would, but still forwards the packet. The status line then ends in "(dry-run)". Watch "filter stats <topic>" and "filter stats air" (the airtime the drops would have saved), then "filter dryrun off" to enforce. Dry-run is saved and survives a reboot.',
+
+    s_advert_h: 'Per-origin advert window (dev builds)',
+    s_advert: 'The advert rate limit caps the total advert budget, so one node re-advertising every few minutes eats it for everyone. "filter advert <hours>" forwards each origin\'s flood advert at most once per window (0-720 h, 0 = off), so every node still gets through once. Origins live in a 256-entry RAM cache; "filter advert clear" forgets them. Drops show in "filter stats advert".',
+
+    s_path_h: 'Blocked path prefixes (dev builds)',
+    s_path: 'When one upstream repeater keeps injecting junk, "filter path add <hex>" drops everything relayed through it (2-8 hex digits, up to 8 prefixes). A prefix is matched against whole path entries of the packet\'s hash size, so to catch a repeater that floods with 1-byte hashes, block its 1-byte prefix. Short prefixes also hit other repeaters starting the same way. Drops per prefix: "filter stats path".',
+
+    s_rules_h: 'Sender and text rules (dev builds)',
+    s_rules: 'For one bot flooding a channel you want to keep: "filter sender add <name> [secs] [prob]" and "filter text add <pattern> [secs] [prob]". secs 0 blocks, 1-65535 lets one matching message through per that many seconds; prob 1-100 makes the rule decide only that share of matches. End a name with * for a prefix; start a text pattern with ^ to match only at the beginning. Rules are checked top to bottom and the first that decides drops the packet (up to 8 of each). They only read Public plus up to 4 #channels on the watch list ("filter watch add #name"), match the name in the message (not a verified identity), and report in "filter stats sender" / "filter stats text".',
+
+    s_age_h: 'Message age limit (dev builds)',
+    s_age: '"filter age <minutes>" drops group texts on readable channels whose sender timestamp is older than the limit (1-10080, "off" to disable), so late or replayed messages are not repeated. It needs a set clock on the repeater: until then "filter age" shows "(clock not set, inactive)". Phones with a slow clock look old, so start generous (e.g. 60) and try it in dry-run first.',
+
+
     s_stats_h: 'Statistics',
-    s_stats: 'The "filter" status line reports blocked counts, e.g. "Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]". "filter count" reports per-type counts: "05: 2,10" means packet type 05 (Group Text) had 2 blocked by the hop limit and 10 by rate limiting. Statistics reset together with the repeater statistics.',
+    s_stats: 'The "filter" status line reports blocked counts, e.g. "Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]". "filter count" reports per-type counts: "05: 2,10" means packet type 05 (Group Text) had 2 blocked by the hop limit and 10 by rate limiting. "filter stats <topic>" shows detail for hops, rate, hash, channel, malformed and top, plus advert, path, air, sender, text and age on dev builds. Statistics reset together with the repeater statistics.',
 
     s_persist_h: 'Persistent configuration',
-    s_persist: 'All filter settings are stored in /filter_prefs and survive reboots: the enabled state, hop limits, rate limits, blocked channels, minimum hash size, and malformed filtering.',
+    s_persist: 'All filter settings are stored in /filter_prefs and survive reboots: the enabled state, hop limits, rate limits and soft cutoffs, blocked channels, minimum hash size, malformed filtering, and on dev builds dry-run, the advert window, path prefixes, sender/text rules, the watch list and the age limit. Files written by older firmware load the new settings at their defaults.',
 
     s_reco_h: 'Recommended configurations',
     s_reco_note: 'To block the July 2026 spammer, make sure to include "filter rate 02 5 60" (it is in the busy example, not the typical one).',
@@ -87,7 +104,7 @@ const copy = {
     bannerSub: 'Het pakketfilter is alleen beschikbaar in de aangepaste DutchMeshCore repeater- en room-server-firmware.',
 
     s_what_h: 'Wat het filter doet',
-    s_what: 'Het filter kan doorgestuurde pakketten blokkeren op basis van hop-aantal, snelheidslimieten per type, minimale path-hash-grootte, groepskanaalnaam, ongeldige groepstekst en pakkettype.',
+    s_what: 'Het filter kan doorgestuurde pakketten blokkeren op basis van hop-aantal, snelheidslimieten per type, minimale path-hash-grootte, groepskanaalnaam, ongeldige groepstekst en pakkettype. De huidige dev-builds voegen een advertentievenster per afzender, geblokkeerde pad-prefixen, afzender- en tekstregels, een maximale berichtleeftijd en een dry-run-modus toe.',
     rule1: 'Het filter staat standaard uit; je moet het zelf inschakelen.',
     rule2: 'Alleen doorgestuurde pakketten worden gefilterd.',
     rule3: 'Direct gerouteerde pakketten omzeilen het filter altijd, en prioriteitspakketten met bekende ACL-contacten zijn eveneens vrijgesteld.',
@@ -103,6 +120,7 @@ const copy = {
 
     s_rate_h: 'Snelheidslimiet',
     s_rate: 'Begrenst hoeveel pakketten van een type binnen een tijdvenster worden doorgestuurd. Stel in met "filter rate <type> <limiet> <seconden>": "filter rate 05 20 60" staat 20 Group Text-pakketten per 60 seconden toe. Een limiet van 0 schakelt de snelheidslimiet voor dat type uit. Standaardwaarden:',
+    s_rate_soft: 'De huidige dev-builds hebben een optionele zachte grens als vierde argument: "filter rate 05 20 60 15" stuurt tot 15 pakketten per venster gewoon door en laat daarna tussen 15 en 20 een groeiend deel vallen, in plaats van hard te stoppen bij 20. 0 (of weglaten) zet hem uit; hij moet onder de limiet blijven.',
 
     s_channel_h: 'Kanalen blokkeren',
     s_channel: 'Voorkomt dat een repeater een druk groepskanaal doorstuurt: "filter channel add <naam>", "filter channel remove <naam>", "filter channel list". Je kunt maximaal 16 kanalen blokkeren. Alleen Group Text (GRP_TXT)-pakketten worden geraakt, en de repeater ontvangt ze nog steeds; hij stuurt ze alleen niet door.',
@@ -113,11 +131,27 @@ const copy = {
     s_malformed_h: 'Filteren op ongeldige groepsberichten',
     s_malformed: 'Als dit aanstaat, worden Group Text-pakketten gecontroleerd op een geldige tijdstempel binnen ±1 week, een geldige berichtstructuur, niet-lege tekst en geldige UTF-8: "filter malformed on" / "filter malformed off", standaard uit.',
 
+    s_dryrun_h: 'Dry-run (dev-builds)',
+    s_dryrun: 'Twijfel je of een limiet klopt? "filter dryrun on" evalueert elke regel en telt elke drop precies zoals hij zou gebeuren, maar stuurt het pakket toch door. De statusregel eindigt dan op "(dry-run)". Kijk naar "filter stats <onderwerp>" en "filter stats air" (de zendtijd die de drops zouden besparen) en zet daarna "filter dryrun off" om af te dwingen. Dry-run wordt bewaard en blijft na een herstart staan.',
+
+    s_advert_h: 'Advertentievenster per afzender (dev-builds)',
+    s_advert: 'De snelheidslimiet voor advertenties begrenst het totale budget, dus één node die elke paar minuten adverteert, gebruikt het op voor iedereen. "filter advert <uren>" stuurt de flood-advertentie van elke afzender hooguit eens per venster door (0-720 uur, 0 = uit), zodat elke node toch één keer doorkomt. Afzenders staan in een RAM-cache van 256 plekken; "filter advert clear" wist ze. Drops staan in "filter stats advert".',
+
+    s_path_h: 'Geblokkeerde pad-prefixen (dev-builds)',
+    s_path: 'Blijft één repeater stroomopwaarts rommel insturen, dan laat "filter path add <hex>" alles vallen wat via hem is doorgestuurd (2-8 hex-cijfers, maximaal 8 prefixen). Een prefix wordt vergeleken met hele pad-items van de hash-grootte van het pakket; blokkeer dus het 1-byte-prefix om een repeater met 1-byte-hashes te raken. Korte prefixen raken ook andere repeaters die zo beginnen. Drops per prefix: "filter stats path".',
+
+    s_rules_h: 'Afzender- en tekstregels (dev-builds)',
+    s_rules: 'Voor één bot die een kanaal overspoelt dat je wilt houden: "filter sender add <naam> [secs] [prob]" en "filter text add <patroon> [secs] [prob]". secs 0 blokkeert, 1-65535 laat één passend bericht per zoveel seconden door; prob 1-100 laat de regel alleen over dat deel van de treffers beslissen. Eindig een naam op * voor een prefix; begin een tekstpatroon met ^ om alleen aan het begin te matchen. Regels worden van boven naar beneden gecontroleerd en de eerste die beslist, laat het pakket vallen (maximaal 8 van elk). Ze lezen alleen Public plus maximaal 4 #kanalen op de volglijst ("filter watch add #naam"), matchen de naam in het bericht (geen geverifieerde identiteit) en rapporteren in "filter stats sender" / "filter stats text".',
+
+    s_age_h: 'Maximale berichtleeftijd (dev-builds)',
+    s_age: '"filter age <minuten>" laat groepsteksten op leesbare kanalen vallen waarvan de tijdstempel van de afzender ouder is dan de grens (1-10080, "off" om uit te zetten), zodat late of herhaalde berichten niet opnieuw worden doorgestuurd. De klok van de repeater moet zijn ingesteld: tot dan toont "filter age" "(clock not set, inactive)". Telefoons met een achterlopende klok lijken oud, dus begin ruim (bijv. 60) en probeer het eerst in dry-run.',
+
+
     s_stats_h: 'Statistieken',
-    s_stats: 'De statusregel "filter" toont het aantal geblokkeerde pakketten, bijv. "Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]". "filter count" toont de aantallen per type: "05: 2,10" betekent dat pakkettype 05 (Group Text) 2 keer door de hop-limiet en 10 keer door de snelheidslimiet is geblokkeerd. Statistieken worden samen met de repeater-statistieken gereset.',
+    s_stats: 'De statusregel "filter" toont het aantal geblokkeerde pakketten, bijv. "Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]". "filter count" toont de aantallen per type: "05: 2,10" betekent dat pakkettype 05 (Group Text) 2 keer door de hop-limiet en 10 keer door de snelheidslimiet is geblokkeerd. "filter stats <onderwerp>" geeft details voor hops, rate, hash, channel, malformed en top, plus advert, path, air, sender, text en age op dev-builds. Statistieken worden samen met de repeater-statistieken gereset.',
 
     s_persist_h: 'Blijvende configuratie',
-    s_persist: 'Alle filterinstellingen worden opgeslagen in /filter_prefs en blijven na een herstart bewaard: de aan/uit-status, hop-limieten, snelheidslimieten, geblokkeerde kanalen, minimale hash-grootte en het filteren op ongeldige berichten.',
+    s_persist: 'Alle filterinstellingen worden opgeslagen in /filter_prefs en blijven na een herstart bewaard: de aan/uit-status, hop-limieten, snelheidslimieten en zachte grenzen, geblokkeerde kanalen, minimale hash-grootte, het filteren op ongeldige berichten, en op dev-builds dry-run, het advertentievenster, pad-prefixen, afzender-/tekstregels, de volglijst en de leeftijdsgrens. Bestanden van oudere firmware laden de nieuwe instellingen op hun standaardwaarden.',
 
     s_reco_h: 'Aanbevolen configuraties',
     s_reco_note: 'Om de spammer van juli 2026 te blokkeren, neem "filter rate 02 5 60" op (het staat in het drukke voorbeeld, niet in het typische).',
@@ -151,7 +185,7 @@ const copy = {
     bannerSub: 'Der Paketfilter ist nur in der angepassten DutchMeshCore repeater- und room-server-Firmware verfügbar.',
 
     s_what_h: 'Was der Filter macht',
-    s_what: 'Der Filter kann weitergeleitete Pakete anhand von Hop-Anzahl, Ratenlimits pro Typ, minimaler Path-Hash-Größe, Gruppenkanalname, fehlerhaftem Gruppentext und Pakettyp blockieren.',
+    s_what: 'Der Filter kann weitergeleitete Pakete nach Hop-Anzahl, Ratenlimits pro Typ, minimaler Path-Hash-Größe, Gruppenkanalname, fehlerhaftem Gruppentext und Pakettyp blockieren. Aktuelle Dev-Builds ergänzen ein Advert-Fenster pro Absender, blockierte Pfad-Präfixe, Absender- und Textregeln, ein maximales Nachrichtenalter und einen Dry-run-Modus.',
     rule1: 'Der Filter ist standardmäßig deaktiviert; du musst ihn aktivieren.',
     rule2: 'Nur weitergeleitete Pakete werden gefiltert.',
     rule3: 'Direkt geroutete Pakete umgehen den Filter immer, und Prioritätspakete mit bekannten ACL-Kontakten sind ebenfalls ausgenommen.',
@@ -167,6 +201,7 @@ const copy = {
 
     s_rate_h: 'Ratenlimit',
     s_rate: 'Begrenzt, wie viele Pakete eines Typs innerhalb eines Zeitfensters weitergeleitet werden. Konfiguriere mit "filter rate <Typ> <Limit> <Sekunden>": "filter rate 05 20 60" erlaubt 20 Group-Text-Pakete alle 60 Sekunden. Ein Limit von 0 deaktiviert das Ratenlimit für diesen Typ. Standardwerte:',
+    s_rate_soft: 'Aktuelle Dev-Builds haben eine optionale weiche Grenze als viertes Argument: "filter rate 05 20 60 15" leitet bis zu 15 Pakete pro Fenster normal weiter und verwirft danach zwischen 15 und 20 einen wachsenden Anteil, statt bei 20 hart zu stoppen. 0 (oder weglassen) schaltet sie aus; sie muss unter dem Limit bleiben.',
 
     s_channel_h: 'Kanäle blockieren',
     s_channel: 'Hindert einen Repeater daran, einen lauten Gruppenkanal weiterzuleiten: "filter channel add <Name>", "filter channel remove <Name>", "filter channel list". Bis zu 16 Kanäle können blockiert werden. Nur Group-Text (GRP_TXT)-Pakete sind betroffen, und der Repeater empfängt sie weiterhin; er leitet sie nur nicht weiter.',
@@ -177,11 +212,27 @@ const copy = {
     s_malformed_h: 'Filtern fehlerhafter Gruppennachrichten',
     s_malformed: 'Wenn aktiv, werden Group-Text-Pakete auf einen gültigen Zeitstempel innerhalb von ±1 Woche, eine gültige Nachrichtenstruktur, nicht leeren Text und gültiges UTF-8 geprüft: "filter malformed on" / "filter malformed off", Standard aus.',
 
+    s_dryrun_h: 'Dry-run (Dev-Builds)',
+    s_dryrun: 'Unsicher, ob ein Limit passt? "filter dryrun on" wertet jede Regel aus und zählt jeden Drop genau so, wie er passieren würde, leitet das Paket aber trotzdem weiter. Die Statuszeile endet dann auf "(dry-run)". Beobachte "filter stats <Thema>" und "filter stats air" (die Sendezeit, die die Drops sparen würden), dann "filter dryrun off" zum Erzwingen. Dry-run wird gespeichert und übersteht einen Neustart.',
+
+    s_advert_h: 'Advert-Fenster pro Absender (Dev-Builds)',
+    s_advert: 'Das Advert-Ratenlimit begrenzt das Gesamtbudget, also verbraucht ein Knoten, der alle paar Minuten advertet, es für alle. "filter advert <Stunden>" leitet das Flood-Advert jedes Absenders höchstens einmal pro Fenster weiter (0-720 h, 0 = aus), sodass jeder Knoten trotzdem einmal durchkommt. Absender liegen in einem RAM-Cache mit 256 Plätzen; "filter advert clear" vergisst sie. Drops stehen in "filter stats advert".',
+
+    s_path_h: 'Blockierte Pfad-Präfixe (Dev-Builds)',
+    s_path: 'Wenn ein vorgelagerter Repeater ständig Müll einspeist, verwirft "filter path add <hex>" alles, was über ihn weitergeleitet wurde (2-8 Hex-Ziffern, bis zu 8 Präfixe). Ein Präfix wird mit ganzen Pfadeinträgen der Hash-Größe des Pakets verglichen; um einen Repeater mit 1-Byte-Hashes zu treffen, blockiere sein 1-Byte-Präfix. Kurze Präfixe treffen auch andere Repeater mit gleichem Anfang. Drops pro Präfix: "filter stats path".',
+
+    s_rules_h: 'Absender- und Textregeln (Dev-Builds)',
+    s_rules: 'Für einen Bot, der einen Kanal flutet, den du behalten willst: "filter sender add <Name> [secs] [prob]" und "filter text add <Muster> [secs] [prob]". secs 0 blockiert, 1-65535 lässt eine passende Nachricht pro so vielen Sekunden durch; prob 1-100 lässt die Regel nur über diesen Anteil der Treffer entscheiden. Name mit * beenden für ein Präfix; Textmuster mit ^ beginnen, um nur am Anfang zu suchen. Regeln werden von oben nach unten geprüft, die erste, die entscheidet, verwirft das Paket (je bis zu 8). Sie lesen nur Public plus bis zu 4 #Kanäle der Beobachtungsliste ("filter watch add #Name"), vergleichen den Namen in der Nachricht (keine geprüfte Identität) und berichten in "filter stats sender" / "filter stats text".',
+
+    s_age_h: 'Maximales Nachrichtenalter (Dev-Builds)',
+    s_age: '"filter age <Minuten>" verwirft Gruppentexte auf lesbaren Kanälen, deren Absender-Zeitstempel älter als die Grenze ist (1-10080, "off" zum Abschalten), damit verspätete oder wiederholte Nachrichten nicht erneut weitergeleitet werden. Die Uhr des Repeaters muss gestellt sein: bis dahin zeigt "filter age" "(clock not set, inactive)". Telefone mit nachgehender Uhr wirken alt, also großzügig beginnen (z. B. 60) und zuerst im Dry-run testen.',
+
+
     s_stats_h: 'Statistiken',
-    s_stats: 'Die Statuszeile "filter" meldet die blockierten Anzahlen, z. B. "Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]". "filter count" meldet die Anzahlen pro Typ: "05: 2,10" bedeutet, dass Pakettyp 05 (Group Text) 2-mal durch das Hop-Limit und 10-mal durch das Ratenlimit blockiert wurde. Die Statistiken werden zusammen mit den Repeater-Statistiken zurückgesetzt.',
+    s_stats: 'Die Statuszeile "filter" zeigt die blockierten Zähler, z. B. "Filter on: Blocked [ Hops: 3 | Rate: 12 | Channel: 1 | Hash: 0 | Malformed: 2 ]". "filter count" zeigt die Zähler pro Typ: "05: 2,10" bedeutet, dass bei Pakettyp 05 (Group Text) 2 durch das Hop-Limit und 10 durch das Ratenlimit blockiert wurden. "filter stats <Thema>" zeigt Details zu hops, rate, hash, channel, malformed und top, auf Dev-Builds zusätzlich advert, path, air, sender, text und age. Die Statistiken werden zusammen mit den Repeater-Statistiken zurückgesetzt.',
 
     s_persist_h: 'Dauerhafte Konfiguration',
-    s_persist: 'Alle Filtereinstellungen werden in /filter_prefs gespeichert und überstehen Neustarts: der Aktiv-Status, Hop-Limits, Ratenlimits, blockierte Kanäle, minimale Hash-Größe und das Filtern fehlerhafter Nachrichten.',
+    s_persist: 'Alle Filtereinstellungen werden in /filter_prefs gespeichert und überstehen Neustarts: der Aktiv-Status, Hop-Limits, Ratenlimits und weiche Grenzen, blockierte Kanäle, minimale Hash-Größe, das Filtern fehlerhafter Nachrichten und auf Dev-Builds Dry-run, das Advert-Fenster, Pfad-Präfixe, Absender-/Textregeln, die Beobachtungsliste und die Altersgrenze. Dateien älterer Firmware laden die neuen Einstellungen mit ihren Standardwerten.',
 
     s_reco_h: 'Empfohlene Konfigurationen',
     s_reco_note: 'Um den Spammer vom Juli 2026 zu blockieren, füge unbedingt "filter rate 02 5 60" hinzu (es steht im Beispiel für den ausgelasteten Repeater, nicht im typischen).',
@@ -307,7 +358,7 @@ export default function FilterGuidePage() {
             </>
           ) : (
             <>
-              <FilterSettingsForm value={device.filter} onChange={f => updateDevice({ filter: f })} />
+              <FilterSettingsForm value={device.filter} onChange={f => updateDevice({ filter: f })} features={device.filterFeatures} />
               <div className="gs-links" style={{ marginTop: '.6rem' }}>
                 <button className="btn btn-accent" onClick={applyFilter}>{c.live_apply}</button>
                 <button className="btn btn-sm" onClick={readFilter}>{c.live_reread}</button>
@@ -398,6 +449,7 @@ export default function FilterGuidePage() {
         <div className="panel">
           <div className="panel-legend">{c.s_rate_h}</div>
           <p>{c.s_rate}</p>
+          <p>{c.s_rate_soft}</p>
           <table className="filter-type-table">
             <thead><tr><th>{c.tbl_type}</th><th>{c.tbl_limit}</th><th>{c.tbl_window}</th></tr></thead>
             <tbody>
@@ -415,6 +467,11 @@ export default function FilterGuidePage() {
         <div className="panel"><div className="panel-legend">{c.s_channel_h}</div><p>{c.s_channel}</p></div>
         <div className="panel"><div className="panel-legend">{c.s_hash_h}</div><p>{c.s_hash}</p></div>
         <div className="panel"><div className="panel-legend">{c.s_malformed_h}</div><p>{c.s_malformed}</p></div>
+        <div className="panel"><div className="panel-legend">{c.s_dryrun_h}</div><p>{c.s_dryrun}</p></div>
+        <div className="panel"><div className="panel-legend">{c.s_advert_h}</div><p>{c.s_advert}</p></div>
+        <div className="panel"><div className="panel-legend">{c.s_path_h}</div><p>{c.s_path}</p></div>
+        <div className="panel"><div className="panel-legend">{c.s_rules_h}</div><p>{c.s_rules}</p></div>
+        <div className="panel"><div className="panel-legend">{c.s_age_h}</div><p>{c.s_age}</p></div>
         <div className="panel"><div className="panel-legend">{c.s_stats_h}</div><p>{c.s_stats}</p></div>
         <div className="panel"><div className="panel-legend">{c.s_persist_h}</div><p>{c.s_persist}</p></div>
 

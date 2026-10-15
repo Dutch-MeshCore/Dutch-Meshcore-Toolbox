@@ -212,6 +212,19 @@ export function regionSupported(reply: string): boolean {
   // (region is a base repeater feature, v1.10+; only dc.gate is DMC-specific)
 }
 
+/**
+ * True only when `get dc.gate` returns a real on/off value, i.e. the running
+ * firmware actually implements duty-cycle gating. Firmware without the feature
+ * answers with its unknown-variable marker `??: dc.gate` (NOT the literal
+ * "unknown command"), so a substring check for "unknown command" false-positives
+ * and shows a non-writable gating panel whose edits revert on save. Require an
+ * explicit on/off reply, mirroring isMqttSupportedReply / isFilterStatusReply.
+ */
+export function isDcGateSupportedReply(reply: string): boolean {
+  const v = reply.replace(/^>\s*/, '').trim().toLowerCase()
+  return v === 'on' || v === 'off'
+}
+
 /** Parse bare `region home` reply ' home is <name>' (' home is *' means unset). */
 export function parseRegionHome(reply: string): string | null {
   const m = reply.match(/home is(?:\s+now)?\s+(.+?)\s*$/i)

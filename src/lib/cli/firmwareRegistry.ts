@@ -107,12 +107,12 @@ export const MESHCORE_COMMANDS: CliCommand[] = [
   { cmd: 'set af ',                category: 'radio', deviceTypes: 'all', placeholder: 'set af ',        desc: 'Set airtime factor directly (duty-cycle budget).' },
   // v1.17 duty-cycle region gating (off by default; thresh 70 %, hyst 10 %)
   { cmd: 'get dc.gate',            category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show duty-cycle region-gating state.', sinceVersion: 'v1.17' },
-  { cmd: 'set dc.gate ',           category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate ',        desc: 'Enable or disable duty-cycle region gating (0/1).', sinceVersion: 'v1.17' },
-  { cmd: 'get dc.gate.thresh',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show TX duty % above which gating activates.', sinceVersion: 'v1.17' },
-  { cmd: 'set dc.gate.thresh ',    category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.thresh ', desc: 'Set gating threshold (1-100 %). Default 70.', sinceVersion: 'v1.17' },
+  { cmd: 'set dc.gate ',           category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate ',        desc: 'Enable or disable duty-cycle region gating: on|off (1/0 also accepted).', sinceVersion: 'v1.17' },
+  { cmd: 'get dc.gate.thresh',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show the % of the duty-cycle budget used above which gating activates.', sinceVersion: 'v1.17' },
+  { cmd: 'set dc.gate.thresh ',    category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.thresh ', desc: 'Set gating threshold as % of the duty-cycle budget used (1-100), not % of wall-clock time. Default 70.', sinceVersion: 'v1.17' },
   { cmd: 'get dc.gate.hyst',       category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show gating hysteresis margin.', sinceVersion: 'v1.17' },
-  { cmd: 'set dc.gate.hyst ',      category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.hyst ',   desc: 'Set gating hysteresis (0-50 %). Regions reopen below thresh minus hyst. Default 10.', sinceVersion: 'v1.17' },
-  { cmd: 'get dc.gate.status',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show live TX duty % and current gate level.', sinceVersion: 'v1.17' },
+  { cmd: 'set dc.gate.hyst ',      category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.hyst ',   desc: 'Set gating hysteresis in percentage points (0-50). Regions reopen below thresh minus hyst. Default 10.', sinceVersion: 'v1.17' },
+  { cmd: 'get dc.gate.status',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show live % of the duty-cycle budget used and the current gate level (level/max).', sinceVersion: 'v1.17' },
   { cmd: 'get int.thresh',         category: 'radio', deviceTypes: 'all',                    desc: 'Show interference threshold.' },
   { cmd: 'set int.thresh ',        category: 'radio', deviceTypes: 'all', placeholder: 'set int.thresh ', desc: 'Set interference threshold.' },
   { cmd: 'get agc.reset.interval', category: 'radio', deviceTypes: 'all',                    desc: 'Show AGC reset interval.' },
@@ -182,6 +182,7 @@ export const MESHCORE_COMMANDS: CliCommand[] = [
 
   // OTA
   { cmd: 'start ota', category: 'ota', deviceTypes: 'all', desc: 'Start OTA firmware update mode.' },
+  { cmd: 'start ota ap', category: 'ota', deviceTypes: 'all', desc: 'Start OTA update mode on the MeshCore-OTA hotspot, even when joined to a WiFi network (for networks with client isolation).' },
 
   // Region
   { cmd: 'region',           category: 'region', deviceTypes: ['repeater','roomserver','sensor'],                desc: 'Show region hierarchy.' },
@@ -219,6 +220,7 @@ export const MESHCORE_COMMANDS: CliCommand[] = [
   { cmd: 'get adc.multiplier',     category: 'radio',  deviceTypes: 'all',                      desc: 'Show ADC multiplier (build-dependent).', note: 'build-dependent' },
   { cmd: 'set adc.multiplier ',    category: 'radio',  deviceTypes: 'all', placeholder: 'set adc.multiplier ', desc: 'Set ADC multiplier (build-dependent).', note: 'build-dependent' },
   { cmd: 'get bootloader.ver',     category: 'system', deviceTypes: 'all',                      desc: 'Show bootloader version (nRF52 builds).' },
+  { cmd: 'power',                  category: 'power',  deviceTypes: ['repeater','roomserver','sensor'], desc: 'Show battery mV and USB / solar / external power and charger state.', sinceVersion: 'v1.18' },
   { cmd: 'get pwrmgt.support',     category: 'power',  deviceTypes: 'all',                      desc: 'Show power-management support (nRF52 builds).' },
   { cmd: 'get pwrmgt.source',      category: 'power',  deviceTypes: 'all',                      desc: 'Show power source (nRF52 builds).' },
   { cmd: 'get pwrmgt.bootreason',  category: 'power',  deviceTypes: 'all',                      desc: 'Show boot reason (nRF52 builds).' },
@@ -230,6 +232,7 @@ export const MESHCORE_COMMANDS: CliCommand[] = [
   { cmd: 'gps sync',   category: 'gps', deviceTypes: 'all', desc: 'Sync time from GPS (build-dependent).', note: 'build-dependent' },
   { cmd: 'gps setloc', category: 'gps', deviceTypes: 'all', desc: 'Set location from GPS (build-dependent).', note: 'build-dependent' },
   { cmd: 'gps advert', category: 'gps', deviceTypes: 'all', desc: 'Advertise GPS location (build-dependent).', note: 'build-dependent' },
+  { cmd: 'gps diag',   category: 'gps', deviceTypes: 'all', desc: 'Show GPS provider diagnostics (build-dependent).', sinceVersion: 'v1.18', note: 'build-dependent' },
 
   // Bridge (official; only when a WITH_*_BRIDGE build flag is set)
   { cmd: 'get bridge.type',     category: 'bridge', deviceTypes: 'all',                      desc: 'Show bridge type (build-dependent).', note: 'build-dependent' },
@@ -271,7 +274,33 @@ export const DMC_REPEATER_COMMANDS: CliCommand[] = [
   { cmd: 'filter malformed on',     category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Drop public-channel text with malformed UTF-8.', sinceVersion: 'v1.17' },
   { cmd: 'filter malformed off',    category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Allow malformed public-channel text.', sinceVersion: 'v1.17' },
   { cmd: 'filter count',            category: 'filter', deviceTypes: ['repeater','roomserver'],                                 desc: 'Show per-payload-type blocking statistics.', sinceVersion: 'v1.17' },
-  { cmd: 'filter stats ',           category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter stats ',   desc: 'Show detailed drop stats for a topic: hops | rate | hash | channel | malformed | top. This is the data published to the MQTT filter topic on observer builds.', sinceVersion: 'v1.17' },
+  { cmd: 'filter stats ',           category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter stats ',   desc: 'Show detailed drop stats for a topic: hops | rate | hash | channel | malformed | top, and on current dev builds advert | path | air | sender | text | age. This is the data published to the MQTT filter topic on observer builds.', sinceVersion: 'v1.17' },
+
+  // Filter additions on the current dev builds (dmc-dev PR #11): dry-run, per-origin advert
+  // window, message age limit, blocked path prefixes, sender/text rules and their watch list.
+  { cmd: 'filter dryrun', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show the dry-run state.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter dryrun on', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Count every drop but keep forwarding, to size a setting before enforcing it. The status line then ends in (dry-run).', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter dryrun off', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Enforce the filter again (drops are real).', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter advert', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show the per-origin advert window and cache fill.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter advert ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter advert ', desc: 'Forward each origin\'s flood advert at most once per N hours (0-720, 0 = off). Example: filter advert 48', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter advert clear', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Forget every remembered advert origin (window unchanged).', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter age', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show the message age limit and its drops.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter age ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter age ', desc: 'Drop group texts older than N minutes (1-10080), or "off". Needs a set clock on the repeater.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter path list', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'List blocked path prefixes.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter path add ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter path add ', desc: 'Block everything relayed by a repeater ID prefix (2-8 hex digits, max 8). Example: filter path add a1b2', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter path remove ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter path remove ', desc: 'Unblock a path prefix.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter sender list', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'List sender rules in evaluation order.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter sender add ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter sender add ', desc: 'Block, throttle or dose a group-text sender: <name> [secs] [prob]. secs 0 = block, else one message per secs passes; prob 1-100 = share of matches decided. End a name with * for a prefix. Example: filter sender add Bob 60', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter sender remove ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter sender remove ', desc: 'Remove a sender rule.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter text list', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'List text rules in evaluation order.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter text add ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter text add ', desc: 'Block, throttle or dose group texts containing a word: <pattern> [secs] [prob]. Start with ^ to match only at the beginning. Example: filter text add ^BEACON', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter text remove ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter text remove ', desc: 'Remove a text rule.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter watch list', category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'List the channels the rules can read (Public plus the watch list).', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter watch add ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter watch add ', desc: 'Let the sender/text rules and age limit read a #channel (max 4). Example: filter watch add #bots', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'filter watch remove ', category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'filter watch remove ', desc: 'Stop reading a watched #channel.', sinceVersion: 'v1.17.1-dev' },
+
+  // Duty-cycle limit derived from the frequency (dmc-dev PR #5)
+  { cmd: 'set dutycycle auto', category: 'radio', deviceTypes: ['repeater','roomserver'], desc: 'Follow the regulatory duty-cycle limit of the configured frequency (863-870 MHz ETSI table, e.g. 10% at 869.4-869.65 MHz; no limit outside it). Default.', sinceVersion: 'v1.17.1-dev' },
 
   // v1.17 external-FEM gain (board-capability gated: canControlLoRaFemLna / …FemPaGain)
   { cmd: 'get radio.fem.rxgain',    category: 'radio', deviceTypes: ['repeater','roomserver'],                                  desc: 'Show external-FEM RX LNA gain state.', sinceVersion: 'v1.17', note: 'build-dependent' },
@@ -327,6 +356,9 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'set mqtt.config off',   category: 'mqtt', deviceTypes: 'all', desc: "Disable publishing this node's configuration to the MQTT config topic." },
   { cmd: 'get mqtt.config',       category: 'mqtt', deviceTypes: 'all', desc: 'Show whether config publishing is enabled.' },
   { cmd: 'get mqtt.config.valid', category: 'mqtt', deviceTypes: 'all', desc: 'Show whether the MQTT config is valid.' },
+  { cmd: 'get mqtt.advert.verify', category: 'mqtt', deviceTypes: 'all', desc: 'Show whether received adverts are signature-checked before publishing.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'set mqtt.advert.verify on', category: 'mqtt', deviceTypes: 'all', desc: 'Skip publishing received adverts whose Ed25519 signature fails (counted as badsig= in get mqtt.stats).', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'set mqtt.advert.verify off', category: 'mqtt', deviceTypes: 'all', desc: 'Publish received adverts as heard (default), so over-the-air corruption stays visible to collectors.', sinceVersion: 'v1.17.1-dev' },
 
   // MQTT bridge – per slot (firmware exposes N=1..6; the toolbox drives all six)
   { cmd: 'set mqtt1.preset ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt1.preset ',   desc: 'Slot 1 preset (e.g. dutchmeshcore-1, meshcore-analyzer-eu, custom, none).' },
@@ -415,11 +447,23 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'get wifi.ssid',       category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi SSID.' },
   { cmd: 'get wifi.pwd',        category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi password.' },
   { cmd: 'get wifi.powersave',  category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi power-save mode.' },
+  { cmd: 'get link.status', category: 'wifi', deviceTypes: 'all', desc: 'Show the selected network medium (Ethernet or WiFi), connection status, IP, signal and uptime. Replaces get wifi.status.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'get link.diag', category: 'wifi', deviceTypes: 'all', desc: 'Explain the automatic Ethernet / WiFi selection (ThinkNode M7 Ethernet builds).', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'get link.dns', category: 'wifi', deviceTypes: 'all', desc: 'Show the live DNS resolvers, the gateway and the DNS each medium\'s DHCP lease installed.', sinceVersion: 'v1.17.1-dev' },
+  { cmd: 'get wifi.status', category: 'wifi', deviceTypes: 'all', desc: 'WiFi-only compatibility alias of get link.status; reports n/a when another medium is selected.' },
 
   // Pull-based OTA over the observer WiFi connection (ota.dutchmeshcore.nl)
   { cmd: 'ota check',  category: 'ota', deviceTypes: ['repeater','roomserver'], desc: 'Check ota.dutchmeshcore.nl for a newer DutchMeshCore release over the observer WiFi connection.', sinceVersion: 'v1.17' },
   { cmd: 'ota update', category: 'ota', deviceTypes: ['repeater','roomserver'], desc: 'Download and install the latest DutchMeshCore firmware over the observer WiFi connection (pull-based OTA).', sinceVersion: 'v1.17' },
-  { cmd: 'ota branch ', category: 'ota', deviceTypes: ['repeater','roomserver'], placeholder: 'ota branch ', desc: 'Switch the OTA channel this node pulls from: stable, dev, or default (persisted, no re-flash).', sinceVersion: 'v1.17' },
+  { cmd: 'ota branch', category: 'ota', deviceTypes: ['repeater','roomserver'], desc: 'Show the selected OTA channel (prod or beta), the channel this build was made for, and the manifest base ota check / ota update use.', sinceVersion: 'v1.17' },
+  { cmd: 'ota branch ', category: 'ota', deviceTypes: ['repeater','roomserver'], placeholder: 'ota branch ', desc: 'Switch the OTA channel this node pulls from: prod (alias stable), beta (alias dev), or default (follow the build). Persisted; run ota update to switch.', sinceVersion: 'v1.17' },
+  { cmd: 'stop ota', category: 'ota', deviceTypes: 'all', desc: 'Stop an idle manual-OTA web server (start ota) and release port 80. Refuses while an upload is in progress; the session also stops by itself after 15 minutes.', sinceVersion: 'v1.17.1-dev' },
+
+  // Fan control (T-Beam 1W, the only board with a software-controlled fan)
+  { cmd: 'get fan', category: 'power', deviceTypes: ['repeater','roomserver'], desc: 'Show fan mode, measured temperature, fan state and cooldown, e.g. auto 52.4C fan=on cd=18s.', sinceVersion: 'v1.17.1-dev', note: 'build-dependent' },
+  { cmd: 'set fan ', category: 'power', deviceTypes: ['repeater','roomserver'], placeholder: 'set fan ', desc: 'Set fan mode: on | off | auto (default).', sinceVersion: 'v1.17.1-dev', note: 'build-dependent' },
+  { cmd: 'set fan.lo ', category: 'power', deviceTypes: ['repeater','roomserver'], placeholder: 'set fan.lo ', desc: 'In auto, stop the fan below this temperature (°C, 0-100, below fan.hi). Default 45.', sinceVersion: 'v1.17.1-dev', note: 'build-dependent' },
+  { cmd: 'set fan.hi ', category: 'power', deviceTypes: ['repeater','roomserver'], placeholder: 'set fan.hi ', desc: 'In auto, start the fan above this temperature (°C, up to 120, above fan.lo). Default 60.', sinceVersion: 'v1.17.1-dev', note: 'build-dependent' },
 
   // Timezone
   { cmd: 'set timezone ',        category: 'timezone', deviceTypes: 'all', placeholder: 'set timezone ', desc: 'Set IANA timezone (e.g. Europe/Amsterdam).' },

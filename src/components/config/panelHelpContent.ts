@@ -330,29 +330,29 @@ export const PANEL_HELP: Record<PanelHelpId, Record<Lang, HelpContent>> = {
   regionGating: {
     nl: {
       title: 'Regiogating',
-      intro: 'Alleen op DMC MQTT-observerfirmware. Regelt de dc.gate-drempel die bepaalt wanneer de node als gateway tussen regios optreedt op basis van naburige nodes.',
+      intro: 'DMC-repeaterfirmware met duty-cycle-regiogating (huidige dev-builds en de MQTT-observer). Als de repeater het grootste deel van zijn duty-cycle-budget heeft verbruikt, laat hij flood-verkeer tussen regio\'s vallen, van de buitenste laag naar binnen. De binnenste regio en de thuisregio blijven altijd open, en het gaten wordt nooit opgeslagen.',
       fields: [
-        { label: 'dc.gate inschakelen', body: 'Zet regiogating aan zodat de node kan optreden als poort tussen regios.' },
-        { label: 'Drempel', body: 'Aantal buren dat nodig is voordat de gate activeert. Onder deze waarde blijft de gate dicht.' },
-        { label: 'Hysterese', body: 'Marge die schommelen voorkomt: de gate gaat pas weer dicht als het aantal buren merkbaar onder de drempel zakt.' },
+        { label: 'dc.gate inschakelen', body: 'Zet duty-cycle-regiogating aan (standaard uit). Een repeater zonder benoemde regio\'s gate nooit.' },
+        { label: 'Drempel', body: 'Percentage van het duty-cycle-budget (set dutycycle) dat verbruikt mag zijn voordat gating start, niet een percentage van de tijd. Met dutycycle 10 mag de repeater 360 s per uur zenden; bij drempel 70 start gating na 252 s. 70 of 80 werkt bij elke limiet. Standaard 70.' },
+        { label: 'Hysterese', body: 'Herstelmarge in procentpunten: regio\'s gaan weer open zodra het verbruik onder drempel min hysterese zakt (standaard 10, dus onder 60%). Voorkomt schommelen.' },
       ],
     },
     en: {
       title: 'Region gating',
-      intro: 'DMC MQTT observer firmware only. Controls the dc.gate threshold that decides when the node acts as a gateway between regions, based on neighbouring nodes.',
+      intro: 'DMC repeater firmware with duty-cycle region gating (current dev builds and the MQTT observer). When the repeater has used up most of its duty-cycle budget, it sheds inter-region flood traffic from the outermost layer inward. The innermost region and the home region always stay open, and the gate is never saved.',
       fields: [
-        { label: 'Enable dc.gate', body: 'Turns region gating on so the node can act as a gate between regions.' },
-        { label: 'Threshold', body: 'Number of neighbours needed before the gate activates. Below this value the gate stays closed.' },
-        { label: 'Hysteresis', body: 'Margin that prevents flapping: the gate only closes again once the neighbour count drops noticeably below the threshold.' },
+        { label: 'Enable dc.gate', body: 'Turns duty-cycle region gating on (off by default). A repeater with no named regions never gates.' },
+        { label: 'Threshold', body: 'Share of the duty-cycle budget (set dutycycle) that may be used before gating starts, not a share of wall-clock time. With dutycycle 10 the repeater may transmit 360 s per hour; at threshold 70 gating starts after 252 s. 70 or 80 works with any limit. Default 70.' },
+        { label: 'Hysteresis', body: 'Recovery margin in percentage points: regions re-open once usage drops below threshold minus hysteresis (default 10, so below 60%). Prevents flapping.' },
       ],
     },
     de: {
       title: 'Regionen-Gating',
-      intro: 'Nur bei DMC-MQTT-Observer-Firmware. Steuert die dc.gate-Schwelle, die anhand benachbarter Nodes entscheidet, wann der Node als Gateway zwischen Regionen agiert.',
+      intro: 'DMC-Repeater-Firmware mit Duty-Cycle-Regionen-Gating (aktuelle Dev-Builds und der MQTT-Observer). Hat der Repeater den Großteil seines Duty-Cycle-Budgets verbraucht, verwirft er Flood-Verkehr zwischen Regionen, von der äußersten Ebene nach innen. Die innerste Region und die Heimatregion bleiben immer offen, und das Gating wird nie gespeichert.',
       fields: [
-        { label: 'dc.gate aktivieren', body: 'Schaltet das Regionen-Gating ein, damit der Node als Tor zwischen Regionen agieren kann.' },
-        { label: 'Schwelle', body: 'Anzahl der Nachbarn, die nötig ist, bevor das Gate aktiviert. Unter diesem Wert bleibt das Gate geschlossen.' },
-        { label: 'Hysterese', body: 'Marge, die Flattern verhindert: das Gate schließt erst wieder, wenn die Nachbaranzahl merklich unter die Schwelle fällt.' },
+        { label: 'dc.gate aktivieren', body: 'Schaltet das Duty-Cycle-Regionen-Gating ein (standardmäßig aus). Ein Repeater ohne benannte Regionen gated nie.' },
+        { label: 'Schwelle', body: 'Anteil des Duty-Cycle-Budgets (set dutycycle), der verbraucht sein darf, bevor das Gating beginnt, nicht ein Anteil der Uhrzeit. Mit dutycycle 10 darf der Repeater 360 s pro Stunde senden; bei Schwelle 70 beginnt das Gating nach 252 s. 70 oder 80 passt zu jedem Limit. Standard 70.' },
+        { label: 'Hysterese', body: 'Erholungsspanne in Prozentpunkten: Regionen öffnen wieder, sobald der Verbrauch unter Schwelle minus Hysterese fällt (Standard 10, also unter 60%). Verhindert Flattern.' },
       ],
     },
   },

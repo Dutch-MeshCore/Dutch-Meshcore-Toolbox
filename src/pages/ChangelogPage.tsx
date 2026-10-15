@@ -32,6 +32,40 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   en: {
     firmware: [
       {
+        version: 'v1.18.0 · dev',
+        date: '2026-10-15',
+        title: 'All DMC branches',
+        items: [
+          <>Merged upstream MeshCore <strong>v1.18.0</strong> into <code>dmc-dev</code>, <code>dmc-observer-dev</code> and <code>dmc-dev-packetlog</code>. The rolling dev builds pick it up on their next rebuild and will then show as <strong>1.18.0-dev</strong> in the Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream release notes</Doc>.</>,
+          <>New upstream commands <code>power</code> (battery and power-source state) and <code>gps diag</code>.</>,
+          <><strong>RAK3112</strong> fixes: octal PSRAM enabled, battery voltage reading corrected, Heltec V3 pin leftovers removed.</>,
+          <>Observer: caught up with agessaman observer-firmware. <strong>ThinkNode M7</strong> now prefers its onboard Ethernet with WiFi fallback (<code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>), new <code>set mqtt.advert.verify on|off</code> to skip adverts with a bad signature, <code>stop ota</code> to end an idle manual-OTA session, stricter NTP reply validation, and three new broker presets (<code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
+          <><code>ota branch</code> now reports the channels as <strong>prod</strong> / <strong>beta</strong>; <code>stable</code> and <code>dev</code> keep working as aliases. T-Beam 1W builds gain fan control (<code>get fan</code>, <code>set fan on|off|auto</code>, <code>fan.lo</code> / <code>fan.hi</code>).</>,
+          <>PacketLog: serial packet logging enabled on the Waveshare S3 LR1121 repeater and room server.</>,
+        ],
+      },
+      {
+        version: 'v1.17.1-dev · Repeater & PacketLog',
+        date: '2026-10-14',
+        title: 'Repeater (dev channel)',
+        items: [
+          <>New rolling <strong>dev pre-releases</strong> for the plain DMC repeater and the PacketLog builds, next to the MQTT observer dev channel. Flash the <strong>1.17.1-dev</strong> builds from the DutchMeshCore Firmware and PacketLog groups in the Flasher. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-dev">Release: dmc-repeater-dev</Doc> · <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-dev">dmc-repeater-packetlog-dev</Doc>.</>,
+          <>Dev builds report their version as <code>v1.17.1-dev-dutchmeshcore.nl-&lt;hash&gt;</code> (new <code>DMC_CHANNEL</code> build marker); stable builds are unchanged.</>,
+          <><strong>Packet filter</strong> additions: <code>filter dryrun</code> (count drops but keep forwarding), a per-origin <strong>advert window</strong> (<code>filter advert &lt;hours&gt;</code>), blocked <strong>path prefixes</strong> (<code>filter path</code>), <strong>sender and text rules</strong> that block, throttle or dose a bot (<code>filter sender</code> / <code>filter text</code>, readable channels via <code>filter watch</code>), a <strong>message age limit</strong> (<code>filter age</code>), and saved-airtime stats (<code>filter stats air</code>). <Doc href={DOCS.packetFilter}>Packet filter reference</Doc>.</>,
+          <><code>set dc.gate</code> now accepts <code>on</code> / <code>off</code> (and rejects anything else instead of silently disabling), and the docs now state that the <code>dc.gate</code> threshold is a share of the <strong>duty-cycle budget</strong>, not of wall-clock time.</>,
+        ],
+      },
+      {
+        version: 'v1.17.1.01',
+        date: '2026-09-11',
+        title: 'Repeater',
+        items: [
+          <>Consolidated every DMC repeater feature onto <code>dmc-dev</code> on top of upstream <code>dev</code>: filter drop <strong>statistics</strong> (<code>filter stats</code>) and the <strong>soft cutoff</strong> for rate limits (<code>filter rate &lt;type&gt; &lt;limit&gt; &lt;secs&gt; [soft]</code>).</>,
+          <><strong>Duty-cycle region gating</strong> (<code>dc.gate</code>) is no longer observer-only: the plain repeater has it too.</>,
+          <>New <code>set dutycycle auto</code> (the default): the limit follows the configured frequency using the 863-870 MHz ETSI table, e.g. 10% at 869.4-869.65 MHz.</>,
+        ],
+      },
+      {
         version: 'v1.17.1-dev',
         date: '2026-09-14',
         title: 'MQTT Observer (dev channel)',
@@ -80,6 +114,18 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
       },
     ],
     toolbox: [
+      {
+        version: 'Filter, CLI & flasher: current DMC dev firmware',
+        date: '2026-10-15',
+        items: [
+          <>USB Setup and the <strong>Filter CLI generator</strong> now cover the new packet-filter settings: dry-run, the soft cutoff per type, the advert window, the message age limit, blocked path prefixes, sender / text rules and the watch list. Each is read from the device and only shown when the connected firmware answers it, so v1.17.1 builds keep working. Share files from before still import.</>,
+          <><strong>Fix:</strong> on firmware with the soft cutoff, USB Setup read every rate limit back as the default (the reply gained a third column), and saving wiped any configured soft cutoff.</>,
+          <><strong>Region Gating</strong> panel: the help text wrongly described <code>dc.gate</code> as neighbour-count based; it now explains the duty-cycle budget model in NL / EN / DE. The panel now shows on any DMC firmware that answers <code>get dc.gate</code> with on/off, and no longer on firmware that replies <code>??: dc.gate</code>.</>,
+          <><strong>CLI Wiki</strong>: added the new filter commands, <code>set dutycycle auto</code>, <code>stop ota</code>, <code>start ota ap</code>, <code>ota branch</code> prod/beta, <code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>, <code>mqtt.advert.verify</code>, fan control, <code>power</code> and <code>gps diag</code>, and corrected the <code>dc.gate</code> descriptions.</>,
+          <>MQTT broker presets updated to all <strong>38</strong> (adds <code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
+          <><strong>Flasher</strong>: the rolling <code>dmc-repeater-dev</code> and <code>dmc-repeater-packetlog-dev</code> builds are listed as <strong>1.17.1-dev</strong> (taken from the file name) instead of a bare "dev".</>,
+        ],
+      },
       {
         version: 'USB Setup: region & region gating',
         date: '2026-08-24',
@@ -135,6 +181,40 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   nl: {
     firmware: [
       {
+        version: 'v1.18.0 · dev',
+        date: '2026-10-15',
+        title: 'Alle DMC-branches',
+        items: [
+          <>Upstream MeshCore <strong>v1.18.0</strong> samengevoegd in <code>dmc-dev</code>, <code>dmc-observer-dev</code> en <code>dmc-dev-packetlog</code>. De doorlopende dev-builds nemen dit mee bij hun volgende build en verschijnen dan als <strong>1.18.0-dev</strong> in de Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream-releasenotes</Doc>.</>,
+          <>Nieuwe upstream-commando's <code>power</code> (status van batterij en voeding) en <code>gps diag</code>.</>,
+          <><strong>RAK3112</strong>-fixes: octal PSRAM ingeschakeld, uitlezing van de batterijspanning gecorrigeerd, overgebleven Heltec V3-pinnen verwijderd.</>,
+          <>Observer: bijgewerkt naar agessaman observer-firmware. <strong>ThinkNode M7</strong> gebruikt nu bij voorkeur zijn ingebouwde Ethernet met wifi als terugval (<code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>), nieuw <code>set mqtt.advert.verify on|off</code> om advertenties met een ongeldige handtekening over te slaan, <code>stop ota</code> om een inactieve handmatige OTA-sessie te beëindigen, strengere controle van NTP-antwoorden en drie nieuwe broker-presets (<code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
+          <><code>ota branch</code> noemt de kanalen nu <strong>prod</strong> / <strong>beta</strong>; <code>stable</code> en <code>dev</code> blijven werken als alias. T-Beam 1W-builds krijgen ventilatorbediening (<code>get fan</code>, <code>set fan on|off|auto</code>, <code>fan.lo</code> / <code>fan.hi</code>).</>,
+          <>PacketLog: seriële pakketlogging ingeschakeld op de Waveshare S3 LR1121-repeater en room-server.</>,
+        ],
+      },
+      {
+        version: 'v1.17.1-dev · Repeater & PacketLog',
+        date: '2026-10-14',
+        title: 'Repeater (dev-kanaal)',
+        items: [
+          <>Nieuwe doorlopende <strong>dev-prereleases</strong> voor de gewone DMC-repeater en de PacketLog-builds, naast het dev-kanaal van de MQTT-observer. Flash de <strong>1.17.1-dev</strong>-builds via de groepen DutchMeshCore Firmware en PacketLog in de Flasher. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-dev">Release: dmc-repeater-dev</Doc> · <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-dev">dmc-repeater-packetlog-dev</Doc>.</>,
+          <>Dev-builds melden hun versie als <code>v1.17.1-dev-dutchmeshcore.nl-&lt;hash&gt;</code> (nieuwe <code>DMC_CHANNEL</code>-buildmarkering); stabiele builds blijven ongewijzigd.</>,
+          <>Uitbreidingen van het <strong>pakketfilter</strong>: <code>filter dryrun</code> (drops tellen maar wel doorsturen), een <strong>advertentievenster</strong> per afzender (<code>filter advert &lt;uren&gt;</code>), geblokkeerde <strong>pad-prefixen</strong> (<code>filter path</code>), <strong>afzender- en tekstregels</strong> die een bot blokkeren, afremmen of doseren (<code>filter sender</code> / <code>filter text</code>, leesbare kanalen via <code>filter watch</code>), een <strong>maximale berichtleeftijd</strong> (<code>filter age</code>) en statistieken over bespaarde zendtijd (<code>filter stats air</code>). <Doc href={DOCS.packetFilter}>Referentie pakketfilter</Doc>.</>,
+          <><code>set dc.gate</code> accepteert nu <code>on</code> / <code>off</code> (en weigert andere waarden in plaats van stil uit te schakelen), en de documentatie vermeldt nu dat de <code>dc.gate</code>-drempel een deel van het <strong>duty-cycle-budget</strong> is, niet van de kloktijd.</>,
+        ],
+      },
+      {
+        version: 'v1.17.1.01',
+        date: '2026-09-11',
+        title: 'Repeater',
+        items: [
+          <>Alle DMC-repeaterfuncties samengebracht op <code>dmc-dev</code> bovenop upstream <code>dev</code>: drop-<strong>statistieken</strong> van het filter (<code>filter stats</code>) en de <strong>zachte grens</strong> voor snelheidslimieten (<code>filter rate &lt;type&gt; &lt;limiet&gt; &lt;secs&gt; [soft]</code>).</>,
+          <><strong>Duty-cycle-regiogating</strong> (<code>dc.gate</code>) is niet langer alleen voor de observer: de gewone repeater heeft het ook.</>,
+          <>Nieuw <code>set dutycycle auto</code> (de standaard): de limiet volgt de ingestelde frequentie volgens de ETSI-tabel voor 863-870 MHz, bijv. 10% op 869,4-869,65 MHz.</>,
+        ],
+      },
+      {
         version: 'v1.17.1-dev',
         date: '2026-09-14',
         title: 'MQTT Observer (dev-kanaal)',
@@ -183,6 +263,18 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
       },
     ],
     toolbox: [
+      {
+        version: 'Filter, CLI & flasher: actuele DMC-dev-firmware',
+        date: '2026-10-15',
+        items: [
+          <>USB-instellingen en de <strong>Filter CLI-generator</strong> ondersteunen nu de nieuwe pakketfilter-instellingen: dry-run, de zachte grens per type, het advertentievenster, de maximale berichtleeftijd, geblokkeerde pad-prefixen, afzender-/tekstregels en de volglijst. Elke instelling wordt van het apparaat gelezen en alleen getoond als de aangesloten firmware hem kent, dus v1.17.1-builds blijven werken. Oudere deelbestanden zijn nog steeds te importeren.</>,
+          <><strong>Fix:</strong> op firmware met de zachte grens las USB-instellingen elke snelheidslimiet terug als standaardwaarde (het antwoord kreeg een derde kolom), en opslaan wiste een ingestelde zachte grens.</>,
+          <><strong>Regiogating</strong>-paneel: de helptekst beschreef <code>dc.gate</code> ten onrechte als gebaseerd op het aantal buren; hij legt nu het duty-cycle-budgetmodel uit in NL / EN / DE. Het paneel verschijnt nu op elke DMC-firmware die <code>get dc.gate</code> met on/off beantwoordt, en niet meer op firmware die <code>??: dc.gate</code> antwoordt.</>,
+          <><strong>CLI-wiki</strong>: de nieuwe filtercommando's toegevoegd, plus <code>set dutycycle auto</code>, <code>stop ota</code>, <code>start ota ap</code>, <code>ota branch</code> prod/beta, <code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>, <code>mqtt.advert.verify</code>, ventilatorbediening, <code>power</code> en <code>gps diag</code>, en de <code>dc.gate</code>-beschrijvingen gecorrigeerd.</>,
+          <>MQTT-broker-presets bijgewerkt naar alle <strong>38</strong> (voegt <code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code> toe).</>,
+          <><strong>Flasher</strong>: de doorlopende <code>dmc-repeater-dev</code>- en <code>dmc-repeater-packetlog-dev</code>-builds staan nu als <strong>1.17.1-dev</strong> in de lijst (uit de bestandsnaam) in plaats van alleen "dev".</>,
+        ],
+      },
       {
         version: 'USB-instellingen: regio & regiogating',
         date: '2026-08-24',
@@ -238,6 +330,40 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   de: {
     firmware: [
       {
+        version: 'v1.18.0 · dev',
+        date: '2026-10-15',
+        title: 'Alle DMC-Branches',
+        items: [
+          <>Upstream-MeshCore <strong>v1.18.0</strong> in <code>dmc-dev</code>, <code>dmc-observer-dev</code> und <code>dmc-dev-packetlog</code> zusammengeführt. Die rollierenden Dev-Builds übernehmen das beim nächsten Build und erscheinen dann als <strong>1.18.0-dev</strong> im Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream-Release-Notes</Doc>.</>,
+          <>Neue Upstream-Befehle <code>power</code> (Status von Batterie und Stromversorgung) und <code>gps diag</code>.</>,
+          <><strong>RAK3112</strong>-Fixes: Octal-PSRAM aktiviert, Batteriespannungsmessung korrigiert, übrig gebliebene Heltec-V3-Pins entfernt.</>,
+          <>Observer: auf den Stand der agessaman-observer-Firmware gebracht. <strong>ThinkNode M7</strong> nutzt nun bevorzugt sein eingebautes Ethernet mit WLAN als Rückfall (<code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>), neu <code>set mqtt.advert.verify on|off</code>, um Adverts mit ungültiger Signatur zu überspringen, <code>stop ota</code> zum Beenden einer untätigen manuellen OTA-Sitzung, strengere Prüfung von NTP-Antworten und drei neue Broker-Presets (<code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
+          <><code>ota branch</code> nennt die Kanäle nun <strong>prod</strong> / <strong>beta</strong>; <code>stable</code> und <code>dev</code> funktionieren weiter als Alias. T-Beam-1W-Builds erhalten eine Lüftersteuerung (<code>get fan</code>, <code>set fan on|off|auto</code>, <code>fan.lo</code> / <code>fan.hi</code>).</>,
+          <>PacketLog: serielles Paket-Logging auf dem Waveshare-S3-LR1121-Repeater und -Room-Server aktiviert.</>,
+        ],
+      },
+      {
+        version: 'v1.17.1-dev · Repeater & PacketLog',
+        date: '2026-10-14',
+        title: 'Repeater (Dev-Kanal)',
+        items: [
+          <>Neue rollierende <strong>Dev-Vorabversionen</strong> für den normalen DMC-Repeater und die PacketLog-Builds, neben dem Dev-Kanal des MQTT-Observers. Flashe die <strong>1.17.1-dev</strong>-Builds über die Gruppen DutchMeshCore Firmware und PacketLog im Flasher. <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-dev">Release: dmc-repeater-dev</Doc> · <Doc href="https://github.com/Dutch-MeshCore/MeshCore/releases/tag/dmc-repeater-packetlog-dev">dmc-repeater-packetlog-dev</Doc>.</>,
+          <>Dev-Builds melden ihre Version als <code>v1.17.1-dev-dutchmeshcore.nl-&lt;hash&gt;</code> (neue <code>DMC_CHANNEL</code>-Build-Markierung); stabile Builds bleiben unverändert.</>,
+          <>Erweiterungen des <strong>Paketfilters</strong>: <code>filter dryrun</code> (Drops zählen, aber weiterleiten), ein <strong>Advert-Fenster</strong> pro Absender (<code>filter advert &lt;Stunden&gt;</code>), blockierte <strong>Pfad-Präfixe</strong> (<code>filter path</code>), <strong>Absender- und Textregeln</strong>, die einen Bot blockieren, drosseln oder dosieren (<code>filter sender</code> / <code>filter text</code>, lesbare Kanäle über <code>filter watch</code>), ein <strong>maximales Nachrichtenalter</strong> (<code>filter age</code>) und Statistiken zur gesparten Sendezeit (<code>filter stats air</code>). <Doc href={DOCS.packetFilter}>Referenz Paketfilter</Doc>.</>,
+          <><code>set dc.gate</code> akzeptiert nun <code>on</code> / <code>off</code> (und lehnt andere Werte ab, statt still abzuschalten), und die Doku stellt klar, dass die <code>dc.gate</code>-Schwelle ein Anteil des <strong>Duty-Cycle-Budgets</strong> ist, nicht der Uhrzeit.</>,
+        ],
+      },
+      {
+        version: 'v1.17.1.01',
+        date: '2026-09-11',
+        title: 'Repeater',
+        items: [
+          <>Alle DMC-Repeater-Funktionen auf <code>dmc-dev</code> über Upstream-<code>dev</code> zusammengeführt: Drop-<strong>Statistiken</strong> des Filters (<code>filter stats</code>) und die <strong>weiche Grenze</strong> für Ratenlimits (<code>filter rate &lt;Typ&gt; &lt;Limit&gt; &lt;secs&gt; [soft]</code>).</>,
+          <><strong>Duty-Cycle-Regionen-Gating</strong> (<code>dc.gate</code>) ist nicht mehr nur für den Observer: der normale Repeater hat es auch.</>,
+          <>Neu <code>set dutycycle auto</code> (Standard): das Limit folgt der eingestellten Frequenz nach der ETSI-Tabelle für 863-870 MHz, z. B. 10% bei 869,4-869,65 MHz.</>,
+        ],
+      },
+      {
         version: 'v1.17.1-dev',
         date: '2026-09-14',
         title: 'MQTT Observer (Dev-Kanal)',
@@ -286,6 +412,18 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
       },
     ],
     toolbox: [
+      {
+        version: 'Filter, CLI & Flasher: aktuelle DMC-Dev-Firmware',
+        date: '2026-10-15',
+        items: [
+          <>Das USB-Setup und der <strong>Filter-CLI-Generator</strong> unterstützen nun die neuen Paketfilter-Einstellungen: Dry-run, die weiche Grenze pro Typ, das Advert-Fenster, das maximale Nachrichtenalter, blockierte Pfad-Präfixe, Absender-/Textregeln und die Beobachtungsliste. Jede Einstellung wird vom Gerät gelesen und nur angezeigt, wenn die angeschlossene Firmware sie kennt, sodass v1.17.1-Builds weiter funktionieren. Ältere Freigabedateien lassen sich weiterhin importieren.</>,
+          <><strong>Fix:</strong> auf Firmware mit weicher Grenze las das USB-Setup jedes Ratenlimit als Standardwert zurück (die Antwort bekam eine dritte Spalte), und Speichern löschte eine eingestellte weiche Grenze.</>,
+          <><strong>Regionen-Gating</strong>-Panel: der Hilfetext beschrieb <code>dc.gate</code> fälschlich als nachbarzahlbasiert; er erklärt nun das Duty-Cycle-Budget-Modell in NL / EN / DE. Das Panel erscheint nun auf jeder DMC-Firmware, die <code>get dc.gate</code> mit on/off beantwortet, und nicht mehr auf Firmware, die <code>??: dc.gate</code> antwortet.</>,
+          <><strong>CLI Wiki</strong>: die neuen Filterbefehle ergänzt, dazu <code>set dutycycle auto</code>, <code>stop ota</code>, <code>start ota ap</code>, <code>ota branch</code> prod/beta, <code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>, <code>mqtt.advert.verify</code>, Lüftersteuerung, <code>power</code> und <code>gps diag</code>, und die <code>dc.gate</code>-Beschreibungen korrigiert.</>,
+          <>MQTT-Broker-Presets auf alle <strong>38</strong> aktualisiert (ergänzt <code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
+          <><strong>Flasher</strong>: die rollierenden Builds <code>dmc-repeater-dev</code> und <code>dmc-repeater-packetlog-dev</code> stehen nun als <strong>1.17.1-dev</strong> in der Liste (aus dem Dateinamen) statt nur "dev".</>,
+        ],
+      },
       {
         version: 'USB-Setup: Regionen & Regionen-Gating',
         date: '2026-08-24',
@@ -341,9 +479,11 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
 }
 
 function ChangeList({ entries }: { entries: Entry[] }) {
+  // Newest first by date; the sort is stable, so same-day entries keep their order.
+  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date))
   return (
     <>
-      {entries.map(e => (
+      {sorted.map(e => (
         <div className="panel" key={e.version}>
           <div className="panel-legend">
             {e.version}
