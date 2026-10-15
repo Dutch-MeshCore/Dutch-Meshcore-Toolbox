@@ -16,7 +16,7 @@ export const MQTT_PRESETS: readonly string[] = [
   'meshcore-analyzer-eu', 'meshcore-ca-1', 'meshcore-ca-2', 'meshcore-fi',
   'okimesh-1', 'okimesh-2', 'inwmesh', 'bostonmesh', 'rflab', 'ipnt.uk', 'flmesh',
   'corecomms', 'meshtexas', 'mesh-chaun14', 'wcmesh', 'atvirastinklas', 'gomesh',
-  'idahomesh',
+  'idahomesh', 'ntxmesh', 'bsmesh', 'marwoj',
 ] as const
 
 /** MQTT per-slot packet-type filter (mirrors MeshCore/src/helpers/MQTTPacketFilter.h).

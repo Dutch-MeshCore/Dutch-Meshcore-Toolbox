@@ -3,14 +3,14 @@ import type { SerialDeviceInfo, DeviceVars, ConnectionState } from '../types'
 import { DEFAULT_DEVICE_VARS, VAR_MIN_VERSION } from '../types'
 import { parseFirmwareVersion, versionAtLeast } from '../utils/configUtils'
 import {
-  assembleFilterSettings,
   buildFilterCommands,
-  isFilterStatusReply,
+  readFilterFromDevice,
   cloneFilterSettings,
   type FilterSettings,
+  type FilterFeatures,
 } from '../lib/config/filterCommands'
 import {
-  regionSupported, assembleRegionSettings, cloneRegionSettings,
+  regionSupported, isDcGateSupportedReply, assembleRegionSettings, cloneRegionSettings,
   buildRegionCommands, regionToBackup, backupToRegion,
   type RegionSettings, type RegionBackup,
 } from '../lib/config/regionCommands'
@@ -132,19 +132,16 @@ export function useSerialDevice() {
     // Stock firmware replies "> Unknown command"; custom-named DMC builds still match.
     let filter: FilterSettings | undefined
     let filterDevice: FilterSettings | undefined
+    let filterFeatures: FilterFeatures | undefined
     try {
-      const status = await cli.sendCommand('filter')
-      if (isFilterStatusReply(status)) {
-        setBusy('Reading packet filter…')
-        filter = assembleFilterSettings({
-          status,
-          hops: await cli.sendCommand('filter hops'),
-          rate: await cli.sendCommand('filter rate'),
-          channels: await cli.sendCommand('filter channel list'),
-          hash: await cli.sendCommand('filter hash'),
-          malformed: await cli.sendCommand('filter malformed'),
-        })
-        filterDevice = cloneFilterSettings(filter)
+      const read = await readFilterFromDevice(async cmd => {
+        if (cmd !== 'filter') setBusy('Reading packet filter…')
+        return cli.sendCommand(cmd)
+      })
+      if (read) {
+        filter = read.settings
+        filterDevice = cloneFilterSettings(read.settings)
+        filterFeatures = read.features
       }
     } catch { /* filter is optional; ignore if unsupported or unresponsive */ }
 
@@ -176,9 +173,9 @@ export function useSerialDevice() {
     } catch { /* optional */ }
 
     // The region tree is a base repeater feature (v1.10+), so it is read whenever
-    // the `region` dump looks valid. Duty-cycle region gating (dc.gate) is DMC MQTT
-    // observer firmware only, detected separately: stock firmware answers `get
-    // dc.gate` with "Unknown command".
+    // the `region` dump looks valid. Duty-cycle region gating (dc.gate) is a DMC
+    // feature (dmc-dev builds and the MQTT observer), detected separately: firmware
+    // without it answers `get dc.gate` with `??: dc.gate` instead of on/off.
     let region: RegionSettings | undefined
     let regionDevice: RegionSettings | undefined
     let dcGateSupported = false
@@ -187,7 +184,7 @@ export function useSerialDevice() {
       if (regionSupported(tree)) {
         setBusy('Reading region config…')
         const dcGateReply = await cli.sendCommand('get dc.gate')
-        dcGateSupported = !/unknown command/i.test(dcGateReply)
+        dcGateSupported = isDcGateSupportedReply(dcGateReply)
         region = assembleRegionSettings({
           tree,
           home: await cli.sendCommand('region home'),
@@ -204,7 +201,7 @@ export function useSerialDevice() {
 
     setDevice(prev => ({
       version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice,
-      filter, filterDevice, mqttCapable,
+      filter, filterDevice, filterFeatures, mqttCapable,
       region, regionDevice, dcGateSupported,
       // Preserve already-loaded MQTT settings across re-reads (e.g. after save) and
       // resync the base snapshot to the current values so the diff stays clean.
@@ -236,17 +233,12 @@ export function useSerialDevice() {
     if (!cli) return
     setBusy('Reading packet filter…')
     try {
-      const status = await cli.sendCommand('filter')
-      if (!isFilterStatusReply(status)) return
-      const filter = assembleFilterSettings({
-        status,
-        hops: await cli.sendCommand('filter hops'),
-        rate: await cli.sendCommand('filter rate'),
-        channels: await cli.sendCommand('filter channel list'),
-        hash: await cli.sendCommand('filter hash'),
-        malformed: await cli.sendCommand('filter malformed'),
-      })
-      setDevice(d => (d ? { ...d, filter, filterDevice: cloneFilterSettings(filter) } : d))
+      const read = await readFilterFromDevice(cmd => cli.sendCommand(cmd))
+      if (!read) return
+      const filter = read.settings
+      setDevice(d => (d ? {
+        ...d, filter, filterDevice: cloneFilterSettings(filter), filterFeatures: read.features,
+      } : d))
     } finally {
       setBusy('')
     }
@@ -260,7 +252,7 @@ export function useSerialDevice() {
       const tree = await cli.sendCommand('region')
       if (!regionSupported(tree)) return
       const dcGateReply = await cli.sendCommand('get dc.gate')
-      const dcGateSupported = !/unknown command/i.test(dcGateReply)
+      const dcGateSupported = isDcGateSupportedReply(dcGateReply)
       const region = assembleRegionSettings({
         tree,
         home: await cli.sendCommand('region home'),
@@ -321,7 +313,7 @@ export function useSerialDevice() {
       }
 
       if (device.filter && device.filterDevice) {
-        const filterCmds = buildFilterCommands(device.filter, device.filterDevice)
+        const filterCmds = buildFilterCommands(device.filter, device.filterDevice, device.filterFeatures)
         for (const cmd of filterCmds) {
           await cli.sendCommand(cmd)
         }

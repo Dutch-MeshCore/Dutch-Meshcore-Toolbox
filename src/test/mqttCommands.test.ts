@@ -204,8 +204,8 @@ describe('buildMqttCommands', () => {
 })
 
 describe('preset table parity with firmware', () => {
-  it('mirrors MQTTPresets.h (35 built-ins incl. the DMC defaults)', () => {
-    expect(MQTT_PRESETS).toHaveLength(35)
+  it('mirrors MQTTPresets.h (38 built-ins incl. the DMC defaults)', () => {
+    expect(MQTT_PRESETS).toHaveLength(38)
     expect(MQTT_PRESETS).toContain('dutchmeshcore-1')
     expect(MQTT_PRESETS).toContain('dutchmeshcore-2')
     expect(MQTT_PRESETS).toContain('meshcore-analyzer-eu') // slot-3 default

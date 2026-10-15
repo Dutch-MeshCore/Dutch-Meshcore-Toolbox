@@ -17,6 +17,15 @@ import {
   parseFilterCount,
   serializeFilterSettings,
   parseSharedFilterSettings,
+  parseFilterDryrun,
+  parseFilterAdvert,
+  parseFilterAge,
+  parseFilterPaths,
+  parseFilterRules,
+  parseFilterWatch,
+  detectFilterFeatures,
+  readFilterFromDevice,
+  ALL_FILTER_FEATURES,
 } from '../lib/config/filterCommands'
 
 describe('filter model', () => {
@@ -105,6 +114,83 @@ describe('buildFilterCommands', () => {
     ])
   })
 
+  it('sends the soft cutoff only when set, and drops it for firmware without it', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    next.perType[5].soft = 15
+    expect(buildFilterCommands(next, base)).toEqual(['filter rate 5 20 60 15'])
+    expect(buildFilterCommands(next, base, { ...ALL_FILTER_FEATURES, soft: false })).toEqual([])
+
+    const cleared = cloneFilterSettings(next)
+    cleared.perType[5].soft = 0
+    expect(buildFilterCommands(cleared, next)).toEqual(['filter rate 5 20 60'])
+  })
+
+  it('emits the extended settings before dry-run and enable', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    next.enabled = true
+    next.dryrun = true
+    next.advertHours = 48
+    next.ageMins = 60
+    next.paths = ['A1B2']
+    next.watch = ['#bots']
+    next.senders = [{ pattern: 'Bob', secs: 60, prob: 100 }, { pattern: 'Bot*', secs: 0, prob: 50 }]
+    next.texts = [{ pattern: '^BEACON', secs: 0, prob: 100 }]
+    expect(buildFilterCommands(next, base)).toEqual([
+      'filter advert 48',
+      'filter path add A1B2',
+      'filter watch add #bots',
+      'filter sender add Bob 60',
+      'filter sender add Bot* 0 50',
+      'filter text add ^BEACON',
+      'filter age 60',
+      'filter dryrun on',
+      'filter on',
+    ])
+  })
+
+  it('rebuilds a rule list in order when any rule changes', () => {
+    const base = defaultFilterSettings()
+    base.senders = [{ pattern: 'A', secs: 0, prob: 100 }, { pattern: 'B', secs: 0, prob: 100 }]
+    const next = cloneFilterSettings(base)
+    next.senders[0].secs = 30
+    expect(buildFilterCommands(next, base)).toEqual([
+      'filter sender remove A',
+      'filter sender remove B',
+      'filter sender add A 30',
+      'filter sender add B',
+    ])
+  })
+
+  it('removes paths and watch entries and turns the age limit off', () => {
+    const base = defaultFilterSettings()
+    base.paths = ['C3']
+    base.watch = ['#old']
+    base.ageMins = 30
+    const next = cloneFilterSettings(base)
+    next.paths = []
+    next.watch = []
+    next.ageMins = 0
+    expect(buildFilterCommands(next, base)).toEqual([
+      'filter path remove C3',
+      'filter watch remove #old',
+      'filter age off',
+    ])
+  })
+
+  it('sends nothing the firmware does not support', () => {
+    const base = defaultFilterSettings()
+    const next = cloneFilterSettings(base)
+    next.dryrun = true
+    next.advertHours = 12
+    next.ageMins = 5
+    next.paths = ['AA']
+    next.senders = [{ pattern: 'X', secs: 0, prob: 100 }]
+    const none = { soft: false, dryrun: false, advert: false, age: false, path: false, rules: false }
+    expect(buildFilterCommands(next, base, none)).toEqual([])
+  })
+
   it('builds full set from defaults for the generator', () => {
     const base = defaultFilterSettings()
     const next = cloneFilterSettings(base)
@@ -131,10 +217,23 @@ describe('filter reply parsers', () => {
     expect(hops[11]).toBe(9)
   })
 
-  it('parses the rate list by index', () => {
+  it('parses the v1.17.1 rate list (no soft column) by index', () => {
     const rate = parseFilterRate('[TYPE: LIMIT,SECS]\n00: 5,60\n02: 20,120')
-    expect(rate[0]).toEqual({ limit: 5, secs: 60 })
-    expect(rate[2]).toEqual({ limit: 20, secs: 120 })
+    expect(rate[0]).toEqual({ limit: 5, secs: 60, soft: 0 })
+    expect(rate[2]).toEqual({ limit: 20, secs: 120, soft: 0 })
+  })
+
+  it('parses the current rate list with the soft cutoff column', () => {
+    const rate = parseFilterRate('[TYPE: LIMIT,SECS,SOFT]\n00: 5,60,0\n05: 20,60,15')
+    expect(rate[0]).toEqual({ limit: 5, secs: 60, soft: 0 })
+    expect(rate[5]).toEqual({ limit: 20, secs: 60, soft: 15 })
+  })
+
+  it('ignores a truncated two-value line under a SOFT header', () => {
+    // The reply is capped at 160 bytes, so the last line can be cut short.
+    const rate = parseFilterRate('[TYPE: LIMIT,SECS,SOFT]\n10: 5,60,0\n11: 5,6')
+    expect(rate[10]).toEqual({ limit: 5, secs: 60, soft: 0 })
+    expect(rate[11]).toBeUndefined()
   })
 
   it('parses channel names, stripping the hash suffix', () => {
@@ -169,6 +268,96 @@ describe('filter reply parsers', () => {
     expect(s.channels).toEqual(['Public'])
     expect(s.minHashBytes).toBe(3)
     expect(s.malformed).toBe(true)
+  })
+
+  it('parses dry-run, advert window and message age', () => {
+    expect(parseFilterDryrun('> Filter: dry-run on')).toBe(true)
+    expect(parseFilterDryrun('> Filter: dry-run off')).toBe(false)
+    expect(parseFilterDryrun('> Filter: command error')).toBeNull()
+    expect(parseFilterAdvert('> Filter: advert origin window 48h (cache 87/256)')).toBe(48)
+    expect(parseFilterAdvert('> Filter: command error')).toBeNull()
+    expect(parseFilterAge('> Filter: message age limit off')).toBe(0)
+    expect(parseFilterAge('> Message age: max 60m, dropped 37')).toBe(60)
+    expect(parseFilterAge('> Message age: max 60m, dropped 0 (clock not set, inactive)')).toBe(60)
+    expect(parseFilterAge('> Filter: command error')).toBeNull()
+  })
+
+  it('parses blocked path prefixes', () => {
+    expect(parseFilterPaths('A1B2,C3')).toEqual(['A1B2', 'C3'])
+    expect(parseFilterPaths('None')).toEqual([])
+    expect(parseFilterPaths('> Filter: command error')).toBeNull()
+  })
+
+  it('parses sender/text rules with throttle and dosing', () => {
+    expect(parseFilterRules('Bob throttle 60s,Bot* block 50%,SpamBot block')).toEqual([
+      { pattern: 'Bob', secs: 60, prob: 100 },
+      { pattern: 'Bot*', secs: 0, prob: 50 },
+      { pattern: 'SpamBot', secs: 0, prob: 100 },
+    ])
+    expect(parseFilterRules('None')).toEqual([])
+    expect(parseFilterRules('> Filter: command error')).toBeNull()
+  })
+
+  it('parses the watch list, dropping the implicit Public', () => {
+    expect(parseFilterWatch('Public (11),#bots (a3)')).toEqual(['#bots'])
+    expect(parseFilterWatch('Public (11)')).toEqual([])
+    expect(parseFilterWatch('> Filter: command error')).toBeNull()
+  })
+
+  it('assembles the extended settings and detects features on current firmware', () => {
+    const replies = {
+      status: '> Filter on: Blocked [ Hops: 0 | Rate: 0 | Channel: 0 | Hash: 0 | Malformed: 0 ] (dry-run)',
+      hops: '[TYPE: MAX_HOPS]\n00: 8',
+      rate: '[TYPE: LIMIT,SECS,SOFT]\n05: 20,60,10',
+      channels: 'None',
+      hash: '> Filter: minimal 1 bytes path hash size',
+      malformed: '> Filter: malformed text scan off',
+      dryrun: '> Filter: dry-run on',
+      advert: '> Filter: advert origin window 24h (cache 3/256)',
+      age: '> Message age: max 60m, dropped 0',
+      paths: 'A1B2',
+      senders: 'Bob throttle 60s',
+      texts: '^BEACON block',
+      watch: 'Public (11),#bots (a3)',
+    }
+    const s = assembleFilterSettings(replies)
+    expect(s.perType[5].soft).toBe(10)
+    expect(s.dryrun).toBe(true)
+    expect(s.advertHours).toBe(24)
+    expect(s.ageMins).toBe(60)
+    expect(s.paths).toEqual(['A1B2'])
+    expect(s.senders).toEqual([{ pattern: 'Bob', secs: 60, prob: 100 }])
+    expect(s.texts).toEqual([{ pattern: '^BEACON', secs: 0, prob: 100 }])
+    expect(s.watch).toEqual(['#bots'])
+    expect(detectFilterFeatures(replies)).toEqual(ALL_FILTER_FEATURES)
+  })
+
+  it('detects a v1.17.1 build as base-only', () => {
+    const err = '> Filter: command error'
+    const f = detectFilterFeatures({
+      status: '> Filter off: Blocked [ Hops: 0 ]',
+      hops: '', rate: '[TYPE: LIMIT,SECS]\n00: 5,60', channels: 'None', hash: '', malformed: '',
+      dryrun: err, advert: err, age: err, paths: err, senders: err, texts: err, watch: err,
+    })
+    expect(f).toEqual({ soft: false, dryrun: false, advert: false, age: false, path: false, rules: false })
+  })
+})
+
+describe('readFilterFromDevice', () => {
+  it('returns null on firmware without a packet filter', async () => {
+    expect(await readFilterFromDevice(async () => '> Unknown command')).toBeNull()
+  })
+
+  it('reads every subcommand once the status probe matches', async () => {
+    const sent: string[] = []
+    const out = await readFilterFromDevice(async cmd => {
+      sent.push(cmd)
+      return cmd === 'filter' ? '> Filter off: Blocked [ Hops: 0 ]' : '> Filter: command error'
+    })
+    expect(out).not.toBeNull()
+    expect(sent).toContain('filter rate')
+    expect(sent).toContain('filter sender list')
+    expect(out!.features.rules).toBe(false)
   })
 })
 
@@ -235,6 +424,41 @@ describe('serializeFilterSettings / parseSharedFilterSettings', () => {
     expect(out.perType[0].rateLimit).toBe(0)
     expect(out.perType[0].rateSecs).toBe(10)
     expect(out.perType[1].hops).toBe(8) // untouched default
+  })
+
+  it('round-trips and sanitizes the extended fields', () => {
+    const s = defaultFilterSettings()
+    s.dryrun = true
+    s.advertHours = 48
+    s.ageMins = 60
+    s.paths = ['A1B2']
+    s.watch = ['#bots']
+    s.senders = [{ pattern: 'Bob', secs: 60, prob: 100 }]
+    s.texts = [{ pattern: '^BEACON', secs: 0, prob: 50 }]
+    s.perType[5].soft = 10
+    expect(parseSharedFilterSettings(serializeFilterSettings(s))).toEqual(s)
+
+    const out = parseSharedFilterSettings(JSON.stringify({
+      enabled: true,
+      advertHours: 9999,
+      paths: ['a1b2', 'XYZ', 'abc'],
+      watch: ['#ok', 'nohash'],
+      senders: [{ pattern: 'has space' }, { pattern: 'ThisNameIsWayTooLong' }, { pattern: 'Ok', secs: 1e6, prob: 0 }],
+      perType: [{ rateLimit: 5, soft: 9 }],
+    }))!
+    expect(out.advertHours).toBe(720)
+    expect(out.paths).toEqual(['A1B2'])
+    expect(out.watch).toEqual(['#ok'])
+    expect(out.senders).toEqual([{ pattern: 'Ok', secs: 65535, prob: 1 }])
+    expect(out.perType[0].soft).toBe(0) // soft must stay below the limit
+  })
+
+  it('loads an older share file without the extended fields at defaults', () => {
+    const old = { enabled: true, minHashBytes: 2, channels: [], malformed: false, perType: [{ hops: 4, rateLimit: 5, rateSecs: 60 }] }
+    const out = parseSharedFilterSettings(JSON.stringify(old))!
+    expect(out.dryrun).toBe(false)
+    expect(out.senders).toEqual([])
+    expect(out.perType[0].soft).toBe(0)
   })
 })
 

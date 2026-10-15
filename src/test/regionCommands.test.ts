@@ -8,7 +8,7 @@ import {
 } from '../lib/config/regionCommands'
 import { buildRegionCommands } from '../lib/config/regionCommands'
 import {
-  regionSupported, assembleRegionSettings,
+  regionSupported, isDcGateSupportedReply, assembleRegionSettings,
   treeToDefString, defStringToTree,
   serializeRegionSettings, parseSharedRegionSettings,
   regionToBackup, backupToRegion,
@@ -157,6 +157,26 @@ describe('regionSupported', () => {
     expect(regionSupported('* F\n europe F')).toBe(true)
     expect(regionSupported('*^ F')).toBe(true) // empty tree: wildcard is home (trailing '^')
     expect(regionSupported('> Unknown command')).toBe(false)
+  })
+})
+
+describe('isDcGateSupportedReply', () => {
+  // Gating firmware (dc.gate build) answers `get dc.gate` with an on/off value.
+  it('accepts an explicit on/off reply', () => {
+    expect(isDcGateSupportedReply('> off')).toBe(true)
+    expect(isDcGateSupportedReply('> on')).toBe(true)
+    expect(isDcGateSupportedReply('on')).toBe(true)
+  })
+  // Non-gating firmware answers with the unknown-variable marker `??: dc.gate`,
+  // which does NOT contain the literal "unknown command" - the old substring
+  // check false-positived and showed a non-writable panel (values reverted on save).
+  it('rejects the unknown-variable marker', () => {
+    expect(isDcGateSupportedReply('??: dc.gate')).toBe(false)
+    expect(isDcGateSupportedReply('> ??: dc.gate')).toBe(false)
+  })
+  it('rejects unknown-command and empty replies', () => {
+    expect(isDcGateSupportedReply('> Unknown command')).toBe(false)
+    expect(isDcGateSupportedReply('')).toBe(false)
   })
 })
 

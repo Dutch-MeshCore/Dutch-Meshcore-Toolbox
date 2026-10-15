@@ -484,6 +484,7 @@ export default function ConfigForm({
       <FilterSettingsForm
         value={device.filter}
         onChange={f => onUpdate({ filter: f })}
+        features={device.filterFeatures}
       />
       <button
         className="btn" style={{ marginTop: '.6rem' }}
@@ -540,7 +541,7 @@ export default function ConfigForm({
         </div>
       )}
 
-      {/* Region gating (dc.gate) + neighbour discovery: DMC MQTT observer firmware only. */}
+      {/* Duty-cycle region gating (dc.gate): DMC firmware that answers `get dc.gate` with on/off. */}
       {device.region && device.dcGateSupported && (
         <button className="btn" onClick={() => setShowRegionGating(v => !v)} style={{ marginBottom: '.75rem' }}>
           {showRegionGating ? '▲' : '▼'} {t('config_show_region_gating')}
