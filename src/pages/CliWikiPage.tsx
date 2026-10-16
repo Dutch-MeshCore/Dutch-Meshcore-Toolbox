@@ -9,7 +9,7 @@ import {
   type DeviceTypeKey, type CliCommand, type CategoryKey,
 } from '../lib/cli/firmwareRegistry'
 
-const VARIANT_ORDER = ['meshcore', 'dmc-repeater', 'dmc-mqtt']
+const VARIANT_ORDER = ['meshcore', 'dmc-repeater', 'dmc-mqtt', 'meshcomod']
 
 export default function CliWikiPage() {
   const { t, lang } = useLang()

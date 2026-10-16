@@ -26,6 +26,8 @@ import {
   detectFilterFeatures,
   readFilterFromDevice,
   ALL_FILTER_FEATURES,
+  COMPANION_FILTER_FEATURES,
+  isCompanionFilterReply,
 } from '../lib/config/filterCommands'
 
 describe('filter model', () => {
@@ -187,7 +189,7 @@ describe('buildFilterCommands', () => {
     next.ageMins = 5
     next.paths = ['AA']
     next.senders = [{ pattern: 'X', secs: 0, prob: 100 }]
-    const none = { soft: false, dryrun: false, advert: false, age: false, path: false, rules: false }
+    const none = { soft: false, dryrun: false, advert: false, age: false, path: false, rules: false, companion: false }
     expect(buildFilterCommands(next, base, none)).toEqual([])
   })
 
@@ -339,7 +341,7 @@ describe('filter reply parsers', () => {
       hops: '', rate: '[TYPE: LIMIT,SECS]\n00: 5,60', channels: 'None', hash: '', malformed: '',
       dryrun: err, advert: err, age: err, paths: err, senders: err, texts: err, watch: err,
     })
-    expect(f).toEqual({ soft: false, dryrun: false, advert: false, age: false, path: false, rules: false })
+    expect(f).toEqual({ soft: false, dryrun: false, advert: false, age: false, path: false, rules: false, companion: false })
   })
 })
 
@@ -471,5 +473,66 @@ describe('isFilterStatusReply', () => {
     expect(isFilterStatusReply('> Unknown command')).toBe(false)
     expect(isFilterStatusReply('')).toBe(false)
     expect(isFilterStatusReply('> Filter: on')).toBe(false) // set-reply, not the status probe
+  })
+})
+
+describe('companion receive filter (meshcomod)', () => {
+  const status = '> Filter on: Hidden [ Malformed: 3 | Age: 0 | Path: 12 | Sender: 41 | Text: 7 ]'
+
+  it('recognises the companion status line', () => {
+    expect(isFilterStatusReply(status)).toBe(true)
+    expect(isCompanionFilterReply(status)).toBe(true)
+    expect(isCompanionFilterReply('> Filter on: Blocked [ Hops: 0 ]')).toBe(false)
+  })
+
+  it('does not read the companion line as repeater drop counts', () => {
+    expect(parseFilterBlockedCounts(status)).toBeNull()
+  })
+
+  it('reads only the subcommands the companion has', async () => {
+    const sent: string[] = []
+    const replies: Record<string, string> = {
+      filter: status,
+      'filter malformed': '> Filter: malformed text scan on',
+      'filter age': '> Message age: max 60m, dropped 0',
+      'filter path list': 'A1B2',
+      'filter sender list': 'Bot* block',
+      'filter text list': '^!ping throttle 300s',
+    }
+    const out = await readFilterFromDevice(async cmd => {
+      sent.push(cmd)
+      return replies[cmd] ?? '> Filter: command error'
+    })
+    expect(sent).toEqual(['filter', 'filter malformed', 'filter age', 'filter path list', 'filter sender list', 'filter text list'])
+    expect(out!.features).toEqual(COMPANION_FILTER_FEATURES)
+    expect(out!.settings.enabled).toBe(true)
+    expect(out!.settings.malformed).toBe(true)
+    expect(out!.settings.ageMins).toBe(60)
+    expect(out!.settings.paths).toEqual(['A1B2'])
+    expect(out!.settings.senders).toEqual([{ pattern: 'Bot*', secs: 0, prob: 100 }])
+    expect(out!.settings.texts).toEqual([{ pattern: '^!ping', secs: 300, prob: 100 }])
+  })
+
+  it('never sends repeater-only commands to a companion', () => {
+    const next = defaultFilterSettings()
+    next.enabled = true
+    next.minHashBytes = 2
+    next.perType[5].hops = 4
+    next.perType[2].rateLimit = 3
+    next.channels = ['Public']
+    next.watch = ['#bots']
+    next.dryrun = true
+    next.advertHours = 24
+    next.malformed = true
+    next.ageMins = 30
+    next.paths = ['A1B2']
+    next.senders = [{ pattern: 'Bot*', secs: 0, prob: 100 }]
+    expect(buildFilterCommands(next, defaultFilterSettings(), COMPANION_FILTER_FEATURES)).toEqual([
+      'filter malformed on',
+      'filter path add A1B2',
+      'filter sender add Bot*',
+      'filter age 30',
+      'filter on',
+    ])
   })
 })

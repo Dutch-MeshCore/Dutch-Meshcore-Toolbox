@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLang } from '../../hooks/useLang'
 import type { SerialDeviceInfo, DeviceVars, RadioPreset } from '../../types'
-import { utf8ByteLength, nameMaxBytes, ownerInfoBytes, afToDutyCycle, dutyCycleToAf, matchPreset } from '../../utils/configUtils'
+import { utf8ByteLength, nameMaxBytes, ownerInfoBytes, afToDutyCycle, dutyCycleToAf, matchPreset, parseFirmwareVersion, versionAtLeast } from '../../utils/configUtils'
 import VanityKeyDialog from './VanityKeyDialog'
 import ConsoleDialog from './ConsoleDialog'
 import MapDialog from './MapDialog'
@@ -58,6 +58,10 @@ export default function ConfigForm({
     onUpdate({ vars: { ...vars, ...patch } })
   }
 
+  // A companion console only has the companion CLI subset: show what it answered.
+  const companion = !!device.companion
+  const has = (key: keyof DeviceVars) => !companion || key in device.varsDevice
+
   // ── Section: Info & Actions ──────────────────────────────────────────────────
   const InfoSection = (
     <div className="panel">
@@ -68,22 +72,33 @@ export default function ConfigForm({
           <label>Version</label>
           <input value={device.version} readOnly />
         </div>
-        <div className="field-group">
-          <label>Clock</label>
-          <input value={device.clock} readOnly />
-        </div>
+        {!companion && (
+          <div className="field-group">
+            <label>Clock</label>
+            <input value={device.clock} readOnly />
+          </div>
+        )}
+        {companion && (
+          <div className="field-group">
+            <label>Role</label>
+            <input value={device.role} readOnly />
+          </div>
+        )}
       </div>
 
-      <div className="field-row">
-        <div className="field-group">
-          <label>Role</label>
-          <input value={device.role} readOnly />
+      {!companion && (
+        <div className="field-row">
+          <div className="field-group">
+            <label>Role</label>
+            <input value={device.role} readOnly />
+          </div>
+          <div className="field-group">
+            <label>Public Key</label>
+            <input value={device.pubKey} readOnly />
+          </div>
         </div>
-        <div className="field-group">
-          <label>Public Key</label>
-          <input value={device.pubKey} readOnly />
-        </div>
-      </div>
+      )}
+      {companion && <p className="field-hint">{t('config_companion_hint')}</p>}
 
       <div className="action-bar" style={{ marginTop: '.5rem' }}>
         <button className="btn" onClick={() => setConsoleOpen(true)}>🖥 {t('config_console')}</button>
@@ -99,8 +114,8 @@ export default function ConfigForm({
             e.target.value = ''
           }} />
         </label>
-        <button className="btn" onClick={onSyncClock}>🕐 {t('config_sync_clock')}</button>
-        <span className="advert-action">
+        {!companion && <button className="btn" onClick={onSyncClock}>🕐 {t('config_sync_clock')}</button>}
+        {!companion && <span className="advert-action">
           <button className="btn" onClick={() => onSendAdvert(advertZeroHop)}>{t('config_send_advert')}</button>
           <select
             className="advert-mode"
@@ -112,10 +127,10 @@ export default function ConfigForm({
             <option value="flood">{t('config_advert_flood')}</option>
             <option value="direct">{t('config_advert_direct')}</option>
           </select>
-        </span>
-        <button className="btn" onClick={onStartOta}>{t('config_start_ota')}</button>
+        </span>}
+        {!companion && <button className="btn" onClick={onStartOta}>{t('config_start_ota')}</button>}
         <button className="btn" onClick={onReboot}>{t('config_reboot')}</button>
-        <button className="btn" onClick={onFactoryReset}>{t('config_factory_reset')}</button>
+        {!companion && <button className="btn" onClick={onFactoryReset}>{t('config_factory_reset')}</button>}
       </div>
     </div>
   )
@@ -140,6 +155,7 @@ export default function ConfigForm({
         </div>
       </div>
 
+      {!companion && <>
       <div className="field-row">
         <div className="field-group">
           <label>Latitude</label>
@@ -162,6 +178,7 @@ export default function ConfigForm({
       </div>
 
       <button className="btn" onClick={() => setMapOpen(true)}>🗺 Pick on map</button>
+      </>}
     </div>
   )
 
@@ -204,6 +221,9 @@ export default function ConfigForm({
   )
 
   // ── Section: Room Server ──────────────────────────────────────────────────────
+  // Since v1.18 a room server refuses `set repeat on` (ERR - repeat now deprecated);
+  // turning an old repeat setting off still works, so the box is off-only there.
+  const repeatDeprecated = versionAtLeast(parseFirmwareVersion(device.version), [1, 18, 0])
   const RoomSection = device.role === 'roomServer' ? (
     <div className="panel">
       <div className="panel-legend panel-legend--help">
@@ -214,10 +234,12 @@ export default function ConfigForm({
         <input
           type="checkbox"
           checked={vars.repeat}
+          disabled={repeatDeprecated && !device.varsDevice.repeat}
           onChange={e => patchVars({ repeat: e.target.checked })}
         />
         Enable repeat
       </label>
+      {repeatDeprecated && <p className="field-hint">{t('config_repeat_deprecated')}</p>}
     </div>
   ) : null
 
@@ -393,82 +415,108 @@ export default function ConfigForm({
       </div>
 
       <div className="field-row">
-        <div className="field-group">
-          <label>RX delay (s)</label>
-          <input type="number" step="0.1" value={vars.rxdelay} onChange={e => patchVars({ rxdelay: parseFloat(e.target.value) || 0 })} />
-        </div>
-        <div className="field-group">
-          <label>TX delay (s)</label>
-          <input type="number" step="0.1" value={vars.txdelay} onChange={e => patchVars({ txdelay: parseFloat(e.target.value) || 0 })} />
-        </div>
+        {has('rxdelay') && (
+          <div className="field-group">
+            <label>RX delay (s)</label>
+            <input type="number" step="0.1" value={vars.rxdelay} onChange={e => patchVars({ rxdelay: parseFloat(e.target.value) || 0 })} />
+          </div>
+        )}
+        {has('txdelay') && (
+          <div className="field-group">
+            <label>TX delay (s)</label>
+            <input type="number" step="0.1" value={vars.txdelay} onChange={e => patchVars({ txdelay: parseFloat(e.target.value) || 0 })} />
+          </div>
+        )}
       </div>
 
       <div className="field-row">
-        <div className="field-group">
-          <label>Direct TX delay (s)</label>
-          <input type="number" step="0.1" value={vars['direct.txdelay']} onChange={e => patchVars({ 'direct.txdelay': parseFloat(e.target.value) || 0 })} />
-        </div>
-        <div className="field-group">
-          <label>Int. threshold</label>
-          <input type="number" value={vars['int.thresh']} onChange={e => patchVars({ 'int.thresh': Number(e.target.value) })} />
-        </div>
+        {has('direct.txdelay') && (
+          <div className="field-group">
+            <label>Direct TX delay (s)</label>
+            <input type="number" step="0.1" value={vars['direct.txdelay']} onChange={e => patchVars({ 'direct.txdelay': parseFloat(e.target.value) || 0 })} />
+          </div>
+        )}
+        {has('int.thresh') && (
+          <div className="field-group">
+            <label>Int. threshold</label>
+            <input type="number" value={vars['int.thresh']} onChange={e => patchVars({ 'int.thresh': Number(e.target.value) })} />
+          </div>
+        )}
       </div>
 
       <div className="field-row">
-        <div className="field-group">
-          <label>AGC reset interval (s)</label>
-          <input type="number" value={vars['agc.reset.interval']} onChange={e => patchVars({ 'agc.reset.interval': Number(e.target.value) })} />
-        </div>
-        <div className="field-group">
-          <label>Multi ACKs</label>
-          <input value={vars['multi.acks']} onChange={e => patchVars({ 'multi.acks': e.target.value })} />
-        </div>
+        {has('agc.reset.interval') && (
+          <div className="field-group">
+            <label>AGC reset interval (s)</label>
+            <input type="number" value={vars['agc.reset.interval']} onChange={e => patchVars({ 'agc.reset.interval': Number(e.target.value) })} />
+          </div>
+        )}
+        {has('multi.acks') && (
+          <div className="field-group">
+            <label>Multi ACKs</label>
+            <input value={vars['multi.acks']} onChange={e => patchVars({ 'multi.acks': e.target.value })} />
+          </div>
+        )}
       </div>
 
       <div className="field-row">
-        <div className="field-group">
-          <label>Path hash mode</label>
-          <select value={vars['path.hash.mode']} onChange={e => patchVars({ 'path.hash.mode': e.target.value })}>
-            <option value="0">Default (0)</option>
-            <option value="1">Mode 1</option>
-            <option value="2">Mode 2</option>
-          </select>
-        </div>
-        <div className="field-group">
-          <label>Loop detect</label>
-          <select value={vars['loop.detect']} onChange={e => patchVars({ 'loop.detect': e.target.value })}>
-            <option value="off">Off</option>
-            <option value="on">On</option>
-            <option value="strict">Strict</option>
-          </select>
-        </div>
+        {has('path.hash.mode') && (
+          <div className="field-group">
+            <label>Path hash mode</label>
+            <select value={vars['path.hash.mode']} onChange={e => patchVars({ 'path.hash.mode': e.target.value })}>
+              <option value="0">Default (0)</option>
+              <option value="1">Mode 1</option>
+              <option value="2">Mode 2</option>
+            </select>
+          </div>
+        )}
+        {has('loop.detect') && (
+          <div className="field-group">
+            <label>Loop detect</label>
+            <select value={vars['loop.detect']} onChange={e => patchVars({ 'loop.detect': e.target.value })}>
+              <option value="off">Off</option>
+              <option value="on">On</option>
+              <option value="strict">Strict</option>
+            </select>
+          </div>
+        )}
       </div>
 
       <div className="field-row">
-        <div className="field-group">
-          <label>Flood max unscoped (hops)</label>
-          <input type="number" min={0} max={64} value={vars['flood.max.unscoped']} onChange={e => patchVars({ 'flood.max.unscoped': Number(e.target.value) })} />
-        </div>
-        <div className="field-group">
-          <label>Flood max advert (hops)</label>
-          <input type="number" min={0} max={64} value={vars['flood.max.advert']} onChange={e => patchVars({ 'flood.max.advert': Number(e.target.value) })} />
-        </div>
+        {has('flood.max.unscoped') && (
+          <div className="field-group">
+            <label>Flood max unscoped (hops)</label>
+            <input type="number" min={0} max={64} value={vars['flood.max.unscoped']} onChange={e => patchVars({ 'flood.max.unscoped': Number(e.target.value) })} />
+          </div>
+        )}
+        {has('flood.max.advert') && (
+          <div className="field-group">
+            <label>Flood max advert (hops)</label>
+            <input type="number" min={0} max={64} value={vars['flood.max.advert']} onChange={e => patchVars({ 'flood.max.advert': Number(e.target.value) })} />
+          </div>
+        )}
       </div>
 
-      <label className="check-row">
-        <input type="checkbox" checked={vars.cad} onChange={e => patchVars({ cad: e.target.checked })} />
-        Channel Activity Detection (CAD)
-      </label>
+      {has('cad') && (
+        <label className="check-row">
+          <input type="checkbox" checked={vars.cad} onChange={e => patchVars({ cad: e.target.checked })} />
+          Channel Activity Detection (CAD)
+        </label>
+      )}
 
-      <label className="check-row">
-        <input type="checkbox" checked={vars['radio.rxgain']} onChange={e => patchVars({ 'radio.rxgain': e.target.checked })} />
-        Boosted RX gain (radio.rxgain)
-      </label>
+      {has('radio.rxgain') && (
+        <label className="check-row">
+          <input type="checkbox" checked={vars['radio.rxgain']} onChange={e => patchVars({ 'radio.rxgain': e.target.checked })} />
+          Boosted RX gain (radio.rxgain)
+        </label>
+      )}
 
-      <div className="field-group" style={{ marginTop: '.5rem' }}>
-        <label>ADC multiplier (battery calibration; 0 = board default)</label>
-        <input type="number" step="0.001" min={0} value={vars['adc.multiplier']} onChange={e => patchVars({ 'adc.multiplier': parseFloat(e.target.value) || 0 })} />
-      </div>
+      {has('adc.multiplier') && (
+        <div className="field-group" style={{ marginTop: '.5rem' }}>
+          <label>ADC multiplier (battery calibration; 0 = board default)</label>
+          <input type="number" step="0.001" min={0} value={vars['adc.multiplier']} onChange={e => patchVars({ 'adc.multiplier': parseFloat(e.target.value) || 0 })} />
+        </div>
+      )}
     </div>
   ) : null
 
@@ -478,7 +526,7 @@ export default function ConfigForm({
   const FilterPanel = device.filter ? (
     <div className="panel">
       <div className="panel-legend panel-legend--help">
-        <span>{t('config_section_filter')}</span>
+        <span>{t(companion ? 'config_section_cfilter' : 'config_section_filter')}</span>
         <PanelHelp id="filter" />
       </div>
       <FilterSettingsForm
@@ -508,15 +556,15 @@ export default function ConfigForm({
 
       {InfoSection}
       {LocationSection}
-      {AccessSection}
+      {!companion && AccessSection}
       {RoomSection}
       {RadioSection}
-      {AdvertSection}
-      {OwnerSection}
+      {!companion && AdvertSection}
+      {!companion && OwnerSection}
 
       {device.filter && (
         <button className="btn" onClick={() => setShowDmc(v => !v)} style={{ marginBottom: '.75rem' }}>
-          {showDmc ? '▲' : '▼'} {t('config_show_dmc')}
+          {showDmc ? '▲' : '▼'} {t(companion ? 'config_show_cfilter' : 'config_show_dmc')}
         </button>
       )}
       {showDmc && FilterPanel}
