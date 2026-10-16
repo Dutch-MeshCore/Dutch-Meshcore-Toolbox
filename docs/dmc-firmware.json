@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-15T20:29:02.808Z",
+  "generated": "2026-10-16T08:43:27.623Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -32,20 +32,10 @@
       "title": "Companion Radio",
       "subTitle": "USB + TCP transport"
     },
-    "companion_radio_touch": {
-      "icon": "📱",
+    "companion_radio_ethernet": {
+      "icon": "🌐",
       "title": "Companion Radio",
-      "subTitle": "Touch display"
-    },
-    "room_server_multitransport": {
-      "icon": "🏠",
-      "title": "Room Server",
-      "subTitle": "Multi-transport"
-    },
-    "repeater_tcp": {
-      "icon": "📡",
-      "title": "Repeater",
-      "subTitle": "TCP transport"
+      "subTitle": "Ethernet transport"
     },
     "dutchmeshcore_mqtt": {
       "icon": "📡",
@@ -1450,7 +1440,7 @@
     {
       "maker": "dutchmeshcore_repeater",
       "class": "community",
-      "name": "heltec v4 r8",
+      "name": "Heltec V4 R8",
       "type": "esp32",
       "firmware": [
         {
@@ -1527,7 +1517,7 @@
     {
       "maker": "dutchmeshcore_repeater",
       "class": "community",
-      "name": "heltec v4 r8 tft",
+      "name": "Heltec V4 R8 TFT",
       "type": "esp32",
       "firmware": [
         {
@@ -6541,7 +6531,7 @@
     {
       "maker": "dutchmeshcore_packetlog",
       "class": "community",
-      "name": "heltec v4 r8",
+      "name": "Heltec V4 R8",
       "type": "esp32",
       "firmware": [
         {
@@ -6598,7 +6588,7 @@
     {
       "maker": "dutchmeshcore_packetlog",
       "class": "community",
-      "name": "heltec v4 r8 tft",
+      "name": "Heltec V4 R8 TFT",
       "type": "esp32",
       "firmware": [
         {
@@ -10784,7 +10774,7 @@
     {
       "maker": "dutchmeshcore",
       "class": "community",
-      "name": "heltec v4 r8",
+      "name": "Heltec V4 R8",
       "type": "esp32",
       "firmware": [
         {
@@ -10850,7 +10840,7 @@
     {
       "maker": "dutchmeshcore",
       "class": "community",
-      "name": "heltec v4 r8 tft",
+      "name": "Heltec V4 R8 TFT",
       "type": "esp32",
       "firmware": [
         {
