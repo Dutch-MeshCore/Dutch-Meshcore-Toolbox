@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-15T20:29:01.636Z",
+  "generated": "2026-10-16T01:53:43.488Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -32,20 +32,10 @@
       "title": "Companion Radio",
       "subTitle": "USB + TCP transport"
     },
-    "companion_radio_touch": {
-      "icon": "📱",
+    "companion_radio_ethernet": {
+      "icon": "🌐",
       "title": "Companion Radio",
-      "subTitle": "Touch display"
-    },
-    "room_server_multitransport": {
-      "icon": "🏠",
-      "title": "Room Server",
-      "subTitle": "Multi-transport"
-    },
-    "repeater_tcp": {
-      "icon": "📡",
-      "title": "Repeater",
-      "subTitle": "TCP transport"
+      "subTitle": "Ethernet transport"
     },
     "dutchmeshcore_mqtt": {
       "icon": "📡",
@@ -77,8 +67,7 @@
     },
     "meshcomod": {
       "name": "Meshcomod Firmware",
-      "repo": "https://github.com/ALLFATHER-BV/meshcomod",
-      "website": "https://meshcomod.com"
+      "repo": "https://github.com/Elektr0Vodka/meshcomod"
     }
   },
   "device": [
@@ -6983,7 +6972,7 @@
     {
       "maker": "meshcore_dev",
       "class": "community",
-      "name": "heltec v4 r8",
+      "name": "Heltec V4 R8",
       "type": "esp32",
       "firmware": [
         {
@@ -7267,7 +7256,7 @@
     {
       "maker": "meshcore_dev",
       "class": "community",
-      "name": "heltec v4 r8 tft",
+      "name": "Heltec V4 R8 TFT",
       "type": "esp32",
       "firmware": [
         {
@@ -30311,79 +30300,21 @@
           "title": "Companion Radio",
           "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_v3_companion_radio_usb_tcp.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Heltec_v3_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_v3_companion_radio_usb_tcp-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "repeater_tcp",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "📡",
-          "title": "Repeater",
-          "subTitle": "TCP transport",
-          "version": {
-            "Latest – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_v3_repeater_tcp.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "Latest – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_v3_repeater_tcp-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "room_server_multitransport",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "Multi-transport",
-          "version": {
-            "Latest – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_v3_room_server_multitransport.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "Latest – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_v3_room_server_multitransport-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Heltec_v3_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30406,79 +30337,95 @@
           "title": "Companion Radio",
           "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_companion_radio_usb_tcp.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_companion_radio_usb_tcp-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
-        },
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Heltec V4 R8",
+      "type": "esp32",
+      "firmware": [
         {
-          "role": "repeater_tcp",
+          "role": "companion_radio_usb_tcp",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "📡",
-          "title": "Repeater",
-          "subTitle": "TCP transport",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_repeater_tcp.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_r8_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_repeater_tcp-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_r8_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
             }
           }
-        },
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Heltec V4 R8 TFT",
+      "type": "esp32",
+      "firmware": [
         {
-          "role": "room_server_multitransport",
+          "role": "companion_radio_usb_tcp",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "Multi-transport",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_room_server_multitransport.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_r8_tft_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_room_server_multitransport-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_r8_tft_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30495,56 +30442,27 @@
       "type": "esp32",
       "firmware": [
         {
-          "role": "repeater_tcp",
+          "role": "companion_radio_usb_tcp",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "📡",
-          "title": "Repeater",
-          "subTitle": "TCP transport",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_tft_repeater_tcp.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_tft_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_tft_repeater_tcp-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "room_server_multitransport",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "Multi-transport",
-          "version": {
-            "Latest – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_tft_room_server_multitransport.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "Latest – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/heltec_v4_tft_room_server_multitransport-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/heltec_v4_tft_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30567,79 +30485,21 @@
           "title": "Companion Radio",
           "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_Wireless_Paper_companion_radio_usb_tcp.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Heltec_Wireless_Paper_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_Wireless_Paper_companion_radio_usb_tcp-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "repeater_tcp",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "📡",
-          "title": "Repeater",
-          "subTitle": "TCP transport",
-          "version": {
-            "Latest – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_Wireless_Paper_repeater_tcp.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "Latest – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_Wireless_Paper_repeater_tcp-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "room_server_multitransport",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "Multi-transport",
-          "version": {
-            "Latest – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_Wireless_Paper_room_server_multitransport.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "Latest – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Heltec_Wireless_Paper_room_server_multitransport-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Heltec_Wireless_Paper_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30652,31 +30512,97 @@
     {
       "maker": "meshcomod",
       "class": "community",
-      "name": "LilyGo T-Deck",
+      "name": "Heltec WSL3",
       "type": "esp32",
       "firmware": [
         {
-          "role": "companion_radio_touch",
+          "role": "companion_radio_usb_tcp",
           "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "📱",
+          "icon": "🔌",
           "title": "Companion Radio",
-          "subTitle": "Touch display",
+          "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/LilyGo_TDeck_companion_radio_touch.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Heltec_WSL3_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/LilyGo_TDeck_companion_radio_touch-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Heltec_WSL3_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "ThinkNode M7",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/ThinkNode_M7_companion_radio_ble-v1.18.0.1-pre2-a6cda50.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/ThinkNode_M7_companion_radio_ble-v1.18.0.1-pre2-a6cda50-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        },
+        {
+          "role": "companion_radio_ethernet",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🌐",
+          "title": "Companion Radio",
+          "subTitle": "Ethernet transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/ThinkNode_M7_companion_radio_ethernet-v1.18.0.1-pre2-a6cda50.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/ThinkNode_M7_companion_radio_ethernet-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30699,79 +30625,21 @@
           "title": "Companion Radio",
           "subTitle": "USB + TCP transport",
           "version": {
-            "Latest – App update": {
+            "v1.18.0.1-dev – App update": {
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Xiao_S3_WIO_companion_radio_usb_tcp.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Xiao_S3_WIO_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
               "notes": "Updates firmware only. Bootloader and saved settings are preserved."
             },
-            "Latest – Full flash": {
+            "v1.18.0.1-dev – Full flash": {
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Xiao_S3_WIO_companion_radio_usb_tcp-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "repeater_tcp",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "📡",
-          "title": "Repeater",
-          "subTitle": "TCP transport",
-          "version": {
-            "Latest – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Xiao_S3_WIO_repeater_tcp.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "Latest – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Xiao_S3_WIO_repeater_tcp-merged.bin",
-                  "title": "Full flash – merged binary (bootloader + partition + app)"
-                }
-              ],
-              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
-            }
-          }
-        },
-        {
-          "role": "room_server_multitransport",
-          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
-          "icon": "🏠",
-          "title": "Room Server",
-          "subTitle": "Multi-transport",
-          "version": {
-            "Latest – App update": {
-              "files": [
-                {
-                  "type": "flash-update",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Xiao_S3_WIO_room_server_multitransport.bin",
-                  "title": "App update – keeps bootloader, partition table & config"
-                }
-              ],
-              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
-            },
-            "Latest – Full flash": {
-              "files": [
-                {
-                  "type": "flash-wipe",
-                  "name": "https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/Xiao_S3_WIO_room_server_multitransport-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre2/Xiao_S3_WIO_companion_radio_usb_tcp-v1.18.0.1-pre2-a6cda50-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
