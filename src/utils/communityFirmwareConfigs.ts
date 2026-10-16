@@ -403,7 +403,7 @@ async function fetchMeshcoreDevConfig(): Promise<FlasherConfig> {
 /** meshcomod config from the fork's releases, newest version first. No companion release → no devices. */
 export function meshcomodConfigFromReleases(releases: GHRelease[]): FlasherConfig {
   return buildConfig(meshcomodFilesFromReleases(releases), 'meshcomod', {
-    name: 'Meshcomod Firmware',
+    name: 'Meshcomod (EV Fork) Companion Filter Firmware',
     repo: 'https://github.com/Elektr0Vodka/meshcomod',
   }, (a, b) => b.localeCompare(a, undefined, { numeric: true }))
 }
