@@ -420,7 +420,7 @@ export function meshcomodConfigFromReleases(releases) {
   if (!picked.length) console.warn('  ⚠ meshcomod: no companion release found – no meshcomod devices')
   else console.log(`  → ${picked.length} companion versions (${picked.filter(p => p.versionKey.endsWith('-dev')).length} dev), ${files.length} firmware files`)
   return buildConfig(files, 'meshcomod', {
-    name: 'Meshcomod Firmware',
+    name: 'Meshcomod (EV Fork) Companion Filter Firmware',
     repo: 'https://github.com/Elektr0Vodka/meshcomod',
   }, (a, b) => b.localeCompare(a, undefined, { numeric: true }))
 }
