@@ -125,6 +125,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>Filter CLI generator</strong>: new <strong>Meshcomod companion</strong> target that only emits the commands the companion receive filter has. USB Setup and the filter guide recognise its status line (<code>Filter on: Hidden [...]</code>) and only offer its settings; the guide has a new companion section on hidden vs dropped messages.</>,
           <><strong>USB Setup</strong>: on room servers with v1.18 or later the repeat box can only be turned off, because the firmware refuses <code>set repeat on</code>.</>,
           <><strong>USB Setup</strong> now connects to a v1.18 <strong>companion</strong> on its serial console (the official firmware in CLI Rescue, Meshcomod at any time on ESP32): name, radio and the advanced radio settings it answers, plus the receive filter on Meshcomod. Sections a companion does not have are hidden.</>,
+          <><strong>Flasher</strong>: the Meshcomod nRF52 builds (Seeed Wio Tracker L1, BLE and USB companion) are now listed. Only its ESP32 builds were picked up before.</>,
         ],
       },
       {
@@ -287,6 +288,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>Filter CLI-generator</strong>: nieuw doel <strong>Meshcomod-companion</strong> dat alleen de opdrachten van het ontvangstfilter van de companion maakt. USB Setup en de filtergids herkennen de statusregel (<code>Filter on: Hidden [...]</code>) en tonen alleen die instellingen; de gids heeft een nieuw companion-deel over verborgen en verwijderde berichten.</>,
           <><strong>USB Setup</strong>: op room-servers met v1.18 of nieuwer kan het vakje voor herhalen alleen nog uit, omdat de firmware <code>set repeat on</code> weigert.</>,
           <><strong>USB Setup</strong> verbindt nu ook met een v1.18-<strong>companion</strong> via zijn seriële console (de officiële firmware in CLI Rescue, Meshcomod op ESP32 altijd): naam, radio en de geavanceerde radio-instellingen die hij beantwoordt, plus het ontvangstfilter op Meshcomod. Onderdelen die een companion niet heeft, worden verborgen.</>,
+          <><strong>Flasher</strong>: de nRF52-builds van Meshcomod (Seeed Wio Tracker L1, BLE- en USB-companion) staan er nu ook in. Eerder werden alleen de ESP32-builds opgepikt.</>,
         ],
       },
       {
@@ -449,6 +451,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>Filter-CLI-Generator</strong>: neues Ziel <strong>Meshcomod-Companion</strong>, das nur die Befehle des Companion-Empfangsfilters erzeugt. USB Setup und der Filter-Leitfaden erkennen dessen Statuszeile (<code>Filter on: Hidden [...]</code>) und bieten nur dessen Einstellungen an; der Leitfaden hat einen neuen Companion-Abschnitt zu ausgeblendeten und verworfenen Nachrichten.</>,
           <><strong>USB Setup</strong>: auf Room-Servern ab v1.18 lässt sich das Weiterleiten-Kästchen nur noch ausschalten, weil die Firmware <code>set repeat on</code> ablehnt.</>,
           <><strong>USB Setup</strong> verbindet sich jetzt auch mit einem v1.18-<strong>Companion</strong> über dessen serielle Konsole (die offizielle Firmware im CLI Rescue, Meshcomod auf ESP32 jederzeit): Name, Funk und die erweiterten Funkeinstellungen, die er beantwortet, dazu der Empfangsfilter bei Meshcomod. Bereiche, die ein Companion nicht hat, werden ausgeblendet.</>,
+          <><strong>Flasher</strong>: Die nRF52-Builds von Meshcomod (Seeed Wio Tracker L1, BLE- und USB-Companion) werden jetzt aufgeführt. Vorher wurden nur die ESP32-Builds erkannt.</>,
         ],
       },
       {
