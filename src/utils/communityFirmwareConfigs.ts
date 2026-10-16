@@ -3,10 +3,8 @@
  * combined FlasherConfig ready to be merged with the main DutchMeshCore config.
  *
  * Sources (GitHub Releases):
- *   meshcore-dev/MeshCore  – companion, room-server, repeater
- *
- * Source (prebuilt/ directory, no version in filename):
- *   ALLFATHER-BV/meshcomod – repeater-tcp, companion-radio-*, room-server-multitransport
+ *   meshcore-dev/MeshCore   – companion, room-server, repeater
+ *   Elektr0Vodka/meshcomod  – `companion-vX.Y.Z.W` releases, pre-releases as `-dev` (companion-radio-*)
  */
 
 import type { FlasherConfig } from '../types'
@@ -21,17 +19,15 @@ interface RoleDef {
   subTitle: string
 }
 
-interface GHFile {
-  name: string
-  download_url: string | null
-}
-
 interface GHReleaseAsset {
   name: string
   browser_download_url: string
 }
 
 interface GHRelease {
+  tag_name?: string
+  prerelease?: boolean
+  draft?: boolean
   assets: GHReleaseAsset[]
 }
 
@@ -70,6 +66,8 @@ const DEVICE_LABELS: Record<string, string> = {
   heltec_v4:                    'Heltec V4',
   Heltec_v4:                    'Heltec V4',
   heltec_v4_expansionkit:       'Heltec V4 Expansion Kit',
+  heltec_v4_r8:                 'Heltec V4 R8',
+  heltec_v4_r8_tft:             'Heltec V4 R8 TFT',
   heltec_v4_tft:                'Heltec V4 TFT',
   Heltec_WSL3:                  'Heltec WSL3',
   Heltec_Wireless_Paper:        'Heltec Wireless Paper',
@@ -90,10 +88,13 @@ const DEVICE_LABELS: Record<string, string> = {
   LilyGo_T3S3_sx1262:           'LilyGo T3S3 SX1262',
   LilyGo_TLora_V2_1_1_6:       'LilyGo T-LoRa V2.1.1.6',
   RAK_3112:                     'RAK3112',
+  RAK_4631:                     'RAK4631',
+  SenseCap_Solar:               'SenseCAP Solar',
   Station_G2:                   'Station G2',
   T_Beam_S3_Supreme_SX1262:    'T-Beam S3 Supreme SX1262',
   Tbeam_SX1262:                 'T-Beam SX1262',
   Tbeam_SX1276:                 'T-Beam SX1276',
+  ThinkNode_M7:                 'ThinkNode M7',
   Xiao_S3_WIO:                  'Xiao S3 WIO',
 }
 
@@ -114,12 +115,12 @@ const MESHCORE_DEV_ROLES: RoleDef[] = [
   { separator: '_repeater-',               role: 'repeater',             icon: '📡', title: 'Repeater',         subTitle: ''               },
 ]
 
-// meshcomod uses no version in filenames – separator runs to the end (before [-merged].bin)
+// meshcomod companion envs (Elektr0Vodka/meshcomod build.sh MESHCOMOD_COMPANION_ENVS).
+// A separator only matches when the version follows it (see MESHCOMOD_ASSET_TAIL).
 const MESHCOMOD_ROLES: RoleDef[] = [
   { separator: '_companion_radio_usb_tcp',      role: 'companion_radio_usb_tcp',      icon: '🔌', title: 'Companion Radio', subTitle: 'USB + TCP transport' },
-  { separator: '_companion_radio_touch',         role: 'companion_radio_touch',         icon: '📱', title: 'Companion Radio', subTitle: 'Touch display'       },
-  { separator: '_room_server_multitransport',    role: 'room_server_multitransport',    icon: '🏠', title: 'Room Server',     subTitle: 'Multi-transport'     },
-  { separator: '_repeater_tcp',                  role: 'repeater_tcp',                  icon: '📡', title: 'Repeater',        subTitle: 'TCP transport'       },
+  { separator: '_companion_radio_ethernet',     role: 'companion_radio_ethernet',     icon: '🌐', title: 'Companion Radio', subTitle: 'Ethernet transport'  },
+  { separator: '_companion_radio_ble',          role: 'companion_radio_ble',          icon: '📻', title: 'Companion Radio', subTitle: 'BLE transport'       },
 ]
 
 // Merged role display map used in the FlasherConfig.role record
@@ -163,23 +164,55 @@ function parseReleaseAsset(name: string, url: string, roleDefs: RoleDef[]): Pars
   return null
 }
 
-/** Parse a directory listing asset: {Device}_{role}[-merged].bin */
-function parseDirAsset(name: string, url: string, roleDefs: RoleDef[]): ParsedFile | null {
-  if (!name.endsWith('.bin')) return null
+// What must follow the role separator in a meshcomod release asset:
+// `-vX.Y.Z.W[-preN]-<sha>[-merged].bin`. The plain `<env>.bin` copy, the timestamped
+// `<env>-YYYYMMDD_HHMMSS-<sha>.bin` copy and `<env>.partsig` do not match.
+const MESHCOMOD_ASSET_TAIL = /^-(v\d+\.\d+\.\d+\.\d+(?:-[A-Za-z]+\d*)?)-[0-9a-f]+(-merged)?\.bin$/
 
-  for (const rd of roleDefs) {
-    const sepIdx = name.indexOf(rd.separator)
-    if (sepIdx < 0) continue
+// Companion release tag: `companion-vX.Y.Z.W`, or with a `-preN` / `-rcN` suffix for a pre-release.
+const MESHCOMOD_TAG = /^companion-(v\d+\.\d+\.\d+\.\d+)(-[A-Za-z]+\d*)?$/
 
-    const deviceKey = name.slice(0, sepIdx)
-    const rest = name.slice(sepIdx + rd.separator.length)
-
-    const isMerged = rest === '-merged.bin'
-    if (rest !== '.bin' && rest !== '-merged.bin') continue
-
-    return { deviceKey, role: rd.role, versionKey: 'Latest', isMerged, ext: 'bin', url }
+/** Parse a meshcomod release asset: {Device}_{role}-vX.Y.Z.W[-preN]-{sha}[-merged].bin */
+export function parseMeshcomodAsset(name: string, url: string): ParsedFile | null {
+  for (const rd of MESHCOMOD_ROLES) {
+    // Try every occurrence, so `_companion_radio_usb_tcp_touch` cannot match `_companion_radio_usb_tcp`.
+    for (let sepIdx = name.indexOf(rd.separator); sepIdx >= 0; sepIdx = name.indexOf(rd.separator, sepIdx + 1)) {
+      const m = name.slice(sepIdx + rd.separator.length).match(MESHCOMOD_ASSET_TAIL)
+      if (!m) continue
+      return { deviceKey: name.slice(0, sepIdx), role: rd.role, versionKey: m[1], isMerged: !!m[2], ext: 'bin', url }
+    }
   }
   return null
+}
+
+/**
+ * Picks the companion releases to list. A stable release is listed as `vX.Y.Z.W`; a
+ * pre-release (flagged, or with a `-preN` / `-rcN` tag) as the dev build `vX.Y.Z.W-dev`,
+ * like the DMC dev channel. Drafts are skipped (their assets are not public).
+ */
+function meshcomodReleaseVersions(releases: GHRelease[]): { rel: GHRelease; tagVersion: string; versionKey: string }[] {
+  const picked = new Map<string, { rel: GHRelease; tagVersion: string; versionKey: string }>()
+  for (const rel of releases) {
+    const m = rel.tag_name?.match(MESHCOMOD_TAG)
+    if (!m || rel.draft) continue
+    const tagVersion = m[1] + (m[2] ?? '')
+    const versionKey = rel.prerelease || m[2] ? `${m[1]}-dev` : m[1]
+    // Pre-releases of one version share its `-dev` slot: the newest tag wins (pre10 over pre9).
+    const prev = picked.get(versionKey)
+    if (!prev || tagVersion.localeCompare(prev.tagVersion, undefined, { numeric: true }) > 0) {
+      picked.set(versionKey, { rel, tagVersion, versionKey })
+    }
+  }
+  return [...picked.values()]
+}
+
+/** Firmware files of the picked releases; an asset must carry its release's version. */
+function meshcomodFilesFromReleases(releases: GHRelease[]): ParsedFile[] {
+  return meshcomodReleaseVersions(releases).flatMap(({ rel, tagVersion, versionKey }) =>
+    (rel.assets ?? []).flatMap(a => {
+      const p = parseMeshcomodAsset(a.name, a.browser_download_url)
+      return p && p.versionKey === tagVersion ? [{ ...p, versionKey }] : []
+    }))
 }
 
 // ─── Config builder ───────────────────────────────────────────────────────────
@@ -189,7 +222,7 @@ function parseDirAsset(name: string, url: string, roleDefs: RoleDef[]): ParsedFi
  *
  * For ESP32 (.bin):  creates "vX – App update" and "vX – Full flash" entries.
  * For nRF52 (.zip):  creates a single "vX" entry (prefers .zip over .uf2).
- * For meshcomod:     version key is always "Latest".
+ * Versions are listed in `compareVersions` order (default: reverse string order).
  */
 interface MakerMeta {
   name: string
@@ -201,6 +234,7 @@ function buildConfig(
   files: ParsedFile[],
   makerKey: string,
   makerMeta: MakerMeta,
+  compareVersions: (a: string, b: string) => number = (a, b) => b.localeCompare(a),
 ): FlasherConfig {
   // esp32 devices: { `${deviceKey}/${role}/${versionKey}` -> { appUrl, mergedUrl } }
   const esp32Map = new Map<string, { appUrl: string; mergedUrl: string }>()
@@ -256,7 +290,7 @@ function buildConfig(
 
         const version: Record<string, { files: { type: string; name: string; title: string }[]; notes?: string }> = {}
 
-        for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
+        for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => compareVersions(a, b))) {
           if (entry.type === 'esp32') {
             if (entry.appUrl) {
               version[`${versionKey} – App update`] = {
@@ -366,22 +400,20 @@ async function fetchMeshcoreDevConfig(): Promise<FlasherConfig> {
   })
 }
 
+/** meshcomod config from the fork's releases, newest version first. No companion release → no devices. */
+export function meshcomodConfigFromReleases(releases: GHRelease[]): FlasherConfig {
+  return buildConfig(meshcomodFilesFromReleases(releases), 'meshcomod', {
+    name: 'Meshcomod Firmware',
+    repo: 'https://github.com/Elektr0Vodka/meshcomod',
+  }, (a, b) => b.localeCompare(a, undefined, { numeric: true }))
+}
+
 async function fetchMeshcomodConfig(): Promise<FlasherConfig> {
-  const url = `${GH_API}/repos/ALLFATHER-BV/meshcomod/contents/prebuilt`
+  const url = `${GH_API}/repos/Elektr0Vodka/meshcomod/releases?per_page=100`
   const resp = await fetch(url, { headers: GH_HEADERS })
   if (!resp.ok) throw new Error(`GitHub API ${resp.status}: ${resp.statusText}`)
-  const ghFiles: GHFile[] = await resp.json()
-
-  const files = ghFiles.flatMap(f => {
-    const downloadUrl = f.download_url ?? `https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/${f.name}`
-    const p = parseDirAsset(f.name, downloadUrl, MESHCOMOD_ROLES)
-    return p ? [p] : []
-  })
-  return buildConfig(files, 'meshcomod', {
-    name: 'Meshcomod Firmware',
-    repo: 'https://github.com/ALLFATHER-BV/meshcomod',
-    website: 'https://meshcomod.com',
-  })
+  const releases: GHRelease[] = await resp.json()
+  return meshcomodConfigFromReleases(releases)
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────

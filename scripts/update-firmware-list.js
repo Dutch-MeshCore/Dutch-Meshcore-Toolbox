@@ -6,11 +6,15 @@
  * With token:    GITHUB_TOKEN=ghp_xxx node scripts/update-firmware-list.js
  *
  * Requires Node.js 18+ (built-in fetch).
+ *
+ * The parsing helpers are exported so the tests can check them against the TS
+ * mirror in src/utils/communityFirmwareConfigs.ts; main() only runs when this file
+ * is executed directly.
  */
 
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { join, dirname } from 'node:path'
+import { join, dirname, resolve } from 'node:path'
 
 const ROOT    = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT     = join(ROOT, 'public', 'community-firmware.json')
@@ -43,11 +47,12 @@ const MESHCORE_DEV_ROLES = [
   { separator: '_repeater-',               role: 'repeater',             icon: '📡', title: 'Repeater',         subTitle: ''                               },
 ]
 
+// meshcomod companion envs (Elektr0Vodka/meshcomod build.sh MESHCOMOD_COMPANION_ENVS).
+// A separator only matches when the version follows it (see MESHCOMOD_ASSET_TAIL).
 const MESHCOMOD_ROLES = [
   { separator: '_companion_radio_usb_tcp',   role: 'companion_radio_usb_tcp',   icon: '🔌', title: 'Companion Radio', subTitle: 'USB + TCP transport' },
-  { separator: '_companion_radio_touch',     role: 'companion_radio_touch',     icon: '📱', title: 'Companion Radio', subTitle: 'Touch display'       },
-  { separator: '_room_server_multitransport',role: 'room_server_multitransport',icon: '🏠', title: 'Room Server',     subTitle: 'Multi-transport'     },
-  { separator: '_repeater_tcp',              role: 'repeater_tcp',              icon: '📡', title: 'Repeater',        subTitle: 'TCP transport'       },
+  { separator: '_companion_radio_ethernet',  role: 'companion_radio_ethernet',  icon: '🌐', title: 'Companion Radio', subTitle: 'Ethernet transport'  },
+  { separator: '_companion_radio_ble',       role: 'companion_radio_ble',       icon: '📻', title: 'Companion Radio', subTitle: 'BLE transport'       },
 ]
 
 const DMC_ROLE_DEFS = [
@@ -120,6 +125,8 @@ const DEVICE_LABELS = {
   heltec_v4:                    'Heltec V4',
   Heltec_v4:                    'Heltec V4',
   heltec_v4_expansionkit:       'Heltec V4 Expansion Kit',
+  heltec_v4_r8:                 'Heltec V4 R8',
+  heltec_v4_r8_tft:             'Heltec V4 R8 TFT',
   heltec_v4_tft:                'Heltec V4 TFT',
   Heltec_WSL3:                  'Heltec WSL3',
   Heltec_Wireless_Paper:        'Heltec Wireless Paper',
@@ -146,6 +153,7 @@ const DEVICE_LABELS = {
   T_Beam_S3_Supreme_SX1262:    'T-Beam S3 Supreme SX1262',
   Tbeam_SX1262:                 'T-Beam SX1262',
   Tbeam_SX1276:                 'T-Beam SX1276',
+  ThinkNode_M7:                 'ThinkNode M7',
   Xiao_S3_WIO:                  'Xiao S3 WIO',
 }
 
@@ -191,16 +199,22 @@ function parseReleaseAsset(name, url, roleDefs) {
   return null
 }
 
-function parseDirAsset(name, url, roleDefs) {
-  if (!name.endsWith('.bin')) return null
-  for (const rd of roleDefs) {
-    const sepIdx = name.indexOf(rd.separator)
-    if (sepIdx < 0) continue
-    const deviceKey = name.slice(0, sepIdx)
-    const rest = name.slice(sepIdx + rd.separator.length)
-    const isMerged = rest === '-merged.bin'
-    if (rest !== '.bin' && rest !== '-merged.bin') continue
-    return { deviceKey, role: rd.role, versionKey: 'Latest', isMerged, ext: 'bin', url }
+// What must follow the role separator in a meshcomod release asset:
+// `-vX.Y.Z.W[-preN]-<sha>[-merged].bin`. The plain `<env>.bin` copy, the timestamped
+// `<env>-YYYYMMDD_HHMMSS-<sha>.bin` copy and `<env>.partsig` do not match.
+const MESHCOMOD_ASSET_TAIL = /^-(v\d+\.\d+\.\d+\.\d+(?:-[A-Za-z]+\d*)?)-[0-9a-f]+(-merged)?\.bin$/
+
+// Companion release tag: `companion-vX.Y.Z.W`, or with a `-preN` / `-rcN` suffix for a pre-release.
+const MESHCOMOD_TAG = /^companion-(v\d+\.\d+\.\d+\.\d+)(-[A-Za-z]+\d*)?$/
+
+export function parseMeshcomodAsset(name, url) {
+  for (const rd of MESHCOMOD_ROLES) {
+    // Try every occurrence, so `_companion_radio_usb_tcp_touch` cannot match `_companion_radio_usb_tcp`.
+    for (let sepIdx = name.indexOf(rd.separator); sepIdx >= 0; sepIdx = name.indexOf(rd.separator, sepIdx + 1)) {
+      const m = name.slice(sepIdx + rd.separator.length).match(MESHCOMOD_ASSET_TAIL)
+      if (!m) continue
+      return { deviceKey: name.slice(0, sepIdx), role: rd.role, versionKey: m[1], isMerged: !!m[2], ext: 'bin', url }
+    }
   }
   return null
 }
@@ -222,7 +236,7 @@ function parseDmcAsset(name, url) {
 
 // ─── Config builder ───────────────────────────────────────────────────────────
 
-function buildConfig(files, makerKey, makerMeta) {
+function buildConfig(files, makerKey, makerMeta, compareVersions = (a, b) => b.localeCompare(a)) {
   const esp32Map = new Map()
   const nrf52Map = new Map()
 
@@ -268,7 +282,7 @@ function buildConfig(files, makerKey, makerMeta) {
         const roleDisplay = ROLE_DISPLAY[role]
         const version = {}
 
-        for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
+        for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => compareVersions(a, b))) {
           if (entry.type === 'esp32') {
             if (entry.appUrl) {
               version[`${versionKey} – App update`] = {
@@ -346,19 +360,6 @@ async function fetchReleaseAssets(owner, repo) {
   return releases.flatMap(r => r.assets)
 }
 
-async function fetchDirFiles(owner, repo, path) {
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
-  console.log(`  GET ${url}`)
-  const resp = await fetch(url, { headers: GH_HEADERS })
-  if (!resp.ok) {
-    console.warn(`  ⚠ ${owner}/${repo}/${path}: HTTP ${resp.status}`)
-    return []
-  }
-  const files = await resp.json()
-  console.log(`  → ${files.length} files`)
-  return files
-}
-
 async function fetchReleases(owner, repo) {
   const url = `https://api.github.com/repos/${owner}/${repo}/releases?per_page=100`
   console.log(`  GET ${url}`)
@@ -388,19 +389,45 @@ async function buildMeshcoreDevConfig() {
   })
 }
 
-async function buildMeshcomodConfig() {
-  console.log('ALLFATHER-BV/meshcomod')
-  const ghFiles = await fetchDirFiles('ALLFATHER-BV', 'meshcomod', 'prebuilt')
-  const files = ghFiles.flatMap(f => {
-    const url = f.download_url ?? `https://raw.githubusercontent.com/ALLFATHER-BV/meshcomod/main/prebuilt/${f.name}`
-    const p = parseDirAsset(f.name, url, MESHCOMOD_ROLES)
-    return p ? [p] : []
-  })
+// meshcomod companion firmware – `companion-vX.Y.Z.W` GitHub Releases on the
+// Elektr0Vodka/meshcomod fork. A stable release is listed as `vX.Y.Z.W`; a pre-release
+// (flagged, or with a `-preN` / `-rcN` tag) as the dev build `vX.Y.Z.W-dev`, like the
+// DMC dev channel. Drafts are skipped (their assets are not public).
+function meshcomodReleaseVersions(releases) {
+  const picked = new Map()
+  for (const rel of releases) {
+    const m = typeof rel.tag_name === 'string' ? rel.tag_name.match(MESHCOMOD_TAG) : null
+    if (!m || rel.draft) continue
+    const tagVersion = m[1] + (m[2] ?? '')
+    const versionKey = rel.prerelease || m[2] ? `${m[1]}-dev` : m[1]
+    // Pre-releases of one version share its `-dev` slot: the newest tag wins (pre10 over pre9).
+    const prev = picked.get(versionKey)
+    if (!prev || tagVersion.localeCompare(prev.tagVersion, undefined, { numeric: true }) > 0) {
+      picked.set(versionKey, { rel, tagVersion, versionKey })
+    }
+  }
+  return [...picked.values()]
+}
+
+// Each picked release becomes one version; an asset must carry its release's version.
+export function meshcomodConfigFromReleases(releases) {
+  const picked = meshcomodReleaseVersions(releases)
+  const files = picked.flatMap(({ rel, tagVersion, versionKey }) =>
+    (rel.assets ?? []).flatMap(a => {
+      const p = parseMeshcomodAsset(a.name, a.browser_download_url)
+      return p && p.versionKey === tagVersion ? [{ ...p, versionKey }] : []
+    }))
+  if (!picked.length) console.warn('  ⚠ meshcomod: no companion release found – no meshcomod devices')
+  else console.log(`  → ${picked.length} companion versions (${picked.filter(p => p.versionKey.endsWith('-dev')).length} dev), ${files.length} firmware files`)
   return buildConfig(files, 'meshcomod', {
     name: 'Meshcomod Firmware',
-    repo: 'https://github.com/ALLFATHER-BV/meshcomod',
-    website: 'https://meshcomod.com',
-  })
+    repo: 'https://github.com/Elektr0Vodka/meshcomod',
+  }, (a, b) => b.localeCompare(a, undefined, { numeric: true }))
+}
+
+async function buildMeshcomodConfig() {
+  console.log('Elektr0Vodka/meshcomod (companion releases)')
+  return meshcomodConfigFromReleases(await fetchReleases('Elektr0Vodka', 'meshcomod'))
 }
 
 // MQTT observer firmware – GitHub Releases on the fork whose tag contains `mqtt`
@@ -551,4 +578,6 @@ async function main() {
   }
 }
 
-main().catch(err => { console.error(err); process.exit(1) })
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch(err => { console.error(err); process.exit(1) })
+}
