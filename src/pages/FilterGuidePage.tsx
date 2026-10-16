@@ -73,7 +73,7 @@ const copy = {
     s_persist: 'All filter settings are stored in /filter_prefs and survive reboots: the enabled state, hop limits, rate limits and soft cutoffs, blocked channels, minimum hash size, malformed filtering, and on dev builds dry-run, the advert window, path prefixes, sender/text rules, the watch list and the age limit. Files written by older firmware load the new settings at their defaults.',
 
     s_comp_h: 'Companion receive filter (Meshcomod)',
-    s_comp: 'The Meshcomod (EV Fork) companion firmware has its own filter, built on the same rule engine and list syntax. It keeps junk and unwanted channel messages away from the app, the web client and the touch screen instead of deciding what the mesh forwards. It is off by default and only in the fork's companion pre-releases so far, not yet tested on hardware.',
+    s_comp: 'The Meshcomod (EV Fork) companion firmware has its own filter, built on the same rule engine and list syntax. It keeps junk and unwanted channel messages away from the app, the web client and the touch screen instead of deciding what the mesh forwards. It is off by default and only in the fork\'s companion pre-releases so far, not yet tested on hardware.',
     comp_tbl_reason: 'Check', comp_tbl_verdict: 'Result', comp_tbl_shown: 'Shown in the app', comp_tbl_repeated: 'Repeated (repeat on)',
     comp_drop: 'dropped', comp_hide: 'hidden', comp_no: 'no', comp_yes: 'yes',
     comp_row_junk: 'malformed, age, path', comp_row_personal: 'sender, text',
