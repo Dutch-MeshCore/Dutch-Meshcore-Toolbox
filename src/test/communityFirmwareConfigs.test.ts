@@ -10,18 +10,24 @@ import {
 //   <env>.bin                        app copy    (ignored)
 //   <env>-YYYYMMDD_HHMMSS-<sha>.bin  timestamped (ignored)
 //   <env>.partsig                    OTA sig     (ignored)
+// nRF52 envs ship no .bin, only:
+//   <env>-vX.Y.Z.W-<sha>.uf2         UF2 drag-and-drop image
+//   <env>-vX.Y.Z.W-<sha>.zip         DFU package (preferred over the .uf2)
 
 const DL = 'https://github.com/Elektr0Vodka/meshcomod/releases/download'
 
+const NRF_ENVS = new Set(['WioTrackerL1_companion_radio_ble', 'WioTrackerL1_companion_radio_usb'])
+
 function envAssets(tag: string, env: string, sha = 'abc1234') {
   const v = tag.replace('companion-', '')
-  return [
+  const names = NRF_ENVS.has(env) ? [`${env}-${v}-${sha}.uf2`, `${env}-${v}-${sha}.zip`] : [
     `${env}-${v}-${sha}.bin`,
     `${env}-${v}-${sha}-merged.bin`,
     `${env}.bin`,
     `${env}-20261016_120000-${sha}.bin`,
     `${env}.partsig`,
-  ].map(name => ({ name, browser_download_url: `${DL}/${tag}/${name}` }))
+  ]
+  return names.map(name => ({ name, browser_download_url: `${DL}/${tag}/${name}` }))
 }
 
 function release(tag: string, envs: string[], extra: { prerelease?: boolean; draft?: boolean } = {}) {
@@ -44,6 +50,8 @@ const ALL_ENVS = [
   'Heltec_WSL3_companion_radio_usb_tcp',
   'ThinkNode_M7_companion_radio_ble',
   'ThinkNode_M7_companion_radio_ethernet',
+  'WioTrackerL1_companion_radio_ble',
+  'WioTrackerL1_companion_radio_usb',
 ]
 
 type Config = ReturnType<typeof meshcomodConfigFromReleases>
@@ -88,6 +96,22 @@ describe('parseMeshcomodAsset', () => {
       .toMatchObject({ deviceKey: 'ThinkNode_M7', role: 'companion_radio_ble' })
     expect(parseMeshcomodAsset('ThinkNode_M7_companion_radio_ethernet-v1.18.0.1-abc1234-merged.bin', 'u'))
       .toMatchObject({ deviceKey: 'ThinkNode_M7', role: 'companion_radio_ethernet', isMerged: true })
+  })
+
+  it('parses the nRF52 .uf2 and .zip images, including the plain USB role', () => {
+    expect(parseMeshcomodAsset('WioTrackerL1_companion_radio_ble-v1.18.0.1-pre3-66ce181.uf2', 'u'))
+      .toMatchObject({ deviceKey: 'WioTrackerL1', role: 'companion_radio_ble', versionKey: 'v1.18.0.1-pre3', isMerged: false, ext: 'uf2' })
+    expect(parseMeshcomodAsset('WioTrackerL1_companion_radio_usb-v1.18.0.1-pre3-66ce181.zip', 'u'))
+      .toMatchObject({ deviceKey: 'WioTrackerL1', role: 'companion_radio_usb', versionKey: 'v1.18.0.1-pre3', isMerged: false, ext: 'zip' })
+  })
+
+  it('keeps a USB + TCP asset on its own role, not the plain USB one', () => {
+    expect(parseMeshcomodAsset('Heltec_v3_companion_radio_usb_tcp-v1.18.0.1-abc1234.bin', 'u'))
+      .toMatchObject({ deviceKey: 'Heltec_v3', role: 'companion_radio_usb_tcp' })
+  })
+
+  it('only accepts a merged image as .bin', () => {
+    expect(parseMeshcomodAsset('WioTrackerL1_companion_radio_usb-v1.18.0.1-abc1234-merged.uf2', 'u')).toBeNull()
   })
 })
 
@@ -187,6 +211,20 @@ describe('meshcomodConfigFromReleases', () => {
     expect(meshcomodConfigFromReleases([rel]).device).toEqual([])
   })
 
+  it('lists an nRF52 env as one DFU-zip version per release', () => {
+    const cfg = meshcomodConfigFromReleases([
+      release('companion-v1.18.0.1', ['WioTrackerL1_companion_radio_usb']),
+      release('companion-v1.18.0.2-pre3', ['WioTrackerL1_companion_radio_usb'], { prerelease: true }),
+    ])
+    const dev = cfg.device.find(d => d.name === 'WioTrackerL1')!
+    expect(dev.type).toBe('nrf52')
+    expect(versionsOf(cfg, 'WioTrackerL1', 'companion_radio_usb')).toEqual(['v1.18.0.2-dev', 'v1.18.0.1'])
+    expect(dev.firmware[0].version['v1.18.0.2-dev'].files[0]).toMatchObject({
+      type: 'nrf-dfu-zip',
+      name: `${DL}/companion-v1.18.0.2-pre3/WioTrackerL1_companion_radio_usb-v1.18.0.2-pre3-abc1234.zip`,
+    })
+  })
+
   it('labels every env of a companion release', () => {
     const cfg = meshcomodConfigFromReleases([release('companion-v1.18.0.1', ALL_ENVS)])
     expect(cfg.device.map(d => d.name).sort()).toEqual([
@@ -198,6 +236,7 @@ describe('meshcomodConfigFromReleases', () => {
       'Heltec WSL3',
       'Heltec Wireless Paper',
       'ThinkNode M7',
+      'WioTrackerL1',
       'Xiao S3 WIO',
     ])
     const m7 = cfg.device.find(d => d.name === 'ThinkNode M7')!
@@ -239,7 +278,7 @@ describe('scripts/update-firmware-list.js mirror', () => {
     const fromScript = script.meshcomodConfigFromReleases(releases)
     const fromTs = meshcomodConfigFromReleases(releases)
     expect({ ...fromScript, role: undefined }).toEqual({ ...fromTs, role: undefined })
-    for (const role of ['companion_radio_usb_tcp', 'companion_radio_ble', 'companion_radio_ethernet']) {
+    for (const role of ['companion_radio_usb_tcp', 'companion_radio_usb', 'companion_radio_ble', 'companion_radio_ethernet']) {
       expect(fromScript.role[role]).toEqual(fromTs.role[role])
     }
   })
