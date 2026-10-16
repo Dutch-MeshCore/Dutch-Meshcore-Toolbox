@@ -1,11 +1,14 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   buildDmcConfig,
   buildDmcRepeaterConfig,
   buildDmcPacketlogConfig,
+  buildDmcCompanionConfig,
+  fetchDmcConfig,
   mergeDmcConfigs,
   PREBUILT_RAW_BASE,
 } from '../utils/dutchFlasherConfig'
+import type { FlasherConfig } from '../types'
 
 describe('buildDmcConfig', () => {
   it('builds repeater observer MQTT firmware from prebuilt bin pairs', () => {
@@ -356,5 +359,231 @@ describe('mergeDmcConfigs', () => {
     expect(merged.role.dutchmeshcore_repeater).toBeTruthy()
     expect(merged.role.dutchmeshcore_mqtt).toBeTruthy()
     expect(merged.device.map(d => d.name).sort()).toEqual(['Heltec T190', 'Xiao S3 WIO'])
+  })
+})
+
+// ─── DMC companion (receive filter) firmware ─────────────────────────────────────
+
+const asset = (name: string) => ({ name, browser_download_url: `https://example.test/${name}` })
+
+const COMPANION_STABLE = {
+  tag_name: 'dmc-companion-v1.18.0',
+  assets: [
+    asset('Heltec_v3_companion_radio_ble-v1.18.0-abc1234.bin'),
+    asset('Heltec_v3_companion_radio_ble-v1.18.0-abc1234-merged.bin'),
+    asset('Heltec_v3_companion_radio_wifi-v1.18.0-abc1234.bin'),
+    asset('Heltec_v3_companion_radio_wifi-v1.18.0-abc1234-merged.bin'),
+    asset('RAK_4631_companion_radio_ble-v1.18.0-abc1234.uf2'),
+    asset('RAK_4631_companion_radio_ble-v1.18.0-abc1234.zip'),
+    asset('PicoW_companion_radio_wifi-v1.18.0-abc1234.bin'),
+    asset('PicoW_companion_radio_wifi-v1.18.0-abc1234.uf2'),
+  ],
+}
+
+const COMPANION_DEV = {
+  tag_name: 'dmc-companion-dev',
+  assets: [
+    asset('Heltec_v3_companion_radio_ble-v1.18.0-def5678.bin'),
+    asset('Heltec_v3_companion_radio_ble-v1.18.0-def5678-merged.bin'),
+    asset('RAK_4631_companion_radio_ble-v1.18.0-def5678.uf2'),
+  ],
+}
+
+describe('buildDmcCompanionConfig', () => {
+  it('builds the companion group with the version from a stable dmc-companion-vX.Y.Z tag', () => {
+    const config = buildDmcCompanionConfig([COMPANION_STABLE])
+
+    expect(config.maker).toEqual({
+      dutchmeshcore_companion: {
+        name: 'DutchMeshCore Companion Filter Firmware',
+        repo: 'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-companion',
+        website: 'https://dutchmeshcore.nl',
+      },
+    })
+    expect(config.device.map(d => d.name)).toEqual(['Heltec V3', 'PicoW', 'RAK4631'])
+    expect(config.device.every(d => d.maker === 'dutchmeshcore_companion')).toBe(true)
+    const v3 = config.device.find(d => d.name === 'Heltec V3')!
+    expect(Object.keys(v3.firmware[0].version)).toEqual(['1.18.0 - App update', '1.18.0 - Full flash'])
+  })
+
+  it('splits BLE and Wi-Fi builds into two roles, distinct from the meshcomod companion roles', () => {
+    const config = buildDmcCompanionConfig([COMPANION_STABLE])
+    const v3 = config.device.find(d => d.name === 'Heltec V3')!
+
+    expect(v3.firmware.map(fw => fw.role)).toEqual(['dutchmeshcore_companion_ble', 'dutchmeshcore_companion_wifi'])
+    expect(v3.firmware[0].version['1.18.0 - App update'].files[0].name)
+      .toBe('https://example.test/Heltec_v3_companion_radio_ble-v1.18.0-abc1234.bin')
+    expect(v3.firmware[1].version['1.18.0 - App update'].files[0].name)
+      .toBe('https://example.test/Heltec_v3_companion_radio_wifi-v1.18.0-abc1234.bin')
+    expect(config.role).toEqual({
+      dutchmeshcore_companion_ble:  { icon: '📻', title: 'DutchMeshCore Companion', subTitle: 'BLE + receive filter' },
+      dutchmeshcore_companion_wifi: { icon: '📶', title: 'DutchMeshCore Companion', subTitle: 'Wi-Fi + receive filter' },
+    })
+    expect(config.role.companion_radio_ble).toBeUndefined()
+  })
+
+  it('maps the ESP32 app bin to an app update and the -merged bin to a full flash', () => {
+    const v3 = buildDmcCompanionConfig([COMPANION_STABLE]).device.find(d => d.name === 'Heltec V3')!
+    expect(v3.type).toBe('esp32')
+    expect(v3.firmware[1].version['1.18.0 - App update'].files[0]).toMatchObject({
+      type: 'flash-update',
+      name: 'https://example.test/Heltec_v3_companion_radio_wifi-v1.18.0-abc1234.bin',
+    })
+    expect(v3.firmware[1].version['1.18.0 - Full flash'].files[0]).toMatchObject({
+      type: 'flash-wipe',
+      name: 'https://example.test/Heltec_v3_companion_radio_wifi-v1.18.0-abc1234-merged.bin',
+    })
+  })
+
+  it('lists nRF52 builds as one entry preferring the DFU zip, and RP2040 builds as uf2 only', () => {
+    const config = buildDmcCompanionConfig([COMPANION_STABLE])
+    const rak = config.device.find(d => d.name === 'RAK4631')!
+    expect(rak.type).toBe('nrf52')
+    expect(rak.firmware.map(fw => fw.role)).toEqual(['dutchmeshcore_companion_ble'])
+    expect(rak.firmware[0].version['1.18.0'].files[0]).toMatchObject({
+      type: 'nrf-dfu-zip',
+      name: 'https://example.test/RAK_4631_companion_radio_ble-v1.18.0-abc1234.zip',
+    })
+
+    // The RP2040 Wi-Fi build ships a .bin next to the .uf2; only the uf2 is flashable.
+    const pico = config.device.find(d => d.name === 'PicoW')!
+    expect(pico.type).toBe('nrf52')
+    expect(pico.firmware.map(fw => fw.role)).toEqual(['dutchmeshcore_companion_wifi'])
+    expect(pico.firmware[0].version).toEqual({
+      '1.18.0': { files: [{ type: 'uf2', name: 'https://example.test/PicoW_companion_radio_wifi-v1.18.0-abc1234.uf2', title: 'Firmware update' }] },
+    })
+  })
+
+  it('labels the rolling dmc-companion-dev build `<semver>-dev` from the filename, next to the stable build', () => {
+    const config = buildDmcCompanionConfig([COMPANION_DEV, COMPANION_STABLE])
+    const v3 = config.device.find(d => d.name === 'Heltec V3')!
+    expect(Object.keys(v3.firmware[0].version)).toEqual([
+      '1.18.0-dev - App update', '1.18.0-dev - Full flash', '1.18.0 - App update', '1.18.0 - Full flash',
+    ])
+    expect(v3.firmware[0].version['1.18.0-dev - App update'].files[0].name)
+      .toBe('https://example.test/Heltec_v3_companion_radio_ble-v1.18.0-def5678.bin')
+    const rak = config.device.find(d => d.name === 'RAK4631')!
+    expect(rak.firmware[0].version['1.18.0-dev'].files[0]).toMatchObject({ type: 'uf2' })
+  })
+
+  it('ignores drafts, other tags and assets without a companion separator', () => {
+    const config = buildDmcCompanionConfig([
+      { ...COMPANION_STABLE, tag_name: 'dmc-companion-v1.19.0', draft: true },
+      { tag_name: 'companion-v1.18.0.2', assets: [asset('heltec_v4_companion_radio_ble-v1.18.0.2-abc-merged.bin')] },
+      { tag_name: 'dmc-repeater-v1.18.0', assets: [asset('Heltec_v3_companion_radio_ble-v1.18.0-abc.bin')] },
+      { tag_name: 'dmc-companion-v1.18.0', assets: [
+        asset('Heltec_v3_companion_radio_usb-v1.18.0-abc.bin'),
+        asset('Heltec_v3_repeater-v1.18.0-abc.bin'),
+        asset('README.md'),
+      ] },
+    ])
+    expect(config.device).toEqual([])
+  })
+})
+
+describe('DMC group isolation', () => {
+  const RELEASES = [
+    COMPANION_DEV,
+    COMPANION_STABLE,
+    { tag_name: 'dmc-repeater-v1.18.0', assets: [asset('Heltec_v3_repeater-v1.18.0-r1.bin')] },
+    { tag_name: 'dmc-repeater-dev', assets: [asset('Heltec_v3_repeater-v1.18.0-r2.bin')] },
+    { tag_name: 'dmc-repeater-packetlog-v1.18.0', assets: [asset('Heltec_v3_repeater-v1.18.0-packetlog-p1.bin')] },
+    { tag_name: 'repeater-mqtt-v1.18.0', assets: [asset('Heltec_v3_repeater_observer_mqtt-v1.18.0-m1.bin')] },
+  ]
+
+  const urlsByMaker = (config: FlasherConfig) => {
+    const out: Record<string, string[]> = {}
+    for (const d of config.device) {
+      for (const fw of d.firmware) {
+        for (const v of Object.values(fw.version)) {
+          for (const f of v.files) (out[d.maker] ??= []).push(f.name)
+        }
+      }
+    }
+    return out
+  }
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    sessionStorage.clear()
+  })
+
+  it('keeps companion assets out of the repeater/PacketLog/MQTT groups and theirs out of the companion group', async () => {
+    sessionStorage.clear()
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => url === '/dmc-firmware.json'
+      ? { ok: false, json: async () => ({}) }
+      : { ok: true, json: async () => RELEASES }))
+
+    const config = await fetchDmcConfig()
+    const urls = urlsByMaker(config)
+
+    expect(Object.keys(urls).sort()).toEqual([
+      'dutchmeshcore', 'dutchmeshcore_companion', 'dutchmeshcore_packetlog', 'dutchmeshcore_repeater',
+    ])
+    expect(urls.dutchmeshcore_companion.length).toBeGreaterThan(0)
+    expect(urls.dutchmeshcore_companion.every(u => u.includes('_companion_radio_'))).toBe(true)
+    for (const maker of ['dutchmeshcore', 'dutchmeshcore_packetlog', 'dutchmeshcore_repeater']) {
+      expect(urls[maker].length).toBeGreaterThan(0)
+      expect(urls[maker].some(u => u.includes('_companion_radio_'))).toBe(false)
+    }
+    expect(urls.dutchmeshcore_repeater.some(u => u.includes('packetlog'))).toBe(false)
+    expect(config.maker.dutchmeshcore_companion.name).toBe('DutchMeshCore Companion Filter Firmware')
+  })
+})
+
+describe('scripts/update-firmware-list.js DMC companion mirror', () => {
+  // The generator script (public/dmc-firmware.json) and this TS live-API fallback must
+  // list the same companion firmware. The script labels versions with an en dash.
+  const loadScript = async () => {
+    const path = '../../scripts/update-firmware-list.js'
+    return import(/* @vite-ignore */ path)
+  }
+
+  const normalize = (config: FlasherConfig) => config.device.map(d => ({
+    maker: d.maker,
+    name:  d.name,
+    type:  d.type,
+    roles: Object.fromEntries(d.firmware.map(fw => [fw.role, Object.fromEntries(
+      Object.entries(fw.version).map(([key, v]) => [
+        key.replace(' – ', ' - '),
+        v.files.map(f => ({ type: f.type, name: f.name })),
+      ]),
+    )])),
+  }))
+
+  it('repeaterVersion keeps the repeater/PacketLog labels and reads a companion separator', async () => {
+    const { repeaterVersion } = await loadScript()
+    expect(repeaterVersion('dmc-repeater-v1.17.1', 'dmc-repeater-', 'Heltec_v3_repeater-v1.17.1-85c7273.bin')).toBe('1.17.1')
+    expect(repeaterVersion('dmc-repeater-v1.16.0-dev', 'dmc-repeater-', 'Heltec_v3_repeater-dev-0130fc3.bin')).toBe('1.16.0-dev')
+    expect(repeaterVersion('dmc-repeater-dev', 'dmc-repeater-', 'Heltec_v3_repeater-v1.17.1-a75332f9.bin')).toBe('1.17.1-dev')
+    expect(repeaterVersion('dmc-repeater-packetlog-dev', 'dmc-repeater-packetlog-',
+      'RAK_4631_repeater-v1.17.1-packetlog-1ebe0339.zip')).toBe('1.17.1-dev')
+    expect(repeaterVersion('dmc-companion-dev', 'dmc-companion-',
+      'Heltec_v3_companion_radio_wifi-v1.18.0-def5678.bin', '_companion_radio_wifi-')).toBe('1.18.0-dev')
+    expect(repeaterVersion('dmc-companion-v1.18.0', 'dmc-companion-',
+      'Heltec_v3_companion_radio_ble-v1.18.0-abc1234.bin', '_companion_radio_ble-')).toBe('1.18.0')
+  })
+
+  it('matches the TS companion config for stable, dev, draft and foreign releases', async () => {
+    const { dmcCompanionConfigFromReleases } = await loadScript()
+    const releases = [
+      COMPANION_DEV,
+      COMPANION_STABLE,
+      { ...COMPANION_STABLE, tag_name: 'dmc-companion-v1.19.0', draft: true },
+      { tag_name: 'dmc-repeater-v1.18.0', assets: [asset('Heltec_v3_repeater-v1.18.0-r1.bin')] },
+      { tag_name: 'companion-v1.18.0.2', assets: [asset('heltec_v4_companion_radio_ble-v1.18.0.2-abc-merged.bin')] },
+    ]
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
+    try {
+      const fromScript = dmcCompanionConfigFromReleases(releases) as FlasherConfig
+      const fromTs = buildDmcCompanionConfig(releases)
+      expect(normalize(fromScript)).toEqual(normalize(fromTs))
+      expect(fromScript.maker).toEqual(fromTs.maker)
+      for (const role of ['dutchmeshcore_companion_ble', 'dutchmeshcore_companion_wifi']) {
+        expect(fromScript.role[role]).toEqual(fromTs.role[role])
+      }
+    } finally {
+      log.mockRestore()
+    }
   })
 })

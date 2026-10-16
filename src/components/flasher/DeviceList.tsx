@@ -48,7 +48,9 @@ function deviceHasVersion(device: FlasherDevice, version: string): boolean {
   )
 }
 
-const MAKER_ORDER_FIRST = ['dutchmeshcore_repeater', 'dutchmeshcore', 'dutchmeshcore_packetlog']
+// The DMC groups stay together at the top: the repeater builds, then the companion
+// (receive filter) builds; every other maker follows alphabetically.
+const MAKER_ORDER_FIRST = ['dutchmeshcore_repeater', 'dutchmeshcore', 'dutchmeshcore_packetlog', 'dutchmeshcore_companion']
 
 interface Props {
   devices: FlasherDevice[]

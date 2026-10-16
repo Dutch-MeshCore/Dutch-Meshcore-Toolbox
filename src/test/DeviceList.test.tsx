@@ -112,4 +112,38 @@ describe('DeviceList', () => {
     fireEvent.mouseEnter(screen.getByText('Meshtiny').closest('button') as HTMLButtonElement)
     expect(screen.queryByTestId('device-preview')).not.toBeInTheDocument()
   })
+
+  it('pins the DMC groups first, with the companion group after the repeater groups', () => {
+    const dev = (maker: string): FlasherDevice =>
+      ({ maker, class: 'community', name: `${maker} board`, type: 'esp32', firmware: [] })
+    const { container } = render(
+      <LangProvider>
+        <DeviceList
+          devices={[
+            dev('aaa_fork'),
+            dev('dutchmeshcore_companion'),
+            dev('dutchmeshcore_packetlog'),
+            dev('dutchmeshcore'),
+            dev('dutchmeshcore_repeater'),
+          ]}
+          makerNames={{
+            aaa_fork: { name: 'AAA Fork Firmware' },
+            dutchmeshcore: { name: 'DutchMeshCore-MQTT-Firmware' },
+            dutchmeshcore_repeater: { name: 'DutchMeshCore Firmware' },
+            dutchmeshcore_packetlog: { name: 'DutchMeshCore-PacketLog-Firmware' },
+            dutchmeshcore_companion: { name: 'DutchMeshCore Companion Filter Firmware' },
+          }}
+          onSelect={vi.fn()}
+        />
+      </LangProvider>,
+    )
+    const titles = [...container.querySelectorAll('.device-group-title')].map(el => el.textContent)
+    expect(titles).toEqual([
+      'DutchMeshCore Firmware',
+      'DutchMeshCore-MQTT-Firmware',
+      'DutchMeshCore-PacketLog-Firmware',
+      'DutchMeshCore Companion Filter Firmware',
+      'AAA Fork Firmware',
+    ])
+  })
 })
