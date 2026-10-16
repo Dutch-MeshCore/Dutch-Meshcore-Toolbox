@@ -71,6 +71,17 @@ export default function CliWikiPage() {
           </div>
           <p className="wiki-variant-desc">{t(variant.fullDescKey)}</p>
           <a className="wiki-variant-src" href={variant.source} target="_blank" rel="noopener noreferrer">{t('wiki_view_source')}</a>
+          {variant.docs && (
+            <p className="wiki-variant-docs">
+              {t('wiki_docs')}{' '}
+              {variant.docs.map((d, i) => (
+                <span key={d.href}>
+                  {i > 0 && ' · '}
+                  <a href={d.href} target="_blank" rel="noopener noreferrer">{t(d.labelKey)}</a>
+                </span>
+              ))}
+            </p>
+          )}
 
           <label className="wiki-control-label">{t('wiki_device')}</label>
           <div className="wiki-device-chips">

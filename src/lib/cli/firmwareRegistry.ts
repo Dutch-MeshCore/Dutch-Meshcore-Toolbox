@@ -35,12 +35,19 @@ export interface CliCommand {
   descKey?: string
 }
 
+export interface FirmwareDoc {
+  labelKey: StringKey
+  href: string
+}
+
 export interface FirmwareVariant {
   id: string
   name: string
   shortDescKey: StringKey
   fullDescKey: StringKey
   source: string
+  /** Reference pages for the variant's own features (OID tables, filter, OTA). */
+  docs?: FirmwareDoc[]
   deviceTypes: DeviceTypeKey[]
   commands: CliCommand[]
 }
@@ -582,11 +589,11 @@ export const MESHCOMOD_COMMANDS: CliCommand[] = [
 
   // SNMPv2c agent (docs/companion_snmp.md), read-only on UDP 161, usb_tcp builds
   { cmd: 'get snmp',             category: 'snmp', deviceTypes: ['companion'], desc: 'Show SNMP enabled state.', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent' },
-  { cmd: 'set snmp on',          category: 'snmp', deviceTypes: ['companion'], desc: 'Enable the SNMP agent (applies live, no reboot). It runs while WiFi has an address.', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent', descKey: 'meshcomod:set snmp on' },
+  { cmd: 'set snmp on',          category: 'snmp', deviceTypes: ['companion'], desc: 'Enable the SNMPv2c agent on UDP 161 (applies live, no reboot). It runs while WiFi has an address. Poll 1.3.6.1.4.1.99999: the DMC observer tree plus .9 (clients, contacts, channels) and .10 (receive-filter counters).', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent', descKey: 'meshcomod:set snmp on' },
   { cmd: 'set snmp off',         category: 'snmp', deviceTypes: ['companion'], desc: 'Disable the SNMP agent (applies live, no reboot).', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent', descKey: 'meshcomod:set snmp off' },
   { cmd: 'get snmp.status',      category: 'snmp', deviceTypes: ['companion'], desc: 'Show the agent state: running on udp/161, on and waiting for WiFi, or off.', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent' },
-  { cmd: 'set snmp.community ',  category: 'snmp', deviceTypes: ['companion'], placeholder: 'set snmp.community ', desc: 'Set SNMP community string.', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent' },
-  { cmd: 'get snmp.community',   category: 'snmp', deviceTypes: ['companion'], desc: 'Show SNMP community string.', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent' },
+  { cmd: 'set snmp.community ',  category: 'snmp', deviceTypes: ['companion'], placeholder: 'set snmp.community ', desc: 'Set the SNMP community string (1-23 characters, applies live). It is the only access control and travels in clear text, so change it from public.', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent', descKey: 'meshcomod:set snmp.community ' },
+  { cmd: 'get snmp.community',   category: 'snmp', deviceTypes: ['companion'], desc: 'Show the SNMP community string (local only; remote CLI gets an error).', sinceVersion: 'v1.18.0.1-dev', note: 'build-dependent', descKey: 'meshcomod:get snmp.community' },
 
   // Manifest OTA (docs/companion_manifest_ota.md): text commands for the meshcomod
   // command contact, not the CLI. Pre-releases are not served over the air.
@@ -620,6 +627,10 @@ export const FIRMWARE_VARIANTS: Record<string, FirmwareVariant> = {
     shortDescKey: 'wiki_fw_dmcmqtt_short',
     fullDescKey: 'wiki_fw_dmcmqtt_full',
     source: 'https://github.com/Dutch-MeshCore/MeshCore',
+    docs: [
+      { labelKey: 'wiki_doc_cli', href: 'https://github.com/Dutch-MeshCore/MeshCore/blob/dmc-observer-dev/docs/cli_commands.md' },
+      { labelKey: 'wiki_doc_snmp', href: 'https://github.com/Dutch-MeshCore/MeshCore/blob/dmc-observer-dev/MQTT_SNMP.md' },
+    ],
     deviceTypes: ['repeater', 'roomserver'],
     commands: [...MESHCORE_COMMANDS, ...DMC_REPEATER_COMMANDS, ...DMC_MQTT_COMMANDS],
   },
@@ -629,6 +640,12 @@ export const FIRMWARE_VARIANTS: Record<string, FirmwareVariant> = {
     shortDescKey: 'wiki_fw_meshcomod_short',
     fullDescKey: 'wiki_fw_meshcomod_full',
     source: 'https://github.com/Elektr0Vodka/meshcomod',
+    docs: [
+      { labelKey: 'wiki_doc_filter', href: 'https://github.com/Elektr0Vodka/meshcomod/blob/main/docs/companion_receive_filter.md' },
+      { labelKey: 'wiki_doc_snmp', href: 'https://github.com/Elektr0Vodka/meshcomod/blob/main/docs/companion_snmp.md' },
+      { labelKey: 'wiki_doc_ota', href: 'https://github.com/Elektr0Vodka/meshcomod/blob/main/docs/companion_manifest_ota.md' },
+      { labelKey: 'wiki_doc_changelog', href: 'https://github.com/Elektr0Vodka/meshcomod/blob/main/changelog_ev.md' },
+    ],
     deviceTypes: ['companion'],
     commands: [...MESHCOMOD_BASE, ...MESHCOMOD_COMMANDS],
   },

@@ -368,10 +368,12 @@ export const CLI_DESC_NL: Record<string, string> = {
   "cfilter:filter sender add ": "Verberg of rem groepstekst van een afzender af: <naam> [secs] [prob]. secs 0 = elke treffer verbergen, anders wordt één bericht per secs getoond; prob 1-100 = aandeel van de treffers waarover de regel beslist. Eindig een naam op * voor een prefix. Max. 15 tekens, 8 regels. Voorbeeld: filter sender add Bot*",
   "cfilter:filter text add ": "Verberg of rem groepstekst met een woord af: <patroon> [secs] [prob]. Begin met ^ om alleen aan het begin te matchen. Max. 23 tekens, 8 regels. Voorbeeld: filter text add ^!ping 300",
   "cfilter:filter stats ": "Toon de tellers van één controle: malformed | age | path | sender | text. De tellers beginnen na een herstart weer bij nul.",
-  "meshcomod:set snmp on": "Schakel de SNMP-agent in (direct actief, geen herstart). Hij draait zolang WiFi een adres heeft.",
+  "meshcomod:set snmp on": "Schakel de SNMPv2c-agent op UDP 161 in (direct actief, geen herstart). Hij draait zolang WiFi een adres heeft. Poll 1.3.6.1.4.1.99999: de boom van de DMC-observer plus .9 (clients, contacten, kanalen) en .10 (tellers van het ontvangstfilter).",
   "meshcomod:set snmp off": "Schakel de SNMP-agent uit (direct actief, geen herstart).",
   "get snmp.status": "Toon de status van de agent: running on udp/161, aan en wachtend op WiFi, of uit.",
   "meshcomod:ota check": "Controleer op ota.dutchmeshcore.nl via WiFi of er een nieuwere meshcomod-build voor deze env is.",
   "meshcomod:ota update": "Download en installeer de nieuwere build die ota check vond. Start dit vanuit een WiFi-TCP- of WebSocket-sessie; een andere partitie-indeling vraagt om een USB-flash.",
   "ota url ": "Download en installeer een app-image (geen -merged) vanaf een https-URL.",
+  "meshcomod:set snmp.community ": "Stel de SNMP-community in (1-23 tekens, direct actief). Dit is de enige toegangscontrole en gaat onversleuteld over het netwerk, dus verander hem van public.",
+  "meshcomod:get snmp.community": "Toon de SNMP-community (alleen lokaal; remote CLI krijgt een foutmelding).",
 }

@@ -367,10 +367,12 @@ export const CLI_DESC_DE: Record<string, string> = {
   "cfilter:filter sender add ": "Gruppentext eines Absenders ausblenden oder drosseln: <Name> [secs] [prob]. secs 0 = jeden Treffer ausblenden, sonst wird eine Nachricht pro secs angezeigt; prob 1-100 = Anteil der Treffer, über den die Regel entscheidet. Name mit * beenden für ein Präfix. Max. 15 Zeichen, 8 Regeln. Beispiel: filter sender add Bot*",
   "cfilter:filter text add ": "Gruppentext mit einem Wort ausblenden oder drosseln: <Muster> [secs] [prob]. Mit ^ beginnen, um nur am Anfang zu treffen. Max. 23 Zeichen, 8 Regeln. Beispiel: filter text add ^!ping 300",
   "cfilter:filter stats ": "Die Zähler einer Prüfung anzeigen: malformed | age | path | sender | text. Die Zähler beginnen nach einem Neustart wieder bei null.",
-  "meshcomod:set snmp on": "Den SNMP-Agenten einschalten (sofort wirksam, kein Neustart). Er läuft, solange WiFi eine Adresse hat.",
+  "meshcomod:set snmp on": "Den SNMPv2c-Agenten auf UDP 161 einschalten (sofort wirksam, kein Neustart). Er läuft, solange WiFi eine Adresse hat. Abfrage unter 1.3.6.1.4.1.99999: der Baum des DMC-Observers plus .9 (Clients, Kontakte, Kanäle) und .10 (Zähler des Empfangsfilters).",
   "meshcomod:set snmp off": "Den SNMP-Agenten ausschalten (sofort wirksam, kein Neustart).",
   "get snmp.status": "Status des Agenten anzeigen: running on udp/161, an und wartet auf WiFi, oder aus.",
   "meshcomod:ota check": "Über WiFi auf ota.dutchmeshcore.nl prüfen, ob es einen neueren meshcomod-Build für dieses Env gibt.",
   "meshcomod:ota update": "Den neueren Build, den ota check gefunden hat, herunterladen und installieren. Aus einer WiFi-TCP- oder WebSocket-Sitzung starten; eine andere Partitionsaufteilung erfordert einen USB-Flash.",
   "ota url ": "Ein App-Image (kein -merged) von einer https-URL herunterladen und installieren.",
+  "meshcomod:set snmp.community ": "Die SNMP-Community einstellen (1-23 Zeichen, sofort wirksam). Sie ist die einzige Zugriffskontrolle und geht unverschlüsselt übers Netz, also ändere sie von public.",
+  "meshcomod:get snmp.community": "Die SNMP-Community anzeigen (nur lokal; Remote-CLI erhält einen Fehler).",
 }
