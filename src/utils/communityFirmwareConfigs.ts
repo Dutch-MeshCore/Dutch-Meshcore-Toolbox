@@ -121,6 +121,7 @@ const MESHCOMOD_ROLES: RoleDef[] = [
   { separator: '_companion_radio_usb_tcp',      role: 'companion_radio_usb_tcp',      icon: '🔌', title: 'Companion Radio', subTitle: 'USB + TCP transport' },
   { separator: '_companion_radio_ethernet',     role: 'companion_radio_ethernet',     icon: '🌐', title: 'Companion Radio', subTitle: 'Ethernet transport'  },
   { separator: '_companion_radio_ble',          role: 'companion_radio_ble',          icon: '📻', title: 'Companion Radio', subTitle: 'BLE transport'       },
+  { separator: '_companion_radio_usb',          role: 'companion_radio_usb',          icon: '🔌', title: 'Companion Radio', subTitle: 'USB transport'       },
 ]
 
 // Merged role display map used in the FlasherConfig.role record
@@ -165,21 +166,22 @@ function parseReleaseAsset(name: string, url: string, roleDefs: RoleDef[]): Pars
 }
 
 // What must follow the role separator in a meshcomod release asset:
-// `-vX.Y.Z.W[-preN]-<sha>[-merged].bin`. The plain `<env>.bin` copy, the timestamped
-// `<env>-YYYYMMDD_HHMMSS-<sha>.bin` copy and `<env>.partsig` do not match.
-const MESHCOMOD_ASSET_TAIL = /^-(v\d+\.\d+\.\d+\.\d+(?:-[A-Za-z]+\d*)?)-[0-9a-f]+(-merged)?\.bin$/
+// `-vX.Y.Z.W[-preN]-<sha>[-merged].bin` (ESP32), or `-vX.Y.Z.W[-preN]-<sha>.uf2|.zip`
+// (nRF52). The plain `<env>.bin` copy, the timestamped `<env>-YYYYMMDD_HHMMSS-<sha>.bin`
+// copy and `<env>.partsig` do not match.
+const MESHCOMOD_ASSET_TAIL = /^-(v\d+\.\d+\.\d+\.\d+(?:-[A-Za-z]+\d*)?)-[0-9a-f]+(?:(-merged)?\.bin|\.(uf2|zip))$/
 
 // Companion release tag: `companion-vX.Y.Z.W`, or with a `-preN` / `-rcN` suffix for a pre-release.
 const MESHCOMOD_TAG = /^companion-(v\d+\.\d+\.\d+\.\d+)(-[A-Za-z]+\d*)?$/
 
-/** Parse a meshcomod release asset: {Device}_{role}-vX.Y.Z.W[-preN]-{sha}[-merged].bin */
+/** Parse a meshcomod release asset: {Device}_{role}-vX.Y.Z.W[-preN]-{sha}[-merged].bin, or .uf2/.zip for nRF52 */
 export function parseMeshcomodAsset(name: string, url: string): ParsedFile | null {
   for (const rd of MESHCOMOD_ROLES) {
     // Try every occurrence, so `_companion_radio_usb_tcp_touch` cannot match `_companion_radio_usb_tcp`.
     for (let sepIdx = name.indexOf(rd.separator); sepIdx >= 0; sepIdx = name.indexOf(rd.separator, sepIdx + 1)) {
       const m = name.slice(sepIdx + rd.separator.length).match(MESHCOMOD_ASSET_TAIL)
       if (!m) continue
-      return { deviceKey: name.slice(0, sepIdx), role: rd.role, versionKey: m[1], isMerged: !!m[2], ext: 'bin', url }
+      return { deviceKey: name.slice(0, sepIdx), role: rd.role, versionKey: m[1], isMerged: !!m[2], ext: (m[3] as 'uf2' | 'zip' | undefined) ?? 'bin', url }
     }
   }
   return null

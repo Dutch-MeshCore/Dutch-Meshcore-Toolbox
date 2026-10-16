@@ -73,7 +73,7 @@ const copy = {
     s_persist: 'All filter settings are stored in /filter_prefs and survive reboots: the enabled state, hop limits, rate limits and soft cutoffs, blocked channels, minimum hash size, malformed filtering, and on dev builds dry-run, the advert window, path prefixes, sender/text rules, the watch list and the age limit. Files written by older firmware load the new settings at their defaults.',
 
     s_comp_h: 'Companion receive filter (Meshcomod)',
-    s_comp: 'The Meshcomod (EV Fork) companion firmware has its own filter, built on the same rule engine and list syntax. It keeps junk and unwanted channel messages away from the app, the web client and the touch screen instead of deciding what the mesh forwards. It is off by default and only in the companion-v1.18.0.1-pre2 pre-release so far, not yet tested on hardware.',
+    s_comp: 'The Meshcomod (EV Fork) companion firmware has its own filter, built on the same rule engine and list syntax. It keeps junk and unwanted channel messages away from the app, the web client and the touch screen instead of deciding what the mesh forwards. It is off by default and only in the fork's companion pre-releases so far, not yet tested on hardware.',
     comp_tbl_reason: 'Check', comp_tbl_verdict: 'Result', comp_tbl_shown: 'Shown in the app', comp_tbl_repeated: 'Repeated (repeat on)',
     comp_drop: 'dropped', comp_hide: 'hidden', comp_no: 'no', comp_yes: 'yes',
     comp_row_junk: 'malformed, age, path', comp_row_personal: 'sender, text',
@@ -160,7 +160,7 @@ const copy = {
     s_persist: 'Alle filterinstellingen worden opgeslagen in /filter_prefs en blijven na een herstart bewaard: de aan/uit-status, hop-limieten, snelheidslimieten en zachte grenzen, geblokkeerde kanalen, minimale hash-grootte, het filteren op ongeldige berichten, en op dev-builds dry-run, het advertentievenster, pad-prefixen, afzender-/tekstregels, de volglijst en de leeftijdsgrens. Bestanden van oudere firmware laden de nieuwe instellingen op hun standaardwaarden.',
 
     s_comp_h: 'Ontvangstfilter van de companion (Meshcomod)',
-    s_comp: 'De companion-firmware Meshcomod (EV Fork) heeft een eigen filter, met dezelfde regelengine en lijstsyntaxis. Het houdt rommel en ongewenste kanaalberichten weg uit de app, de webclient en het touchscreen, in plaats van te bepalen wat de mesh doorstuurt. Het staat standaard uit en zit tot nu toe alleen in de pre-release companion-v1.18.0.1-pre2, nog niet op hardware getest.',
+    s_comp: 'De companion-firmware Meshcomod (EV Fork) heeft een eigen filter, met dezelfde regelengine en lijstsyntaxis. Het houdt rommel en ongewenste kanaalberichten weg uit de app, de webclient en het touchscreen, in plaats van te bepalen wat de mesh doorstuurt. Het staat standaard uit en zit tot nu toe alleen in de companion-pre-releases van de fork, nog niet op hardware getest.',
     comp_tbl_reason: 'Controle', comp_tbl_verdict: 'Resultaat', comp_tbl_shown: 'Getoond in de app', comp_tbl_repeated: 'Doorgestuurd (repeat aan)',
     comp_drop: 'verwijderd', comp_hide: 'verborgen', comp_no: 'nee', comp_yes: 'ja',
     comp_row_junk: 'malformed, age, path', comp_row_personal: 'sender, text',
@@ -247,7 +247,7 @@ const copy = {
     s_persist: 'Alle Filtereinstellungen werden in /filter_prefs gespeichert und überstehen Neustarts: der Aktiv-Status, Hop-Limits, Ratenlimits und weiche Grenzen, blockierte Kanäle, minimale Hash-Größe, das Filtern fehlerhafter Nachrichten und auf Dev-Builds Dry-run, das Advert-Fenster, Pfad-Präfixe, Absender-/Textregeln, die Beobachtungsliste und die Altersgrenze. Dateien älterer Firmware laden die neuen Einstellungen mit ihren Standardwerten.',
 
     s_comp_h: 'Empfangsfilter des Companions (Meshcomod)',
-    s_comp: 'Die Companion-Firmware Meshcomod (EV Fork) hat einen eigenen Filter mit derselben Regel-Engine und Listensyntax. Er hält Müll und unerwünschte Kanalnachrichten von der App, dem Webclient und dem Touchscreen fern, statt zu entscheiden, was das Mesh weiterleitet. Er ist standardmäßig aus und bisher nur im Pre-Release companion-v1.18.0.1-pre2 enthalten, noch nicht auf Hardware getestet.',
+    s_comp: 'Die Companion-Firmware Meshcomod (EV Fork) hat einen eigenen Filter mit derselben Regel-Engine und Listensyntax. Er hält Müll und unerwünschte Kanalnachrichten von der App, dem Webclient und dem Touchscreen fern, statt zu entscheiden, was das Mesh weiterleitet. Er ist standardmäßig aus und bisher nur in den Companion-Pre-Releases des Forks enthalten, noch nicht auf Hardware getestet.',
     comp_tbl_reason: 'Prüfung', comp_tbl_verdict: 'Ergebnis', comp_tbl_shown: 'In der App angezeigt', comp_tbl_repeated: 'Weitergeleitet (repeat an)',
     comp_drop: 'verworfen', comp_hide: 'ausgeblendet', comp_no: 'nein', comp_yes: 'ja',
     comp_row_junk: 'malformed, age, path', comp_row_personal: 'sender, text',
