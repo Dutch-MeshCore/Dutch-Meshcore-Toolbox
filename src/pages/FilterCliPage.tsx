@@ -6,7 +6,10 @@ import { useToast } from '../hooks/useToast'
 import Toast from '../components/ui/Toast'
 import FilterSettingsForm from '../components/config/FilterSettingsForm'
 import FilterShareControls from '../components/config/FilterShareControls'
-import { buildFilterCommands, defaultFilterSettings, PAYLOAD_TYPES } from '../lib/config/filterCommands'
+import {
+  buildFilterCommands, defaultFilterSettings, PAYLOAD_TYPES,
+  ALL_FILTER_FEATURES, COMPANION_FILTER_FEATURES,
+} from '../lib/config/filterCommands'
 
 const copy = {
   nl: {
@@ -22,6 +25,11 @@ const copy = {
     copiedAll: 'Alle opdrachten gekopieerd!', nothing: 'Nog niets om te kopiëren.',
     help: 'Commandoreferentie', footer: 'Repeater Pakketfilter CLI - 2026',
     howto: 'Hoe het werkt',
+    target: 'Firmware',
+    targetRepeater: 'DMC repeater / room-server',
+    targetCompanion: 'Meshcomod-companion',
+    companionIntro: 'Het ontvangstfilter van de Meshcomod (EV Fork)-companion (pre-release v1.18.0.1-dev). Plak de opdrachten in de opdrachtregel van de app; hops, rate, kanalen, hash en de volglijst bestaan daar niet.',
+    repeaterOnly: 'alleen repeater',
   },
   en: {
     title: 'Repeater Packet-Filter CLI',
@@ -36,6 +44,11 @@ const copy = {
     copiedAll: 'All commands copied!', nothing: 'Nothing to copy yet.',
     help: 'Command reference', footer: 'Repeater Packet-Filter CLI - 2026',
     howto: 'How it works',
+    target: 'Firmware',
+    targetRepeater: 'DMC repeater / room server',
+    targetCompanion: 'Meshcomod companion',
+    companionIntro: 'The receive filter of the Meshcomod (EV Fork) companion (pre-release v1.18.0.1-dev). Paste the commands into the app\'s command line; hops, rate, channels, hash and the watch list do not exist there.',
+    repeaterOnly: 'repeater only',
   },
   de: {
     title: 'Repeater Paketfilter-CLI',
@@ -50,6 +63,11 @@ const copy = {
     copiedAll: 'Alle Befehle kopiert!', nothing: 'Noch nichts zum Kopieren.',
     help: 'Befehlsreferenz', footer: 'Repeater Paketfilter-CLI - 2026',
     howto: 'Wie es funktioniert',
+    target: 'Firmware',
+    targetRepeater: 'DMC-Repeater / Room-Server',
+    targetCompanion: 'Meshcomod-Companion',
+    companionIntro: 'Der Empfangsfilter des Meshcomod (EV Fork)-Companions (Pre-Release v1.18.0.1-dev). Füge die Befehle in die Befehlszeile der App ein; Hops, Rate, Kanäle, Hash und die Beobachtungsliste gibt es dort nicht.',
+    repeaterOnly: 'nur Repeater',
   },
 }
 
@@ -60,10 +78,12 @@ export default function FilterCliPage() {
   const [settings, setSettings] = useState(defaultFilterSettings)
   const [copiedLine, setCopiedLine] = useState<number | null>(null)
   const [helpOpen, setHelpOpen] = useState(false)
+  const [target, setTarget] = useState<'repeater' | 'companion'>('repeater')
+  const features = target === 'companion' ? COMPANION_FILTER_FEATURES : ALL_FILTER_FEATURES
 
   const commands = useMemo(
-    () => buildFilterCommands(settings, defaultFilterSettings()),
-    [settings],
+    () => buildFilterCommands(settings, defaultFilterSettings(), features),
+    [settings, features],
   )
 
   async function copyCommand(text: string, index: number) {
@@ -85,8 +105,8 @@ export default function FilterCliPage() {
         <div className="fw-banner">
           <span className="fw-banner-icon">🇳🇱</span>
           <div className="fw-banner-text">
-            <strong>{c.bannerTitle}</strong>
-            <p>{c.bannerSub}</p>
+            <strong>{target === 'companion' ? 'Meshcomod (EV Fork)' : c.bannerTitle}</strong>
+            <p>{target === 'companion' ? c.companionIntro : c.bannerSub}</p>
           </div>
           <a href="https://dutchmeshcore.nl" target="_blank" rel="noopener noreferrer">dutchmeshcore.nl</a>
         </div>
@@ -97,9 +117,26 @@ export default function FilterCliPage() {
           <Link className="btn btn-sm" to="/filter-guide">{c.howto} →</Link>
         </div>
 
+        <div className="wiki-controls">
+          <label className="wiki-control-label">{c.target}</label>
+          <div className="wiki-variant-tabs" role="tablist">
+            {(['repeater', 'companion'] as const).map(id => (
+              <button
+                key={id}
+                role="tab"
+                aria-selected={target === id}
+                className={`btn${target === id ? ' btn-accent' : ''}`}
+                onClick={() => setTarget(id)}
+              >
+                {id === 'repeater' ? c.targetRepeater : c.targetCompanion}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="info-box privacy-box"><span>ℹ</span><p>{c.intro}</p></div>
 
-        <FilterSettingsForm value={settings} onChange={setSettings} />
+        <FilterSettingsForm value={settings} onChange={setSettings} features={features} />
 
         <FilterShareControls value={settings} onImport={setSettings} onToast={toast} />
 
@@ -147,17 +184,17 @@ export default function FilterCliPage() {
                 <tbody>
                   <tr><td><code>filter on</code> / <code>filter off</code></td><td>{lang === 'de' ? 'Filter aktivieren/deaktivieren.' : lang === 'nl' ? 'Filter in-/uitschakelen.' : 'Enable/disable the filter.'}</td></tr>
                   <tr><td><code>filter reset</code></td><td>{lang === 'de' ? 'Standardwerte wiederherstellen.' : lang === 'nl' ? 'Herstel standaardwaarden.' : 'Restore default settings.'}</td></tr>
-                  <tr><td><code>filter hops &lt;type&gt; &lt;0–64&gt;</code></td><td>{lang === 'de' ? 'Max. Hops pro Payload-Typ.' : lang === 'nl' ? 'Max. hops per payload-type.' : 'Max hops per payload type.'}</td></tr>
-                  <tr><td><code>filter rate &lt;type&gt; &lt;limit&gt; &lt;secs&gt; [soft]</code></td><td>{lang === 'de' ? 'Ratenlimit pro Typ; optionale weiche Grenze verwirft ab dort zufällig.' : lang === 'nl' ? 'Snelheidslimiet per type; optionele zachte grens laat vanaf daar willekeurig vallen.' : 'Rate limit per type; optional soft cutoff drops probabilistically from there.'}</td></tr>
-                  <tr><td><code>filter channel add|remove &lt;#name|Public&gt;</code></td><td>{lang === 'de' ? 'GRP_TXT-Kanal blockieren.' : lang === 'nl' ? 'Blokkeer GRP_TXT-kanaal.' : 'Block a GRP_TXT channel.'}</td></tr>
-                  <tr><td><code>filter hash &lt;1–3&gt;</code></td><td>{lang === 'de' ? 'Min. Pfad-Hash-Bytes.' : lang === 'nl' ? 'Min. path-hash bytes.' : 'Min path-hash bytes.'}</td></tr>
+                  <tr><td><code>filter hops &lt;type&gt; &lt;0–64&gt;</code> <span className="wiki-note-tag">{c.repeaterOnly}</span></td><td>{lang === 'de' ? 'Max. Hops pro Payload-Typ.' : lang === 'nl' ? 'Max. hops per payload-type.' : 'Max hops per payload type.'}</td></tr>
+                  <tr><td><code>filter rate &lt;type&gt; &lt;limit&gt; &lt;secs&gt; [soft]</code> <span className="wiki-note-tag">{c.repeaterOnly}</span></td><td>{lang === 'de' ? 'Ratenlimit pro Typ; optionale weiche Grenze verwirft ab dort zufällig.' : lang === 'nl' ? 'Snelheidslimiet per type; optionele zachte grens laat vanaf daar willekeurig vallen.' : 'Rate limit per type; optional soft cutoff drops probabilistically from there.'}</td></tr>
+                  <tr><td><code>filter channel add|remove &lt;#name|Public&gt;</code> <span className="wiki-note-tag">{c.repeaterOnly}</span></td><td>{lang === 'de' ? 'GRP_TXT-Kanal blockieren.' : lang === 'nl' ? 'Blokkeer GRP_TXT-kanaal.' : 'Block a GRP_TXT channel.'}</td></tr>
+                  <tr><td><code>filter hash &lt;1–3&gt;</code> <span className="wiki-note-tag">{c.repeaterOnly}</span></td><td>{lang === 'de' ? 'Min. Pfad-Hash-Bytes.' : lang === 'nl' ? 'Min. path-hash bytes.' : 'Min path-hash bytes.'}</td></tr>
                   <tr><td><code>filter malformed on|off</code></td><td>{lang === 'de' ? 'Auf fehlerhaftes UTF-8 scannen.' : lang === 'nl' ? 'Scan op ongeldige UTF-8.' : 'Scan for malformed UTF-8.'}</td></tr>
-                  <tr><td><code>filter dryrun on|off</code></td><td>{lang === 'de' ? 'Drops nur zählen, weiterhin weiterleiten.' : lang === 'nl' ? 'Drops alleen tellen, wel doorsturen.' : 'Count drops but keep forwarding.'}</td></tr>
-                  <tr><td><code>filter advert &lt;0–720&gt;</code></td><td>{lang === 'de' ? 'Advert jedes Absenders höchstens einmal pro N Stunden.' : lang === 'nl' ? 'Advertentie per afzender hooguit eens per N uur.' : 'Each origin’s advert at most once per N hours.'}</td></tr>
+                  <tr><td><code>filter dryrun on|off</code> <span className="wiki-note-tag">{c.repeaterOnly}</span></td><td>{lang === 'de' ? 'Drops nur zählen, weiterhin weiterleiten.' : lang === 'nl' ? 'Drops alleen tellen, wel doorsturen.' : 'Count drops but keep forwarding.'}</td></tr>
+                  <tr><td><code>filter advert &lt;0–720&gt;</code> <span className="wiki-note-tag">{c.repeaterOnly}</span></td><td>{lang === 'de' ? 'Advert jedes Absenders höchstens einmal pro N Stunden.' : lang === 'nl' ? 'Advertentie per afzender hooguit eens per N uur.' : 'Each origin’s advert at most once per N hours.'}</td></tr>
                   <tr><td><code>filter age &lt;1–10080&gt;|off</code></td><td>{lang === 'de' ? 'Gruppentexte verwerfen, die älter als N Minuten sind.' : lang === 'nl' ? 'Groepsteksten ouder dan N minuten laten vallen.' : 'Drop group texts older than N minutes.'}</td></tr>
                   <tr><td><code>filter path add|remove &lt;hex&gt;</code></td><td>{lang === 'de' ? 'Pfad-Präfix eines Repeaters blockieren.' : lang === 'nl' ? 'Pad-prefix van een repeater blokkeren.' : 'Block a repeater’s path prefix.'}</td></tr>
                   <tr><td><code>filter sender|text add &lt;pattern&gt; [secs] [prob]</code></td><td>{lang === 'de' ? 'Absender oder Text blockieren, drosseln oder dosieren.' : lang === 'nl' ? 'Afzender of tekst blokkeren, afremmen of doseren.' : 'Block, throttle or dose a sender or text.'}</td></tr>
-                  <tr><td><code>filter watch add|remove &lt;#name&gt;</code></td><td>{lang === 'de' ? '#Kanal für die Regeln lesbar machen.' : lang === 'nl' ? '#kanaal leesbaar maken voor de regels.' : 'Let the rules read a #channel.'}</td></tr>
+                  <tr><td><code>filter watch add|remove &lt;#name&gt;</code> <span className="wiki-note-tag">{c.repeaterOnly}</span></td><td>{lang === 'de' ? '#Kanal für die Regeln lesbar machen.' : lang === 'nl' ? '#kanaal leesbaar maken voor de regels.' : 'Let the rules read a #channel.'}</td></tr>
                 </tbody>
               </table>
               <p className="help-section-title">{lang === 'de' ? 'Payload-Typen' : lang === 'nl' ? 'Payload-types' : 'Payload types'}</p>

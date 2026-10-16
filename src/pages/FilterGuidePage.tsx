@@ -72,6 +72,12 @@ const copy = {
     s_persist_h: 'Persistent configuration',
     s_persist: 'All filter settings are stored in /filter_prefs and survive reboots: the enabled state, hop limits, rate limits and soft cutoffs, blocked channels, minimum hash size, malformed filtering, and on dev builds dry-run, the advert window, path prefixes, sender/text rules, the watch list and the age limit. Files written by older firmware load the new settings at their defaults.',
 
+    s_comp_h: 'Companion receive filter (Meshcomod)',
+    s_comp: 'The Meshcomod (EV Fork) companion firmware has its own filter, built on the same rule engine and list syntax. It keeps junk and unwanted channel messages away from the app, the web client and the touch screen instead of deciding what the mesh forwards. It is off by default and only in the companion-v1.18.0.1-pre2 pre-release so far, not yet tested on hardware.',
+    comp_tbl_reason: 'Check', comp_tbl_verdict: 'Result', comp_tbl_shown: 'Shown in the app', comp_tbl_repeated: 'Repeated (repeat on)',
+    comp_drop: 'dropped', comp_hide: 'hidden', comp_no: 'no', comp_yes: 'yes',
+    comp_row_junk: 'malformed, age, path', comp_row_personal: 'sender, text',
+    s_comp_notes: 'Commands: "filter", "filter on|off|reset", "filter malformed on|off", "filter age <minutes>|off", "filter path add|remove|list", "filter sender|text add|remove|list" and "filter stats <topic>", from the app\'s command line, USB serial or remote CLI. There are no hops, rate, channel, hash, dry-run, advert or watch settings: the content checks run on every channel the companion holds the key for. Only flood traffic is checked, never direct messages. The raw RX log the radio sends to the app is not filtered. The status line reads "Filter on: Hidden [ Malformed | Age | Path | Sender | Text ]"; settings are saved in /cfilter.json. The Filter CLI generator has a Meshcomod companion target.',
     s_reco_h: 'Recommended configurations',
     s_reco_note: 'To block the July 2026 spammer, make sure to include "filter rate 02 5 60" (it is in the busy example, not the typical one).',
     reco_typical_h: 'Typical public repeater',
@@ -153,6 +159,12 @@ const copy = {
     s_persist_h: 'Blijvende configuratie',
     s_persist: 'Alle filterinstellingen worden opgeslagen in /filter_prefs en blijven na een herstart bewaard: de aan/uit-status, hop-limieten, snelheidslimieten en zachte grenzen, geblokkeerde kanalen, minimale hash-grootte, het filteren op ongeldige berichten, en op dev-builds dry-run, het advertentievenster, pad-prefixen, afzender-/tekstregels, de volglijst en de leeftijdsgrens. Bestanden van oudere firmware laden de nieuwe instellingen op hun standaardwaarden.',
 
+    s_comp_h: 'Ontvangstfilter van de companion (Meshcomod)',
+    s_comp: 'De companion-firmware Meshcomod (EV Fork) heeft een eigen filter, met dezelfde regelengine en lijstsyntaxis. Het houdt rommel en ongewenste kanaalberichten weg uit de app, de webclient en het touchscreen, in plaats van te bepalen wat de mesh doorstuurt. Het staat standaard uit en zit tot nu toe alleen in de pre-release companion-v1.18.0.1-pre2, nog niet op hardware getest.',
+    comp_tbl_reason: 'Controle', comp_tbl_verdict: 'Resultaat', comp_tbl_shown: 'Getoond in de app', comp_tbl_repeated: 'Doorgestuurd (repeat aan)',
+    comp_drop: 'verwijderd', comp_hide: 'verborgen', comp_no: 'nee', comp_yes: 'ja',
+    comp_row_junk: 'malformed, age, path', comp_row_personal: 'sender, text',
+    s_comp_notes: 'Opdrachten: "filter", "filter on|off|reset", "filter malformed on|off", "filter age <minuten>|off", "filter path add|remove|list", "filter sender|text add|remove|list" en "filter stats <onderwerp>", via de opdrachtregel van de app, USB-serieel of remote CLI. Er zijn geen hops-, rate-, kanaal-, hash-, dry-run-, advertentie- of volglijstinstellingen: de inhoudscontroles lopen op elk kanaal waarvan de companion de sleutel heeft. Alleen flood-verkeer wordt gecontroleerd, nooit directe berichten. Het ruwe RX-log dat de radio naar de app stuurt, wordt niet gefilterd. De statusregel luidt "Filter on: Hidden [ Malformed | Age | Path | Sender | Text ]"; de instellingen staan in /cfilter.json. De Filter CLI-generator heeft een doel Meshcomod-companion.',
     s_reco_h: 'Aanbevolen configuraties',
     s_reco_note: 'Om de spammer van juli 2026 te blokkeren, neem "filter rate 02 5 60" op (het staat in het drukke voorbeeld, niet in het typische).',
     reco_typical_h: 'Typische publieke repeater',
@@ -234,6 +246,12 @@ const copy = {
     s_persist_h: 'Dauerhafte Konfiguration',
     s_persist: 'Alle Filtereinstellungen werden in /filter_prefs gespeichert und überstehen Neustarts: der Aktiv-Status, Hop-Limits, Ratenlimits und weiche Grenzen, blockierte Kanäle, minimale Hash-Größe, das Filtern fehlerhafter Nachrichten und auf Dev-Builds Dry-run, das Advert-Fenster, Pfad-Präfixe, Absender-/Textregeln, die Beobachtungsliste und die Altersgrenze. Dateien älterer Firmware laden die neuen Einstellungen mit ihren Standardwerten.',
 
+    s_comp_h: 'Empfangsfilter des Companions (Meshcomod)',
+    s_comp: 'Die Companion-Firmware Meshcomod (EV Fork) hat einen eigenen Filter mit derselben Regel-Engine und Listensyntax. Er hält Müll und unerwünschte Kanalnachrichten von der App, dem Webclient und dem Touchscreen fern, statt zu entscheiden, was das Mesh weiterleitet. Er ist standardmäßig aus und bisher nur im Pre-Release companion-v1.18.0.1-pre2 enthalten, noch nicht auf Hardware getestet.',
+    comp_tbl_reason: 'Prüfung', comp_tbl_verdict: 'Ergebnis', comp_tbl_shown: 'In der App angezeigt', comp_tbl_repeated: 'Weitergeleitet (repeat an)',
+    comp_drop: 'verworfen', comp_hide: 'ausgeblendet', comp_no: 'nein', comp_yes: 'ja',
+    comp_row_junk: 'malformed, age, path', comp_row_personal: 'sender, text',
+    s_comp_notes: 'Befehle: "filter", "filter on|off|reset", "filter malformed on|off", "filter age <Minuten>|off", "filter path add|remove|list", "filter sender|text add|remove|list" und "filter stats <Thema>", über die Befehlszeile der App, USB-seriell oder Remote-CLI. Es gibt keine Hops-, Rate-, Kanal-, Hash-, Dry-run-, Advert- oder Beobachtungslisten-Einstellungen: die Inhaltsprüfungen laufen auf jedem Kanal, dessen Schlüssel der Companion hat. Nur Flood-Verkehr wird geprüft, nie Direktnachrichten. Das rohe RX-Log, das das Funkmodul an die App schickt, wird nicht gefiltert. Die Statuszeile lautet "Filter on: Hidden [ Malformed | Age | Path | Sender | Text ]"; die Einstellungen liegen in /cfilter.json. Der Filter-CLI-Generator hat ein Ziel Meshcomod-Companion.',
     s_reco_h: 'Empfohlene Konfigurationen',
     s_reco_note: 'Um den Spammer vom Juli 2026 zu blockieren, füge unbedingt "filter rate 02 5 60" hinzu (es steht im Beispiel für den ausgelasteten Repeater, nicht im typischen).',
     reco_typical_h: 'Typischer öffentlicher Repeater',
@@ -474,6 +492,21 @@ export default function FilterGuidePage() {
         <div className="panel"><div className="panel-legend">{c.s_age_h}</div><p>{c.s_age}</p></div>
         <div className="panel"><div className="panel-legend">{c.s_stats_h}</div><p>{c.s_stats}</p></div>
         <div className="panel"><div className="panel-legend">{c.s_persist_h}</div><p>{c.s_persist}</p></div>
+
+        <div className="panel">
+          <div className="panel-legend">{c.s_comp_h}</div>
+          <p>{c.s_comp}</p>
+          <table className="filter-type-table">
+            <thead>
+              <tr><th>{c.comp_tbl_reason}</th><th>{c.comp_tbl_verdict}</th><th>{c.comp_tbl_shown}</th><th>{c.comp_tbl_repeated}</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>{c.comp_row_junk}</td><td>{c.comp_drop}</td><td>{c.comp_no}</td><td>{c.comp_no}</td></tr>
+              <tr><td>{c.comp_row_personal}</td><td>{c.comp_hide}</td><td>{c.comp_no}</td><td>{c.comp_yes}</td></tr>
+            </tbody>
+          </table>
+          <p>{c.s_comp_notes}</p>
+        </div>
 
         <div className="panel">
           <div className="panel-legend">{c.s_reco_h}</div>

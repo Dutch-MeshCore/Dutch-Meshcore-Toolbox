@@ -89,21 +89,21 @@ export const PANEL_HELP: Record<PanelHelpId, Record<Lang, HelpContent>> = {
       title: 'Room server instellingen',
       intro: 'Instellingen die alleen gelden wanneer de node als room server draait. Een room server bewaart berichten zodat clients ze later kunnen ophalen.',
       fields: [
-        { label: 'Herhalen inschakelen', body: 'Laat de room server ook als repeater werken en pakketten doorsturen naar de rest van het mesh. Uit: de server ontvangt alleen lokaal en herhaalt niets.' },
+        { label: 'Herhalen inschakelen', body: 'Laat de room server ook als repeater werken en pakketten doorsturen naar de rest van het mesh. Uit: de server ontvangt alleen lokaal en herhaalt niets. Vanaf v1.18 weigert een room server set repeat on; je kunt herhalen dan alleen nog uitzetten.' },
       ],
     },
     en: {
       title: 'Room server settings',
       intro: 'Settings that apply only when the node runs as a room server. A room server stores messages so clients can fetch them later.',
       fields: [
-        { label: 'Enable repeat', body: 'Lets the room server also act as a repeater and forward packets on to the rest of the mesh. Off: the server only receives locally and repeats nothing.' },
+        { label: 'Enable repeat', body: 'Lets the room server also act as a repeater and forward packets on to the rest of the mesh. Off: the server only receives locally and repeats nothing. Since v1.18 a room server refuses set repeat on, so repeat can only be turned off.' },
       ],
     },
     de: {
       title: 'Room-Server-Einstellungen',
       intro: 'Einstellungen, die nur gelten, wenn der Node als Room-Server läuft. Ein Room-Server speichert Nachrichten, damit Clients sie später abrufen können.',
       fields: [
-        { label: 'Weiterleiten aktivieren', body: 'Lässt den Room-Server auch als Repeater arbeiten und Pakete an den Rest des Mesh weiterleiten. Aus: der Server empfängt nur lokal und wiederholt nichts.' },
+        { label: 'Weiterleiten aktivieren', body: 'Lässt den Room-Server auch als Repeater arbeiten und Pakete an den Rest des Mesh weiterleiten. Aus: der Server empfängt nur lokal und wiederholt nichts. Seit v1.18 lehnt ein Room-Server set repeat on ab; Weiterleiten lässt sich dann nur noch ausschalten.' },
       ],
     },
   },

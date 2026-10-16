@@ -16,6 +16,7 @@ const copy = {
     s2roomserver: 'a room server (store-and-forward group-chat hub) with the same MQTT observer bridge, per-broker filter and neighbour publishing as the MQTT build – for boards that host a public room.',
     s3h: 'Which build do I want?',
     s3: 'Chatting from a handheld? Stay on the companion (official) firmware. Running a relay? Use the DMC repeater build. Feeding packet data to an external MC-to-MQTT bridge or logger over serial? Use the DMC Repeater PacketLog build. Want your node to show up on the analyzers and the map on its own? Use the MQTT/observer build. Hosting a group-chat room? Use the DMC Room Server MQTT build.',
+    s3comp: 'Want a handheld that hides junk and spam channel messages? The Meshcomod (EV Fork) companion firmware adds a receive filter, SNMP and OTA on top of v1.18. It is in the Flasher as Meshcomod (EV Fork) Companion Filter Firmware, a pre-release (v1.18.0.1-dev), and has not been tested on hardware yet. Set the filter in USB Setup, or with the Filter CLI (Meshcomod companion target) and paste the commands into the app\'s command line.',
     s4h: 'Flash it',
     s4: 'Open the Flasher, pick your board and the DMC firmware, and use the merged “Full flash” image for a first install so the partition table is written. Export your config first if you are re-flashing – flashing can wipe settings.',
     s5h: 'Configure it',
@@ -38,6 +39,7 @@ const copy = {
     s2roomserver: 'een room-server (store-and-forward groepschat-hub) met dezelfde MQTT-observer-bridge, filter per broker en buurpublicatie als de MQTT-build – voor boards die een publieke room hosten.',
     s3h: 'Welke build wil ik?',
     s3: 'Chatten vanaf een handheld? Blijf op de companion-firmware (officieel). Draai je een relay? Gebruik de DMC-repeater-build. Wil je pakketdata via serieel naar een externe MC-naar-MQTT-bridge of logger sturen? Gebruik de DMC Repeater PacketLog-build. Wil je dat je node zelf op de analyzers en de kaart verschijnt? Gebruik de MQTT/observer-build. Host je een groepschat-room? Gebruik de DMC Room Server MQTT-build.',
+    s3comp: 'Wil je een handheld die rommel en spam in kanalen verbergt? De companion-firmware Meshcomod (EV Fork) voegt een ontvangstfilter, SNMP en OTA toe bovenop v1.18. Hij staat in de Flasher als Meshcomod (EV Fork) Companion Filter Firmware, een pre-release (v1.18.0.1-dev), en is nog niet op hardware getest. Stel het filter in via USB Setup, of met de Filter CLI (doel Meshcomod-companion) en plak de opdrachten in de opdrachtregel van de app.',
     s4h: 'Flashen',
     s4: 'Open de Flasher, kies je board en de DMC-firmware, en gebruik het merged “Full flash”-image voor een eerste installatie zodat de partitietabel wordt geschreven. Exporteer eerst je config als je opnieuw flasht – flashen kan instellingen wissen.',
     s5h: 'Configureren',
@@ -60,6 +62,7 @@ const copy = {
     s2roomserver: 'ein Room-Server (Store-and-Forward-Gruppenchat-Hub) mit derselben MQTT-Observer-Bridge, Filter pro Broker und Nachbarn-Veröffentlichung wie der MQTT-Build – für Boards, die einen öffentlichen Room hosten.',
     s3h: 'Welchen Build will ich?',
     s3: 'Chattest du von einem Handheld? Bleib bei der Companion-Firmware (offiziell). Betreibst du ein Relais? Nimm den DMC-Repeater-Build. Willst du Paketdaten über seriell an eine externe MC-to-MQTT-Bridge oder einen Logger senden? Nimm den DMC Repeater PacketLog-Build. Willst du, dass dein Knoten von allein auf den Analyzern und der Karte erscheint? Nimm den MQTT/Observer-Build. Hostest du einen Gruppenchat-Room? Nimm den DMC Room Server MQTT-Build.',
+    s3comp: 'Willst du ein Handheld, das Müll und Spam in Kanälen ausblendet? Die Companion-Firmware Meshcomod (EV Fork) ergänzt v1.18 um einen Empfangsfilter, SNMP und OTA. Sie steht im Flasher als Meshcomod (EV Fork) Companion Filter Firmware, ein Pre-Release (v1.18.0.1-dev), und wurde noch nicht auf Hardware getestet. Stelle den Filter im USB Setup ein, oder mit der Filter CLI (Ziel Meshcomod-Companion), und füge die Befehle in die Befehlszeile der App ein.',
     s4h: 'Flashen',
     s4: 'Öffne den Flasher, wähle dein Board und die DMC-Firmware und nutze das zusammengeführte „Voll-Flash“-Image für eine Erstinstallation, damit die Partitionstabelle geschrieben wird. Exportiere zuerst deine Konfiguration, wenn du neu flashst – Flashen kann Einstellungen löschen.',
     s5h: 'Konfigurieren',
@@ -97,7 +100,7 @@ export default function GettingStartedPage() {
           <Link className="btn btn-sm" to="/cli-wiki">{c.goWiki} →</Link>
         </div>
 
-        <div className="panel"><div className="panel-legend">{c.s3h}</div><p>{c.s3}</p></div>
+        <div className="panel"><div className="panel-legend">{c.s3h}</div><p>{c.s3}</p><p>{c.s3comp}</p></div>
 
         <div className="panel">
           <div className="panel-legend">{c.s4h}</div><p>{c.s4}</p>

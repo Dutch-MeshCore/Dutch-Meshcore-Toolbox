@@ -36,7 +36,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
         date: '2026-10-15',
         title: 'All DMC branches',
         items: [
-          <>Merged upstream MeshCore <strong>v1.18.0</strong> into <code>dmc-dev</code>, <code>dmc-observer-dev</code> and <code>dmc-dev-packetlog</code>. The rolling dev builds pick it up on their next rebuild and will then show as <strong>1.18.0-dev</strong> in the Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream release notes</Doc>.</>,
+          <>Merged upstream MeshCore <strong>v1.18.0</strong> into <code>dmc-dev</code>, <code>dmc-observer-dev</code> and <code>dmc-dev-packetlog</code>. The rolling dev builds have been rebuilt on it and show as <strong>1.18.0-dev</strong> in the Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream release notes</Doc>.</>,
           <>New upstream commands <code>power</code> (battery and power-source state) and <code>gps diag</code>.</>,
           <><strong>RAK3112</strong> fixes: octal PSRAM enabled, battery voltage reading corrected, Heltec V3 pin leftovers removed.</>,
           <>Observer: caught up with agessaman observer-firmware. <strong>ThinkNode M7</strong> now prefers its onboard Ethernet with WiFi fallback (<code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>), new <code>set mqtt.advert.verify on|off</code> to skip adverts with a bad signature, <code>stop ota</code> to end an idle manual-OTA session, stricter NTP reply validation, and three new broker presets (<code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
@@ -115,6 +115,19 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'CLI Wiki & filter: v1.18 companion and Meshcomod',
+        date: '2026-10-16',
+        items: [
+          <><strong>CLI Wiki</strong>: since v1.18 the companion has a small CLI of its own (app command line, USB serial, remote CLI). The companion view now lists only what it answers, and adds <code>set pin</code>, <code>get</code> / <code>set tz.offset</code> and the WiFi commands of WiFi builds (<code>wifi.enabled</code>, <code>wifi.clear</code>, <code>get wifi.ip</code>). Also new: <code>get</code> / <code>set cad</code>.</>,
+          <>FEM gain (<code>radio.fem.rxgain</code> / <code>txgain</code>) and fan control are board commands upstream in v1.18, so they now show for every role, with the boards named. Commands only on DMC dev builds carry a <strong>v1.18-dev</strong> badge. Notes added for <code>set repeat on</code> on room servers, <code>set af</code> (0-9), <code>agc.reset.interval</code> (seconds) and the <code>loop.detect</code> default; <code>region load</code> is described as the multi-line import it is.</>,
+          <>New CLI Wiki variant <strong>Meshcomod (EV Fork) – Companion</strong>: its companion CLI, the receive filter, SNMP, live WiFi settings and <code>ota check</code> / <code>ota update</code> / <code>ota url</code> for the command contact.</>,
+          <>CLI Wiki variants now link their own docs: the Meshcomod receive filter, <strong>SNMP OID table</strong> (the DMC observer tree plus companion values under <code>.9</code> and receive-filter counters under <code>.10</code>), OTA and fork changelog, and the DMC observer CLI and SNMP references.</>,
+          <><strong>Filter CLI generator</strong>: new <strong>Meshcomod companion</strong> target that only emits the commands the companion receive filter has. USB Setup and the filter guide recognise its status line (<code>Filter on: Hidden [...]</code>) and only offer its settings; the guide has a new companion section on hidden vs dropped messages.</>,
+          <><strong>USB Setup</strong>: on room servers with v1.18 or later the repeat box can only be turned off, because the firmware refuses <code>set repeat on</code>.</>,
+          <><strong>USB Setup</strong> now connects to a v1.18 <strong>companion</strong> on its serial console (the official firmware in CLI Rescue, Meshcomod at any time on ESP32): name, radio and the advanced radio settings it answers, plus the receive filter on Meshcomod. Sections a companion does not have are hidden.</>,
+        ],
+      },
+      {
         version: 'Filter, CLI & flasher: current DMC dev firmware',
         date: '2026-10-15',
         items: [
@@ -123,7 +136,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>Region Gating</strong> panel: the help text wrongly described <code>dc.gate</code> as neighbour-count based; it now explains the duty-cycle budget model in NL / EN / DE. The panel now shows on any DMC firmware that answers <code>get dc.gate</code> with on/off, and no longer on firmware that replies <code>??: dc.gate</code>.</>,
           <><strong>CLI Wiki</strong>: added the new filter commands, <code>set dutycycle auto</code>, <code>stop ota</code>, <code>start ota ap</code>, <code>ota branch</code> prod/beta, <code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>, <code>mqtt.advert.verify</code>, fan control, <code>power</code> and <code>gps diag</code>, and corrected the <code>dc.gate</code> descriptions.</>,
           <>MQTT broker presets updated to all <strong>38</strong> (adds <code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
-          <><strong>Flasher</strong>: the rolling <code>dmc-repeater-dev</code> and <code>dmc-repeater-packetlog-dev</code> builds are listed as <strong>1.17.1-dev</strong> (taken from the file name) instead of a bare "dev".</>,
+          <><strong>Flasher</strong>: the rolling <code>dmc-repeater-dev</code> and <code>dmc-repeater-packetlog-dev</code> builds are listed with the version from the file name (now <strong>1.18.0-dev</strong>) instead of a bare "dev".</>,
         ],
       },
       {
@@ -185,7 +198,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
         date: '2026-10-15',
         title: 'Alle DMC-branches',
         items: [
-          <>Upstream MeshCore <strong>v1.18.0</strong> samengevoegd in <code>dmc-dev</code>, <code>dmc-observer-dev</code> en <code>dmc-dev-packetlog</code>. De doorlopende dev-builds nemen dit mee bij hun volgende build en verschijnen dan als <strong>1.18.0-dev</strong> in de Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream-releasenotes</Doc>.</>,
+          <>Upstream MeshCore <strong>v1.18.0</strong> samengevoegd in <code>dmc-dev</code>, <code>dmc-observer-dev</code> en <code>dmc-dev-packetlog</code>. De doorlopende dev-builds zijn hierop opnieuw gebouwd en staan als <strong>1.18.0-dev</strong> in de Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream-releasenotes</Doc>.</>,
           <>Nieuwe upstream-commando's <code>power</code> (status van batterij en voeding) en <code>gps diag</code>.</>,
           <><strong>RAK3112</strong>-fixes: octal PSRAM ingeschakeld, uitlezing van de batterijspanning gecorrigeerd, overgebleven Heltec V3-pinnen verwijderd.</>,
           <>Observer: bijgewerkt naar agessaman observer-firmware. <strong>ThinkNode M7</strong> gebruikt nu bij voorkeur zijn ingebouwde Ethernet met wifi als terugval (<code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>), nieuw <code>set mqtt.advert.verify on|off</code> om advertenties met een ongeldige handtekening over te slaan, <code>stop ota</code> om een inactieve handmatige OTA-sessie te beëindigen, strengere controle van NTP-antwoorden en drie nieuwe broker-presets (<code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
@@ -264,6 +277,19 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'CLI Wiki & filter: v1.18-companion en Meshcomod',
+        date: '2026-10-16',
+        items: [
+          <><strong>CLI Wiki</strong>: sinds v1.18 heeft de companion een kleine eigen CLI (opdrachtregel van de app, USB-serieel, remote CLI). Het companion-overzicht toont nu alleen wat hij beantwoordt, en voegt <code>set pin</code>, <code>get</code> / <code>set tz.offset</code> en de WiFi-opdrachten van WiFi-builds toe (<code>wifi.enabled</code>, <code>wifi.clear</code>, <code>get wifi.ip</code>). Ook nieuw: <code>get</code> / <code>set cad</code>.</>,
+          <>FEM-versterking (<code>radio.fem.rxgain</code> / <code>txgain</code>) en ventilatorbediening zijn in v1.18 upstream board-opdrachten, dus ze staan nu bij elke rol, met de boards erbij. Opdrachten die alleen in DMC-dev-builds zitten, hebben een <strong>v1.18-dev</strong>-badge. Toelichting toegevoegd bij <code>set repeat on</code> op room-servers, <code>set af</code> (0-9), <code>agc.reset.interval</code> (seconden) en de standaard van <code>loop.detect</code>; <code>region load</code> staat nu beschreven als de import over meerdere regels die het is.</>,
+          <>Nieuwe CLI Wiki-variant <strong>Meshcomod (EV Fork) – Companion</strong>: de companion-CLI, het ontvangstfilter, SNMP, WiFi-instellingen die direct werken en <code>ota check</code> / <code>ota update</code> / <code>ota url</code> voor het commandocontact.</>,
+          <>CLI Wiki-varianten linken nu naar hun eigen documentatie: het Meshcomod-ontvangstfilter, de <strong>SNMP-OID-tabel</strong> (de boom van de DMC-observer plus companion-waarden onder <code>.9</code> en tellers van het ontvangstfilter onder <code>.10</code>), OTA en de changelog van de fork, en de CLI- en SNMP-referentie van de DMC-observer.</>,
+          <><strong>Filter CLI-generator</strong>: nieuw doel <strong>Meshcomod-companion</strong> dat alleen de opdrachten van het ontvangstfilter van de companion maakt. USB Setup en de filtergids herkennen de statusregel (<code>Filter on: Hidden [...]</code>) en tonen alleen die instellingen; de gids heeft een nieuw companion-deel over verborgen en verwijderde berichten.</>,
+          <><strong>USB Setup</strong>: op room-servers met v1.18 of nieuwer kan het vakje voor herhalen alleen nog uit, omdat de firmware <code>set repeat on</code> weigert.</>,
+          <><strong>USB Setup</strong> verbindt nu ook met een v1.18-<strong>companion</strong> via zijn seriële console (de officiële firmware in CLI Rescue, Meshcomod op ESP32 altijd): naam, radio en de geavanceerde radio-instellingen die hij beantwoordt, plus het ontvangstfilter op Meshcomod. Onderdelen die een companion niet heeft, worden verborgen.</>,
+        ],
+      },
+      {
         version: 'Filter, CLI & flasher: actuele DMC-dev-firmware',
         date: '2026-10-15',
         items: [
@@ -272,7 +298,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>Regiogating</strong>-paneel: de helptekst beschreef <code>dc.gate</code> ten onrechte als gebaseerd op het aantal buren; hij legt nu het duty-cycle-budgetmodel uit in NL / EN / DE. Het paneel verschijnt nu op elke DMC-firmware die <code>get dc.gate</code> met on/off beantwoordt, en niet meer op firmware die <code>??: dc.gate</code> antwoordt.</>,
           <><strong>CLI-wiki</strong>: de nieuwe filtercommando's toegevoegd, plus <code>set dutycycle auto</code>, <code>stop ota</code>, <code>start ota ap</code>, <code>ota branch</code> prod/beta, <code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>, <code>mqtt.advert.verify</code>, ventilatorbediening, <code>power</code> en <code>gps diag</code>, en de <code>dc.gate</code>-beschrijvingen gecorrigeerd.</>,
           <>MQTT-broker-presets bijgewerkt naar alle <strong>38</strong> (voegt <code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code> toe).</>,
-          <><strong>Flasher</strong>: de doorlopende <code>dmc-repeater-dev</code>- en <code>dmc-repeater-packetlog-dev</code>-builds staan nu als <strong>1.17.1-dev</strong> in de lijst (uit de bestandsnaam) in plaats van alleen "dev".</>,
+          <><strong>Flasher</strong>: de doorlopende <code>dmc-repeater-dev</code>- en <code>dmc-repeater-packetlog-dev</code>-builds staan nu met de versie uit de bestandsnaam in de lijst (nu <strong>1.18.0-dev</strong>) in plaats van alleen "dev".</>,
         ],
       },
       {
@@ -334,7 +360,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
         date: '2026-10-15',
         title: 'Alle DMC-Branches',
         items: [
-          <>Upstream-MeshCore <strong>v1.18.0</strong> in <code>dmc-dev</code>, <code>dmc-observer-dev</code> und <code>dmc-dev-packetlog</code> zusammengeführt. Die rollierenden Dev-Builds übernehmen das beim nächsten Build und erscheinen dann als <strong>1.18.0-dev</strong> im Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream-Release-Notes</Doc>.</>,
+          <>Upstream-MeshCore <strong>v1.18.0</strong> in <code>dmc-dev</code>, <code>dmc-observer-dev</code> und <code>dmc-dev-packetlog</code> zusammengeführt. Die rollierenden Dev-Builds wurden darauf neu gebaut und erscheinen als <strong>1.18.0-dev</strong> im Flasher. <Doc href="https://blog.meshcore.io/2026/10/15/release-1-18-0">Upstream-Release-Notes</Doc>.</>,
           <>Neue Upstream-Befehle <code>power</code> (Status von Batterie und Stromversorgung) und <code>gps diag</code>.</>,
           <><strong>RAK3112</strong>-Fixes: Octal-PSRAM aktiviert, Batteriespannungsmessung korrigiert, übrig gebliebene Heltec-V3-Pins entfernt.</>,
           <>Observer: auf den Stand der agessaman-observer-Firmware gebracht. <strong>ThinkNode M7</strong> nutzt nun bevorzugt sein eingebautes Ethernet mit WLAN als Rückfall (<code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>), neu <code>set mqtt.advert.verify on|off</code>, um Adverts mit ungültiger Signatur zu überspringen, <code>stop ota</code> zum Beenden einer untätigen manuellen OTA-Sitzung, strengere Prüfung von NTP-Antworten und drei neue Broker-Presets (<code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
@@ -413,6 +439,19 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'CLI Wiki & Filter: v1.18-Companion und Meshcomod',
+        date: '2026-10-16',
+        items: [
+          <><strong>CLI Wiki</strong>: seit v1.18 hat der Companion eine kleine eigene CLI (Befehlszeile der App, USB-seriell, Remote-CLI). Die Companion-Ansicht zeigt nur noch, was er beantwortet, und ergänzt <code>set pin</code>, <code>get</code> / <code>set tz.offset</code> sowie die WiFi-Befehle der WiFi-Builds (<code>wifi.enabled</code>, <code>wifi.clear</code>, <code>get wifi.ip</code>). Ebenfalls neu: <code>get</code> / <code>set cad</code>.</>,
+          <>FEM-Verstärkung (<code>radio.fem.rxgain</code> / <code>txgain</code>) und Lüftersteuerung sind in v1.18 upstream Board-Befehle und erscheinen daher bei jeder Rolle, mit den Boards. Befehle, die nur in DMC-Dev-Builds stecken, tragen ein <strong>v1.18-dev</strong>-Abzeichen. Hinweise ergänzt zu <code>set repeat on</code> auf Room-Servern, <code>set af</code> (0-9), <code>agc.reset.interval</code> (Sekunden) und dem Standard von <code>loop.detect</code>; <code>region load</code> ist jetzt als mehrzeiliger Import beschrieben.</>,
+          <>Neue CLI-Wiki-Variante <strong>Meshcomod (EV Fork) – Companion</strong>: die Companion-CLI, der Empfangsfilter, SNMP, sofort wirksame WiFi-Einstellungen und <code>ota check</code> / <code>ota update</code> / <code>ota url</code> für den Befehlskontakt.</>,
+          <>CLI-Wiki-Varianten verlinken jetzt ihre eigene Dokumentation: den Meshcomod-Empfangsfilter, die <strong>SNMP-OID-Tabelle</strong> (der Baum des DMC-Observers plus Companion-Werte unter <code>.9</code> und Zähler des Empfangsfilters unter <code>.10</code>), OTA und das Changelog des Forks sowie die CLI- und SNMP-Referenz des DMC-Observers.</>,
+          <><strong>Filter-CLI-Generator</strong>: neues Ziel <strong>Meshcomod-Companion</strong>, das nur die Befehle des Companion-Empfangsfilters erzeugt. USB Setup und der Filter-Leitfaden erkennen dessen Statuszeile (<code>Filter on: Hidden [...]</code>) und bieten nur dessen Einstellungen an; der Leitfaden hat einen neuen Companion-Abschnitt zu ausgeblendeten und verworfenen Nachrichten.</>,
+          <><strong>USB Setup</strong>: auf Room-Servern ab v1.18 lässt sich das Weiterleiten-Kästchen nur noch ausschalten, weil die Firmware <code>set repeat on</code> ablehnt.</>,
+          <><strong>USB Setup</strong> verbindet sich jetzt auch mit einem v1.18-<strong>Companion</strong> über dessen serielle Konsole (die offizielle Firmware im CLI Rescue, Meshcomod auf ESP32 jederzeit): Name, Funk und die erweiterten Funkeinstellungen, die er beantwortet, dazu der Empfangsfilter bei Meshcomod. Bereiche, die ein Companion nicht hat, werden ausgeblendet.</>,
+        ],
+      },
+      {
         version: 'Filter, CLI & Flasher: aktuelle DMC-Dev-Firmware',
         date: '2026-10-15',
         items: [
@@ -421,7 +460,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>Regionen-Gating</strong>-Panel: der Hilfetext beschrieb <code>dc.gate</code> fälschlich als nachbarzahlbasiert; er erklärt nun das Duty-Cycle-Budget-Modell in NL / EN / DE. Das Panel erscheint nun auf jeder DMC-Firmware, die <code>get dc.gate</code> mit on/off beantwortet, und nicht mehr auf Firmware, die <code>??: dc.gate</code> antwortet.</>,
           <><strong>CLI Wiki</strong>: die neuen Filterbefehle ergänzt, dazu <code>set dutycycle auto</code>, <code>stop ota</code>, <code>start ota ap</code>, <code>ota branch</code> prod/beta, <code>get link.status</code> / <code>link.diag</code> / <code>link.dns</code>, <code>mqtt.advert.verify</code>, Lüftersteuerung, <code>power</code> und <code>gps diag</code>, und die <code>dc.gate</code>-Beschreibungen korrigiert.</>,
           <>MQTT-Broker-Presets auf alle <strong>38</strong> aktualisiert (ergänzt <code>ntxmesh</code>, <code>bsmesh</code>, <code>marwoj</code>).</>,
-          <><strong>Flasher</strong>: die rollierenden Builds <code>dmc-repeater-dev</code> und <code>dmc-repeater-packetlog-dev</code> stehen nun als <strong>1.17.1-dev</strong> in der Liste (aus dem Dateinamen) statt nur "dev".</>,
+          <><strong>Flasher</strong>: die rollierenden Builds <code>dmc-repeater-dev</code> und <code>dmc-repeater-packetlog-dev</code> stehen nun mit der Version aus dem Dateinamen in der Liste (jetzt <strong>1.18.0-dev</strong>) statt nur "dev".</>,
         ],
       },
       {

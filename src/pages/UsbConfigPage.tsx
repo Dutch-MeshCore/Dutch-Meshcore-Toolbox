@@ -120,6 +120,7 @@ export default function UsbConfigPage() {
             >
               {state === 'connecting' ? t('config_connecting') : t('config_connect')}
             </button>
+            <p className="field-hint" style={{ marginTop: '.75rem', maxWidth: '36rem' }}>{t('config_companion_connect')}</p>
           </div>
         </div>
       </>

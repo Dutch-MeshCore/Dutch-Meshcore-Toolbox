@@ -33,6 +33,7 @@ import {
   sanitizeImportedHardware,
   type HardwareSettings,
 } from '../lib/config/hardwareCommands'
+import { COMPANION_VARS, isCompanionConsole } from '../lib/config/companionConfig'
 
 export function useSerialDevice() {
   const supported = typeof navigator !== 'undefined' && 'serial' in navigator
@@ -76,24 +77,31 @@ export function useSerialDevice() {
     getVariable: (k: string) => Promise<string>
     parseVariableResponse: (r: string) => unknown
     sendCommand: (cmd: string) => Promise<string>
+    lastReplyStyle?: 'arrow' | 'plain' | null
   }) {
     setBusy('Reading configuration…')
     const vers = await cli.getVersion()
-    const clock = await cli.getClock()
-    const role = await cli.getRole()
-    const pubKey = await cli.getPubKey()
+    // A v1.18 companion console answers without the server CLI's `  -> ` marker. It
+    // has no clock, role, keys or the server settings, so only its own subset is read.
+    const companion = isCompanionConsole(cli.lastReplyStyle)
+    const clock = companion ? '' : await cli.getClock()
+    const role = companion ? 'companion' : await cli.getRole()
+    const pubKey = companion ? '' : await cli.getPubKey()
 
     let prvKey = ''
-    try {
-      const r = await cli.getVariable('prv.key')
-      prvKey = String(cli.parseVariableResponse(r) ?? '')
-    } catch { /* optional field */ }
+    if (!companion) {
+      try {
+        const r = await cli.getVariable('prv.key')
+        prvKey = String(cli.parseVariableResponse(r) ?? '')
+      } catch { /* optional field */ }
+    }
 
     const fwVer = parseFirmwareVersion(vers)
     const vars: DeviceVars = { ...DEFAULT_DEVICE_VARS }
     const varsDevice: Partial<DeviceVars> = {}
+    const keys = companion ? COMPANION_VARS : Object.keys(DEFAULT_DEVICE_VARS) as Array<keyof DeviceVars>
 
-    for (const key of Object.keys(DEFAULT_DEVICE_VARS) as Array<keyof DeviceVars>) {
+    for (const key of keys) {
       const req = VAR_MIN_VERSION[key]
       if (req && !versionAtLeast(fwVer, req)) continue
       const resp = await cli.getVariable(key)
@@ -200,7 +208,7 @@ export function useSerialDevice() {
     } catch { /* region is optional; ignore if unsupported or unresponsive */ }
 
     setDevice(prev => ({
-      version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice,
+      version: vers, clock, role, pubKey, prvKey, password: '', vars, varsDevice, companion,
       filter, filterDevice, filterFeatures, mqttCapable,
       region, regionDevice, dcGateSupported,
       // Preserve already-loaded MQTT settings across re-reads (e.g. after save) and
@@ -446,7 +454,7 @@ export function useSerialDevice() {
     }
 
     const patch: Partial<SerialDeviceInfo> = { vars: newVars }
-    if (data.vars['prv.key']) patch.importPrvKey = data.vars['prv.key']
+    if (data.vars['prv.key'] && !device.companion) patch.importPrvKey = data.vars['prv.key']
 
     // DMC packet-filter - restore only on filter-capable firmware (regular firmware
     // has no device.filter, so this is skipped). Applied vs the device's current

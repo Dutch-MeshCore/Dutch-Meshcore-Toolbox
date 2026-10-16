@@ -171,6 +171,10 @@ export interface SerialDeviceInfo {
   vars: DeviceVars
   varsDevice: Partial<DeviceVars>
   importPrvKey?: string
+  // True when a v1.18 companion answered on its plain-text console (official CLI
+  // Rescue or meshcomod). It only has the companion CLI subset, so the form hides
+  // the server-only sections.
+  companion?: boolean
   filter?: FilterSettings
   filterDevice?: FilterSettings
   // Optional filter features the firmware answered (soft cutoff, dry-run, rules, …),

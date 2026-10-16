@@ -47,6 +47,11 @@ const copy = {
     colSecs: 'Throttle (s, 0 = block)',
     colProb: 'Applies to (%)',
     rulesHint: 'Rules are checked top to bottom; the first rule that decides drops the message.',
+    cEnable: 'Enable receive filter',
+    cNotice: 'Companion receive filter: malformed, too old and blocked-path messages are dropped; sender and text rules only hide a message from the app, it is still repeated when repeat is on.',
+    cMalformed: 'Drop malformed group text (bad timestamp, empty, invalid UTF-8) on every channel',
+    cAgeHint: 'Needs a set clock on the companion (the app usually sets it); inactive until then.',
+    cRulesHint: 'Rules are checked top to bottom; the first rule that decides hides the message.',
   },
   nl: {
     enable: 'Pakketfilter inschakelen',
@@ -80,6 +85,11 @@ const copy = {
     colSecs: 'Afremmen (s, 0 = blokkeren)',
     colProb: 'Geldt voor (%)',
     rulesHint: 'Regels worden van boven naar beneden gecontroleerd; de eerste regel die beslist, laat het bericht vallen.',
+    cEnable: 'Ontvangstfilter inschakelen',
+    cNotice: 'Ontvangstfilter van de companion: onjuiste, te oude en via een geblokkeerd pad ontvangen berichten vallen weg; afzender- en tekstregels verbergen een bericht alleen in de app, met repeat aan wordt het nog steeds doorgestuurd.',
+    cMalformed: 'Onjuiste groepstekst (foute tijdstempel, leeg, ongeldige UTF-8) op elk kanaal laten vallen',
+    cAgeHint: 'Werkt pas als de klok van de companion is ingesteld (meestal door de app).',
+    cRulesHint: 'Regels worden van boven naar beneden gecontroleerd; de eerste regel die beslist, verbergt het bericht.',
   },
   de: {
     enable: 'Paketfilter aktivieren',
@@ -113,6 +123,11 @@ const copy = {
     colSecs: 'Drosseln (s, 0 = blockieren)',
     colProb: 'Gilt für (%)',
     rulesHint: 'Regeln werden von oben nach unten geprüft; die erste Regel, die entscheidet, verwirft die Nachricht.',
+    cEnable: 'Empfangsfilter aktivieren',
+    cNotice: 'Empfangsfilter des Companions: fehlerhafte, zu alte und über einen blockierten Pfad empfangene Nachrichten werden verworfen; Absender- und Textregeln blenden eine Nachricht nur in der App aus, mit repeat an wird sie weiterhin weitergeleitet.',
+    cMalformed: 'Fehlerhaften Gruppentext (falscher Zeitstempel, leer, ungültiges UTF-8) auf jedem Kanal verwerfen',
+    cAgeHint: 'Wirkt erst, wenn die Uhr des Companions gestellt ist (meist durch die App).',
+    cRulesHint: 'Regeln werden von oben nach unten geprüft; die erste Regel, die entscheidet, blendet die Nachricht aus.',
   },
 } as const
 
@@ -250,12 +265,22 @@ export default function FilterSettingsForm({ value, onChange, features = ALL_FIL
   const [advancedOpen, setAdvancedOpen] = useState(false)
   const [rulesOpen, setRulesOpen] = useState(false)
   const hasRuleSection = features.path || features.rules
+  // The companion filter has no hash, channel, per-type or watch settings.
+  const repeater = !features.companion
 
   function patch(mutate: (s: FilterSettings) => void) {
     const next = cloneFilterSettings(value)
     mutate(next)
     onChange(next)
   }
+
+  const malformedBox = (
+    <input
+      type="checkbox"
+      checked={value.malformed}
+      onChange={e => patch(s => { s.malformed = e.target.checked })}
+    />
+  )
 
   return (
     <div className="filter-form">
@@ -265,8 +290,9 @@ export default function FilterSettingsForm({ value, onChange, features = ALL_FIL
           checked={value.enabled}
           onChange={e => patch(s => { s.enabled = e.target.checked })}
         />
-        {c.enable}
+        {repeater ? c.enable : c.cEnable}
       </label>
+      {!repeater && <p className="field-hint">{c.cNotice}</p>}
       {features.dryrun && (
         <label className="check-row">
           <input
@@ -278,27 +304,30 @@ export default function FilterSettingsForm({ value, onChange, features = ALL_FIL
         </label>
       )}
 
-      <div className="field-row" style={{ marginTop: '.5rem' }}>
-        <div className="field-group">
-          <label htmlFor="filter-min-hash">{c.minHash}</label>
-          <input
-            id="filter-min-hash"
-            type="number" min={1} max={3}
-            value={value.minHashBytes}
-            onChange={e => patch(s => { s.minHashBytes = clampInt(e.target.value, 1, 3) })}
-          />
-        </div>
-        <div className="field-group">
-          <label className="check-row" style={{ marginTop: '1.7rem' }}>
+      {repeater ? (
+        <div className="field-row" style={{ marginTop: '.5rem' }}>
+          <div className="field-group">
+            <label htmlFor="filter-min-hash">{c.minHash}</label>
             <input
-              type="checkbox"
-              checked={value.malformed}
-              onChange={e => patch(s => { s.malformed = e.target.checked })}
+              id="filter-min-hash"
+              type="number" min={1} max={3}
+              value={value.minHashBytes}
+              onChange={e => patch(s => { s.minHashBytes = clampInt(e.target.value, 1, 3) })}
             />
-            {c.malformed}
-          </label>
+          </div>
+          <div className="field-group">
+            <label className="check-row" style={{ marginTop: '1.7rem' }}>
+              {malformedBox}
+              {c.malformed}
+            </label>
+          </div>
         </div>
-      </div>
+      ) : (
+        <label className="check-row">
+          {malformedBox}
+          {c.cMalformed}
+        </label>
+      )}
 
       {(features.advert || features.age) && (
         <div className="field-row" style={{ marginTop: '.5rem' }}>
@@ -322,30 +351,34 @@ export default function FilterSettingsForm({ value, onChange, features = ALL_FIL
                 value={value.ageMins}
                 onChange={e => patch(s => { s.ageMins = clampInt(e.target.value, 0, FILTER_AGE_MAX_MINS) })}
               />
-              <span className="field-hint">{c.ageHint}</span>
+              <span className="field-hint">{repeater ? c.ageHint : c.cAgeHint}</span>
             </div>
           )}
         </div>
       )}
 
-      <ChipList
-        label={c.blocked} items={value.channels} max={FILTER_CHANNEL_MAX}
-        placeholder={c.channelPlaceholder} c={c}
-        // The device splits CLI args on spaces, so a name with whitespace would be
-        // silently truncated on-device – reject it here.
-        normalize={v => (v && !/\s/.test(v) ? v : null)}
-        onChange={channels => patch(s => { s.channels = channels })}
-      />
+      {repeater && (
+        <ChipList
+          label={c.blocked} items={value.channels} max={FILTER_CHANNEL_MAX}
+          placeholder={c.channelPlaceholder} c={c}
+          // The device splits CLI args on spaces, so a name with whitespace would be
+          // silently truncated on-device – reject it here.
+          normalize={v => (v && !/\s/.test(v) ? v : null)}
+          onChange={channels => patch(s => { s.channels = channels })}
+        />
+      )}
 
-      <button
-        type="button" className="btn" style={{ marginTop: '.6rem' }}
-        aria-expanded={advancedOpen}
-        onClick={() => setAdvancedOpen(o => !o)}
-      >
-        {advancedOpen ? '▲' : '▼'} {c.advanced}
-      </button>
+      {repeater && (
+        <button
+          type="button" className="btn" style={{ marginTop: '.6rem' }}
+          aria-expanded={advancedOpen}
+          onClick={() => setAdvancedOpen(o => !o)}
+        >
+          {advancedOpen ? '▲' : '▼'} {c.advanced}
+        </button>
+      )}
 
-      {advancedOpen && (
+      {repeater && advancedOpen && (
         <table className="filter-type-table" aria-label="Per-payload-type settings">
           <thead>
             <tr>
@@ -403,7 +436,7 @@ export default function FilterSettingsForm({ value, onChange, features = ALL_FIL
 
       {hasRuleSection && (
         <button
-          type="button" className="btn" style={{ marginTop: '.6rem', marginLeft: '.5rem' }}
+          type="button" className="btn" style={{ marginTop: '.6rem', marginLeft: repeater ? '.5rem' : 0 }}
           aria-expanded={rulesOpen}
           onClick={() => setRulesOpen(o => !o)}
         >
@@ -423,13 +456,15 @@ export default function FilterSettingsForm({ value, onChange, features = ALL_FIL
           )}
           {features.rules && (
             <>
-              <ChipList
-                label={c.watch} items={value.watch} max={FILTER_WATCH_MAX}
-                placeholder={c.watchPlaceholder} c={c}
-                normalize={v => (/^#\S+$/.test(v) && v.length < 32 ? v : null)}
-                onChange={watch => patch(s => { s.watch = watch })}
-              />
-              <p className="field-hint" style={{ marginTop: '.5rem' }}>{c.rulesHint}</p>
+              {repeater && (
+                <ChipList
+                  label={c.watch} items={value.watch} max={FILTER_WATCH_MAX}
+                  placeholder={c.watchPlaceholder} c={c}
+                  normalize={v => (/^#\S+$/.test(v) && v.length < 32 ? v : null)}
+                  onChange={watch => patch(s => { s.watch = watch })}
+                />
+              )}
+              <p className="field-hint" style={{ marginTop: '.5rem' }}>{repeater ? c.rulesHint : c.cRulesHint}</p>
               <RuleTable
                 label={c.senders} rules={value.senders} maxLen={FILTER_SENDER_LEN}
                 placeholder={c.senderPlaceholder} c={c}

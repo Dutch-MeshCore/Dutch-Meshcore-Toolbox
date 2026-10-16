@@ -3,6 +3,8 @@
  * Handles sending commands, receiving responses, and parsing multi-line data
  */
 
+import { extractReply } from './serialReply';
+
 export class SerialCLI {
   constructor(debug = false) { // Added debug parameter
     this.port = null;
@@ -17,6 +19,8 @@ export class SerialCLI {
     this.responseTimeout = 5000; // 5 seconds timeout for responses
     this.commandDelay = 100; // 100ms delay between commands
     this.debug = debug; // Initialize debug mode
+    // 'arrow' (server CLI) or 'plain' (companion console) for the last reply.
+    this.lastReplyStyle = null;
   }
 
   /**
@@ -208,6 +212,23 @@ export class SerialCLI {
     // We need to find the "->" marker *after* the potential echo.
 
     const { command, isLogCommand } = this.currentCommand;
+
+    // Single-line replies: both the server CLI (`  -> reply`) and the v1.18
+    // companion console (`  reply`, official CLI Rescue or meshcomod) are parsed
+    // by extractReply. The style is kept so callers can tell a companion apart.
+    if (!isLogCommand) {
+      const found = extractReply(this.readBuffer, command);
+      if (!found) {
+        if (this.debug) console.log("SerialCLI: No complete reply yet for", command);
+        return;
+      }
+      if (this.debug) console.log(`SerialCLI: Found ${found.style} reply: "${found.reply}"`);
+      this.lastReplyStyle = found.style;
+      this.readBuffer = this.readBuffer.substring(found.consumed);
+      this.completeCommand(found.reply);
+      return;
+    }
+
     const commandWithCR = command + '\r'; // Command as sent
     const commandWithCRLF = command + '\r\n'; // Potential echo format
 
@@ -254,34 +275,28 @@ export class SerialCLI {
 
     if (this.debug) console.log(`SerialCLI: Found response line: "${responseLine}"`);
 
-    // Special handling for log command which has multi-line response ending with EOF
-    if (isLogCommand) {
-        // For log, the first line might just be the confirmation, e.g., "-> OK" or similar.
-        // The actual log data follows, ending with "   EOF\r\n"
-        const eofMarker = "   EOF";
-        // Look for EOF *after* the initial response line we just found
-        const eofIndex = this.readBuffer.indexOf(eofMarker, consumedUntilIndex);
+    // The log command has a multi-line response ending with EOF.
+    // The first line might just be the confirmation, e.g., "-> OK" or similar.
+    // The actual log data follows, ending with "   EOF\r\n"
+    const eofMarker = "   EOF";
+    // Look for EOF *after* the initial response line we just found
+    const eofIndex = this.readBuffer.indexOf(eofMarker, consumedUntilIndex);
 
-        if (eofIndex !== -1) {
-            const eofNewlineIndex = this.readBuffer.indexOf('\r\n', eofIndex);
-            if (eofNewlineIndex !== -1) {
-                // Extract the log data between the first response line and the EOF marker
-                const logData = this.readBuffer.substring(consumedUntilIndex, eofIndex).trim();
-                const finalConsumedIndex = eofNewlineIndex + 2;
-                if (this.debug) console.log(`SerialCLI: Log EOF found. Log data length: ${logData.length}`);
+    if (eofIndex !== -1) {
+        const eofNewlineIndex = this.readBuffer.indexOf('\r\n', eofIndex);
+        if (eofNewlineIndex !== -1) {
+            // Extract the log data between the first response line and the EOF marker
+            const logData = this.readBuffer.substring(consumedUntilIndex, eofIndex).trim();
+            const finalConsumedIndex = eofNewlineIndex + 2;
+            if (this.debug) console.log(`SerialCLI: Log EOF found. Log data length: ${logData.length}`);
 
-                this.readBuffer = this.readBuffer.substring(finalConsumedIndex); // Consume everything including EOF line
-                this.completeCommand(logData); // Resolve with the extracted log data
-            } else {
-                 if (this.debug) console.log("SerialCLI: Log EOF marker found, but newline missing.");
-            }
+            this.readBuffer = this.readBuffer.substring(finalConsumedIndex); // Consume everything including EOF line
+            this.completeCommand(logData); // Resolve with the extracted log data
         } else {
-            if (this.debug) console.log("SerialCLI: Log command response started, waiting for EOF.");
+             if (this.debug) console.log("SerialCLI: Log EOF marker found, but newline missing.");
         }
     } else {
-        // For standard commands, the single line is the response
-        this.readBuffer = this.readBuffer.substring(consumedUntilIndex); // Consume the processed part
-        this.completeCommand(responseLine); // Resolve with the single response line
+        if (this.debug) console.log("SerialCLI: Log command response started, waiting for EOF.");
     }
 
     if (this.debug) console.log("SerialCLI: Buffer after processing:", JSON.stringify(this.readBuffer));

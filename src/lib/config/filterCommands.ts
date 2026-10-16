@@ -80,10 +80,21 @@ export interface FilterFeatures {
   age: boolean
   path: boolean
   rules: boolean
+  /**
+   * The companion receive filter (meshcomod, `Filter on: Hidden [...]`): it hides
+   * messages from the app instead of dropping traffic, and has no hops, rate,
+   * channel, hash or watch list (it reads every channel the companion holds).
+   */
+  companion: boolean
 }
 
 export const ALL_FILTER_FEATURES: FilterFeatures = {
-  soft: true, dryrun: true, advert: true, age: true, path: true, rules: true,
+  soft: true, dryrun: true, advert: true, age: true, path: true, rules: true, companion: false,
+}
+
+/** What the companion receive filter supports (meshcomod companion-v1.18.0.1-pre2). */
+export const COMPANION_FILTER_FEATURES: FilterFeatures = {
+  soft: false, dryrun: false, advert: false, age: true, path: true, rules: true, companion: true,
 }
 
 const DEFAULT_HOPS = 8
@@ -163,19 +174,21 @@ export function buildFilterCommands(
   features: FilterFeatures = ALL_FILTER_FEATURES,
 ): string[] {
   const cmds: string[] = []
+  // hops, rate, channel, hash and watch only exist in the repeater packet filter.
+  const repeater = !features.companion
 
-  if (next.minHashBytes !== base.minHashBytes) {
+  if (repeater && next.minHashBytes !== base.minHashBytes) {
     cmds.push(`filter hash ${next.minHashBytes}`)
   }
   if (next.malformed !== base.malformed) {
     cmds.push(`filter malformed ${next.malformed ? 'on' : 'off'}`)
   }
-  for (let i = 0; i < PAYLOAD_TYPE_COUNT; i++) {
+  for (let i = 0; repeater && i < PAYLOAD_TYPE_COUNT; i++) {
     if (next.perType[i].hops !== base.perType[i].hops) {
       cmds.push(`filter hops ${i} ${next.perType[i].hops}`)
     }
   }
-  for (let i = 0; i < PAYLOAD_TYPE_COUNT; i++) {
+  for (let i = 0; repeater && i < PAYLOAD_TYPE_COUNT; i++) {
     const n = next.perType[i]
     const b = base.perType[i]
     const soft = features.soft ? n.soft : 0
@@ -184,10 +197,10 @@ export function buildFilterCommands(
       cmds.push(`filter rate ${i} ${n.rateLimit} ${n.rateSecs}${soft > 0 ? ` ${soft}` : ''}`)
     }
   }
-  for (const ch of next.channels) {
+  for (const ch of repeater ? next.channels : []) {
     if (!base.channels.includes(ch)) cmds.push(`filter channel add ${ch}`)
   }
-  for (const ch of base.channels) {
+  for (const ch of repeater ? base.channels : []) {
     if (!next.channels.includes(ch)) cmds.push(`filter channel remove ${ch}`)
   }
   if (features.advert && next.advertHours !== base.advertHours) {
@@ -203,10 +216,10 @@ export function buildFilterCommands(
   }
   if (features.rules) {
     // Watch first, so the rules can read the channel the moment they exist.
-    for (const w of base.watch) {
+    for (const w of repeater ? base.watch : []) {
       if (!next.watch.includes(w)) cmds.push(`filter watch remove ${w}`)
     }
-    for (const w of next.watch) {
+    for (const w of repeater ? next.watch : []) {
       if (!base.watch.includes(w)) cmds.push(`filter watch add ${w}`)
     }
     // Rules are evaluated in order and `add` of an existing pattern fails, so any
@@ -401,6 +414,7 @@ export function detectFilterFeatures(replies: FilterReplies): FilterFeatures {
     age: parseFilterAge(replies.age ?? '') !== null,
     path: parseFilterPaths(replies.paths ?? '') !== null,
     rules: parseFilterRules(replies.senders ?? '') !== null,
+    companion: isCompanionFilterReply(replies.status),
   }
 }
 
@@ -414,6 +428,18 @@ export async function readFilterFromDevice(
 ): Promise<{ settings: FilterSettings; features: FilterFeatures } | null> {
   const status = await send('filter')
   if (!isFilterStatusReply(status)) return null
+  if (isCompanionFilterReply(status)) {
+    // Skip the repeater-only subcommands; the companion answers them with an error.
+    const replies: FilterReplies = {
+      status, hops: '', rate: '', channels: '', hash: '',
+      malformed: await send('filter malformed'),
+      age: await send('filter age'),
+      paths: await send('filter path list'),
+      senders: await send('filter sender list'),
+      texts: await send('filter text list'),
+    }
+    return { settings: assembleFilterSettings(replies), features: detectFilterFeatures(replies) }
+  }
   const replies: FilterReplies = {
     status,
     hops: await send('filter hops'),
@@ -558,7 +584,7 @@ export interface FilterBlockedCounts {
  * Returns null when the reply is not a DMC filter status line.
  */
 export function parseFilterBlockedCounts(reply: string): FilterBlockedCounts | null {
-  if (!isFilterStatusReply(reply)) return null
+  if (!isFilterStatusReply(reply) || isCompanionFilterReply(reply)) return null
   const num = (label: string): number => {
     const m = reply.match(new RegExp(label + '\\s*:\\s*(\\d+)', 'i'))
     return m ? parseInt(m[1], 10) : 0
@@ -586,12 +612,18 @@ export function parseFilterCount(reply: string): Record<number, { hops: number; 
 }
 
 /**
- * True if a bare `filter` reply is the DMC packet-filter status line
+ * True if a bare `filter` reply is a filter status line: the DMC packet filter
  * (`> Filter on|off: Blocked [...]`, with a trailing `(dry-run)` while dry-run
- * is on). Used to detect filter support by capability rather than firmware
- * name – stock firmware answers an unknown `filter` command with
- * `> Unknown command`, which does not match.
+ * is on) or the companion receive filter (`> Filter on|off: Hidden [...]`).
+ * Used to detect filter support by capability rather than firmware name –
+ * stock firmware answers an unknown `filter` command with `> Unknown command`,
+ * which does not match.
  */
 export function isFilterStatusReply(reply: string): boolean {
-  return /Filter\s+(?:on|off):\s*Blocked/i.test(reply)
+  return /Filter\s+(?:on|off):\s*(?:Blocked|Hidden)/i.test(reply)
+}
+
+/** True if a bare `filter` reply comes from the companion receive filter (meshcomod). */
+export function isCompanionFilterReply(reply: string): boolean {
+  return /Filter\s+(?:on|off):\s*Hidden/i.test(reply)
 }

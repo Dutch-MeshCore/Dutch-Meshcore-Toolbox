@@ -7,8 +7,10 @@ import {
   searchCommands,
   variantById,
   localizedDesc,
+  descKeyOf,
 } from '../lib/cli/firmwareRegistry'
 import { CLI_DESC_NL } from '../lib/cli/descriptions.nl'
+import { CLI_DESC_DE } from '../lib/cli/descriptions.de'
 
 describe('firmwareRegistry helpers', () => {
   it('variantById falls back to meshcore for unknown id', () => {
@@ -68,17 +70,29 @@ describe('firmwareRegistry helpers', () => {
     expect(all.some(c => c.sinceVersion === 'v1.17')).toBe(true)
   })
 
-  it('every command has a Dutch description', () => {
-    const missing: string[] = []
-    const seen = new Set<string>()
+  it.each([['NL', CLI_DESC_NL], ['DE', CLI_DESC_DE]] as const)('every command has a %s description', (_lang, map) => {
+    const missing = new Set<string>()
     for (const v of Object.values(FIRMWARE_VARIANTS)) {
       for (const c of v.commands) {
-        if (seen.has(c.cmd)) continue
-        seen.add(c.cmd)
-        if (!CLI_DESC_NL[c.cmd]) missing.push(c.cmd)
+        if (!map[descKeyOf(c)]) missing.add(descKeyOf(c))
       }
     }
-    expect(missing, `missing NL translation for: ${missing.join(', ')}`).toEqual([])
+    expect([...missing], `missing translation for: ${[...missing].join(', ')}`).toEqual([])
+  })
+
+  it('every description key belongs to a command', () => {
+    const used = new Set(Object.values(FIRMWARE_VARIANTS).flatMap(v => v.commands.map(descKeyOf)))
+    expect(Object.keys(CLI_DESC_NL).filter(k => !used.has(k))).toEqual([])
+    expect(Object.keys(CLI_DESC_DE).filter(k => !used.has(k))).toEqual([])
+  })
+
+  it('no variant lists the same command twice for one device type', () => {
+    for (const v of Object.values(FIRMWARE_VARIANTS)) {
+      for (const dt of v.deviceTypes) {
+        const cmds = getCommandsForContext(v.id, FW_DEVICE_TYPES[dt].id).map(c => c.cmd)
+        expect(cmds.filter((c, i) => cmds.indexOf(c) !== i), `${v.id}/${dt}`).toEqual([])
+      }
+    }
   })
 
   it('localizedDesc returns Dutch for nl and English for en', () => {
@@ -128,5 +142,69 @@ describe('v1.17 region-gating / region-list / filter-interval registry entries',
   it('describes af as airtime factor, not filter', () => {
     expect(byCmd('get af')!.desc).toMatch(/airtime factor/i)
     expect(byCmd('set af ')!.desc).toMatch(/airtime factor/i)
+  })
+})
+
+describe('v1.18 companion CLI', () => {
+  const companion = getCommandsForContext('meshcore', FW_DEVICE_TYPES.companion.id)
+  const has = (cmd: string) => companion.some(c => c.cmd === cmd)
+
+  it('lists what the companion handles', () => {
+    for (const cmd of ['ver', 'board', 'reboot', 'poweroff', 'set name ', 'set radio ', 'get cad', 'set pin ', 'set tz.offset ', 'get wifi.ip', 'get fan', 'get radio.fem.rxgain']) {
+      expect(has(cmd), cmd).toBe(true)
+    }
+  })
+
+  it('leaves out commands only the server CLI handles', () => {
+    for (const cmd of ['clock', 'advert', 'region put ', 'gps diag', 'set repeat on', 'start ota', 'set freq ']) {
+      expect(has(cmd), cmd).toBe(false)
+    }
+  })
+
+  it('keeps server roles unchanged', () => {
+    const repeater = getCommandsForContext('meshcore', FW_DEVICE_TYPES.repeater.id)
+    for (const cmd of ['clock', 'advert', 'region put ', 'gps diag', 'get fan', 'get cad']) {
+      expect(repeater.some(c => c.cmd === cmd), cmd).toBe(true)
+    }
+    expect(repeater.some(c => c.cmd === 'set pin ')).toBe(false)
+  })
+
+  it('no longer tags DMC dev commands with the v1.17.1 dev version', () => {
+    const all = Object.values(FIRMWARE_VARIANTS).flatMap(v => v.commands)
+    expect(all.filter(c => c.sinceVersion === 'v1.17.1-dev')).toEqual([])
+  })
+})
+
+describe('meshcomod companion variant', () => {
+  const mc = FIRMWARE_VARIANTS['meshcomod']
+  const byCmd = (cmd: string) => mc.commands.find(c => c.cmd === cmd)
+
+  it('is a companion-only variant', () => {
+    expect(mc.deviceTypes).toEqual(['companion'])
+  })
+
+  it('has the companion receive filter subset only', () => {
+    for (const cmd of ['filter', 'filter on', 'filter age ', 'filter path add ', 'filter sender add ', 'filter text add ', 'filter stats ']) {
+      expect(byCmd(cmd), cmd).toBeDefined()
+    }
+    for (const cmd of ['filter hops ', 'filter rate ', 'filter channel add ', 'filter hash ', 'filter watch add ', 'filter dryrun on']) {
+      expect(byCmd(cmd), cmd).toBeUndefined()
+    }
+  })
+
+  it('describes the companion filter apart from the repeater filter', () => {
+    const rep = FIRMWARE_VARIANTS['dmc-repeater'].commands.find(c => c.cmd === 'filter on')!
+    expect(localizedDesc(byCmd('filter on')!, 'nl')).not.toBe(localizedDesc(rep, 'nl'))
+  })
+
+  it('leaves out the settings meshcomod answers unsupported', () => {
+    for (const cmd of ['get cad', 'set int.thresh ', 'set txdelay ', 'set tz.offset ']) {
+      expect(byCmd(cmd), cmd).toBeUndefined()
+    }
+  })
+
+  it('adds SNMP and the command-contact OTA commands', () => {
+    expect(byCmd('get snmp.status')).toBeDefined()
+    expect(byCmd('ota check')?.note).toBe('command-contact')
   })
 })
