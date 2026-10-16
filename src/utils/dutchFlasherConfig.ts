@@ -8,9 +8,9 @@
  *   repeater_observer_mqtt
  *   room_server_observer_mqtt / room_server_mqtt / roomserver_mqtt
  *
- * The non-MQTT repeater and PacketLog releases are handled as their own maker
- * groups (see scripts/update-firmware-list.js), so the flasher shows three
- * DutchMeshCore groups in total.
+ * The non-MQTT repeater, PacketLog and companion (receive filter) releases are
+ * handled as their own maker groups (see scripts/update-firmware-list.js), so the
+ * flasher shows four DutchMeshCore groups in total.
  *
  * The GitHub API is queried at runtime so the flasher automatically picks up
  * new firmware releases whenever the branch is updated.
@@ -32,6 +32,8 @@ const MESHCORE_REPO        = 'Dutch-MeshCore/MeshCore'
 const REPEATER_TAG_PREFIX  = 'dmc-repeater-'
 // PacketLog shares the `dmc-repeater-` prefix but is its own maker group.
 const PACKETLOG_TAG_PREFIX = 'dmc-repeater-packetlog-'
+// Companion firmware with the receive filter: `dmc-companion-dev` / `dmc-companion-vX.Y.Z`.
+const COMPANION_TAG_PREFIX = 'dmc-companion-'
 
 const DMC_RELEASES_URL =
   `https://api.github.com/repos/${MESHCORE_REPO}/releases?per_page=100`
@@ -40,6 +42,7 @@ const DMC_RELEASES_URL =
 const DMC_MQTT_MAKER      = 'dutchmeshcore'
 const DMC_REPEATER_MAKER  = 'dutchmeshcore_repeater'
 const DMC_PACKETLOG_MAKER = 'dutchmeshcore_packetlog'
+const DMC_COMPANION_MAKER = 'dutchmeshcore_companion'
 
 const DMC_MQTT_MAKER_META = {
   name:    'DutchMeshCore-MQTT-Firmware',
@@ -56,6 +59,12 @@ const DMC_REPEATER_MAKER_META = {
 const DMC_PACKETLOG_MAKER_META = {
   name:    'DutchMeshCore-PacketLog-Firmware',
   repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-repeater-packetlog',
+  website: 'https://dutchmeshcore.nl',
+}
+
+const DMC_COMPANION_MAKER_META = {
+  name:    'DutchMeshCore Companion Filter Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-companion',
   website: 'https://dutchmeshcore.nl',
 }
 
@@ -260,35 +269,70 @@ export function buildDmcConfig(files: GHFile[]): FlasherConfig {
 
 // ─── Non-MQTT repeater firmware (GitHub Releases) ───────────────────────────────
 
-const REPEATER_SEPARATOR = '_repeater-'
-const REPEATER_ROLE = {
-  role:     'dutchmeshcore_repeater',
-  icon:     '📡',
-  title:    'DutchMeshCore Repeater',
-  subTitle: 'Repeater (non-MQTT)',
-} as const
+interface ReleaseRoleDef {
+  separator: string
+  role:      string
+  icon:      string
+  title:     string
+  subTitle:  string
+}
 
-const PACKETLOG_ROLE = {
-  role:     'dutchmeshcore_packetlog',
-  icon:     '📝',
-  title:    'DutchMeshCore Repeater PacketLog',
-  subTitle: 'Repeater + packet logging',
-} as const
+const REPEATER_ROLE: ReleaseRoleDef = {
+  separator: '_repeater-',
+  role:      'dutchmeshcore_repeater',
+  icon:      '📡',
+  title:     'DutchMeshCore Repeater',
+  subTitle:  'Repeater (non-MQTT)',
+}
 
-// buildDmcRepeaterConfig is shared by the plain repeater and PacketLog groups; these
-// options select the maker/role/tag-prefix for each. Their release assets share the
-// same `{Device}_repeater-…` filename shape.
-interface RepeaterBuildOpts {
+const PACKETLOG_ROLE: ReleaseRoleDef = {
+  separator: '_repeater-',
+  role:      'dutchmeshcore_packetlog',
+  icon:      '📝',
+  title:     'DutchMeshCore Repeater PacketLog',
+  subTitle:  'Repeater + packet logging',
+}
+
+// DMC companion firmware with the receive filter. Role keys are kept distinct from
+// meshcomod's `companion_radio_*` roles (see communityFirmwareConfigs.ts).
+const COMPANION_ROLES: ReleaseRoleDef[] = [
+  {
+    separator: '_companion_radio_ble-',
+    role:      'dutchmeshcore_companion_ble',
+    icon:      '📻',
+    title:     'DutchMeshCore Companion',
+    subTitle:  'BLE + receive filter',
+  },
+  {
+    separator: '_companion_radio_wifi-',
+    role:      'dutchmeshcore_companion_wifi',
+    icon:      '📶',
+    title:     'DutchMeshCore Companion',
+    subTitle:  'Wi-Fi + receive filter',
+  },
+]
+
+// buildReleaseGroupConfig is shared by the plain repeater, PacketLog and companion
+// groups; these options select the maker, the tag prefix and the roles (one per asset
+// separator) for each.
+interface ReleaseGroupOpts {
   maker:     string
   makerMeta: { name: string; repo: string; website: string }
-  role:      { role: string; icon: string; title: string; subTitle: string }
+  roles:     ReleaseRoleDef[]
   tagPrefix: string
+  /** Drop an app .bin when the same device/role/version also ships a .uf2/.zip (the
+   *  RP2040 companion Wi-Fi builds ship both; the flasher cannot write an RP2040 .bin). */
+  preferImage?: boolean
 }
-const REPEATER_OPTS: RepeaterBuildOpts = {
-  maker: DMC_REPEATER_MAKER, makerMeta: DMC_REPEATER_MAKER_META, role: REPEATER_ROLE, tagPrefix: REPEATER_TAG_PREFIX,
+const REPEATER_OPTS: ReleaseGroupOpts = {
+  maker: DMC_REPEATER_MAKER, makerMeta: DMC_REPEATER_MAKER_META, roles: [REPEATER_ROLE], tagPrefix: REPEATER_TAG_PREFIX,
 }
-const PACKETLOG_OPTS: RepeaterBuildOpts = {
-  maker: DMC_PACKETLOG_MAKER, makerMeta: DMC_PACKETLOG_MAKER_META, role: PACKETLOG_ROLE, tagPrefix: PACKETLOG_TAG_PREFIX,
+const PACKETLOG_OPTS: ReleaseGroupOpts = {
+  maker: DMC_PACKETLOG_MAKER, makerMeta: DMC_PACKETLOG_MAKER_META, roles: [PACKETLOG_ROLE], tagPrefix: PACKETLOG_TAG_PREFIX,
+}
+const COMPANION_OPTS: ReleaseGroupOpts = {
+  maker: DMC_COMPANION_MAKER, makerMeta: DMC_COMPANION_MAKER_META, roles: COMPANION_ROLES, tagPrefix: COMPANION_TAG_PREFIX,
+  preferImage: true,
 }
 
 interface GHReleaseAsset {
@@ -298,6 +342,7 @@ interface GHReleaseAsset {
 
 interface GHRelease {
   tag_name: string
+  draft?: boolean
   assets: GHReleaseAsset[]
 }
 
@@ -310,122 +355,166 @@ function extOf(name: string): 'bin' | 'uf2' | 'zip' | null {
 
 /**
  * Derive the display version from a release tag: dmc-repeater-v1.16.0-dev → 1.16.0-dev.
- * A rolling dev tag (`dmc-repeater-dev`, `dmc-repeater-packetlog-dev`) has no semver, so
- * the semver comes from the asset filename (`{Device}_repeater-v1.17.1-{hash}.bin`) and is
- * labelled `1.17.1-dev`, matching the MQTT `observer-mqtt-dev` builds.
+ * A rolling dev tag (`dmc-repeater-dev`, `dmc-repeater-packetlog-dev`, `dmc-companion-dev`)
+ * has no semver, so the semver comes from the asset filename after the role separator
+ * (`{Device}_repeater-v1.17.1-{hash}.bin`) and is labelled `1.17.1-dev`, matching the
+ * MQTT `observer-mqtt-dev` builds. Mirrors repeaterVersion() in update-firmware-list.js.
  */
-function repeaterVersion(tag: string, prefix: string = REPEATER_TAG_PREFIX, assetTail = ''): string {
+function repeaterVersion(tag: string, prefix: string, assetName: string, separator: string): string {
   const fromTag = tag.replace(prefix, '').replace(/^v/, '')
   if (/^\d+\.\d+\.\d+/.test(fromTag) || !/(?:^|[-_])dev$/i.test(fromTag)) return fromTag
-  const semver = assetTail.match(/^-v?(\d+\.\d+\.\d+)/)?.[1]
+  const sepIdx = assetName.indexOf(separator)
+  const tail = sepIdx < 0 ? '' : assetName.slice(sepIdx + separator.length)
+  const semver = tail.match(/^v?(\d+\.\d+\.\d+)/)?.[1]
   return semver ? `${semver}-dev` : fromTag
 }
 
 /**
- * Build a FlasherConfig from `dmc-repeater-*` GitHub Releases. Filenames carry no
- * semver (`{Device}_repeater-dev-{hash}[-merged].{ext}`) so the version comes from
- * the release tag. Handles esp32 (.bin app/merged) and nRF52 (.uf2/.zip) devices.
- * `opts` selects the maker/role/tag-prefix (repeater by default; PacketLog reuses it).
+ * Build a FlasherConfig for one maker group from its GitHub Releases. The version
+ * comes from the release tag (see repeaterVersion). Handles esp32 (.bin app/merged)
+ * and nRF52 (.uf2/.zip) devices; each matching role becomes one firmware entry.
  */
-export function buildDmcRepeaterConfig(releases: GHRelease[], opts: RepeaterBuildOpts = REPEATER_OPTS): FlasherConfig {
+function buildReleaseGroupConfig(releases: GHRelease[], opts: ReleaseGroupOpts): FlasherConfig {
   type Variant = { type: 'esp32' | 'nrf52'; appUrl: string; mergedUrl: string }
-  // deviceKey -> versionKey -> Variant
-  const deviceMap = new Map<string, Map<string, Variant>>()
+  type ParsedAsset = { deviceKey: string; role: string; versionKey: string; ext: 'bin' | 'uf2' | 'zip'; isMerged: boolean; url: string }
 
-  const setVariant = (deviceKey: string, versionKey: string, patch: Partial<Variant> & { type: Variant['type'] }) => {
-    if (!deviceMap.has(deviceKey)) deviceMap.set(deviceKey, new Map())
-    const versions = deviceMap.get(deviceKey)!
-    const entry = versions.get(versionKey) ?? { type: patch.type, appUrl: '', mergedUrl: '' }
-    versions.set(versionKey, { ...entry, ...patch })
-  }
-
+  const parsed: ParsedAsset[] = []
   for (const release of releases) {
     for (const asset of release.assets) {
       const ext = extOf(asset.name)
       if (!ext) continue
-      const sepIdx = asset.name.indexOf(REPEATER_SEPARATOR)
-      if (sepIdx < 0) continue
+      const roleDef = opts.roles.find(r => asset.name.includes(r.separator))
+      if (!roleDef) continue
+      parsed.push({
+        deviceKey:  asset.name.slice(0, asset.name.indexOf(roleDef.separator)),
+        role:       roleDef.role,
+        versionKey: repeaterVersion(release.tag_name, opts.tagPrefix, asset.name, roleDef.separator),
+        ext,
+        isMerged:   asset.name.endsWith(`-merged.${ext}`),
+        url:        asset.browser_download_url,
+      })
+    }
+  }
 
-      const deviceKey = asset.name.slice(0, sepIdx)
-      const versionKey = repeaterVersion(release.tag_name, opts.tagPrefix,
-        asset.name.slice(sepIdx + REPEATER_SEPARATOR.length - 1))
-      const url = asset.browser_download_url
+  const imageKey = (a: ParsedAsset) => `${a.deviceKey}/${a.role}/${a.versionKey}`
+  const hasImage = new Set(opts.preferImage ? parsed.filter(a => a.ext !== 'bin').map(imageKey) : [])
+  const assets = parsed.filter(a => a.ext !== 'bin' || !hasImage.has(imageKey(a)))
 
-      if (ext === 'bin') {
-        const isMerged = asset.name.endsWith('-merged.bin')
-        setVariant(deviceKey, versionKey, isMerged
-          ? { type: 'esp32', mergedUrl: url }
-          : { type: 'esp32', appUrl: url })
-      } else {
-        // nRF52: single file per version, prefer .zip (DFU) over .uf2
-        const existing = deviceMap.get(deviceKey)?.get(versionKey)
-        if (!existing || (ext === 'zip' && existing.appUrl.endsWith('.uf2'))) {
-          setVariant(deviceKey, versionKey, { type: 'nrf52', appUrl: url })
-        }
-      }
+  // deviceKey -> role -> versionKey -> Variant
+  const deviceMap = new Map<string, Map<string, Map<string, Variant>>>()
+
+  for (const a of assets) {
+    if (!deviceMap.has(a.deviceKey)) deviceMap.set(a.deviceKey, new Map())
+    const roles = deviceMap.get(a.deviceKey)!
+    if (!roles.has(a.role)) roles.set(a.role, new Map())
+    const versions = roles.get(a.role)!
+    const existing = versions.get(a.versionKey)
+
+    if (a.ext === 'bin') {
+      const entry = existing ?? { type: 'esp32' as const, appUrl: '', mergedUrl: '' }
+      versions.set(a.versionKey, a.isMerged
+        ? { ...entry, type: 'esp32', mergedUrl: a.url }
+        : { ...entry, type: 'esp32', appUrl: a.url })
+    } else if (!existing || (a.ext === 'zip' && existing.appUrl.endsWith('.uf2'))) {
+      // nRF52: single file per version, prefer .zip (DFU) over .uf2
+      versions.set(a.versionKey, { ...(existing ?? { mergedUrl: '' }), type: 'nrf52', appUrl: a.url })
     }
   }
 
   const devices: FlasherDevice[] = [...deviceMap.entries()]
-    .map(([deviceKey, versionMap]) => {
-      const deviceType = [...versionMap.values()][0]?.type ?? 'esp32'
-      const version: FlasherDevice['firmware'][number]['version'] = {}
+    .map(([deviceKey, roleMap]) => {
+      const deviceType = [...([...roleMap.values()][0]?.values() ?? [])][0]?.type ?? 'esp32'
 
-      for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
-        if (entry.type === 'esp32') {
-          if (entry.appUrl) {
-            version[`${versionKey} - App update`] = {
-              files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update - keeps bootloader, partition table & config' }],
-              notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
+      const firmware = opts.roles
+        .filter((roleDef, i, all) => all.findIndex(r => r.role === roleDef.role) === i)
+        .filter(roleDef => roleMap.has(roleDef.role))
+        .map(roleDef => {
+          const versionMap = roleMap.get(roleDef.role)!
+          const version: FlasherDevice['firmware'][number]['version'] = {}
+
+          for (const [versionKey, entry] of [...versionMap.entries()].sort(([a], [b]) => b.localeCompare(a))) {
+            if (entry.type === 'esp32') {
+              if (entry.appUrl) {
+                version[`${versionKey} - App update`] = {
+                  files: [{ type: 'flash-update', name: entry.appUrl, title: 'App update - keeps bootloader, partition table & config' }],
+                  notes: 'Updates firmware only. Bootloader and saved settings (pubkey, config) are preserved.',
+                }
+              }
+              if (entry.mergedUrl) {
+                version[`${versionKey} - Full flash`] = {
+                  files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash - merged bin (bootloader + partition + app)' }],
+                  notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
+                }
+              }
+            } else {
+              const fileType = entry.appUrl.endsWith('.zip') ? 'nrf-dfu-zip' : 'uf2'
+              version[versionKey] = {
+                files: [{ type: fileType, name: entry.appUrl, title: 'Firmware update' }],
+              }
             }
           }
-          if (entry.mergedUrl) {
-            version[`${versionKey} - Full flash`] = {
-              files: [{ type: 'flash-wipe', name: entry.mergedUrl, title: 'Full flash - merged bin (bootloader + partition + app)' }],
-              notes: 'Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware.',
-            }
+
+          return {
+            role: roleDef.role,
+            tooltip: deviceType === 'esp32'
+              ? 'App update keeps bootloader & settings. Full flash is for new or factory-reset devices.'
+              : undefined,
+            version,
           }
-        } else {
-          const fileType = entry.appUrl.endsWith('.zip') ? 'nrf-dfu-zip' : 'uf2'
-          version[versionKey] = {
-            files: [{ type: fileType, name: entry.appUrl, title: 'Firmware update' }],
-          }
-        }
-      }
+        })
 
       return {
         maker: opts.maker,
         class: 'community' as const,
         name:  DEVICE_LABELS[deviceKey] ?? deviceKey.replace(/_/g, ' '),
         type:  deviceType,
-        firmware: [{
-          role: opts.role.role,
-          tooltip: deviceType === 'esp32'
-            ? 'App update keeps bootloader & settings. Full flash is for new or factory-reset devices.'
-            : undefined,
-          version,
-        }],
+        firmware,
       }
     })
     .sort((a, b) => a.name.localeCompare(b.name))
 
   return {
     staticPath: '',
-    role: { [opts.role.role]: { icon: opts.role.icon, title: opts.role.title, subTitle: opts.role.subTitle } },
+    role: Object.fromEntries(
+      opts.roles.map(({ role, icon, title, subTitle }) => [role, { icon, title, subTitle }])
+    ),
     notice: {},
     maker: { [opts.maker]: opts.makerMeta },
     device: devices,
   }
 }
 
+/**
+ * Build a FlasherConfig from `dmc-repeater-*` GitHub Releases. Filenames carry no
+ * semver (`{Device}_repeater-dev-{hash}[-merged].{ext}`) so the version comes from
+ * the release tag. Handles esp32 (.bin app/merged) and nRF52 (.uf2/.zip) devices.
+ */
+export function buildDmcRepeaterConfig(releases: GHRelease[]): FlasherConfig {
+  return buildReleaseGroupConfig(releases, REPEATER_OPTS)
+}
+
 /** PacketLog repeater firmware (`dmc-repeater-packetlog-*` releases) – same builder,
  *  own maker/role/tag-prefix. Rendered as a separate group in the flasher. */
 export function buildDmcPacketlogConfig(releases: GHRelease[]): FlasherConfig {
-  return buildDmcRepeaterConfig(releases, PACKETLOG_OPTS)
+  return buildReleaseGroupConfig(releases, PACKETLOG_OPTS)
 }
 
 /**
- * Combine DMC configs (repeater, PacketLog, MQTT) into one FlasherConfig carrying every
+ * DMC companion firmware with the receive filter (`dmc-companion-*` releases: the
+ * rolling `dmc-companion-dev` prerelease and versioned `dmc-companion-vX.Y.Z`). Assets
+ * are `{Device}_companion_radio_ble-…` / `{Device}_companion_radio_wifi-…`, one role
+ * each. Releases with another tag prefix and drafts are ignored. Mirrors
+ * dmcCompanionConfigFromReleases() in update-firmware-list.js.
+ */
+export function buildDmcCompanionConfig(releases: GHRelease[]): FlasherConfig {
+  return buildReleaseGroupConfig(
+    releases.filter(r => r.tag_name.startsWith(COMPANION_TAG_PREFIX) && !r.draft),
+    COMPANION_OPTS,
+  )
+}
+
+/**
+ * Combine DMC configs (repeater, PacketLog, MQTT, companion) into one FlasherConfig carrying every
  * maker - they render as separate groups (repeater first) in the flasher.
  */
 export function mergeDmcConfigs(...configs: FlasherConfig[]): FlasherConfig {
@@ -476,7 +565,8 @@ export async function fetchDmcConfig(): Promise<FlasherConfig> {
   // Fall back to the live GitHub API (may hit rate limits unauthenticated). All DMC
   // firmware lives in MeshCore releases: `mqtt`-tagged releases feed the MQTT bridge
   // config; `dmc-repeater-*` releases feed the non-MQTT repeater config; and the
-  // `dmc-repeater-packetlog-*` subset feeds the PacketLog config.
+  // `dmc-repeater-packetlog-*` subset feeds the PacketLog config; `dmc-companion-*`
+  // releases feed the companion (receive filter) config.
   const releases = await fetchMeshcoreReleases()
 
   const mqttFiles: GHFile[] = releases
@@ -497,6 +587,7 @@ export async function fetchDmcConfig(): Promise<FlasherConfig> {
     buildDmcRepeaterConfig(repeaterReleases),
     buildDmcPacketlogConfig(packetlogReleases),
     buildDmcConfig(mqttFiles),
+    buildDmcCompanionConfig(releases),
   )
   writeCache(DMC_CACHE_KEY, config)
   return config

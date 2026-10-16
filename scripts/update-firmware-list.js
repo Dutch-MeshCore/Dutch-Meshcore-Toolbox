@@ -68,12 +68,20 @@ const DMC_REPEATER_ROLE = { separator: '_repeater-', role: 'dutchmeshcore_repeat
 // Repeater firmware with packet logging enabled (dmc-repeater-packetlog-* releases)
 const DMC_PACKETLOG_ROLE = { separator: '_repeater-', role: 'dutchmeshcore_packetlog', icon: '📝', title: 'DutchMeshCore Repeater PacketLog', subTitle: 'Repeater + packet logging' }
 
+// DMC companion firmware with the receive filter (dmc-companion-* releases). Role keys
+// are kept distinct from meshcomod's `companion_radio_*` roles.
+const DMC_COMPANION_ROLES = [
+  { separator: '_companion_radio_ble-',  role: 'dutchmeshcore_companion_ble',  icon: '📻', title: 'DutchMeshCore Companion', subTitle: 'BLE + receive filter'   },
+  { separator: '_companion_radio_wifi-', role: 'dutchmeshcore_companion_wifi', icon: '📶', title: 'DutchMeshCore Companion', subTitle: 'Wi-Fi + receive filter' },
+]
+
 const ALL_ROLE_DEFS = [
   ...MESHCORE_DEV_ROLES,
   ...MESHCOMOD_ROLES,
   ...DMC_ROLE_DEFS,
   DMC_REPEATER_ROLE,
   DMC_PACKETLOG_ROLE,
+  ...DMC_COMPANION_ROLES,
 ]
 
 // MQTT and non-MQTT repeater firmware render as two separate maker groups.
@@ -92,6 +100,12 @@ const DMC_REPEATER_MAKER_META = {
 const DMC_PACKETLOG_MAKER_META = {
   name:    'DutchMeshCore-PacketLog-Firmware',
   repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-repeater-packetlog',
+  website: 'https://dutchmeshcore.nl',
+}
+
+const DMC_COMPANION_MAKER_META = {
+  name:    'DutchMeshCore Companion Filter Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-companion',
   website: 'https://dutchmeshcore.nl',
 }
 
@@ -170,15 +184,17 @@ function extOf(name) {
   return null
 }
 
-// Display version for a `dmc-repeater[-packetlog]-*` asset: from the tag
-// (dmc-repeater-v1.17.1 → 1.17.1). A rolling dev tag (`dmc-repeater-dev`) has no
-// semver, so it comes from the filename (`{Device}_repeater-v1.17.1-{hash}.bin`) and
-// is labelled `1.17.1-dev`, matching the MQTT `observer-mqtt-dev` builds.
-function repeaterVersion(tag, prefix, assetName) {
+// Display version for a `dmc-repeater[-packetlog]-*` / `dmc-companion-*` asset: from
+// the tag (dmc-repeater-v1.17.1 → 1.17.1). A rolling dev tag (`dmc-repeater-dev`,
+// `dmc-companion-dev`) has no semver, so it comes from the filename right after
+// `separator` (`{Device}_repeater-v1.17.1-{hash}.bin`) and is labelled `1.17.1-dev`,
+// matching the MQTT `observer-mqtt-dev` builds.
+export function repeaterVersion(tag, prefix, assetName, separator = '_repeater-') {
   const fromTag = tag.replace(prefix, '').replace(/^v/, '')
   if (/^\d+\.\d+\.\d+/.test(fromTag) || !/(?:^|[-_])dev$/i.test(fromTag)) return fromTag
-  const tail = assetName.slice(assetName.indexOf('_repeater-') + '_repeater'.length)
-  const semver = (tail.match(/^-v?(\d+\.\d+\.\d+)/) || [])[1]
+  const sepIdx = assetName.indexOf(separator)
+  const tail = sepIdx < 0 ? '' : assetName.slice(sepIdx + separator.length)
+  const semver = (tail.match(/^v?(\d+\.\d+\.\d+)/) || [])[1]
   return semver ? `${semver}-dev` : fromTag
 }
 
@@ -509,6 +525,42 @@ async function buildDmcPacketlogConfig() {
   return buildConfig(files, 'dutchmeshcore_packetlog', DMC_PACKETLOG_MAKER_META)
 }
 
+// DMC companion firmware with the receive filter – GitHub Releases tagged
+// `dmc-companion-*` on the fork: the rolling `dmc-companion-dev` prerelease and the
+// versioned `dmc-companion-vX.Y.Z` ones. Assets are `{Device}_companion_radio_ble-…` and
+// `{Device}_companion_radio_wifi-…` (ESP32 app/merged .bin, nRF52 .uf2/.zip, RP2040
+// .bin + .uf2). Drafts are skipped (their assets are not public).
+export function dmcCompanionConfigFromReleases(releases) {
+  const picked = releases.filter(r =>
+    typeof r.tag_name === 'string' && r.tag_name.startsWith('dmc-companion-') && !r.draft)
+  const files = picked.flatMap(rel => (rel.assets ?? []).flatMap(a => {
+    const ext = extOf(a.name)
+    if (!ext) return []
+    const rd = DMC_COMPANION_ROLES.find(r => a.name.includes(r.separator))
+    if (!rd) return []
+    return [{
+      deviceKey:  a.name.slice(0, a.name.indexOf(rd.separator)),
+      role:       rd.role,
+      versionKey: repeaterVersion(rel.tag_name, 'dmc-companion-', a.name, rd.separator),
+      isMerged:   a.name.endsWith('-merged.' + ext),
+      ext,
+      url:        a.browser_download_url,
+    }]
+  }))
+  // RP2040 Wi-Fi builds ship a .bin next to the .uf2. The flasher cannot write an RP2040
+  // .bin over serial, so a device/role/version that has a .uf2 or .zip keeps only that.
+  const imageKey = f => `${f.deviceKey}/${f.role}/${f.versionKey}`
+  const hasImage = new Set(files.filter(f => f.ext !== 'bin').map(imageKey))
+  const kept = files.filter(f => f.ext !== 'bin' || !hasImage.has(imageKey(f)))
+  console.log(`  → ${picked.length} dmc-companion releases, ${kept.length} firmware files`)
+  return buildConfig(kept, 'dutchmeshcore_companion', DMC_COMPANION_MAKER_META)
+}
+
+async function buildDmcCompanionConfig() {
+  console.log('Dutch-MeshCore/MeshCore (dmc-companion releases)')
+  return dmcCompanionConfigFromReleases(await fetchReleases('Dutch-MeshCore', 'MeshCore'))
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -550,21 +602,24 @@ async function main() {
   // ── DMC firmware (MQTT + non-MQTT repeater) ───────────────────────────────
   console.log('\nBuilding DutchMeshCore firmware list…')
   try {
-    const [mqttRes, repeaterRes, packetlogRes] = await Promise.allSettled([
+    const [mqttRes, repeaterRes, packetlogRes, companionRes] = await Promise.allSettled([
       buildDmcFirmwareConfig(),
       buildDmcRepeaterConfig(),
       buildDmcPacketlogConfig(),
+      buildDmcCompanionConfig(),
     ])
     const emptyConfig = { staticPath: '', role: {}, notice: {}, maker: {}, device: [] }
     const dmcMqtt      = mqttRes.status === 'fulfilled' ? mqttRes.value : emptyConfig
     const dmcRepeater  = repeaterRes.status === 'fulfilled' ? repeaterRes.value : emptyConfig
     const dmcPacketlog = packetlogRes.status === 'fulfilled' ? packetlogRes.value : emptyConfig
+    const dmcCompanion = companionRes.status === 'fulfilled' ? companionRes.value : emptyConfig
     if (mqttRes.status === 'rejected')      console.error('DMC MQTT build failed:', mqttRes.reason)
     if (repeaterRes.status === 'rejected')  console.error('DMC repeater build failed:', repeaterRes.reason)
     if (packetlogRes.status === 'rejected') console.error('DMC packetlog build failed:', packetlogRes.reason)
+    if (companionRes.status === 'rejected') console.error('DMC companion build failed:', companionRes.reason)
 
-    // Three maker groups (repeater, then PacketLog, then MQTT) in one config.
-    const dmcConfig = mergeConfigs([dmcRepeater, dmcPacketlog, dmcMqtt])
+    // Four maker groups (repeater, PacketLog, MQTT, companion) in one config.
+    const dmcConfig = mergeConfigs([dmcRepeater, dmcPacketlog, dmcMqtt, dmcCompanion])
     if (dmcConfig.device.length) {
       const dmcOutput = { generated: new Date().toISOString(), ...dmcConfig }
       writeFileSync(DMC_OUT, JSON.stringify(dmcOutput, null, 2))
