@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-18T08:31:09.855Z",
+  "generated": "2026-10-18T21:14:42.399Z",
   "staticPath": "",
   "role": {
     "companion_radio_ble": {
@@ -30314,7 +30314,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_E213_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_E213_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30324,7 +30324,244 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_E213_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_E213_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Heltec E290",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_E290_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_E290_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "heltec rc32",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_rc32_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_rc32_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Heltec T096",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_t096_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_t096_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Heltec T1",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_t1_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_t1_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Heltec T114",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_t114_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_t114_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Heltec T190",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_T190_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_T190_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30351,7 +30588,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_tracker_v2_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_tracker_v2_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30361,7 +30598,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_tracker_v2_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_tracker_v2_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30388,7 +30625,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_v3_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_v3_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30398,7 +30635,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_v3_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_v3_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30425,7 +30662,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30435,7 +30672,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30462,7 +30699,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_r8_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_r8_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30472,7 +30709,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_r8_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_r8_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30499,7 +30736,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_r8_tft_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_r8_tft_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30509,7 +30746,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_r8_tft_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_r8_tft_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30536,7 +30773,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_tft_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_tft_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30546,7 +30783,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/heltec_v4_tft_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/heltec_v4_tft_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30573,7 +30810,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_Wireless_Paper_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_Wireless_Paper_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30583,7 +30820,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_Wireless_Paper_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_Wireless_Paper_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30610,7 +30847,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_Wireless_Tracker_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_Wireless_Tracker_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30620,7 +30857,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_Wireless_Tracker_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_Wireless_Tracker_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30647,7 +30884,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_WSL3_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_WSL3_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30657,11 +30894,258 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Heltec_WSL3_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Heltec_WSL3_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Keepteen LT1",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/KeepteenLT1_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/KeepteenLT1_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "LilyGo T-Beam 1W",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_TBeam_1W_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_TBeam_1W_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "LilyGo T-Echo",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "LilyGo T-Echo Card",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo_Card_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo_Card_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "LilyGo T-Echo Lite",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo-Lite_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo-Lite_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "LilyGo T-Echo-Lite non shell",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo-Lite_non_shell_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_T-Echo-Lite_non_shell_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
             }
           }
         }
@@ -30684,7 +31168,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/LilyGo_TETH_Elite_sx1262_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_TETH_Elite_sx1262_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30694,11 +31178,216 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/LilyGo_TETH_Elite_sx1262_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/LilyGo_TETH_Elite_sx1262_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Mesh pocket",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Mesh_pocket_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Mesh_pocket_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "meshnology w12",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/meshnology_w12_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/meshnology_w12_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Nano G2 Ultra",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Nano_G2_Ultra_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Nano_G2_Ultra_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "ProMicro",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ProMicro_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ProMicro_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "RAK 3401",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/RAK_3401_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/RAK_3401_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
             }
           }
         }
@@ -30721,7 +31410,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/RAK_3112_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/RAK_3112_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30731,7 +31420,123 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/RAK_3112_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/RAK_3112_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "RAK4631",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/RAK_4631_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/RAK_4631_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Station G2",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Station_G2_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Station_G2_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "Station G3 ESP32",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Station_G3_ESP32_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Station_G3_ESP32_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30758,7 +31563,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/T_Beam_S3_Supreme_SX1262_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/T_Beam_S3_Supreme_SX1262_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30768,11 +31573,95 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/T_Beam_S3_Supreme_SX1262_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/T_Beam_S3_Supreme_SX1262_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
               "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "t1000e",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/t1000e_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/t1000e_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "ThinkNode M1",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M1_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M1_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
             }
           }
         }
@@ -30795,7 +31684,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/ThinkNode_M7_companion_radio_ble-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M7_companion_radio_ble-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30805,7 +31694,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/ThinkNode_M7_companion_radio_ble-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M7_companion_radio_ble-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30824,7 +31713,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/ThinkNode_M7_companion_radio_ethernet-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M7_companion_radio_ethernet-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30834,7 +31723,86 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/ThinkNode_M7_companion_radio_ethernet-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M7_companion_radio_ethernet-v1.18.0.1-pre6-6f7368f-merged.bin",
+                  "title": "Full flash – merged binary (bootloader + partition + app)"
+                }
+              ],
+              "notes": "Flashes the complete merged binary to 0x0. Use for new devices or factory resets. ⚠ Overwrites all existing firmware."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "ThinkNode M8",
+      "type": "nrf52",
+      "firmware": [
+        {
+          "role": "companion_radio_ble",
+          "icon": "📻",
+          "title": "Companion Radio",
+          "subTitle": "BLE transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M8_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role": "companion_radio_usb",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB transport",
+          "version": {
+            "v1.18.0.1-dev": {
+              "files": [
+                {
+                  "type": "nrf-dfu-zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M8_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
+                  "title": "Firmware update"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "maker": "meshcomod",
+      "class": "community",
+      "name": "ThinkNode M9",
+      "type": "esp32",
+      "firmware": [
+        {
+          "role": "companion_radio_usb_tcp",
+          "tooltip": "App update keeps bootloader & settings. Full flash is for new or factory-reset devices.",
+          "icon": "🔌",
+          "title": "Companion Radio",
+          "subTitle": "USB + TCP transport",
+          "version": {
+            "v1.18.0.1-dev – App update": {
+              "files": [
+                {
+                  "type": "flash-update",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M9_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
+                  "title": "App update – keeps bootloader, partition table & config"
+                }
+              ],
+              "notes": "Updates firmware only. Bootloader and saved settings are preserved."
+            },
+            "v1.18.0.1-dev – Full flash": {
+              "files": [
+                {
+                  "type": "flash-wipe",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/ThinkNode_M9_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30860,7 +31828,7 @@
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/WioTrackerL1_companion_radio_ble-v1.18.0.1-pre4-5c01ff2.zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/WioTrackerL1_companion_radio_ble-v1.18.0.1-pre6-6f7368f.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -30877,7 +31845,7 @@
               "files": [
                 {
                   "type": "nrf-dfu-zip",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/WioTrackerL1_companion_radio_usb-v1.18.0.1-pre4-5c01ff2.zip",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/WioTrackerL1_companion_radio_usb-v1.18.0.1-pre6-6f7368f.zip",
                   "title": "Firmware update"
                 }
               ]
@@ -30903,7 +31871,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Xiao_S3_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Xiao_S3_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30913,7 +31881,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Xiao_S3_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Xiao_S3_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
@@ -30940,7 +31908,7 @@
               "files": [
                 {
                   "type": "flash-update",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Xiao_S3_WIO_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Xiao_S3_WIO_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f.bin",
                   "title": "App update – keeps bootloader, partition table & config"
                 }
               ],
@@ -30950,7 +31918,7 @@
               "files": [
                 {
                   "type": "flash-wipe",
-                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre4/Xiao_S3_WIO_companion_radio_usb_tcp-v1.18.0.1-pre4-5c01ff2-merged.bin",
+                  "name": "https://github.com/Elektr0Vodka/meshcomod/releases/download/companion-v1.18.0.1-pre6/Xiao_S3_WIO_companion_radio_usb_tcp-v1.18.0.1-pre6-6f7368f-merged.bin",
                   "title": "Full flash – merged binary (bootloader + partition + app)"
                 }
               ],
