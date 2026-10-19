@@ -115,7 +115,7 @@ describe('defaults and clone', () => {
     b.tree.children.push({ name: 'x', flood: true, children: [] })
     b.dcGate.thresh = 42
     expect(a.tree.children).toHaveLength(0)
-    expect(a.dcGate.thresh).toBe(70)
+    expect(a.dcGate.thresh).toBe(35)
   })
 })
 
@@ -126,7 +126,7 @@ describe('parseDcGate', () => {
     expect(parseDcGate({ enabled: '> on', thresh: '> 70', hyst: '> 10' }))
       .toEqual({ enabled: true, thresh: 70, hyst: 10 })
     expect(parseDcGate({ enabled: '> off', thresh: '', hyst: '' }))
-      .toEqual({ enabled: false, thresh: 70, hyst: 10 }) // falls back to defaults
+      .toEqual({ enabled: false, thresh: 35, hyst: 10 }) // falls back to defaults
   })
 })
 

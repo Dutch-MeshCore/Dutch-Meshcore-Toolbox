@@ -122,14 +122,14 @@ export const MESHCORE_COMMANDS: CliCommand[] = [
   { cmd: 'set dutycycle ',         category: 'radio', deviceTypes: 'all', placeholder: 'set dutycycle ', desc: 'Set duty-cycle limit. Range: 1-100.' },
   { cmd: 'get af',                 category: 'radio', deviceTypes: 'all',                    desc: 'Show airtime factor (duty-cycle budget).' },
   { cmd: 'set af ',                category: 'radio', deviceTypes: 'all', placeholder: 'set af ',        desc: 'Set airtime factor directly (duty-cycle budget), 0-9.' },
-  // v1.17 duty-cycle region gating (off by default; thresh 70 %, hyst 10 %)
+  // v1.17 duty-cycle region gating (off by default; thresh 35 % true TX duty, hyst 10 %)
   { cmd: 'get dc.gate',            category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show duty-cycle region-gating state.', sinceVersion: 'v1.17' },
   { cmd: 'set dc.gate ',           category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate ',        desc: 'Enable or disable duty-cycle region gating: on|off (1/0 also accepted).', sinceVersion: 'v1.17' },
-  { cmd: 'get dc.gate.thresh',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show the % of the duty-cycle budget used above which gating activates.', sinceVersion: 'v1.17' },
-  { cmd: 'set dc.gate.thresh ',    category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.thresh ', desc: 'Set gating threshold as % of the duty-cycle budget used (1-100), not % of wall-clock time. Default 70.', sinceVersion: 'v1.17' },
+  { cmd: 'get dc.gate.thresh',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show the true TX duty cycle (%) above which gating activates.', sinceVersion: 'v1.17' },
+  { cmd: 'set dc.gate.thresh ',    category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.thresh ', desc: 'Set gating threshold as true TX duty cycle: % of wall-clock time spent transmitting over the last 60 s (1-100). Default 35.', sinceVersion: 'v1.17' },
   { cmd: 'get dc.gate.hyst',       category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show gating hysteresis margin.', sinceVersion: 'v1.17' },
   { cmd: 'set dc.gate.hyst ',      category: 'radio', deviceTypes: ['repeater','roomserver'], placeholder: 'set dc.gate.hyst ',   desc: 'Set gating hysteresis in percentage points (0-50). Regions reopen below thresh minus hyst. Default 10.', sinceVersion: 'v1.17' },
-  { cmd: 'get dc.gate.status',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show live % of the duty-cycle budget used and the current gate level (level/max).', sinceVersion: 'v1.17' },
+  { cmd: 'get dc.gate.status',     category: 'radio', deviceTypes: ['repeater','roomserver'],                    desc: 'Show the live true TX duty cycle (%) and the current gate level (level/max).', sinceVersion: 'v1.17' },
   { cmd: 'get int.thresh',         category: 'radio', deviceTypes: 'all',                    desc: 'Show interference threshold.' },
   { cmd: 'set int.thresh ',        category: 'radio', deviceTypes: 'all', placeholder: 'set int.thresh ', desc: 'Set interference threshold.' },
   { cmd: 'get agc.reset.interval', category: 'radio', deviceTypes: 'all',                    desc: 'Show AGC reset interval.' },

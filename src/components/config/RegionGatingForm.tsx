@@ -13,7 +13,8 @@ interface Props {
 
 // Duty-cycle region gating only. DMC firmware feature (current dmc-dev builds and
 // the MQTT observer), gated on device.dcGateSupported by the parent. Threshold and
-// hysteresis are a share of the duty-cycle budget, not of wall-clock time. The region tree and neighbour discovery
+// hysteresis are the true TX duty cycle (share of wall-clock time spent transmitting
+// over 60 s), not a share of the duty-cycle budget. The region tree and neighbour discovery
 // are base repeater features and live in RegionSettingsForm.
 export default function RegionGatingForm({ value, onChange, onSendCommand }: Props) {
   const { t } = useLang()
@@ -53,7 +54,7 @@ export default function RegionGatingForm({ value, onChange, onSendCommand }: Pro
         className="btn" type="button"
         onClick={async () => {
           const s = parseDcGateStatus(await onSendCommand('get dc.gate.status'))
-          setGateStatus(s ? `budget ${s.dutyPct}% / level ${s.level}/${s.maxLevel}` : '-')
+          setGateStatus(s ? `duty ${s.dutyPct}% / level ${s.level}/${s.maxLevel}` : '-')
         }}
       >
         {t('region_dcgate_status')}
