@@ -26,7 +26,7 @@ export function defaultRegionSettings(): RegionSettings {
     tree: { name: '*', flood: false, children: [] },
     home: null,
     default: null,
-    dcGate: { enabled: false, thresh: 70, hyst: 10 },
+    dcGate: { enabled: false, thresh: 35, hyst: 10 },
   }
 }
 
@@ -379,7 +379,7 @@ export function parseSharedRegionSettings(text: string): RegionSettings | null {
   if (g && typeof g === 'object') {
     s.dcGate = {
       enabled: g.enabled === true,
-      thresh: clampInt(g.thresh, 1, 100, 70),
+      thresh: clampInt(g.thresh, 1, 100, 35),
       hyst: clampInt(g.hyst, 0, 50, 10),
     }
   }

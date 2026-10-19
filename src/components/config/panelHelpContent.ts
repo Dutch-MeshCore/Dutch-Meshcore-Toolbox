@@ -330,29 +330,29 @@ export const PANEL_HELP: Record<PanelHelpId, Record<Lang, HelpContent>> = {
   regionGating: {
     nl: {
       title: 'Regiogating',
-      intro: 'DMC-repeaterfirmware met duty-cycle-regiogating (huidige dev-builds en de MQTT-observer). Als de repeater het grootste deel van zijn duty-cycle-budget heeft verbruikt, laat hij flood-verkeer tussen regio\'s vallen, van de buitenste laag naar binnen. De binnenste regio en de thuisregio blijven altijd open, en het gaten wordt nooit opgeslagen.',
+      intro: 'DMC-repeaterfirmware met duty-cycle-regiogating (huidige dev-builds en de MQTT-observer). Als de repeater een groot deel van de tijd zendt, laat hij flood-verkeer tussen regio\'s vallen, van de buitenste laag naar binnen. De binnenste regio en de thuisregio blijven altijd open, en het gaten wordt nooit opgeslagen.',
       fields: [
         { label: 'dc.gate inschakelen', body: 'Zet duty-cycle-regiogating aan (standaard uit). Een repeater zonder benoemde regio\'s gate nooit.' },
-        { label: 'Drempel', body: 'Percentage van het duty-cycle-budget (set dutycycle) dat verbruikt mag zijn voordat gating start, niet een percentage van de tijd. Met dutycycle 10 mag de repeater 360 s per uur zenden; bij drempel 70 start gating na 252 s. 70 of 80 werkt bij elke limiet. Standaard 70.' },
-        { label: 'Hysterese', body: 'Herstelmarge in procentpunten: regio\'s gaan weer open zodra het verbruik onder drempel min hysterese zakt (standaard 10, dus onder 60%). Voorkomt schommelen.' },
+        { label: 'Drempel', body: 'Echte TX-duty-cycle: het deel van de kloktijd dat de repeater de afgelopen 60 s zond. Niet de duty-cycle-limiet (set dutycycle), die per uur geldt. Met dutycycle 10 blijft normaal verkeer ruim onder 35%; op een 1%-subband is 10-15 beter. Standaard 35. Eerdere DMC-builds maten een % van het budget (standaard 70); na de update begint de drempel op 35.' },
+        { label: 'Hysterese', body: 'Herstelmarge in procentpunten: regio\'s gaan weer open zodra de duty-cycle onder drempel min hysterese zakt (standaard 10, dus onder 25%). Voorkomt schommelen.' },
       ],
     },
     en: {
       title: 'Region gating',
-      intro: 'DMC repeater firmware with duty-cycle region gating (current dev builds and the MQTT observer). When the repeater has used up most of its duty-cycle budget, it sheds inter-region flood traffic from the outermost layer inward. The innermost region and the home region always stay open, and the gate is never saved.',
+      intro: 'DMC repeater firmware with duty-cycle region gating (current dev builds and the MQTT observer). When the repeater is transmitting a large share of the time, it sheds inter-region flood traffic from the outermost layer inward. The innermost region and the home region always stay open, and the gate is never saved.',
       fields: [
         { label: 'Enable dc.gate', body: 'Turns duty-cycle region gating on (off by default). A repeater with no named regions never gates.' },
-        { label: 'Threshold', body: 'Share of the duty-cycle budget (set dutycycle) that may be used before gating starts, not a share of wall-clock time. With dutycycle 10 the repeater may transmit 360 s per hour; at threshold 70 gating starts after 252 s. 70 or 80 works with any limit. Default 70.' },
-        { label: 'Hysteresis', body: 'Recovery margin in percentage points: regions re-open once usage drops below threshold minus hysteresis (default 10, so below 60%). Prevents flapping.' },
+        { label: 'Threshold', body: 'True TX duty cycle: the share of wall-clock time the repeater spent transmitting over the last 60 s. Not the duty-cycle limit (set dutycycle), which applies per hour. With dutycycle 10 normal traffic stays well below 35%; on a 1% sub-band 10-15 is better. Default 35. Earlier DMC builds measured a % of the budget (default 70); after the update the threshold starts at 35.' },
+        { label: 'Hysteresis', body: 'Recovery margin in percentage points: regions re-open once the duty cycle drops below threshold minus hysteresis (default 10, so below 25%). Prevents flapping.' },
       ],
     },
     de: {
       title: 'Regionen-Gating',
-      intro: 'DMC-Repeater-Firmware mit Duty-Cycle-Regionen-Gating (aktuelle Dev-Builds und der MQTT-Observer). Hat der Repeater den Großteil seines Duty-Cycle-Budgets verbraucht, verwirft er Flood-Verkehr zwischen Regionen, von der äußersten Ebene nach innen. Die innerste Region und die Heimatregion bleiben immer offen, und das Gating wird nie gespeichert.',
+      intro: 'DMC-Repeater-Firmware mit Duty-Cycle-Regionen-Gating (aktuelle Dev-Builds und der MQTT-Observer). Sendet der Repeater einen großen Teil der Zeit, verwirft er Flood-Verkehr zwischen Regionen, von der äußersten Ebene nach innen. Die innerste Region und die Heimatregion bleiben immer offen, und das Gating wird nie gespeichert.',
       fields: [
         { label: 'dc.gate aktivieren', body: 'Schaltet das Duty-Cycle-Regionen-Gating ein (standardmäßig aus). Ein Repeater ohne benannte Regionen gated nie.' },
-        { label: 'Schwelle', body: 'Anteil des Duty-Cycle-Budgets (set dutycycle), der verbraucht sein darf, bevor das Gating beginnt, nicht ein Anteil der Uhrzeit. Mit dutycycle 10 darf der Repeater 360 s pro Stunde senden; bei Schwelle 70 beginnt das Gating nach 252 s. 70 oder 80 passt zu jedem Limit. Standard 70.' },
-        { label: 'Hysterese', body: 'Erholungsspanne in Prozentpunkten: Regionen öffnen wieder, sobald der Verbrauch unter Schwelle minus Hysterese fällt (Standard 10, also unter 60%). Verhindert Flattern.' },
+        { label: 'Schwelle', body: 'Echter TX-Duty-Cycle: der Anteil der Uhrzeit, in dem der Repeater in den letzten 60 s gesendet hat. Nicht das Duty-Cycle-Limit (set dutycycle), das pro Stunde gilt. Mit dutycycle 10 bleibt normaler Verkehr deutlich unter 35 %; auf einem 1-%-Subband ist 10-15 besser. Standard 35. Frühere DMC-Builds maßen einen % des Budgets (Standard 70); nach dem Update beginnt die Schwelle bei 35.' },
+        { label: 'Hysterese', body: 'Erholungsspanne in Prozentpunkten: Regionen öffnen wieder, sobald der Duty-Cycle unter Schwelle minus Hysterese fällt (Standard 10, also unter 25 %). Verhindert Flattern.' },
       ],
     },
   },

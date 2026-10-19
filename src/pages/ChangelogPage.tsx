@@ -33,6 +33,18 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     firmware: [
       {
         version: 'v1.18.0 · dev',
+        date: '2026-10-19',
+        title: 'All DMC branches',
+        items: [
+          <><strong><code>dc.gate</code> now measures the true TX duty cycle</strong>: the share of wall-clock time the repeater spent transmitting over the last 60 seconds, not a share of the duty-cycle budget. The default threshold drops from 70 to <strong>35</strong> (hysteresis stays 10, so regions re-open below 25%). <strong>After the update the threshold starts at 35</strong>: a value set on an earlier build was a budget percentage and is not carried over, so check <code>get dc.gate.thresh</code> if you had changed it. On a 1% sub-band, 10-15 is a better threshold.</>,
+          <>Floods with transport code 0 now obey <code>region denyf *</code>, <code>flood.max.unscoped</code> and <code>dc.gate</code>, just like unscoped floods. Before, a modified client could use code 0 to get past them.</>,
+          <><strong>Packet filter</strong>: <code>filter on</code> now applies the default rate limits right away on a repeater that never saved filter settings, and <code>filter reset</code> now also resets the active limits.</>,
+          <><strong>SenseCAP Solar P1-Pro</strong> (repeater, room server, companion): the GPS is turned on once by default, also after an OTA update; a later <code>gps off</code> is kept. Not on the MQTT observer branch.</>,
+          <>Observer: <code>set mqtt.config</code>, <code>mqtt.filter.interval</code> and <code>mqttN.extras</code> are now kept after a reboot.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
         date: '2026-10-15',
         title: 'All DMC branches',
         items: [
@@ -115,6 +127,13 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'USB Setup & CLI Wiki: dc.gate true TX duty',
+        date: '2026-10-19',
+        items: [
+          <><strong>Region Gating</strong> panel, CLI Wiki and command help now describe the <code>dc.gate</code> threshold as the true TX duty cycle (default 35) instead of a share of the duty-cycle budget (default 70). The live status reads <code>duty</code>, and the default the panel falls back to is 35.</>,
+        ],
+      },
+      {
         version: 'CLI Wiki & filter: v1.18 companion and Meshcomod',
         date: '2026-10-16',
         items: [
@@ -194,6 +213,18 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   },
   nl: {
     firmware: [
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-10-19',
+        title: 'Alle DMC-branches',
+        items: [
+          <><strong><code>dc.gate</code> meet nu de echte TX-duty-cycle</strong>: het deel van de kloktijd dat de repeater de afgelopen 60 seconden zond, niet een deel van het duty-cycle-budget. De standaarddrempel gaat van 70 naar <strong>35</strong> (hysterese blijft 10, dus regio's heropenen onder 25%). <strong>Na de update begint de drempel op 35</strong>: een waarde die op een eerdere build is ingesteld was een budgetpercentage en wordt niet overgenomen, dus controleer <code>get dc.gate.thresh</code> als je hem had aangepast. Op een 1%-subband is 10-15 een betere drempel.</>,
+          <>Floods met transportcode 0 volgen nu <code>region denyf *</code>, <code>flood.max.unscoped</code> en <code>dc.gate</code>, net als floods zonder scope. Eerder kon een aangepaste client met code 0 daaromheen.</>,
+          <><strong>Packet filter</strong>: <code>filter on</code> past de standaard-rate-limits nu direct toe op een repeater die nooit filterinstellingen heeft opgeslagen, en <code>filter reset</code> zet nu ook de actieve limieten terug.</>,
+          <><strong>SenseCAP Solar P1-Pro</strong> (repeater, room server, companion): de GPS gaat eenmalig standaard aan, ook na een OTA-update; een latere <code>gps off</code> blijft staan. Niet op de MQTT-observer-branch.</>,
+          <>Observer: <code>set mqtt.config</code>, <code>mqtt.filter.interval</code> en <code>mqttN.extras</code> blijven nu bewaard na een herstart.</>,
+        ],
+      },
       {
         version: 'v1.18.0 · dev',
         date: '2026-10-15',
@@ -278,6 +309,13 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'USB Setup & CLI Wiki: dc.gate echte TX-duty',
+        date: '2026-10-19',
+        items: [
+          <><strong>Regiogating</strong>-paneel, CLI Wiki en de commandohulp beschrijven de <code>dc.gate</code>-drempel nu als de echte TX-duty-cycle (standaard 35) in plaats van een deel van het duty-cycle-budget (standaard 70). De live status toont <code>duty</code>, en het paneel valt terug op standaard 35.</>,
+        ],
+      },
+      {
         version: 'CLI Wiki & filter: v1.18-companion en Meshcomod',
         date: '2026-10-16',
         items: [
@@ -357,6 +395,18 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   },
   de: {
     firmware: [
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-10-19',
+        title: 'Alle DMC-Branches',
+        items: [
+          <><strong><code>dc.gate</code> misst jetzt den echten TX-Duty-Cycle</strong>: den Anteil der Uhrzeit, in dem der Repeater in den letzten 60 Sekunden gesendet hat, nicht einen Anteil des Duty-Cycle-Budgets. Die Standardschwelle sinkt von 70 auf <strong>35</strong> (Hysterese bleibt 10, Regionen öffnen also unter 25 % wieder). <strong>Nach dem Update beginnt die Schwelle bei 35</strong>: ein auf einem früheren Build gesetzter Wert war ein Budget-Prozentsatz und wird nicht übernommen, prüfe also <code>get dc.gate.thresh</code>, falls du ihn geändert hattest. Auf einem 1-%-Subband ist 10-15 eine bessere Schwelle.</>,
+          <>Floods mit Transportcode 0 befolgen jetzt <code>region denyf *</code>, <code>flood.max.unscoped</code> und <code>dc.gate</code>, genau wie Floods ohne Scope. Vorher konnte ein modifizierter Client sie mit Code 0 umgehen.</>,
+          <><strong>Packet-Filter</strong>: <code>filter on</code> wendet die Standard-Ratenlimits jetzt sofort an, auch auf einem Repeater, der nie Filtereinstellungen gespeichert hat, und <code>filter reset</code> setzt jetzt auch die aktiven Limits zurück.</>,
+          <><strong>SenseCAP Solar P1-Pro</strong> (Repeater, Room Server, Companion): das GPS wird einmalig standardmäßig eingeschaltet, auch nach einem OTA-Update; ein späteres <code>gps off</code> bleibt bestehen. Nicht auf dem MQTT-Observer-Branch.</>,
+          <>Observer: <code>set mqtt.config</code>, <code>mqtt.filter.interval</code> und <code>mqttN.extras</code> bleiben jetzt nach einem Neustart erhalten.</>,
+        ],
+      },
       {
         version: 'v1.18.0 · dev',
         date: '2026-10-15',
@@ -440,6 +490,13 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
       },
     ],
     toolbox: [
+      {
+        version: 'USB Setup & CLI Wiki: dc.gate echter TX-Duty',
+        date: '2026-10-19',
+        items: [
+          <><strong>Regionen-Gating</strong>-Panel, CLI Wiki und Befehlshilfe beschreiben die <code>dc.gate</code>-Schwelle jetzt als echten TX-Duty-Cycle (Standard 35) statt als Anteil des Duty-Cycle-Budgets (Standard 70). Der Live-Status zeigt <code>duty</code>, und das Panel fällt auf Standard 35 zurück.</>,
+        ],
+      },
       {
         version: 'CLI Wiki & Filter: v1.18-Companion und Meshcomod',
         date: '2026-10-16',
