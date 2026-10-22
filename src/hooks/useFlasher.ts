@@ -2,6 +2,26 @@ import { useRef, useState } from 'react'
 import type { FlasherDevice, DeviceFirmware, FlasherConfig } from '../types'
 import { getFirmwarePath, firmwareFetchUrl, FLASHER_BASE_URL } from '../utils/flasherUtils'
 
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
+
+interface Esp32Transport {
+  setRTS(v: boolean): Promise<void>
+  disconnect(): Promise<void>
+}
+
+// Matches `pulseRts` + `transport.disconnect()` in the upstream flasher's flash.js.
+// Each step is best-effort so a closed or half-open port never masks the real error.
+async function releaseEsp32(transport: Esp32Transport) {
+  try {
+    await transport.setRTS(true)
+    await delay(100)
+    await transport.setRTS(false)
+  } catch { /* port already gone */ }
+  try {
+    await transport.disconnect()
+  } catch { /* port already closed */ }
+}
+
 export interface FlasherState {
   supported: boolean
   active: boolean
@@ -63,17 +83,17 @@ export function useFlasher() {
     firmware: DeviceFirmware,
     config: FlasherConfig,
     opts: { version: string; wipe: boolean }
-  ) {
-    if (!supported) return
+  ): Promise<boolean> {
+    if (!supported) return false
     const versionData = firmware.version[opts.version]
-    if (!versionData) return
+    if (!versionData) return false
 
     setState(s => ({ ...s, active: true, percent: 0, log: '', error: '' }))
 
     try {
       if (device.type === 'esp32') {
         // @ts-ignore – esp32.js has no TS types
-        const { ESPLoader, Transport, HardReset } = await import('../lib/flasher/esp32.js')
+        const { ESPLoader, Transport } = await import('../lib/flasher/esp32.js')
         const port = await navigator.serial.requestPort()
         portRef.current = port
         const transport = new Transport(port, true)
@@ -90,34 +110,43 @@ export function useFlasher() {
         })
         instanceRef.current = loader
 
-        await loader.main()
+        try {
+          await loader.main()
 
-        if (opts.wipe) {
-          await loader.eraseFlash()
+          if (opts.wipe) {
+            await loader.eraseFlash()
+          }
+
+          const fileArray: { data: string; address: number }[] = []
+          for (const f of versionData.files) {
+            const blob = await firmwareBlob(f, config)
+            const data = await blobToBinaryString(blob)
+            fileArray.push({ data, address: f.type === 'flash-wipe' ? 0x0 : 0x10000 })
+          }
+
+          await loader.writeFlash({
+            fileArray,
+            flashSize: 'keep',
+            flashMode: 'keep',
+            flashFreq: 'keep',
+            eraseAll: false,
+            compress: true,
+            reportProgress: (_idx: number, written: number, total: number) => {
+              setState(s => ({ ...s, percent: Math.round((written / total) * 100) }))
+            },
+            calculateMD5Hash: (_image: string) => '',
+          })
+
+          await delay(100)
+          await loader.after('hard_reset')
+          await delay(100)
+        } finally {
+          // esptool-js's HardReset only releases RTS and never asserts it, so on its
+          // own it does not toggle EN. Pulse RTS like the upstream flasher does, so the
+          // board actually reboots into the new firmware (or out of the bootloader
+          // after a failure), then release the port so Retry can reopen it.
+          await releaseEsp32(transport)
         }
-
-        const fileArray: { data: string; address: number }[] = []
-        for (const f of versionData.files) {
-          const blob = await firmwareBlob(f, config)
-          const data = await blobToBinaryString(blob)
-          fileArray.push({ data, address: f.type === 'flash-wipe' ? 0x0 : 0x10000 })
-        }
-
-        await loader.writeFlash({
-          fileArray,
-          flashSize: 'keep',
-          flashMode: 'keep',
-          flashFreq: 'keep',
-          eraseAll: false,
-          compress: true,
-          reportProgress: (_idx: number, written: number, total: number) => {
-            setState(s => ({ ...s, percent: Math.round((written / total) * 100) }))
-          },
-          calculateMD5Hash: (_image: string) => '',
-        })
-
-        await new HardReset(transport).reset()
-        await transport.disconnect()
         setState(s => ({ ...s, percent: 100 }))
 
       } else if (device.type === 'nrf52') {
@@ -138,9 +167,11 @@ export function useFlasher() {
         })
         setState(s => ({ ...s, percent: 100 }))
       }
+      return true
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       setState(s => ({ ...s, error: msg }))
+      return false
     }
   }
 
