@@ -99,8 +99,9 @@ export default function FlasherPage() {
   async function handleFlash(opts: { version: string; wipe: boolean }) {
     if (!config || !sel.device || !sel.firmware) return
     dispatch({ type: 'FLASH_START' })
-    await flasher.flash(sel.device, sel.firmware, config, opts)
-    if (flasher.error) dispatch({ type: 'FLASH_ERROR' })
+    // Use the return value: `flasher.error` here is still this render's (pre-flash) value.
+    const ok = await flasher.flash(sel.device, sel.firmware, config, opts)
+    if (!ok) dispatch({ type: 'FLASH_ERROR' })
     else dispatch({ type: 'FLASH_DONE' })
   }
 
