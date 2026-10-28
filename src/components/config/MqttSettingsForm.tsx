@@ -190,6 +190,12 @@ export default function MqttSettingsForm({ value, onChange, onSendCommand }: Pro
                 onChange={e => patch(s => { s.timezoneOffset = clampInt(e.target.value, -12, 14) })} />
             </div>
           </div>
+          {value.wifiIpv6Supported && (
+            <label className="check-row">
+              <input type="checkbox" checked={value.wifiIpv6} onChange={e => patch(s => { s.wifiIpv6 = e.target.checked })} />
+              WiFi IPv6 <span className="field-hint">(MQTT connects IPv6-first, falls back to IPv4; no reboot)</span>
+            </label>
+          )}
           <div className="field-group">
             <label>Timezone (IANA, e.g. Europe/Amsterdam)</label>
             <input value={value.timezone} maxLength={48} onChange={e => patch(s => { s.timezone = e.target.value })} />

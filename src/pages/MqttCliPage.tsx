@@ -675,6 +675,7 @@ export default function MqttCliPage() {
                   <tr><td><code>set wifi.ssid &lt;ssid&gt;</code></td><td>{lang === 'de' ? 'WiFi-Netzwerkname.' : lang === 'nl' ? 'WiFi-netwerknaam.' : 'WiFi network name.'}</td></tr>
                   <tr><td><code>set wifi.pwd &lt;password&gt;</code></td><td>{lang === 'de' ? 'WiFi-Passwort.' : lang === 'nl' ? 'WiFi-wachtwoord.' : 'WiFi password.'}</td></tr>
                   <tr><td><code>set wifi.powersave &lt;none|min|max&gt;</code></td><td>{lang === 'de' ? 'WiFi-Energiesparmodus.' : lang === 'nl' ? 'WiFi energiebesparing.' : 'WiFi power saving mode.'}</td></tr>
+                  <tr><td><code>set wifi.ipv6 &lt;on|off&gt;</code></td><td>{lang === 'de' ? 'WiFi-IPv6: MQTT verbindet zuerst über IPv6, Rückfall auf IPv4 (Standard on).' : lang === 'nl' ? 'WiFi IPv6: MQTT verbindt eerst via IPv6, terugval op IPv4 (standaard on).' : 'WiFi IPv6: MQTT connects IPv6-first with IPv4 fallback (default on).'}</td></tr>
                 </tbody>
               </table>
 
