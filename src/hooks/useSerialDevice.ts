@@ -465,10 +465,11 @@ export function useSerialDevice() {
     // against the device's loaded state if available, else firmware defaults
     // (a full re-apply of the backup).
     if (data.mqtt && device.mqttCapable) {
-      // Live neighbor-scoping capability comes from the connected device, not the
+      // Live neighbor-scoping / IPv6 capability comes from the connected device, not the
       // file; missing fields in an older backup fall back to firmware defaults.
       const liveNeighbors = device.mqttDevice?.neighborsSupported ?? device.mqtt?.neighborsSupported ?? false
-      patch.mqtt = sanitizeImportedMqtt(data.mqtt, liveNeighbors)
+      const liveIpv6 = device.mqttDevice?.wifiIpv6Supported ?? device.mqtt?.wifiIpv6Supported ?? false
+      patch.mqtt = sanitizeImportedMqtt(data.mqtt, liveNeighbors, liveIpv6)
       patch.mqttDevice = device.mqttDevice ?? defaultMqttSettings()
     }
 
