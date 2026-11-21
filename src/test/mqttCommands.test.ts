@@ -309,3 +309,44 @@ describe('sanitizeImportedMqtt', () => {
     expect(sanitizeImportedMqtt({ neighborsSupported: true }, false).neighborsSupported).toBe(false)
   })
 })
+
+describe('wifi.ipv6', () => {
+  it('defaults on + unsupported and requests the get key', () => {
+    const s = defaultMqttSettings()
+    expect(s.wifiIpv6).toBe(true)
+    expect(s.wifiIpv6Supported).toBe(false)
+    expect(mqttGetCommands()).toContain('wifi.ipv6')
+  })
+  it('parses an on/off reply and marks it supported', () => {
+    const off = assembleMqttSettings({ 'wifi.ipv6': '> off' })
+    expect(off.wifiIpv6Supported).toBe(true)
+    expect(off.wifiIpv6).toBe(false)
+    const on = assembleMqttSettings({ 'wifi.ipv6': '> on' })
+    expect(on.wifiIpv6Supported).toBe(true)
+    expect(on.wifiIpv6).toBe(true)
+  })
+  it('marks older firmware unsupported and never emits the set', () => {
+    for (const reply of ['??: wifi.ipv6', 'Error: unsupported', '> Unknown command', '']) {
+      const base = assembleMqttSettings({ 'wifi.ipv6': reply })
+      expect(base.wifiIpv6Supported).toBe(false)
+      const next = cloneMqttSettings(base); next.wifiIpv6 = false
+      expect(buildMqttCommands(next, base).cmds.some(c => c.startsWith('set wifi.ipv6'))).toBe(false)
+    }
+  })
+  it('emits set wifi.ipv6 off on change without a reboot', () => {
+    const base = assembleMqttSettings({ 'wifi.ipv6': '> on' })
+    const next = cloneMqttSettings(base); next.wifiIpv6 = false
+    const { cmds, needsReboot } = buildMqttCommands(next, base)
+    expect(cmds).toEqual(['set wifi.ipv6 off'])
+    expect(needsReboot).toBe(false)
+    expect(buildMqttCommands(cloneMqttSettings(base), base).cmds).not.toContain('set wifi.ipv6 on')
+  })
+  it('sanitizes an old backup without the field and takes support from the live device', () => {
+    const old = sanitizeImportedMqtt({ origin: 'X' }, false, true)
+    expect(old.wifiIpv6).toBe(true)
+    expect(old.wifiIpv6Supported).toBe(true)
+    const file = sanitizeImportedMqtt({ wifiIpv6: false, wifiIpv6Supported: true }, false)
+    expect(file.wifiIpv6).toBe(false)
+    expect(file.wifiIpv6Supported).toBe(false)
+  })
+})

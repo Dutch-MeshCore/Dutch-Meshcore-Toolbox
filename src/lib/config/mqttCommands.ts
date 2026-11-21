@@ -112,6 +112,8 @@ export interface MqttSettings {
   wifiSsid: string
   wifiPassword: string
   wifiPowersave: 'none' | 'min' | 'max'
+  wifiIpv6: boolean // IPv6-first MQTT with IPv4 fallback; no reboot needed
+  wifiIpv6Supported: boolean // false when firmware rejects get wifi.ipv6
   timezone: string
   timezoneOffset: number
 }
@@ -129,7 +131,8 @@ export function defaultMqttSettings(): MqttSettings {
     alert: false, alertPsk: '', alertHashtag: '', alertRegion: '',
     alertWifi: 30, alertMqtt: 240, alertInterval: 60,
     snmp: false, snmpCommunity: 'public',
-    wifiSsid: '', wifiPassword: '', wifiPowersave: 'none', timezone: '', timezoneOffset: 0,
+    wifiSsid: '', wifiPassword: '', wifiPowersave: 'none', wifiIpv6: true, wifiIpv6Supported: false,
+    timezone: '', timezoneOffset: 0,
   }
 }
 
@@ -139,9 +142,12 @@ export function cloneMqttSettings(s: MqttSettings): MqttSettings {
 
 /** Overlay an imported (possibly old or partial) mqtt object onto current defaults
  *  so fields missing from an older backup don't become `undefined` (which would
- *  otherwise emit `set … undefined`). `neighborsSupported` is a live device
- *  capability, so it always comes from the connected device, never the file. */
-export function sanitizeImportedMqtt(raw: unknown, liveNeighborsSupported: boolean): MqttSettings {
+ *  otherwise emit `set … undefined`). `neighborsSupported` and `wifiIpv6Supported`
+ *  are live device capabilities, so they always come from the connected device,
+ *  never the file. */
+export function sanitizeImportedMqtt(
+  raw: unknown, liveNeighborsSupported: boolean, liveIpv6Supported = false,
+): MqttSettings {
   const base = defaultMqttSettings()
   const r = (raw ?? {}) as Record<string, unknown>
   const out = base as unknown as Record<string, unknown>
@@ -149,7 +155,8 @@ export function sanitizeImportedMqtt(raw: unknown, liveNeighborsSupported: boole
     'origin', 'iata', 'status', 'packets', 'raw', 'tx', 'rx', 'interval', 'neighbors',
     'neighborsInterval', 'radioWatchdog', 'ntp', 'owner', 'email', 'alert', 'alertPsk',
     'alertHashtag', 'alertRegion', 'alertWifi', 'alertMqtt', 'alertInterval', 'snmp',
-    'snmpCommunity', 'wifiSsid', 'wifiPassword', 'wifiPowersave', 'timezone', 'timezoneOffset',
+    'snmpCommunity', 'wifiSsid', 'wifiPassword', 'wifiPowersave', 'wifiIpv6', 'timezone',
+    'timezoneOffset',
   ]
   for (const k of scalarKeys) {
     const v = r[k as string]
@@ -174,6 +181,7 @@ export function sanitizeImportedMqtt(raw: unknown, liveNeighborsSupported: boole
     }
   })
   base.neighborsSupported = liveNeighborsSupported
+  base.wifiIpv6Supported = liveIpv6Supported
   return base
 }
 
@@ -220,7 +228,7 @@ export function mqttGetCommands(): string[] {
     'mqtt.ntp', 'mqtt.owner', 'mqtt.email',
     'alert', 'alert.psk', 'alert.hashtag', 'alert.region', 'alert.wifi', 'alert.mqtt', 'alert.interval',
     'snmp', 'snmp.community',
-    'wifi.ssid', 'wifi.pwd', 'wifi.powersave', 'timezone', 'timezone.offset',
+    'wifi.ssid', 'wifi.pwd', 'wifi.powersave', 'wifi.ipv6', 'timezone', 'timezone.offset',
   ]
   for (let n = 1; n <= MQTT_SLOT_COUNT; n++) {
     cmds.push(
@@ -266,6 +274,11 @@ export function assembleMqttSettings(r: Record<string, string>): MqttSettings {
   s.wifiSsid = parseStr(g('wifi.ssid'))
   s.wifiPassword = parseStr(g('wifi.pwd'))
   s.wifiPowersave = parsePowersave(g('wifi.powersave'))
+  // wifi.ipv6 is newer observer firmware only; anything but on/off means the
+  // command is unknown - hide the control and never emit the set.
+  const ipv6Reply = stripReply(g('wifi.ipv6')).toLowerCase()
+  s.wifiIpv6Supported = ipv6Reply === 'on' || ipv6Reply === 'off'
+  s.wifiIpv6 = s.wifiIpv6Supported ? ipv6Reply === 'on' : true
   s.timezone = parseStr(g('timezone'))
   s.timezoneOffset = parseFirstInt(g('timezone.offset'))
   for (let i = 0; i < MQTT_SLOT_COUNT; i++) {
@@ -319,6 +332,8 @@ export function buildMqttCommands(
   if (next.wifiSsid !== base.wifiSsid && next.wifiSsid) { cmds.push(`set wifi.ssid ${next.wifiSsid}`); needsReboot = true }
   if (next.wifiPassword !== base.wifiPassword && next.wifiPassword) { cmds.push(`set wifi.pwd ${next.wifiPassword}`); needsReboot = true }
   if (next.wifiPowersave !== base.wifiPowersave) cmds.push(`set wifi.powersave ${next.wifiPowersave}`)
+  // IPv6 applies on the next MQTT connect - no reboot. Only on firmware that knows it.
+  if (next.wifiIpv6Supported && next.wifiIpv6 !== base.wifiIpv6) cmds.push(`set wifi.ipv6 ${onoff(next.wifiIpv6)}`)
   if (next.timezone !== base.timezone && next.timezone) cmds.push(`set timezone ${next.timezone}`)
   if (next.timezoneOffset !== base.timezoneOffset) cmds.push(`set timezone.offset ${next.timezoneOffset}`)
 
