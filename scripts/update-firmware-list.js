@@ -76,6 +76,10 @@ const DMC_COMPANION_ROLES = [
   { separator: '_companion_radio_wifi-', role: 'dutchmeshcore_companion_wifi', icon: '📶', title: 'DutchMeshCore Companion', subTitle: 'Wi-Fi + receive filter' },
 ]
 
+// Wi-Fi companion radio + MQTT observer in one image (dmc-companion-observer-* releases,
+// `*_companion_observer_wifi` envs; firmware reports `-comp-obs`). No pull OTA.
+const DMC_COMP_OBS_ROLE = { separator: '_companion_observer_wifi-', role: 'dutchmeshcore_comp_obs', icon: '📡', title: 'DutchMeshCore Companion Observer', subTitle: 'Wi-Fi companion + MQTT observer' }
+
 const ALL_ROLE_DEFS = [
   ...MESHCORE_DEV_ROLES,
   ...MESHCOMOD_ROLES,
@@ -83,6 +87,7 @@ const ALL_ROLE_DEFS = [
   DMC_REPEATER_ROLE,
   DMC_PACKETLOG_ROLE,
   ...DMC_COMPANION_ROLES,
+  DMC_COMP_OBS_ROLE,
 ]
 
 // MQTT and non-MQTT repeater firmware render as two separate maker groups.
@@ -107,6 +112,12 @@ const DMC_PACKETLOG_MAKER_META = {
 const DMC_COMPANION_MAKER_META = {
   name:    'DutchMeshCore Companion Filter Firmware',
   repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-companion',
+  website: 'https://dutchmeshcore.nl',
+}
+
+const DMC_COMP_OBS_MAKER_META = {
+  name:    'DutchMeshCore Companion Observer Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-companion-observer',
   website: 'https://dutchmeshcore.nl',
 }
 
@@ -169,6 +180,7 @@ const DEVICE_LABELS = {
   Tbeam_SX1262:                 'T-Beam SX1262',
   Tbeam_SX1276:                 'T-Beam SX1276',
   ThinkNode_M7:                 'ThinkNode M7',
+  Waveshare_S3_LR1121:          'Waveshare S3 LR1121',
   Xiao_S3_WIO:                  'Xiao S3 WIO',
 }
 
@@ -533,8 +545,10 @@ async function buildDmcPacketlogConfig() {
 // `{Device}_companion_radio_wifi-…` (ESP32 app/merged .bin, nRF52 .uf2/.zip, RP2040
 // .bin + .uf2). Drafts are skipped (their assets are not public).
 export function dmcCompanionConfigFromReleases(releases) {
+  // `dmc-companion-observer-*` shares the prefix but is its own maker group.
   const picked = releases.filter(r =>
-    typeof r.tag_name === 'string' && r.tag_name.startsWith('dmc-companion-') && !r.draft)
+    typeof r.tag_name === 'string' && r.tag_name.startsWith('dmc-companion-')
+      && !r.tag_name.startsWith('dmc-companion-observer-') && !r.draft)
   const files = picked.flatMap(rel => (rel.assets ?? []).flatMap(a => {
     const ext = extOf(a.name)
     if (!ext) return []
@@ -561,6 +575,36 @@ export function dmcCompanionConfigFromReleases(releases) {
 async function buildDmcCompanionConfig() {
   console.log('Dutch-MeshCore/MeshCore (dmc-companion releases)')
   return dmcCompanionConfigFromReleases(await fetchReleases('Dutch-MeshCore', 'MeshCore'))
+}
+
+// DMC Wi-Fi companion + MQTT observer – GitHub Releases tagged
+// `dmc-companion-observer-*` on the fork (built from dmc-observer-dev). Assets are
+// `{Device}_companion_observer_wifi-vX.Y.Z-{hash}[-merged].bin`, ESP32 only. Drafts
+// are skipped. Mirrors buildDmcCompObsConfig() in src/utils/dutchFlasherConfig.ts.
+export function dmcCompObsConfigFromReleases(releases) {
+  const prefix = 'dmc-companion-observer-'
+  const picked = releases.filter(r =>
+    typeof r.tag_name === 'string' && r.tag_name.startsWith(prefix) && !r.draft)
+  const rd = DMC_COMP_OBS_ROLE
+  const files = picked.flatMap(rel => (rel.assets ?? []).flatMap(a => {
+    const ext = extOf(a.name)
+    if (!ext || !a.name.includes(rd.separator)) return []
+    return [{
+      deviceKey:  a.name.slice(0, a.name.indexOf(rd.separator)),
+      role:       rd.role,
+      versionKey: repeaterVersion(rel.tag_name, prefix, a.name, rd.separator),
+      isMerged:   a.name.endsWith('-merged.' + ext),
+      ext,
+      url:        a.browser_download_url,
+    }]
+  }))
+  console.log(`  → ${picked.length} dmc-companion-observer releases, ${files.length} firmware files`)
+  return buildConfig(files, 'dutchmeshcore_comp_obs', DMC_COMP_OBS_MAKER_META)
+}
+
+async function buildDmcCompObsConfig() {
+  console.log('Dutch-MeshCore/MeshCore (dmc-companion-observer releases)')
+  return dmcCompObsConfigFromReleases(await fetchReleases('Dutch-MeshCore', 'MeshCore'))
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -604,24 +648,27 @@ async function main() {
   // ── DMC firmware (MQTT + non-MQTT repeater) ───────────────────────────────
   console.log('\nBuilding DutchMeshCore firmware list…')
   try {
-    const [mqttRes, repeaterRes, packetlogRes, companionRes] = await Promise.allSettled([
+    const [mqttRes, repeaterRes, packetlogRes, companionRes, compObsRes] = await Promise.allSettled([
       buildDmcFirmwareConfig(),
       buildDmcRepeaterConfig(),
       buildDmcPacketlogConfig(),
       buildDmcCompanionConfig(),
+      buildDmcCompObsConfig(),
     ])
     const emptyConfig = { staticPath: '', role: {}, notice: {}, maker: {}, device: [] }
     const dmcMqtt      = mqttRes.status === 'fulfilled' ? mqttRes.value : emptyConfig
     const dmcRepeater  = repeaterRes.status === 'fulfilled' ? repeaterRes.value : emptyConfig
     const dmcPacketlog = packetlogRes.status === 'fulfilled' ? packetlogRes.value : emptyConfig
     const dmcCompanion = companionRes.status === 'fulfilled' ? companionRes.value : emptyConfig
+    const dmcCompObs   = compObsRes.status === 'fulfilled' ? compObsRes.value : emptyConfig
+    if (compObsRes.status === 'rejected')   console.error('DMC companion observer build failed:', compObsRes.reason)
     if (mqttRes.status === 'rejected')      console.error('DMC MQTT build failed:', mqttRes.reason)
     if (repeaterRes.status === 'rejected')  console.error('DMC repeater build failed:', repeaterRes.reason)
     if (packetlogRes.status === 'rejected') console.error('DMC packetlog build failed:', packetlogRes.reason)
     if (companionRes.status === 'rejected') console.error('DMC companion build failed:', companionRes.reason)
 
-    // Four maker groups (repeater, PacketLog, MQTT, companion) in one config.
-    const dmcConfig = mergeConfigs([dmcRepeater, dmcPacketlog, dmcMqtt, dmcCompanion])
+    // Five maker groups (repeater, PacketLog, MQTT, companion, companion observer) in one config.
+    const dmcConfig = mergeConfigs([dmcRepeater, dmcPacketlog, dmcMqtt, dmcCompanion, dmcCompObs])
     if (dmcConfig.device.length) {
       const dmcOutput = { generated: new Date().toISOString(), ...dmcConfig }
       writeFileSync(DMC_OUT, JSON.stringify(dmcOutput, null, 2))

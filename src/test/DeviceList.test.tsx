@@ -113,7 +113,7 @@ describe('DeviceList', () => {
     expect(screen.queryByTestId('device-preview')).not.toBeInTheDocument()
   })
 
-  it('pins the DMC groups first, with the companion group after the repeater groups', () => {
+  it('pins the DMC groups first, with the companion groups after the repeater groups', () => {
     const dev = (maker: string): FlasherDevice =>
       ({ maker, class: 'community', name: `${maker} board`, type: 'esp32', firmware: [] })
     const { container } = render(
@@ -121,6 +121,7 @@ describe('DeviceList', () => {
         <DeviceList
           devices={[
             dev('aaa_fork'),
+            dev('dutchmeshcore_comp_obs'),
             dev('dutchmeshcore_companion'),
             dev('dutchmeshcore_packetlog'),
             dev('dutchmeshcore'),
@@ -132,6 +133,7 @@ describe('DeviceList', () => {
             dutchmeshcore_repeater: { name: 'DutchMeshCore Firmware' },
             dutchmeshcore_packetlog: { name: 'DutchMeshCore-PacketLog-Firmware' },
             dutchmeshcore_companion: { name: 'DutchMeshCore Companion Filter Firmware' },
+            dutchmeshcore_comp_obs: { name: 'DutchMeshCore Companion Observer Firmware' },
           }}
           onSelect={vi.fn()}
         />
@@ -143,6 +145,7 @@ describe('DeviceList', () => {
       'DutchMeshCore-MQTT-Firmware',
       'DutchMeshCore-PacketLog-Firmware',
       'DutchMeshCore Companion Filter Firmware',
+      'DutchMeshCore Companion Observer Firmware',
       'AAA Fork Firmware',
     ])
   })

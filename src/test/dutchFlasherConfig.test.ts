@@ -4,6 +4,7 @@ import {
   buildDmcRepeaterConfig,
   buildDmcPacketlogConfig,
   buildDmcCompanionConfig,
+  buildDmcCompObsConfig,
   fetchDmcConfig,
   mergeDmcConfigs,
   PREBUILT_RAW_BASE,
@@ -481,10 +482,68 @@ describe('buildDmcCompanionConfig', () => {
   })
 })
 
+const COMP_OBS_STABLE = {
+  tag_name: 'dmc-companion-observer-v1.18.0',
+  assets: [
+    asset('Heltec_v3_companion_observer_wifi-v1.18.0-e588d0c2.bin'),
+    asset('Heltec_v3_companion_observer_wifi-v1.18.0-e588d0c2-merged.bin'),
+    asset('Heltec_v3_companion_observer_wifi.partsig'),
+    asset('Waveshare_S3_LR1121_companion_observer_wifi-v1.18.0-e588d0c2.bin'),
+    asset('Waveshare_S3_LR1121_companion_observer_wifi-v1.18.0-e588d0c2-merged.bin'),
+  ],
+}
+
+describe('buildDmcCompObsConfig', () => {
+  it('builds the companion observer group with app/full flash from a dmc-companion-observer tag', () => {
+    const config = buildDmcCompObsConfig([COMP_OBS_STABLE])
+
+    expect(config.maker).toEqual({
+      dutchmeshcore_comp_obs: {
+        name: 'DutchMeshCore Companion Observer Firmware',
+        repo: 'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-companion-observer',
+        website: 'https://dutchmeshcore.nl',
+      },
+    })
+    expect(config.role).toEqual({
+      dutchmeshcore_comp_obs: { icon: '📡', title: 'DutchMeshCore Companion Observer', subTitle: 'Wi-Fi companion + MQTT observer' },
+    })
+    expect(config.device.map(d => d.name)).toEqual(['Heltec V3', 'Waveshare S3 LR1121'])
+    const v3 = config.device.find(d => d.name === 'Heltec V3')!
+    expect(v3.type).toBe('esp32')
+    expect(v3.firmware.map(fw => fw.role)).toEqual(['dutchmeshcore_comp_obs'])
+    expect(v3.firmware[0].version['1.18.0 - App update'].files[0]).toMatchObject({
+      type: 'flash-update',
+      name: 'https://example.test/Heltec_v3_companion_observer_wifi-v1.18.0-e588d0c2.bin',
+    })
+    expect(v3.firmware[0].version['1.18.0 - Full flash'].files[0]).toMatchObject({
+      type: 'flash-wipe',
+      name: 'https://example.test/Heltec_v3_companion_observer_wifi-v1.18.0-e588d0c2-merged.bin',
+    })
+  })
+
+  it('ignores drafts and the companion filter releases', () => {
+    const config = buildDmcCompObsConfig([
+      { ...COMP_OBS_STABLE, tag_name: 'dmc-companion-observer-v1.19.0', draft: true },
+      COMPANION_STABLE,
+      COMPANION_DEV,
+    ])
+    expect(config.device).toEqual([])
+  })
+
+  it('keeps dmc-companion-observer releases out of the companion filter group', () => {
+    const config = buildDmcCompanionConfig([COMP_OBS_STABLE, COMPANION_STABLE])
+    const urls = config.device.flatMap(d => d.firmware.flatMap(fw =>
+      Object.values(fw.version).flatMap(v => v.files.map(f => f.name))))
+    expect(urls.length).toBeGreaterThan(0)
+    expect(urls.some(u => u.includes('_companion_observer_'))).toBe(false)
+  })
+})
+
 describe('DMC group isolation', () => {
   const RELEASES = [
     COMPANION_DEV,
     COMPANION_STABLE,
+    COMP_OBS_STABLE,
     { tag_name: 'dmc-repeater-v1.18.0', assets: [asset('Heltec_v3_repeater-v1.18.0-r1.bin')] },
     { tag_name: 'dmc-repeater-dev', assets: [asset('Heltec_v3_repeater-v1.18.0-r2.bin')] },
     { tag_name: 'dmc-repeater-packetlog-v1.18.0', assets: [asset('Heltec_v3_repeater-v1.18.0-packetlog-p1.bin')] },
@@ -518,13 +577,16 @@ describe('DMC group isolation', () => {
     const urls = urlsByMaker(config)
 
     expect(Object.keys(urls).sort()).toEqual([
-      'dutchmeshcore', 'dutchmeshcore_companion', 'dutchmeshcore_packetlog', 'dutchmeshcore_repeater',
+      'dutchmeshcore', 'dutchmeshcore_comp_obs', 'dutchmeshcore_companion', 'dutchmeshcore_packetlog', 'dutchmeshcore_repeater',
     ])
     expect(urls.dutchmeshcore_companion.length).toBeGreaterThan(0)
     expect(urls.dutchmeshcore_companion.every(u => u.includes('_companion_radio_'))).toBe(true)
+    expect(urls.dutchmeshcore_comp_obs.length).toBeGreaterThan(0)
+    expect(urls.dutchmeshcore_comp_obs.every(u => u.includes('_companion_observer_wifi-'))).toBe(true)
     for (const maker of ['dutchmeshcore', 'dutchmeshcore_packetlog', 'dutchmeshcore_repeater']) {
       expect(urls[maker].length).toBeGreaterThan(0)
       expect(urls[maker].some(u => u.includes('_companion_radio_'))).toBe(false)
+      expect(urls[maker].some(u => u.includes('_companion_observer_'))).toBe(false)
     }
     expect(urls.dutchmeshcore_repeater.some(u => u.includes('packetlog'))).toBe(false)
     expect(config.maker.dutchmeshcore_companion.name).toBe('DutchMeshCore Companion Filter Firmware')
@@ -562,6 +624,30 @@ describe('scripts/update-firmware-list.js DMC companion mirror', () => {
       'Heltec_v3_companion_radio_wifi-v1.18.0-def5678.bin', '_companion_radio_wifi-')).toBe('1.18.0-dev')
     expect(repeaterVersion('dmc-companion-v1.18.0', 'dmc-companion-',
       'Heltec_v3_companion_radio_ble-v1.18.0-abc1234.bin', '_companion_radio_ble-')).toBe('1.18.0')
+  })
+
+  it('matches the TS companion observer config and keeps it out of the companion group', async () => {
+    const { dmcCompObsConfigFromReleases, dmcCompanionConfigFromReleases } = await loadScript()
+    const releases = [
+      COMP_OBS_STABLE,
+      { ...COMP_OBS_STABLE, tag_name: 'dmc-companion-observer-v1.19.0', draft: true },
+      COMPANION_STABLE,
+    ]
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
+    try {
+      const fromScript = dmcCompObsConfigFromReleases(releases) as FlasherConfig
+      const fromTs = buildDmcCompObsConfig(releases)
+      expect(fromScript.device.length).toBeGreaterThan(0)
+      expect(normalize(fromScript)).toEqual(normalize(fromTs))
+      expect(fromScript.maker).toEqual(fromTs.maker)
+      expect(fromScript.role.dutchmeshcore_comp_obs).toEqual(fromTs.role.dutchmeshcore_comp_obs)
+
+      const companion = dmcCompanionConfigFromReleases(releases) as FlasherConfig
+      expect(normalize(companion)).toEqual(normalize(buildDmcCompanionConfig(releases)))
+      expect(JSON.stringify(companion.device)).not.toContain('_companion_observer_')
+    } finally {
+      log.mockRestore()
+    }
   })
 
   it('matches the TS companion config for stable, dev, draft and foreign releases', async () => {
