@@ -34,6 +34,9 @@ const REPEATER_TAG_PREFIX  = 'dmc-repeater-'
 const PACKETLOG_TAG_PREFIX = 'dmc-repeater-packetlog-'
 // Companion firmware with the receive filter: `dmc-companion-dev` / `dmc-companion-vX.Y.Z`.
 const COMPANION_TAG_PREFIX = 'dmc-companion-'
+// Wi-Fi companion + MQTT observer (`dmc-companion-observer-vX.Y.Z`). Shares the
+// `dmc-companion-` prefix but is its own maker group, like PacketLog vs repeater.
+const COMP_OBS_TAG_PREFIX = 'dmc-companion-observer-'
 
 const DMC_RELEASES_URL =
   `https://api.github.com/repos/${MESHCORE_REPO}/releases?per_page=100`
@@ -43,6 +46,7 @@ const DMC_MQTT_MAKER      = 'dutchmeshcore'
 const DMC_REPEATER_MAKER  = 'dutchmeshcore_repeater'
 const DMC_PACKETLOG_MAKER = 'dutchmeshcore_packetlog'
 const DMC_COMPANION_MAKER = 'dutchmeshcore_companion'
+const DMC_COMP_OBS_MAKER  = 'dutchmeshcore_comp_obs'
 
 const DMC_MQTT_MAKER_META = {
   name:    'DutchMeshCore-MQTT-Firmware',
@@ -68,6 +72,12 @@ const DMC_COMPANION_MAKER_META = {
   website: 'https://dutchmeshcore.nl',
 }
 
+const DMC_COMP_OBS_MAKER_META = {
+  name:    'DutchMeshCore Companion Observer Firmware',
+  repo:    'https://github.com/Dutch-MeshCore/MeshCore/releases?q=dmc-companion-observer',
+  website: 'https://dutchmeshcore.nl',
+}
+
 /** Human-readable labels for each device key found in the filenames. */
 const DEVICE_LABELS: Record<string, string> = {
   Heltec_T190:                'Heltec T190',
@@ -87,6 +97,7 @@ const DEVICE_LABELS: Record<string, string> = {
   T_Beam_S3_Supreme_SX1262:   'T-Beam S3 Supreme SX1262',
   Tbeam_SX1262:               'T-Beam SX1262',
   Tbeam_SX1276:               'T-Beam SX1276',
+  Waveshare_S3_LR1121:        'Waveshare S3 LR1121',
   Xiao_S3_WIO:                'Xiao S3 WIO',
 }
 
@@ -312,6 +323,16 @@ const COMPANION_ROLES: ReleaseRoleDef[] = [
   },
 ]
 
+// Wi-Fi companion radio + MQTT observer in one image (`*_companion_observer_wifi`,
+// firmware reports `-comp-obs`). No pull OTA; carries the DMC receive filter.
+const COMP_OBS_ROLE: ReleaseRoleDef = {
+  separator: '_companion_observer_wifi-',
+  role:      'dutchmeshcore_comp_obs',
+  icon:      '📡',
+  title:     'DutchMeshCore Companion Observer',
+  subTitle:  'Wi-Fi companion + MQTT observer',
+}
+
 // buildReleaseGroupConfig is shared by the plain repeater, PacketLog and companion
 // groups; these options select the maker, the tag prefix and the roles (one per asset
 // separator) for each.
@@ -333,6 +354,9 @@ const PACKETLOG_OPTS: ReleaseGroupOpts = {
 const COMPANION_OPTS: ReleaseGroupOpts = {
   maker: DMC_COMPANION_MAKER, makerMeta: DMC_COMPANION_MAKER_META, roles: COMPANION_ROLES, tagPrefix: COMPANION_TAG_PREFIX,
   preferImage: true,
+}
+const COMP_OBS_OPTS: ReleaseGroupOpts = {
+  maker: DMC_COMP_OBS_MAKER, makerMeta: DMC_COMP_OBS_MAKER_META, roles: [COMP_OBS_ROLE], tagPrefix: COMP_OBS_TAG_PREFIX,
 }
 
 interface GHReleaseAsset {
@@ -508,8 +532,21 @@ export function buildDmcPacketlogConfig(releases: GHRelease[]): FlasherConfig {
  */
 export function buildDmcCompanionConfig(releases: GHRelease[]): FlasherConfig {
   return buildReleaseGroupConfig(
-    releases.filter(r => r.tag_name.startsWith(COMPANION_TAG_PREFIX) && !r.draft),
+    releases.filter(r => r.tag_name.startsWith(COMPANION_TAG_PREFIX)
+      && !r.tag_name.startsWith(COMP_OBS_TAG_PREFIX) && !r.draft),
     COMPANION_OPTS,
+  )
+}
+
+/**
+ * DMC Wi-Fi companion + MQTT observer (`dmc-companion-observer-vX.Y.Z` releases, built
+ * from dmc-observer-dev). Assets are `{Device}_companion_observer_wifi-…`, ESP32 only.
+ * Drafts are ignored. Mirrors dmcCompObsConfigFromReleases() in update-firmware-list.js.
+ */
+export function buildDmcCompObsConfig(releases: GHRelease[]): FlasherConfig {
+  return buildReleaseGroupConfig(
+    releases.filter(r => r.tag_name.startsWith(COMP_OBS_TAG_PREFIX) && !r.draft),
+    COMP_OBS_OPTS,
   )
 }
 
@@ -588,6 +625,7 @@ export async function fetchDmcConfig(): Promise<FlasherConfig> {
     buildDmcPacketlogConfig(packetlogReleases),
     buildDmcConfig(mqttFiles),
     buildDmcCompanionConfig(releases),
+    buildDmcCompObsConfig(releases),
   )
   writeCache(DMC_CACHE_KEY, config)
   return config
