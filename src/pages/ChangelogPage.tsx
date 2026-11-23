@@ -801,7 +801,9 @@ function ChangeList({ entries }: { entries: Entry[] }) {
   return (
     <>
       {sorted.map(e => (
-        <div className="panel" key={e.version}>
+        // version alone repeats (every dev entry is "v1.18.0 · dev"); duplicate keys made
+        // React leave stale panels behind when the tab switched lists.
+        <div className="panel" key={`${e.date}|${e.version}|${e.title ?? ''}`}>
           <div className="panel-legend">
             {e.version}
             {e.title ? ` · ${e.title}` : ''}
@@ -848,7 +850,7 @@ export default function ChangelogPage() {
           </button>
         </div>
 
-        {tab === 'firmware' ? <ChangeList entries={c.firmware} /> : <ChangeList entries={c.toolbox} />}
+        <ChangeList key={tab} entries={tab === 'firmware' ? c.firmware : c.toolbox} />
       </main>
     </>
   )
