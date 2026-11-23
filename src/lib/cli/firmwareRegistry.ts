@@ -404,6 +404,15 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'set mqtt.advert.verify on', category: 'mqtt', deviceTypes: 'all', desc: 'Skip publishing received adverts whose Ed25519 signature fails (counted as badsig= in get mqtt.stats).', sinceVersion: 'v1.18-dev' },
   { cmd: 'set mqtt.advert.verify off', category: 'mqtt', deviceTypes: 'all', desc: 'Publish received adverts as heard (default), so over-the-air corruption stays visible to collectors.', sinceVersion: 'v1.18-dev' },
 
+  // 2026-11-22 catch-up with agessaman observer-firmware-dev (cli_commands.md, MQTT_IMPLEMENTATION.md)
+  { cmd: 'get mqtt.breaker.interval',  category: 'mqtt', deviceTypes: 'all', desc: 'Show how often a slot that stopped reconnecting tries its broker again (minutes).', sinceVersion: 'v1.18-dev' },
+  { cmd: 'set mqtt.breaker.interval ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt.breaker.interval ', desc: 'Minutes between single retries once a slot has stopped reconnecting (10-30, default 30). Does not change how often WiFi reconnects. Applies live.', sinceVersion: 'v1.18-dev' },
+  { cmd: 'get mqtt.selfheal',          category: 'mqtt', deviceTypes: ['repeater','roomserver'], desc: 'Show whether MQTT self-heal is on, plus the last self-heal cause and count (or none).', sinceVersion: 'v1.18-dev' },
+  { cmd: 'set mqtt.selfheal ',         category: 'mqtt', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt.selfheal ', desc: 'MQTT self-heal: on|off (default off). When on, the node alerts and reboots 1 min later if MQTT is stuck in a state only a reboot clears (a bridge stop that never completed, a client that could not be stopped, or every slot down for 2 h while the internet is reachable). Backs off, and only alerts after 5 reboots in a row.', sinceVersion: 'v1.18-dev' },
+  { cmd: 'get mqtt.stacks',            category: 'mqtt', deviceTypes: 'all', desc: 'Show free stack bytes per MQTT task: b= bridge, l= loop, a= AsyncTCP, m1= ... per slot client.', sinceVersion: 'v1.18-dev' },
+  { cmd: 'get crash',                  category: 'system', deviceTypes: 'all', desc: 'Show the last panic read from the flash core dump (task, pc, exception cause, address, firmware SHA prefix, backtrace), or none. MQTT status messages carry it until one is published.', sinceVersion: 'v1.18-dev' },
+  { cmd: 'clear crash',                category: 'system', deviceTypes: 'all', desc: 'Erase the stored crash dump. It is also erased after the first published status message that carried it.', sinceVersion: 'v1.18-dev' },
+
   // MQTT bridge – per slot (firmware exposes N=1..6; the toolbox drives all six)
   { cmd: 'set mqtt1.preset ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt1.preset ',   desc: 'Slot 1 preset (e.g. dutchmeshcore-1, meshcore-analyzer-eu, custom, none).' },
   { cmd: 'set mqtt1.server ',   category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt1.server ',   desc: 'Slot 1 broker host (custom preset).' },
@@ -460,6 +469,12 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'set mqtt6.audience ', category: 'mqtt', deviceTypes: 'all', placeholder: 'set mqtt6.audience ', desc: 'Slot 6 JWT audience (blank to clear).' },
   { cmd: 'get mqtt6.diag',      category: 'mqtt', deviceTypes: 'all', desc: 'Slot 6 connection diagnostics.' },
 
+  // Per-slot region code (topic {iata}); bare set clears it back to mqtt.iata
+  ...[1, 2, 3, 4, 5, 6].flatMap((n): CliCommand[] => [
+    { cmd: `get mqtt${n}.iata`,  category: 'mqtt', deviceTypes: 'all', desc: `Show the slot ${n} region code override.`, sinceVersion: 'v1.18-dev' },
+    { cmd: `set mqtt${n}.iata `, category: 'mqtt', deviceTypes: 'all', placeholder: `set mqtt${n}.iata `, desc: `Region code for slot ${n} topics instead of mqtt.iata; leave empty to clear.`, sinceVersion: 'v1.18-dev' },
+  ]),
+
   // v1.17 per-broker packet filter (mqtt_broker_filter_reference.md)
   { cmd: 'set mqtt1.filter ',   category: 'filter', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt1.filter ', desc: 'Slot 1 publish filter: all | none | CSV of type names/numbers. Example: set mqtt1.filter txt_msg,advert', sinceVersion: 'v1.17' },
   { cmd: 'get mqtt1.filter',    category: 'filter', deviceTypes: ['repeater','roomserver'], desc: 'Show slot 1 publish filter.', sinceVersion: 'v1.17' },
@@ -478,9 +493,14 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
 
   // v1.17 neighbour publishing (neighbour_discovery_reference.md). PSRAM-only (WITH_MQTT_NEIGHBORS).
   { cmd: 'discover.scopes',            category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Refresh the neighbour table and publish it to MQTT now (one-shot).', sinceVersion: 'v1.17' },
-  { cmd: 'get mqtt.neighbors',         category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Show periodic neighbour-publishing state.', sinceVersion: 'v1.17', note: 'build-dependent' },
-  { cmd: 'set mqtt.neighbors on',      category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Enable periodic neighbour publishing.', sinceVersion: 'v1.17', note: 'build-dependent' },
-  { cmd: 'set mqtt.neighbors off',     category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Disable periodic neighbour publishing.', sinceVersion: 'v1.17', note: 'build-dependent' },
+  { cmd: 'get mqtt.neighbors',         category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Show periodic neighbour-publishing state; in auto also whether it is active.', sinceVersion: 'v1.17', note: 'build-dependent' },
+  { cmd: 'set mqtt.neighbors auto',    category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Publish neighbours periodically only to slots whose preset asks for them (cascadiamesh, chimesh, comchan, meshat.se, meshmapper, rflab, virginiamesh) or that are set mqttN.neighbors on. Default.', sinceVersion: 'v1.18-dev', note: 'build-dependent' },
+  { cmd: 'set mqtt.neighbors on',      category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Publish neighbours periodically to every connected slot (except slots set mqttN.neighbors off).', sinceVersion: 'v1.17', note: 'build-dependent' },
+  { cmd: 'set mqtt.neighbors off',     category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Disable periodic neighbour publishing on every slot.', sinceVersion: 'v1.17', note: 'build-dependent' },
+  ...[1, 2, 3, 4, 5, 6].flatMap((n): CliCommand[] => [
+    { cmd: `get mqtt${n}.neighbors`,  category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: `Show slot ${n} neighbour setting and whether periodic snapshots reach it.`, sinceVersion: 'v1.18-dev', note: 'build-dependent' },
+    { cmd: `set mqtt${n}.neighbors `, category: 'neighbors', deviceTypes: ['repeater','roomserver'], placeholder: `set mqtt${n}.neighbors `, desc: `Slot ${n} neighbour snapshots: auto (follow mqtt.neighbors, default) | on | off (also skips manual discover.scopes).`, sinceVersion: 'v1.18-dev', note: 'build-dependent' },
+  ]),
   { cmd: 'get mqtt.neighbors.interval', category: 'neighbors', deviceTypes: ['repeater','roomserver'], desc: 'Show neighbour-publish interval (hours).', sinceVersion: 'v1.17', note: 'build-dependent' },
   { cmd: 'set mqtt.neighbors.interval ', category: 'neighbors', deviceTypes: ['repeater','roomserver'], placeholder: 'set mqtt.neighbors.interval ', desc: 'Set neighbour-publish interval in hours (12-336).', sinceVersion: 'v1.17', note: 'build-dependent' },
 
@@ -493,6 +513,8 @@ export const DMC_MQTT_COMMANDS: CliCommand[] = [
   { cmd: 'get wifi.pwd',        category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi password.' },
   { cmd: 'get wifi.powersave',  category: 'wifi', deviceTypes: 'all', desc: 'Show WiFi power-save mode.' },
   { cmd: 'get wifi.ipv6',       category: 'wifi', deviceTypes: 'all', desc: 'Show whether WiFi IPv6 is on.' },
+  { cmd: 'get wifi.txpower',    category: 'wifi', deviceTypes: 'all', desc: 'Show the WiFi TX power cap the radio applied (dBm).', sinceVersion: 'v1.18-dev' },
+  { cmd: 'set wifi.txpower ',   category: 'wifi', deviceTypes: 'all', placeholder: 'set wifi.txpower ', desc: 'WiFi TX power cap in whole dBm: 2-20, or default (the build value, usually 11). Applies at once and on every WiFi start. Raise it when slots connect but drop on a weak WiFi link.', sinceVersion: 'v1.18-dev' },
   { cmd: 'get link.status', category: 'wifi', deviceTypes: 'all', desc: 'Show the selected network medium (Ethernet or WiFi), connection status, IP, signal and uptime. Replaces get wifi.status.', sinceVersion: 'v1.18-dev' },
   { cmd: 'get link.diag', category: 'wifi', deviceTypes: 'all', desc: 'Explain the automatic Ethernet / WiFi selection (ThinkNode M7 Ethernet builds).', sinceVersion: 'v1.18-dev' },
   { cmd: 'get link.dns', category: 'wifi', deviceTypes: 'all', desc: 'Show the live DNS resolvers, the gateway and the DNS each medium\'s DHCP lease installed.', sinceVersion: 'v1.18-dev' },
@@ -604,6 +626,25 @@ export const MESHCOMOD_COMMANDS: CliCommand[] = [
   { cmd: 'ota url ',   category: 'ota', deviceTypes: ['companion'], placeholder: 'ota url ', desc: 'Download and install an app image (not -merged) from an https URL.', note: 'command-contact' },
 ]
 
+// DutchMeshCore Companion Observer (dmc-observer-dev, *_companion_observer_wifi envs):
+// the v1.18 companion and the MQTT observer bridge in one image; the app connects over
+// WiFi TCP 5000. CompanionObserver::handleCommand passes get/set to the observer CLI
+// (mqtt*, wifi, timezone, crash) and refuses ota and mqtt.selfheal. SNMP, fault alerts,
+// WebConfig and neighbour publishing are not built in. The DMC companion receive filter
+// is the same engine and syntax as meshcomod's (docs/companion_filter_reference.md).
+const COMP_OBS_LEFT_OUT = new Set<CategoryKey>(['ota', 'snmp', 'alert', 'neighbors'])
+
+const COMP_OBS_BASE = MESHCORE_COMMANDS.filter(c =>
+  (c.deviceTypes === 'all' || c.deviceTypes.includes('companion')) &&
+  c.category !== 'wifi' && !COMP_OBS_LEFT_OUT.has(c.category))
+
+const COMP_OBS_OBSERVER = DMC_MQTT_COMMANDS.filter(c =>
+  c.deviceTypes === 'all' && !COMP_OBS_LEFT_OUT.has(c.category))
+
+const COMP_OBS_FILTER = MESHCOMOD_COMMANDS
+  .filter(c => c.category === 'filter')
+  .map(c => ({ ...c, sinceVersion: 'v1.18-dev' }))
+
 export const FIRMWARE_VARIANTS: Record<string, FirmwareVariant> = {
   'meshcore': {
     id: 'meshcore',
@@ -650,6 +691,20 @@ export const FIRMWARE_VARIANTS: Record<string, FirmwareVariant> = {
     ],
     deviceTypes: ['companion'],
     commands: [...MESHCOMOD_BASE, ...MESHCOMOD_COMMANDS],
+  },
+  'dmc-comp-obs': {
+    id: 'dmc-comp-obs',
+    name: 'DutchMeshCore – Companion Observer',
+    shortDescKey: 'wiki_fw_dmccompobs_short',
+    fullDescKey: 'wiki_fw_dmccompobs_full',
+    source: 'https://github.com/Dutch-MeshCore/MeshCore/tree/dmc-observer-dev',
+    docs: [
+      { labelKey: 'wiki_doc_compobs', href: 'https://github.com/Dutch-MeshCore/MeshCore/blob/dmc-observer-dev/MQTT_IMPLEMENTATION.md#companion-observer' },
+      { labelKey: 'wiki_doc_cli', href: 'https://github.com/Dutch-MeshCore/MeshCore/blob/dmc-observer-dev/docs/cli_commands.md' },
+      { labelKey: 'wiki_doc_filter', href: 'https://github.com/Dutch-MeshCore/MeshCore/blob/dmc-observer-dev/docs/companion_filter_reference.md' },
+    ],
+    deviceTypes: ['companion'],
+    commands: [...COMP_OBS_BASE, ...COMP_OBS_OBSERVER, ...COMP_OBS_FILTER],
   },
 }
 
