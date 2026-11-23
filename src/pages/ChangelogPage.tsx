@@ -190,6 +190,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>CLI Wiki</strong>: new variant <strong>DutchMeshCore – Companion Observer</strong>: the companion CLI, the observer's MQTT and WiFi settings and the receive filter, without the OTA, SNMP, alert and neighbour commands it does not have.</>,
           <><strong>CLI Wiki</strong>: added the new observer commands <code>mqtt.selfheal</code>, <code>mqtt.breaker.interval</code>, <code>get mqtt.stacks</code>, <code>get crash</code> / <code>clear crash</code>, <code>mqtt.neighbors auto</code> and per-slot <code>mqttN.neighbors</code>, plus <code>wifi.txpower</code> and per-slot <code>mqttN.iata</code>.</>,
           <><strong>USB Setup</strong>: a <strong>WiFi IPv6</strong> checkbox in the WiFi settings, shown only when the observer answers <code>get wifi.ipv6</code>; backups carry the setting. The CLI Wiki lists <code>wifi.ipv6</code>.</>,
+          <><strong>USB Setup</strong>: the broker preset list now has all <strong>42</strong> firmware presets (adds <code>sacmesh</code>, <code>upstatemesh</code>, <code>comchan</code> and <code>virginiamesh</code>).</>,
         ],
       },
       {
@@ -443,6 +444,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>CLI Wiki</strong>: nieuwe variant <strong>DutchMeshCore – Companion Observer</strong>: de companion-CLI, de MQTT- en wifi-instellingen van de observer en het ontvangstfilter, zonder de OTA-, SNMP-, meldings- en buuropdrachten die hij niet heeft.</>,
           <><strong>CLI Wiki</strong>: de nieuwe observer-opdrachten toegevoegd: <code>mqtt.selfheal</code>, <code>mqtt.breaker.interval</code>, <code>get mqtt.stacks</code>, <code>get crash</code> / <code>clear crash</code>, <code>mqtt.neighbors auto</code> en <code>mqttN.neighbors</code> per slot, plus <code>wifi.txpower</code> en <code>mqttN.iata</code> per slot.</>,
           <><strong>USB Setup</strong>: een vinkje <strong>WiFi IPv6</strong> bij de wifi-instellingen, alleen zichtbaar als de observer op <code>get wifi.ipv6</code> antwoordt; back-ups nemen de instelling mee. De CLI Wiki noemt <code>wifi.ipv6</code>.</>,
+          <><strong>USB Setup</strong>: de lijst met broker-presets bevat nu alle <strong>42</strong> presets van de firmware (nieuw: <code>sacmesh</code>, <code>upstatemesh</code>, <code>comchan</code> en <code>virginiamesh</code>).</>,
         ],
       },
       {
@@ -696,6 +698,7 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
           <><strong>CLI Wiki</strong>: neue Variante <strong>DutchMeshCore – Companion Observer</strong>: die Companion-CLI, die MQTT- und WLAN-Einstellungen des Observers und der Empfangsfilter, ohne die OTA-, SNMP-, Melde- und Nachbarbefehle, die er nicht hat.</>,
           <><strong>CLI Wiki</strong>: die neuen Observer-Befehle ergänzt: <code>mqtt.selfheal</code>, <code>mqtt.breaker.interval</code>, <code>get mqtt.stacks</code>, <code>get crash</code> / <code>clear crash</code>, <code>mqtt.neighbors auto</code> und <code>mqttN.neighbors</code> pro Slot, dazu <code>wifi.txpower</code> und <code>mqttN.iata</code> pro Slot.</>,
           <><strong>USB Setup</strong>: ein Kästchen <strong>WiFi IPv6</strong> bei den WLAN-Einstellungen, nur sichtbar, wenn der Observer auf <code>get wifi.ipv6</code> antwortet; Backups enthalten die Einstellung. Das CLI Wiki listet <code>wifi.ipv6</code>.</>,
+          <><strong>USB Setup</strong>: die Liste der Broker-Presets enthält jetzt alle <strong>42</strong> Presets der Firmware (neu: <code>sacmesh</code>, <code>upstatemesh</code>, <code>comchan</code> und <code>virginiamesh</code>).</>,
         ],
       },
       {
