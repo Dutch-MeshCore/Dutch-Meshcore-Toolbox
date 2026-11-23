@@ -208,3 +208,37 @@ describe('meshcomod companion variant', () => {
     expect(byCmd('ota check')?.note).toBe('command-contact')
   })
 })
+
+describe('DMC companion observer variant', () => {
+  const co = FIRMWARE_VARIANTS['dmc-comp-obs']
+  const cmds = getCommandsForContext('dmc-comp-obs', FW_DEVICE_TYPES.companion.id)
+  const has = (cmd: string) => cmds.some(c => c.cmd === cmd)
+
+  it('is a companion-only variant', () => {
+    expect(co.deviceTypes).toEqual(['companion'])
+  })
+
+  it('has the observer bridge, crash report and the companion receive filter', () => {
+    for (const cmd of ['set mqtt1.preset ', 'get mqtt.status', 'set wifi.ssid ', 'set mqtt.breaker.interval ', 'get mqtt.stacks', 'get crash', 'clear crash', 'filter on', 'filter sender add ']) {
+      expect(has(cmd), cmd).toBe(true)
+    }
+    expect(has('filter hops ')).toBe(false)
+  })
+
+  it('leaves out what the companion observer refuses or does not build', () => {
+    for (const cmd of ['ota check', 'stop ota', 'set snmp on', 'set alert on', 'set mqtt.selfheal ', 'set mqtt.neighbors on', 'set mqtt1.neighbors ']) {
+      expect(has(cmd), cmd).toBe(false)
+    }
+  })
+})
+
+describe('observer catch-up 2026-11-22 commands', () => {
+  const mq = getCommandsForContext('dmc-mqtt', FW_DEVICE_TYPES.repeater.id)
+  const has = (cmd: string) => mq.some(c => c.cmd === cmd)
+
+  it('lists self-heal, breaker interval, stacks, crash and per-slot neighbours', () => {
+    for (const cmd of ['get mqtt.selfheal', 'set mqtt.selfheal ', 'set mqtt.breaker.interval ', 'get mqtt.stacks', 'get crash', 'clear crash', 'set mqtt.neighbors auto', 'set mqtt6.neighbors ']) {
+      expect(has(cmd), cmd).toBe(true)
+    }
+  })
+})

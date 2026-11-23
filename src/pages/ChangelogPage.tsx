@@ -12,6 +12,8 @@ const DOCS = {
   packetFilter: `${FW_REPO}/blob/${FW_REF}/docs/packet_filter_reference.md`,
   cli: `${FW_REPO}/blob/${FW_REF}/docs/cli_commands.md`,
   mqttImpl: `${FW_REPO}/blob/${FW_REF}/MQTT_IMPLEMENTATION.md`,
+  compObs: `${FW_REPO}/blob/${FW_REF}/MQTT_IMPLEMENTATION.md#companion-observer`,
+  companionFilter: `${FW_REPO}/blob/${FW_REF}/docs/companion_filter_reference.md`,
   branch: `${FW_REPO}/tree/${FW_REF}`,
 }
 
@@ -31,6 +33,60 @@ type LangKey = 'en' | 'nl' | 'de'
 const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   en: {
     firmware: [
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-22',
+        title: 'Companion Observer (new)',
+        items: [
+          <>New <strong>Companion Observer</strong> firmware: a WiFi companion radio and an MQTT observer in one image. The MeshCore app connects over WiFi (TCP port 5000) while heard packets go to the MQTT brokers. Boards: Heltec V3, Heltec V4, Heltec V4 expansion kit, Xiao S3 WIO and Waveshare S3 LR1121 (<code>*_companion_observer_wifi</code>). <Doc href={DOCS.compObs}>Companion Observer guide</Doc>.</>,
+          <>Set it up with the same commands as the repeater observer (<code>set wifi.ssid</code>, <code>set mqtt1.preset</code>, <code>set mqtt.iata</code>, ...) from the USB serial console, the app's command line or remote admin. It shares <code>/mqtt.json</code> and the node identity with the repeater observer, so reflashing either way keeps brokers, WiFi, IATA and public key. After the companion has saved its settings, a repeater flashed back starts with its own settings at build defaults, <strong>including the admin password</strong>: set it again.</>,
+          <>Includes the DMC <strong>receive filter</strong> (<code>filter ...</code>). It only changes what the app shows and what is repeated; the observer still uploads every heard packet. <Doc href={DOCS.companionFilter}>Companion filter reference</Doc>.</>,
+          <>Not included: pull OTA, SNMP, the web portal, fault alerts, MQTT self-heal and neighbour publishing. Heltec V3 (no PSRAM) is limited to 150 contacts and 2 MQTT slots; PSRAM boards keep 350 contacts.</>,
+          <>Builds report <code>vX.Y.Z[-dev]-dutchmeshcore.nl-comp-obs-&lt;hash&gt;</code>. Releases: the rolling <code>dmc-companion-observer-dev</code> and <code>dmc-companion-observer-vX.Y.Z</code>, flashed from the new <strong>DutchMeshCore Companion Observer Firmware</strong> group in the Flasher once the first one is built. <strong>Not yet tested on hardware.</strong></>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-22',
+        title: 'MQTT Observer',
+        items: [
+          <>Caught up with agessaman observer-firmware. New opt-in <strong>self-heal</strong> (<code>set mqtt.selfheal on</code>): when MQTT is stuck in a state only a reboot clears, the node sends an alert and reboots a minute later, waiting longer after each self-heal reboot. <code>get mqtt.selfheal</code> shows the last cause.</>,
+          <><strong>Crash reports</strong>: after a panic, <code>get crash</code> shows the faulting task and backtrace from the flash core dump, and the next published MQTT status message carries it once; <code>clear crash</code> erases it. Status messages also report <code>heap_min</code> and <code>reset_reason</code>, and <code>get mqtt.stacks</code> shows the free stack per MQTT task.</>,
+          <>ESP32-S3 observers without PSRAM use a smaller TLS send buffer (4 KiB instead of 16), about 12 KiB less internal RAM per broker.</>,
+          <>New <code>set mqtt.breaker.interval</code> (10-30 min, default 30): how often a slot that gave up reconnecting tries its broker again.</>,
+          <>Neighbour publishing: the new default <code>mqtt.neighbors auto</code> sends the table only to slots whose preset asks for it, and <code>set mqttN.neighbors auto|on|off</code> overrides that per slot. Nodes that never changed the setting, or had it off, move to <code>auto</code>.</>,
+          <>WiFi joins the strongest access point when several share the SSID, DNS lookups now run on the lwIP thread, and the web portal can bind port 80 again right after a stop. New broker presets <code>comchan</code> and <code>virginiamesh</code> (42 in total). <Doc href={DOCS.mqttImpl}>MQTT implementation guide</Doc>.</>,
+          <><strong>Fix:</strong> on companion builds from the observer branch, companion filter rules in <code>/cfilter.json</code> were lost on reboot because the stricter JSON parser rejected their all-digit keys. Fixed.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-15',
+        title: 'All DMC branches',
+        items: [
+          <>Merged upstream MeshCore <code>dev</code> for two security fixes: a remote CLI command (such as a prefixed <code>regions</code> query) could write past the reply buffer and crash a repeater, room server or sensor, and the MicroNMEA GPS parser could read past its buffer.</>,
+          <>Also from upstream: reworked GPS handling (update period, fence, first-fix timeout), mDNS, a companion crash guard and the CC310 mutex workaround.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-04',
+        title: 'All DMC branches',
+        items: [
+          <><code>filter age</code> now also drops messages stamped too far in the <strong>future</strong>, with the same limit in both directions: with <code>filter age 60</code>, anything more than an hour behind or ahead of the clock is dropped. Spam stamped days ahead got through before. Applies to the repeater filter and the companion filter. A sender whose clock runs ahead by more than the limit is now dropped too.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-01',
+        title: 'All DMC branches',
+        items: [
+          <>ESPAsyncWebServer updated to 3.11.2 for two multipart-parser vulnerabilities (CVE-2026-54571, CVE-2026-62966) on the web OTA upload path (<code>start ota</code>).</>,
+          <>Observer: <strong>IPv6</strong> on the WiFi station. MQTT connects over IPv6 first and falls back to IPv4 for 15 min after two failed connects. <code>set wifi.ipv6 on|off</code> (default on); <code>get link.status</code> shows the IPv6 address. DNS still comes from DHCPv4. Not yet tested on an IPv6 network.</>,
+          <>Observer: caught up with agessaman observer-firmware: <code>set wifi.txpower 2-20|default</code> (WiFi TX power cap), a per-slot region code with <code>set mqttN.iata</code>, and the presets <code>sacmesh</code> and <code>upstatemesh</code>.</>,
+          <>Observer <strong>fix</strong>: <code>set mqttN.extras</code> is now really kept after a reboot (the 2026-10-19 fix missed it). Choices made before this build were never saved, so set them again.</>,
+        ],
+      },
       {
         version: 'v1.18.0 · dev',
         date: '2026-10-19',
@@ -127,6 +183,24 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'Flasher & CLI Wiki: Companion Observer',
+        date: '2026-11-23',
+        items: [
+          <><strong>Flasher</strong>: new group <strong>DutchMeshCore Companion Observer Firmware</strong> for the <code>dmc-companion-observer-*</code> releases, with App update and Full flash per board. It stays empty until the first release is built. The companion filter group no longer picks up these releases.</>,
+          <><strong>CLI Wiki</strong>: new variant <strong>DutchMeshCore – Companion Observer</strong>: the companion CLI, the observer's MQTT and WiFi settings and the receive filter, without the OTA, SNMP, alert and neighbour commands it does not have.</>,
+          <><strong>CLI Wiki</strong>: added the new observer commands <code>mqtt.selfheal</code>, <code>mqtt.breaker.interval</code>, <code>get mqtt.stacks</code>, <code>get crash</code> / <code>clear crash</code>, <code>mqtt.neighbors auto</code> and per-slot <code>mqttN.neighbors</code>, plus <code>wifi.txpower</code> and per-slot <code>mqttN.iata</code>.</>,
+          <><strong>USB Setup</strong>: a <strong>WiFi IPv6</strong> checkbox in the WiFi settings, shown only when the observer answers <code>get wifi.ipv6</code>; backups carry the setting. The CLI Wiki lists <code>wifi.ipv6</code>.</>,
+          <><strong>USB Setup</strong>: the broker preset list now has all <strong>42</strong> firmware presets (adds <code>sacmesh</code>, <code>upstatemesh</code>, <code>comchan</code> and <code>virginiamesh</code>).</>,
+        ],
+      },
+      {
+        version: 'Flasher: reset after flashing',
+        date: '2026-10-22',
+        items: [
+          <><strong>Flasher</strong>: ESP32 boards now start the new firmware after flashing instead of staying in the bootloader until you press reset. A failed flash now shows the error screen (it showed done before) and releases the serial port, so Retry works.</>,
+        ],
+      },
+      {
         version: 'USB Setup & CLI Wiki: dc.gate true TX duty',
         date: '2026-10-19',
         items: [
@@ -213,6 +287,60 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   },
   nl: {
     firmware: [
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-22',
+        title: 'Companion Observer (nieuw)',
+        items: [
+          <>Nieuwe <strong>Companion Observer</strong>-firmware: een wifi-companion-radio en een MQTT-observer in één image. De MeshCore-app verbindt via wifi (TCP-poort 5000) terwijl gehoorde pakketten naar de MQTT-brokers gaan. Borden: Heltec V3, Heltec V4, Heltec V4 expansion kit, Xiao S3 WIO en Waveshare S3 LR1121 (<code>*_companion_observer_wifi</code>). <Doc href={DOCS.compObs}>Companion Observer-handleiding</Doc>.</>,
+          <>Instellen gaat met dezelfde opdrachten als bij de repeater-observer (<code>set wifi.ssid</code>, <code>set mqtt1.preset</code>, <code>set mqtt.iata</code>, ...) via de USB-seriële console, de opdrachtregel in de app of remote admin. Hij deelt <code>/mqtt.json</code> en de node-identiteit met de repeater-observer, dus bij heen en weer flashen blijven brokers, wifi, IATA en publieke sleutel behouden. Nadat de companion zijn instellingen heeft opgeslagen, start een teruggeflashte repeater met zijn eigen instellingen op de build-standaard, <strong>inclusief het admin-wachtwoord</strong>: stel dat opnieuw in.</>,
+          <>Bevat het DMC-<strong>ontvangstfilter</strong> (<code>filter ...</code>). Dat verandert alleen wat de app toont en wat herhaald wordt; de observer uploadt nog steeds elk gehoord pakket. <Doc href={DOCS.companionFilter}>Referentie companion-filter</Doc>.</>,
+          <>Niet aanwezig: pull-OTA, SNMP, het webportaal, storingsmeldingen, MQTT-self-heal en buurpublicatie. Heltec V3 (geen PSRAM) is beperkt tot 150 contacten en 2 MQTT-slots; borden met PSRAM houden 350 contacten.</>,
+          <>Builds melden <code>vX.Y.Z[-dev]-dutchmeshcore.nl-comp-obs-&lt;hash&gt;</code>. Releases: de rollende <code>dmc-companion-observer-dev</code> en <code>dmc-companion-observer-vX.Y.Z</code>, te flashen vanuit de nieuwe groep <strong>DutchMeshCore Companion Observer Firmware</strong> in de Flasher zodra de eerste gebouwd is. <strong>Nog niet op hardware getest.</strong></>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-22',
+        title: 'MQTT Observer',
+        items: [
+          <>Bijgewerkt met agessaman observer-firmware. Nieuwe optionele <strong>self-heal</strong> (<code>set mqtt.selfheal on</code>): als MQTT vastzit in een toestand die alleen een herstart oplost, stuurt de node een melding en herstart hij een minuut later, met na elke self-heal-herstart een langere wachttijd. <code>get mqtt.selfheal</code> toont de laatste oorzaak.</>,
+          <><strong>Crashrapporten</strong>: na een crash toont <code>get crash</code> de taak en backtrace uit de core dump in flash, en het volgende gepubliceerde MQTT-statusbericht draagt hem één keer mee; <code>clear crash</code> wist hem. Statusberichten melden ook <code>heap_min</code> en <code>reset_reason</code>, en <code>get mqtt.stacks</code> toont de vrije stack per MQTT-taak.</>,
+          <>ESP32-S3-observers zonder PSRAM gebruiken een kleinere TLS-zendbuffer (4 KiB in plaats van 16), ongeveer 12 KiB minder intern RAM per broker.</>,
+          <>Nieuw: <code>set mqtt.breaker.interval</code> (10-30 min, standaard 30): hoe vaak een slot dat het herverbinden heeft opgegeven zijn broker opnieuw probeert.</>,
+          <>Buurpublicatie: de nieuwe standaard <code>mqtt.neighbors auto</code> stuurt de tabel alleen naar slots waarvan de preset erom vraagt, en <code>set mqttN.neighbors auto|on|off</code> overschrijft dat per slot. Nodes die de instelling nooit wijzigden of op off hadden staan, gaan naar <code>auto</code>.</>,
+          <>Wifi kiest het sterkste accesspoint als er meerdere dezelfde SSID delen, DNS-lookups lopen nu op de lwIP-thread, en het webportaal kan poort 80 direct na een stop weer openen. Nieuwe broker-presets <code>comchan</code> en <code>virginiamesh</code> (42 in totaal). <Doc href={DOCS.mqttImpl}>MQTT-implementatiegids</Doc>.</>,
+          <><strong>Fix:</strong> op companion-builds van de observer-branch gingen filterregels in <code>/cfilter.json</code> verloren bij een herstart, omdat de strengere JSON-parser hun sleutels van alleen cijfers weigerde. Opgelost.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-15',
+        title: 'Alle DMC-branches',
+        items: [
+          <>Upstream MeshCore <code>dev</code> samengevoegd voor twee beveiligingsfixes: een remote CLI-opdracht (zoals een <code>regions</code>-query met prefix) kon voorbij de antwoordbuffer schrijven en een repeater, room server of sensor laten crashen, en de MicroNMEA-GPS-parser kon voorbij zijn buffer lezen.</>,
+          <>Ook van upstream: herziene GPS-afhandeling (updateperiode, fence, time-out voor de eerste fix), mDNS, een crashbeveiliging in de companion en de CC310-mutex-workaround.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-04',
+        title: 'Alle DMC-branches',
+        items: [
+          <><code>filter age</code> laat nu ook berichten vallen die te ver in de <strong>toekomst</strong> gedateerd zijn, met dezelfde grens in beide richtingen: met <code>filter age 60</code> valt alles weg dat meer dan een uur achter of voor de klok ligt. Spam die dagen vooruit gedateerd was, kwam er eerst doorheen. Geldt voor het repeaterfilter en het companion-filter. Een afzender wiens klok meer dan de grens voorloopt, valt nu ook weg.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-01',
+        title: 'Alle DMC-branches',
+        items: [
+          <>ESPAsyncWebServer bijgewerkt naar 3.11.2 voor twee kwetsbaarheden in de multipart-parser (CVE-2026-54571, CVE-2026-62966) op het OTA-uploadpad van de webserver (<code>start ota</code>).</>,
+          <>Observer: <strong>IPv6</strong> op het wifi-station. MQTT verbindt eerst via IPv6 en valt 15 min terug op IPv4 na twee mislukte verbindingen. <code>set wifi.ipv6 on|off</code> (standaard on); <code>get link.status</code> toont het IPv6-adres. DNS komt nog via DHCPv4. Nog niet getest op een IPv6-netwerk.</>,
+          <>Observer: bijgewerkt met agessaman observer-firmware: <code>set wifi.txpower 2-20|default</code> (limiet voor het wifi-zendvermogen), een regiocode per slot met <code>set mqttN.iata</code>, en de presets <code>sacmesh</code> en <code>upstatemesh</code>.</>,
+          <>Observer-<strong>fix</strong>: <code>set mqttN.extras</code> blijft nu echt bewaard na een herstart (de fix van 2026-10-19 miste dit). Keuzes van vóór deze build zijn nooit opgeslagen, dus stel ze opnieuw in.</>,
+        ],
+      },
       {
         version: 'v1.18.0 · dev',
         date: '2026-10-19',
@@ -309,6 +437,24 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
     ],
     toolbox: [
       {
+        version: 'Flasher & CLI Wiki: Companion Observer',
+        date: '2026-11-23',
+        items: [
+          <><strong>Flasher</strong>: nieuwe groep <strong>DutchMeshCore Companion Observer Firmware</strong> voor de <code>dmc-companion-observer-*</code>-releases, met App-update en volledige flash per bord. De groep blijft leeg tot de eerste release gebouwd is. De companion-filtergroep pakt deze releases niet meer op.</>,
+          <><strong>CLI Wiki</strong>: nieuwe variant <strong>DutchMeshCore – Companion Observer</strong>: de companion-CLI, de MQTT- en wifi-instellingen van de observer en het ontvangstfilter, zonder de OTA-, SNMP-, meldings- en buuropdrachten die hij niet heeft.</>,
+          <><strong>CLI Wiki</strong>: de nieuwe observer-opdrachten toegevoegd: <code>mqtt.selfheal</code>, <code>mqtt.breaker.interval</code>, <code>get mqtt.stacks</code>, <code>get crash</code> / <code>clear crash</code>, <code>mqtt.neighbors auto</code> en <code>mqttN.neighbors</code> per slot, plus <code>wifi.txpower</code> en <code>mqttN.iata</code> per slot.</>,
+          <><strong>USB Setup</strong>: een vinkje <strong>WiFi IPv6</strong> bij de wifi-instellingen, alleen zichtbaar als de observer op <code>get wifi.ipv6</code> antwoordt; back-ups nemen de instelling mee. De CLI Wiki noemt <code>wifi.ipv6</code>.</>,
+          <><strong>USB Setup</strong>: de lijst met broker-presets bevat nu alle <strong>42</strong> presets van de firmware (nieuw: <code>sacmesh</code>, <code>upstatemesh</code>, <code>comchan</code> en <code>virginiamesh</code>).</>,
+        ],
+      },
+      {
+        version: 'Flasher: herstart na het flashen',
+        date: '2026-10-22',
+        items: [
+          <><strong>Flasher</strong>: ESP32-borden starten na het flashen nu de nieuwe firmware op in plaats van in de bootloader te blijven tot je op reset drukt. Een mislukte flash toont nu het foutscherm (eerst stond er klaar) en geeft de seriële poort vrij, zodat Opnieuw proberen werkt.</>,
+        ],
+      },
+      {
         version: 'USB Setup & CLI Wiki: dc.gate echte TX-duty',
         date: '2026-10-19',
         items: [
@@ -395,6 +541,60 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
   },
   de: {
     firmware: [
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-22',
+        title: 'Companion Observer (neu)',
+        items: [
+          <>Neue <strong>Companion-Observer</strong>-Firmware: ein WLAN-Companion-Radio und ein MQTT-Observer in einem Image. Die MeshCore-App verbindet sich über WLAN (TCP-Port 5000), während gehörte Pakete an die MQTT-Broker gehen. Boards: Heltec V3, Heltec V4, Heltec V4 Expansion Kit, Xiao S3 WIO und Waveshare S3 LR1121 (<code>*_companion_observer_wifi</code>). <Doc href={DOCS.compObs}>Companion-Observer-Anleitung</Doc>.</>,
+          <>Eingerichtet wird mit denselben Befehlen wie beim Repeater-Observer (<code>set wifi.ssid</code>, <code>set mqtt1.preset</code>, <code>set mqtt.iata</code>, ...) über die serielle USB-Konsole, die Befehlszeile der App oder Remote-Admin. Er teilt <code>/mqtt.json</code> und die Knoten-Identität mit dem Repeater-Observer, beim Hin- und Herflashen bleiben Broker, WLAN, IATA und öffentlicher Schlüssel also erhalten. Hat der Companion seine Einstellungen gespeichert, startet ein zurückgeflashter Repeater mit seinen eigenen Einstellungen auf Build-Standard, <strong>einschließlich des Admin-Passworts</strong>: setze es neu.</>,
+          <>Enthält den DMC-<strong>Empfangsfilter</strong> (<code>filter ...</code>). Er ändert nur, was die App zeigt und was wiederholt wird; der Observer lädt weiterhin jedes gehörte Paket hoch. <Doc href={DOCS.companionFilter}>Referenz Companion-Filter</Doc>.</>,
+          <>Nicht enthalten: Pull-OTA, SNMP, das Webportal, Störungsmeldungen, MQTT-Self-Heal und Nachbar-Veröffentlichung. Heltec V3 (ohne PSRAM) ist auf 150 Kontakte und 2 MQTT-Slots begrenzt; Boards mit PSRAM behalten 350 Kontakte.</>,
+          <>Builds melden <code>vX.Y.Z[-dev]-dutchmeshcore.nl-comp-obs-&lt;hash&gt;</code>. Releases: das rollende <code>dmc-companion-observer-dev</code> und <code>dmc-companion-observer-vX.Y.Z</code>, zu flashen aus der neuen Gruppe <strong>DutchMeshCore Companion Observer Firmware</strong> im Flasher, sobald das erste gebaut ist. <strong>Noch nicht auf Hardware getestet.</strong></>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-22',
+        title: 'MQTT Observer',
+        items: [
+          <>Auf den Stand der agessaman Observer-Firmware gebracht. Neues optionales <strong>Self-Heal</strong> (<code>set mqtt.selfheal on</code>): hängt MQTT in einem Zustand, den nur ein Neustart löst, sendet der Knoten eine Meldung und startet eine Minute später neu, nach jedem Self-Heal-Neustart mit längerer Wartezeit. <code>get mqtt.selfheal</code> zeigt die letzte Ursache.</>,
+          <><strong>Absturzberichte</strong>: nach einem Absturz zeigt <code>get crash</code> den Task und Backtrace aus dem Core-Dump im Flash, und die nächste veröffentlichte MQTT-Statusmeldung trägt ihn einmal mit; <code>clear crash</code> löscht ihn. Statusmeldungen enthalten außerdem <code>heap_min</code> und <code>reset_reason</code>, und <code>get mqtt.stacks</code> zeigt den freien Stack pro MQTT-Task.</>,
+          <>ESP32-S3-Observer ohne PSRAM nutzen einen kleineren TLS-Sendepuffer (4 KiB statt 16), etwa 12 KiB weniger internes RAM pro Broker.</>,
+          <>Neu: <code>set mqtt.breaker.interval</code> (10-30 min, Standard 30): wie oft ein Slot, der das Neuverbinden aufgegeben hat, seinen Broker erneut versucht.</>,
+          <>Nachbar-Veröffentlichung: der neue Standard <code>mqtt.neighbors auto</code> sendet die Tabelle nur an Slots, deren Preset sie anfordert, und <code>set mqttN.neighbors auto|on|off</code> überschreibt das pro Slot. Knoten, die die Einstellung nie geändert oder auf off hatten, wechseln auf <code>auto</code>.</>,
+          <>WLAN verbindet sich mit dem stärksten Access Point, wenn sich mehrere eine SSID teilen, DNS-Abfragen laufen jetzt im lwIP-Thread, und das Webportal kann Port 80 direkt nach einem Stopp wieder belegen. Neue Broker-Presets <code>comchan</code> und <code>virginiamesh</code> (insgesamt 42). <Doc href={DOCS.mqttImpl}>MQTT-Implementierungsleitfaden</Doc>.</>,
+          <><strong>Fix:</strong> auf Companion-Builds vom Observer-Branch gingen Filterregeln in <code>/cfilter.json</code> beim Neustart verloren, weil der strengere JSON-Parser ihre rein numerischen Schlüssel ablehnte. Behoben.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-15',
+        title: 'Alle DMC-Branches',
+        items: [
+          <>Upstream-MeshCore <code>dev</code> für zwei Sicherheitsfixes zusammengeführt: ein Remote-CLI-Befehl (etwa eine <code>regions</code>-Abfrage mit Präfix) konnte über den Antwortpuffer hinaus schreiben und einen Repeater, Room Server oder Sensor abstürzen lassen, und der MicroNMEA-GPS-Parser konnte über seinen Puffer hinaus lesen.</>,
+          <>Ebenfalls von upstream: überarbeitete GPS-Behandlung (Aktualisierungsintervall, Fence, Timeout für den ersten Fix), mDNS, ein Absturzschutz im Companion und der CC310-Mutex-Workaround.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-04',
+        title: 'Alle DMC-Branches',
+        items: [
+          <><code>filter age</code> verwirft jetzt auch Nachrichten, die zu weit in der <strong>Zukunft</strong> datiert sind, mit derselben Grenze in beide Richtungen: mit <code>filter age 60</code> fällt alles weg, was mehr als eine Stunde hinter oder vor der Uhr liegt. Spam, der Tage vorausdatiert war, kam vorher durch. Gilt für den Repeater-Filter und den Companion-Filter. Ein Absender, dessen Uhr um mehr als die Grenze vorgeht, wird jetzt ebenfalls verworfen.</>,
+        ],
+      },
+      {
+        version: 'v1.18.0 · dev',
+        date: '2026-11-01',
+        title: 'Alle DMC-Branches',
+        items: [
+          <>ESPAsyncWebServer auf 3.11.2 aktualisiert, wegen zwei Schwachstellen im Multipart-Parser (CVE-2026-54571, CVE-2026-62966) auf dem OTA-Upload-Pfad des Webservers (<code>start ota</code>).</>,
+          <>Observer: <strong>IPv6</strong> an der WLAN-Station. MQTT verbindet zuerst über IPv6 und fällt nach zwei fehlgeschlagenen Verbindungen für 15 min auf IPv4 zurück. <code>set wifi.ipv6 on|off</code> (Standard on); <code>get link.status</code> zeigt die IPv6-Adresse. DNS kommt weiterhin über DHCPv4. Noch nicht in einem IPv6-Netz getestet.</>,
+          <>Observer: auf den Stand der agessaman Observer-Firmware gebracht: <code>set wifi.txpower 2-20|default</code> (Grenze der WLAN-Sendeleistung), ein Regionscode pro Slot mit <code>set mqttN.iata</code> und die Presets <code>sacmesh</code> und <code>upstatemesh</code>.</>,
+          <>Observer-<strong>Fix</strong>: <code>set mqttN.extras</code> bleibt jetzt wirklich nach einem Neustart erhalten (der Fix vom 2026-10-19 hatte das übersehen). Vor diesem Build getroffene Einstellungen wurden nie gespeichert, setze sie also neu.</>,
+        ],
+      },
       {
         version: 'v1.18.0 · dev',
         date: '2026-10-19',
@@ -490,6 +690,24 @@ const content: Record<LangKey, { firmware: Entry[]; toolbox: Entry[] }> = {
       },
     ],
     toolbox: [
+      {
+        version: 'Flasher & CLI Wiki: Companion Observer',
+        date: '2026-11-23',
+        items: [
+          <><strong>Flasher</strong>: neue Gruppe <strong>DutchMeshCore Companion Observer Firmware</strong> für die <code>dmc-companion-observer-*</code>-Releases, mit App-Update und vollständigem Flash pro Board. Sie bleibt leer, bis das erste Release gebaut ist. Die Companion-Filter-Gruppe übernimmt diese Releases nicht mehr.</>,
+          <><strong>CLI Wiki</strong>: neue Variante <strong>DutchMeshCore – Companion Observer</strong>: die Companion-CLI, die MQTT- und WLAN-Einstellungen des Observers und der Empfangsfilter, ohne die OTA-, SNMP-, Melde- und Nachbarbefehle, die er nicht hat.</>,
+          <><strong>CLI Wiki</strong>: die neuen Observer-Befehle ergänzt: <code>mqtt.selfheal</code>, <code>mqtt.breaker.interval</code>, <code>get mqtt.stacks</code>, <code>get crash</code> / <code>clear crash</code>, <code>mqtt.neighbors auto</code> und <code>mqttN.neighbors</code> pro Slot, dazu <code>wifi.txpower</code> und <code>mqttN.iata</code> pro Slot.</>,
+          <><strong>USB Setup</strong>: ein Kästchen <strong>WiFi IPv6</strong> bei den WLAN-Einstellungen, nur sichtbar, wenn der Observer auf <code>get wifi.ipv6</code> antwortet; Backups enthalten die Einstellung. Das CLI Wiki listet <code>wifi.ipv6</code>.</>,
+          <><strong>USB Setup</strong>: die Liste der Broker-Presets enthält jetzt alle <strong>42</strong> Presets der Firmware (neu: <code>sacmesh</code>, <code>upstatemesh</code>, <code>comchan</code> und <code>virginiamesh</code>).</>,
+        ],
+      },
+      {
+        version: 'Flasher: Reset nach dem Flashen',
+        date: '2026-10-22',
+        items: [
+          <><strong>Flasher</strong>: ESP32-Boards starten nach dem Flashen jetzt die neue Firmware, statt im Bootloader zu bleiben, bis du Reset drückst. Ein fehlgeschlagener Flash zeigt jetzt die Fehlerseite (vorher stand dort fertig) und gibt den seriellen Port frei, sodass Erneut versuchen funktioniert.</>,
+        ],
+      },
       {
         version: 'USB Setup & CLI Wiki: dc.gate echter TX-Duty',
         date: '2026-10-19',
