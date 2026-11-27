@@ -338,8 +338,45 @@
   font-family: inherit;
 }
 
-.device-group-title {
+.device-group-heading {
   flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Phones: name + "?" on the first line, version and links below, so the
+   header never runs wider than the screen. */
+@media (max-width: 560px) {
+  .device-group-header { flex-wrap: wrap; row-gap: .35rem; }
+  .device-group-heading { flex-basis: 100%; }
+  .device-group-version { margin-left: 0; margin-right: auto; }
+}
+
+/* "?" behind the firmware name: same accent outline as the Website/GitHub links */
+.device-group-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-left: .45rem;
+  vertical-align: middle;
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  opacity: .75;
+  cursor: help;
+  transition: opacity .15s, background-color .15s;
+}
+
+.device-group-help:hover,
+.device-group-help:focus-visible {
+  opacity: 1;
+  outline: none;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
 .device-group-links {

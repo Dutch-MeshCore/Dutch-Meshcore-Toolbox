@@ -4,6 +4,7 @@ import type { FlasherDevice, FlasherMakerDef } from '../../types'
 import { groupDevicesByMaker, filterDevices } from '../../utils/flasherUtils'
 import { deviceImageSrc } from '../../utils/deviceImage'
 import { useLang } from '../../hooks/useLang'
+import FirmwareHelp from './FirmwareHelp'
 
 interface Preview {
   src: string
@@ -131,7 +132,10 @@ export default function DeviceList({ devices, makerNames, onSelect }: Props) {
               onClick={() => toggleMaker(makerKey)}
               aria-expanded={open}
             >
-              <span className="device-group-title">{makerName}</span>
+              <span className="device-group-heading">
+                <span className="device-group-title">{makerName}</span>
+                <FirmwareHelp makerKey={makerKey} />
+              </span>
               {versions.length > 0 && (
                 <select
                   value={selectedVersion}
